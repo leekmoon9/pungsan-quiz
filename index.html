@@ -172,7 +172,7 @@ STR.forEach((q,i)=>{q.cat=i<20?'복기':'고난도';q.g=NS[TS[i]]});
 const PASS=[{id:'etc',name:'전자요금징수시스템(ETC)',Q:ETC.concat(ES.etc.map(x=>Object.assign({t:'es',cat:'서술'},x)))},
  {id:'str',name:'DNA 분석(STR 분석법)',Q:STR.concat(ES.str.map(x=>Object.assign({t:'es',cat:'서술'},x)))}];
 PASS.forEach(p=>p.Q.forEach((q,i)=>q.id=p.id+i));
-const KEY='pungsan-web1:';let CANW=true,R={},NICK='',PIN='',DB=null,OWNER=false,tm=null,ADM=[];
+const KEY='pungsan-web2:';let CANW=true,R={},NICK='',PIN='',DB=null,OWNER=false,tm=null,ADM=[];
 const SB_URL='https://tlpfpwhoehoryhjomwbt.supabase.co',SB_KEY='sb_publishable_qOsqLo7hHlhg8rLmWk96zw_RiR2_9DK';
 try{DB=window.supabase.createClient(SB_URL,SB_KEY)}catch(e){DB=null}
 async function chkAdmin(){if(!DB)return;try{const {data}=await DB.auth.getSession();OWNER=!!(data&&data.session)}catch(e){OWNER=false}}
