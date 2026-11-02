@@ -234,9 +234,12 @@ try{DB=window.supabase.createClient(SB_URL,SB_KEY)}catch(e){DB=null}
 async function chkAdmin(){if(!DB)return;try{const {data}=await DB.auth.getSession();OWNER=!!(data&&data.session)}catch(e){OWNER=false}}
 const ls=(k,v)=>{try{if(v===undefined)return localStorage.getItem(KEY+k)||'';if(v===null)localStorage.removeItem(KEY+k);else localStorage.setItem(KEY+k,v)}catch(e){return''}};
 function save(){ls('rec:'+NICK,JSON.stringify(R));clearTimeout(tm);tm=setTimeout(sync,700)}
-async function sync(){if(!DB||!NICK||!PIN)return;try{const {data,error}=await DB.rpc('player_save',{p_nick:NICK,p_pin:PIN,p_data:R});if(error||data!==true)throw 0}catch(e){}}
+async function sync(){if(ADMINMODE){if(DB)try{await DB.rpc('admin_save',{p_data:R})}catch(e){}return}if(!DB||!NICK||!PIN)return;try{const {data,error}=await DB.rpc('player_save',{p_nick:NICK,p_pin:PIN,p_data:R});if(error||data!==true)throw 0}catch(e){}}
 const lastNick=()=>ls('last');
-async function enter(){const lk=lastNick(),el=document.getElementById('nk'),pe=document.getElementById('pn');
+const ADM_NICK='풍산동신라면';let ADMINMODE=false;
+async function adminLoad(){if(!DB)return;try{const {data,error}=await DB.rpc('admin_me');if(!error&&data){R=mergeR(data.data||{},R);ls('rec:'+NICK,JSON.stringify(R));sync()}}catch(e){}}
+function adminOn(){ADMINMODE=true;NICK=ADM_NICK;PIN='';ls('last',ADM_NICK);ls('pin',null);try{R=JSON.parse(ls('rec:'+NICK))||{}}catch(e){R={}}}
+async function enter(){if(ADMINMODE){const go=document.getElementById('go');if(go){go.disabled=true;go.textContent='확인 중…'}await adminLoad();REPL=true;return subjects()}const lk=lastNick(),el=document.getElementById('nk'),pe=document.getElementById('pn');
  const v=(lk||(el?el.value:'')).trim(),p=lk?ls('pin'):(pe?pe.value.trim():'');if(!v)return;
  if(!/^\d{4}$/.test(p)){soonMsg('비밀번호는 숫자 4자리예요.');return}
  const go=document.getElementById('go');if(go){go.disabled=true;go.textContent='확인 중…'}
@@ -409,7 +412,7 @@ async function admin(){show('<h2>관리자 통계</h2><p class="mut">불러오�
  h+='<div class="row"><button class="b g" onclick="admin()">새로고침</button><button class="b g" onclick="subjects()">나가기</button></div>';show(h)}
 function adminLogin(){show(`<div class="fbw"><h2>관리자 로그인</h2><p class="tag">Supabase에 만든 관리자 계정으로 로그인하세요.</p><div class="card"><input type="email" id="ae" placeholder="이메일" autocomplete="username"><div style="height:8px"></div><input type="text" class="pw" id="ap" placeholder="비밀번호" autocomplete="off" autocapitalize="off" spellcheck="false" onkeydown="if(event.key=='Enter')adminIn()"></div><div class="row"><button class="b g" onclick="home()">뒤로</button><button class="b" onclick="adminIn()">로그인</button></div></div>`)}
 async function adminIn(){if(!DB)return soonMsg('서버에 연결되지 않았어요.');const e=document.getElementById('ae').value.trim(),p=document.getElementById('ap').value;
- try{const {error}=await DB.auth.signInWithPassword({email:e,password:p});if(error)throw error;OWNER=true;soonMsg('관리자로 로그인했어요.');if(NICK)admin();else home()}catch(x){soonMsg('로그인하지 못했어요. 이메일과 비밀번호를 확인해 주세요.')}}
+ try{const {error}=await DB.auth.signInWithPassword({email:e,password:p});if(error)throw error;OWNER=true;adminOn();await adminLoad();soonMsg('관리자로 로그인했어요.');admin()}catch(x){soonMsg('로그인하지 못했어요. 이메일과 비밀번호를 확인해 주세요.')}}
 function adminOne(i){const r=ADM[i],X=r.R||{};const TT=X._t||{},TD=Object.keys(TT).filter(k=>TT[k]>=1);let h=`<h2>${esc(r.nick)}</h2><p class="tag">최근 활동 ${fd(r.t)} · 공부 ${TD.length}일 · ${fmtT(TD.reduce((a,k)=>a+TT[k],0))}</p>`;
  PASS.forEach(p=>{const s=st(p.Q,X);h+=`<div class="card"><b>${p.name}</b><div class="mut">${stTxt(s)}</div><div class="bar"><i style="width:${s.r||0}%"></i></div>`;
   CATS.forEach(([k,l])=>{const t=st(p.Q.filter(q=>q.cat==k),X);h+=`<div class="mut">${l}: ${t.n?t.c+'/'+t.n+' ('+t.r+'%)':'안 풂'}</div>`});
@@ -440,10 +443,10 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>프로필 보기</h2><p class="tag">비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div><div class="row" style="max-width:320px;margin:0 auto;width:100%"><button class="b g" onclick="history.back()">뒤로</button></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-function profile(){if(!PFOK)return pfGate();const t=R._t||{},days=Object.keys(t).filter(k=>t[k]>=1),tot=days.reduce((a,k)=>a+t[k],0),td=t[dkey()]||0;
+function profile(){if(ADMINMODE)PFOK=true;if(!PFOK)return pfGate();const t=R._t||{},days=Object.keys(t).filter(k=>t[k]>=1),tot=days.reduce((a,k)=>a+t[k],0),td=t[dkey()]||0;
  show(`<h2>내 프로필</h2><p class="tag">기본 정보와 공부 기록이에요.</p>
- <div class="card pf"><div class="pr"><span>닉네임</span><b>${esc(NICK)}</b><button class="lk" onclick="pfNick()">변경하기</button></div>
- <div class="pr"><span>비밀번호</span><b id="pv">••••</b><button class="lk" onclick="const e=document.getElementById('pv');e.textContent=e.textContent=='••••'?PIN:'••••'">보기</button><button class="lk" onclick="pfPin()">변경하기</button></div></div>
+ <div class="card pf"><div class="pr"><span>닉네임</span><b>${esc(NICK)}</b>${ADMINMODE?'<span class="mut" style="font-size:13px">관리자 고정</span>':'<button class="lk" onclick="pfNick()">변경하기</button>'}</div>
+ ${ADMINMODE?'':`<div class="pr"><span>비밀번호</span><b id="pv">••••</b><button class="lk" onclick="const e=document.getElementById('pv');e.textContent=e.textContent=='••••'?PIN:'••••'">보기</button><button class="lk" onclick="pfPin()">변경하기</button></div>`}</div>
  <div class="pg2"><div class="card st2"><span>총 공부 시간</span><b>${fmtT(tot)}</b><small>오늘 ${fmtT(td)}</small></div>
  <div class="card st2 pc" onclick="cal()"><span>공부한 날</span><b>${days.length}일</b><small class="lku">달력으로 보기 ›</small></div></div>
  <p class="mut" style="font-size:13px">공부 시간은 문제를 보기 시작해서 답을 낼 때까지 잰 시간이에요. 한 문제에 최대 5분까지 세요.</p>
@@ -520,11 +523,13 @@ result=(f=>function(){REPL=true;setR('result');const x=f.apply(this,arguments);s
  document.addEventListener('touchstart',e=>{const t=e.touches[0];if(t.clientX<26&&history.length>1){sx=t.clientX;sy=t.clientY;dx=0;A.style.transition='none'}else sx=null},{passive:true});
  document.addEventListener('touchmove',e=>{if(sx==null)return;const t=e.touches[0];dx=t.clientX-sx;if(Math.abs(t.clientY-sy)>Math.abs(dx)&&dx<30){sx=null;A.style.transform='';return}A.style.transform='translateX('+Math.max(0,dx*.6)+'px)'},{passive:true});
  document.addEventListener('touchend',()=>{if(sx==null)return;A.style.transition='transform .2s ease';A.style.transform='';if(dx>80)history.back();sx=null})})();
-async function boot(){if(location.hash=='#admin'){chkAdmin();const lk=lastNick(),pn=ls('pin');if(lk&&/^\d{4}$/.test(pn)){NICK=lk;PIN=pn;try{R=JSON.parse(ls('rec:'+lk))||{}}catch(e){R={}}}return adminLogin()}
+async function boot(){const FRESH=(()=>{try{const f=!sessionStorage.getItem(KEY+'alive');sessionStorage.setItem(KEY+'alive','1');return f}catch(e){return true}})();if(location.hash=='#admin'){chkAdmin();const lk=lastNick(),pn=ls('pin');if(lk&&/^\d{4}$/.test(pn)){NICK=lk;PIN=pn;try{R=JSON.parse(ls('rec:'+lk))||{}}catch(e){R={}}}return adminLogin()}
+ await chkAdmin();
+ if(OWNER){adminOn();if(FRESH)home();else goR(curR());adminLoad();return}
  const lk=lastNick(),pn=ls('pin');
  if(!lk||!/^\d{4}$/.test(pn)){chkAdmin();return home()}
  NICK=lk;PIN=pn;try{R=JSON.parse(ls('rec:'+lk))||{}}catch(e){R={}}
- await chkAdmin();goR(curR());
+ if(FRESH)home();else goR(curR());
  if(DB){try{const {data,error}=await DB.rpc('player_login',{p_nick:lk,p_pin:pn});if(!error&&data){
   if(data.status=='ok'||data.status=='new'){const loc=R;R=mergeR(data.data||{},loc);ls('rec:'+NICK,JSON.stringify(R));if(Object.keys(loc).length)sync()}
   else if(data.status=='wrong'){ls('last',null);ls('pin',null);NICK='';PIN='';REPL=true;home();soonMsg('비밀번호가 바뀌어 다시 입력해야 해요.')}}}catch(e){}}}
