@@ -10,7 +10,8 @@ body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.6 -apple-system,"
 main{max-width:640px;margin:0 auto;padding:16px}
 h1{font-size:26px;line-height:1.3;margin:0 0 6px}h2{margin:0 0 6px}h3{margin:18px 0 8px;font-size:16px}
 .hero{position:relative;overflow:hidden;min-height:calc(100vh - 60px);min-height:calc(100svh - 60px);display:grid;grid-template-rows:1fr auto 1fr;align-items:center;text-align:center;padding:0}
-.sa{position:relative;align-self:stretch;min-height:180px}
+.sa{position:relative;align-self:stretch;min-height:250px}
+.sa+.hc+.sa{min-height:330px}
 .hc{position:relative;z-index:1;width:100%;margin:18px 0;display:flex;flex-direction:column;align-items:center}
 .st{position:absolute;z-index:0;pointer-events:none;user-select:none;transform:rotate(var(--r));animation:pop .5s ease-out both}
 img.st{border:none;border-radius:7px;box-shadow:0 3px 9px rgba(0,0,0,.3);height:auto;background:none;display:block}
@@ -204,10 +205,13 @@ const stTxt=s=>s.n?`${s.n}/${s.t}문제 풀이 · 정답률 ${s.r}%`:`${s.t}문�
 let LK=null;const show=(h,k)=>{const nw=k===undefined||k!==LK;LK=k===undefined?null:k;A.innerHTML=h;if(nw){window.scrollTo(0,0);A.classList.remove('in');void A.offsetWidth;A.classList.add('in')}};
 let SS=null,draft=null;
 function stk(side){const col={};SUBJ.flat().forEach(([n,c])=>col[n]=c);
- const T=[['c','독서와|작문',3,3,-11,56],['p','독서와|작문',25,7,5],['c','영어',50,1,9,54],['p','영어',72,8,-6],['e','⭐',91,10,15],
- ['p','정치',4,52,-8],['c','정치',22,40,6,50],['c','경제',42,44,-7,50],['p','경제',62,62,6],['c','현대사회와|윤리',82,20,8,50],['e','✏️',9,75,-18]];
- const B=[['p','현대사회와|윤리',6,24,7],['c','동아시아|역사기행',34,2,-9,52],['p','동아시아|역사기행',55,18,5],['c','세포와|물질대사',80,4,8,50],
- ['c','행성우주|과학',3,36,9,56],['p','세포와|물질대사',22,64,-5],['p','행성우주|과학',27,40,6],['c','역학과|에너지',48,38,-7,52],['p','역학과|에너지',67,50,8],['c','물질과|에너지',82,42,-8,50],['p','물질과|에너지',52,76,-5],['e','📚',8,76,-12]];
+ const T=[['c','독서와|작문',1,1,-9,48],['p','독서와|작문',19,9,5],['c','영어',50,0,8,46],['p','영어',68,11,-6],['e','⭐',88,0,15],
+ ['p','중국어|회화',1,42,-5],['c','중국어|회화',34,34,-7,46],['p','일본어|회화',52,46,6],['c','일본어|회화',85,33,9,46],
+ ['c','정치',8,69,7,46],['p','정치',26,80,-6],['c','경제',50,67,-8,46],['p','경제',68,82,5]];
+ const B=[['p','현대사회와|윤리',1,3,-5],['c','현대사회와|윤리',42,0,7,46],['p','동아시아|역사기행',58,6,5],
+ ['c','동아시아|역사기행',3,23,-8,46],['p','한국지리|탐구',21,32,6],['c','한국지리|탐구',55,24,-6,46],['c','세포와|물질대사',84,24,8,46],
+ ['p','세포와|물질대사',1,57,-4],['c','행성우주|과학',38,49,9,46],['p','행성우주|과학',55,58,-6],
+ ['c','역학과|에너지',8,76,-7,46],['p','역학과|에너지',25,86,5],['c','물질과|에너지',58,75,8,46],['p','물질과|에너지',72,88,-5],['e','📚',88,50,-12]];
  return (side?B:T).map((x,i)=>{const d=`left:${x[2]}%;top:${x[3]}%;--r:${x[4]}deg;animation-delay:${i*25}ms`;
   if(x[0]=='c')return`<img class="st" src="${COVER[x[1]]}" alt="" style="${d};width:${x[5]}px">`;
   if(x[0]=='p')return`<span class="st pl" style="${d};--pc:${SC[col[x[1]]]}">${x[1].split('|').join(' ')}</span>`;
