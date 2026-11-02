@@ -96,6 +96,15 @@ body:has(.hero) #rf{display:none}
 .blk{display:inline-block;min-width:64px;height:1.1em;border-bottom:2.5px solid var(--ac);margin:0 3px;vertical-align:-2px}
 .mya{white-space:pre-line;background:var(--bg);border-radius:10px;padding:10px 12px;margin:4px 0 10px}
 .b.sbm{background:#4f8a63}
+.mdn{display:block;margin-top:8px;font-size:12.5px;color:var(--mut)}
+.prc{display:inline-block;padding:0 8px;border-radius:999px;background:var(--hl,#f9df99);background:#f9df99;color:#5a4a1a;font-size:11px;font-weight:700}
+.prn{margin-top:10px;padding:8px 12px;border-radius:10px;background:#f6ecc9;color:#6a5a2a;font-size:13px}
+.wkb,.okb{display:inline-block;margin-left:6px;padding:1px 8px;border-radius:999px;font-size:11px;font-weight:800;vertical-align:2px;letter-spacing:.2px}
+.wkb{background:#f6d3cf;color:#a3392f}.okb{background:#d6ecdc;color:#2f6a43}
+.wnb{display:flex;align-items:center;gap:10px;width:100%;margin:12px 0 4px;padding:14px 14px 14px 16px;border:none;border-radius:14px;background:color-mix(in srgb,#e9978f 16%,var(--card));background:#f6e4df;color:var(--tx);font:inherit;text-align:left;box-shadow:0 2px 10px rgba(90,70,40,.1);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.wnb>span:first-child{flex:1;display:flex;flex-direction:column}.wnb b{font-size:16px}.wnb small{font-size:13px;color:var(--mut)}
+.wnc{min-width:26px;height:26px;padding:0 7px;box-sizing:border-box;border-radius:999px;background:#e05a4f;color:#fff;font-weight:800;font-size:13px;display:inline-flex;align-items:center;justify-content:center}
+.mb>span:first-child{display:flex;align-items:center;flex-wrap:wrap}
 h3.sec{font-size:19px;font-weight:600;margin:20px 0 8px}
 .fbw{min-height:calc(100vh - 60px);min-height:calc(100svh - 60px);display:flex;flex-direction:column;justify-content:center;text-align:center}
 .fbw .tag{max-width:420px;margin:0 auto 6px}
@@ -338,18 +347,43 @@ const pct=qs=>qs.length?Math.round(st(qs).c/qs.length*100):0;
 let OPEN=-1;
 function socPage(n){const c=SUBJ.flat().find(x=>x[0]==n)[1],col=SC[c],nm=n.split('|').join(' ');
  const [K1,K2]=kd(n);let h=`<h2>${nm}</h2><p class="tag"><b>${esc(NICK)}</b> 님 · ${K1}을 누르면 ${K2}${K2=='유형'?'이':'이'} 펼쳐져요</p>`;
+ {const wq=socQ(n).filter(q=>R[q.id]&&!R[q.id].ok),uq=wq.filter(isUnf);h+=`<button class="wnb" onclick="wrongPage('${n}')"><span><b>오답노트</b><small>${wq.length?(uq.length?`남은 오답 ${uq.length}문제`:'오답을 모두 고쳤어요'):'아직 틀린 문제가 없어요'}</small></span>${uq.length?`<span class="wnc">${uq.length}</span>`:''}<span class="chev">›</span></button>`}
  if(!CUR[n].length)h+=`<div class="card mut" style="text-align:center;padding:26px 16px">아직 ${K1}이 준비 중이에요.<br>곧 추가할게요!</div>`;
  CUR[n].forEach((U,u)=>{const a=pct(bigQ(n,u));
-  h+=`<div class="ub${OPEN==u?' op':''}" id="ub${u}" style="--uc:${col}"><div class="uh" onclick="tgl(${u})"><div class="ut"><b>${esc(U.n)}</b><div class="al"><span>성취율</span><b>${a}%</b></div><div class="bar"><i data-w="${a}" style="width:0;background:${col}"></i></div></div><button class="b us" onclick="event.stopPropagation();socGo('${n}',${u})">문제 풀기</button><span class="chev">›</span></div><div class="um"><div class="umi">`;
-  U.m.forEach((M,k)=>{const b=pct(M.q);h+=`<button class="mb" onclick="socGo('${n}',${u},${k})"><span>${esc(M.n)}</span><span class="mut">${M.q.length?M.q.length+'문제 · '+b+'%':'준비 중'}</span></button>`});
+  h+=`<div class="ub${OPEN==u?' op':''}" id="ub${u}" style="--uc:${col}"><div class="uh" onclick="tgl(${u})"><div class="ut"><b>${esc(U.n)}</b>${wkBadge(gInfo(bigQ(n,u)))}<div class="al"><span>성취율</span><b>${a}%</b></div><div class="bar"><i data-w="${a}" style="width:0;background:${col}"></i></div></div><button class="b us" onclick="event.stopPropagation();socGo('${n}',${u})">문제 풀기</button><span class="chev">›</span></div><div class="um"><div class="umi">`;
+  U.m.forEach((M,k)=>{const b=pct(M.q);h+=`<button class="mb" onclick="socGo('${n}',${u},${k})"><span>${esc(M.n)}${wkBadge(gInfo(M.q))}</span><span class="mut">${M.q.length?M.q.length+'문제 · '+b+'%':'준비 중'}</span></button>`});
   h+=`</div></div></div>`});
  if(CUR[n].length)h+=`<div class="ub ua" style="--uc:${col}" onclick="socGo('${n}')"><div class="uh"><div class="ut"><b>전체 풀기</b><div class="al"><span>전체 성취율 · ${socQ(n).length}문제</span><b>${pct(socQ(n))}%</b></div><div class="bar"><i data-w="${pct(socQ(n))}" style="width:0;background:${col}"></i></div></div><span class="chev">›</span></div></div>`;h+=`<div class="row"><button class="b g" onclick="OPEN=-1;subjects()">과목 선택으로</button></div>`;
  SOCCUR=n;show(h);animBars()}
 let SOCCUR='';
 function tgl(u){document.querySelectorAll('.ub').forEach((e,i)=>{if(i==u)e.classList.toggle('op');else e.classList.remove('op')});const e=document.getElementById('ub'+u);OPEN=e&&e.classList.contains('op')?u:-1}
+
+// ---- 오답노트 · 취약 유형 ----
+const WEAK=0.4;
+const isUnf=q=>R[q.id]&&!R[q.id].ok&&!(R._fx&&R._fx[q.id]);
+function gInfo(qs){let a=0,w=0,u=0;qs.forEach(q=>{const x=R[q.id];if(x){a++;if(!x.ok){w++;if(isUnf(q))u++}}});return {a,w,u,weak:a>0&&w/a>=WEAK,fixed:w>0&&u==0}}
+const wkBadge=g=>(g.weak?'<span class="wkb">취약</span>':'')+(g.weak&&g.fixed?'<span class="okb">오답 완료</span>':'');
+function allSegs(n,u,k){const segs=[];CUR[n].forEach((U,ui)=>{if(u!==undefined&&ui!==u)return;U.m.forEach((M,ki)=>{if(k!==undefined&&ki<k)return;if(M.q.length)segs.push({label:(u===undefined||CUR[n].length>1&&KIND[n]?U.n+' · ':'')+M.n,qs:M.q})})});return segs}
+function startWrong(n,segs,extra){const ws=segs.map(x=>({label:x.label,qs:x.qs.filter(isUnf)})).filter(x=>x.qs.length);if(!ws.length){soonMsg('고칠 오답이 없어요.');return}
+ startRun(n,ws,Object.assign({title:n.split('|').join(' ')+' 오답노트',mode:'wrong',practice:true},extra||{}))}
+function wrongPage(n){const nm=n.split('|').join(' '),c=SUBJ.flat().find(x=>x[0]==n)[1],col=SC[c];
+ const all=socQ(n),wr=all.filter(q=>R[q.id]&&!R[q.id].ok),un=wr.filter(isUnf);
+ let h=`<h2>오답노트</h2><p class="tag">${esc(nm)} · 틀린 문제를 다시 풀어서 고쳐요. 여기서 푼 결과는 진행 상황에 반영되지 않아요.</p>`;
+ h+=`<div class="pg2"><div class="card st2"><span>남은 오답</span><b class="${un.length?'no-t':''}">${un.length}문제</b></div><div class="card st2"><span>고친 오답</span><b class="ok-t">${wr.length-un.length}문제</b></div></div>`;
+ if(!wr.length)h+=`<div class="card mut" style="text-align:center;padding:24px">아직 틀린 문제가 없어요.</div>`;
+ else if(!un.length)h+=`<div class="card" style="text-align:center;padding:20px">오답을 모두 고쳤어요! 🎉</div>`;
+ CUR[n].forEach((U,u)=>{U.m.forEach((M,k)=>{const qs=M.q.filter(isUnf);if(!qs.length)return;
+  h+=`<div class="ub" style="--uc:${col}"><div class="uh" onclick="startWrong('${n}',allSegs('${n}',${u}).slice(${k},${k+1}),{wp:1})"><div class="ut"><b>${esc((KIND[n]?U.n+' · ':'')+M.n)}</b><div class="al"><span>남은 오답</span><b class="no-t">${qs.length}문제</b></div></div><span class="chev">›</span></div></div>`})});
+ if(un.length)h+=`<div class="row" style="margin-top:14px"><button class="b" onclick="startWrong('${n}',allSegs('${n}'),{wp:1})">오답 전체 풀기 (${un.length}문제)</button></div>`;
+ h+=`<div class="row"><button class="b g" onclick="subj('${n}')">과목으로 돌아가기</button></div>`;show(h)}
+
 function socGo(n,u,k){const segs=[];const nm=n.split('|').join(' ');
  CUR[n].forEach((U,ui)=>{if(u!==undefined&&ui!==u)return;U.m.forEach((M,ki)=>{if(k!==undefined&&ki<k)return;if(M.q.length)segs.push({label:(u===undefined||CUR[n].length>1&&KIND[n]?U.n+' · ':'')+M.n,qs:M.q})})});
  if(!segs.length){soonMsg('아직 문제가 준비 중이에요.');return}
+ const tsg=k!==undefined?segs.slice(0,1):segs,all=[].concat(...tsg.map(x=>x.qs)),done=all.every(q=>R[q.id]);
+ const wseg=tsg.filter(x=>{const g=gInfo(x.qs);return g.weak&&g.u>0}),unN=[].concat(...wseg.map(x=>x.qs)).filter(isUnf).length;
+ if(unN){askBox('취약한 유형이에요',`틀린 문제가 많아요. 먼저 오답부터 고쳐 보세요.<small class="mdn">오답 ${unN}문제를 다시 풀어요. 다 고치면 &lsquo;오답 완료&rsquo; 표시가 붙어요.</small>`,'오답 풀기').then(ok=>{if(ok)startWrong(n,wseg)});return}
+ if(done){askBox('이미 풀었던 문제예요','다시 푸시겠어요?<small class="mdn">다시 풀면 이번에 푼 결과는 진행 상황(통계)에 반영되지 않아요.</small>','다음').then(ok=>{if(ok)startRun(n,segs,{title:nm,practice:true})});return}
  startRun(n,segs,{title:nm})}
 
 function subj(n){if(isSoc(n))return socPage(n);const c=SUBJ.flat().find(x=>x[0]==n)[1],nm=n.split('|').join(' ');
@@ -390,14 +424,14 @@ const pmOf=q=>(SS&&SS.perm&&SS.perm[q.id])||q.o.map((_,i)=>i);
 const posOf=(q,idx)=>pmOf(q).indexOf(idx);
 const exT=q=>esc(q.e||'').replace(/⟦(\d)⟧/g,(_,d)=>CIRC[q.t=='mc'?posOf(q,+d-1):+d-1]||d);
 
-function startRun(n,segs,meta){OPEN=-1;SS={pid:'run',cat:'all',meta:Object.assign({subj:n,back:"socPage('"+n+"')",backLabel:kd(n)[1]+' 선택으로',kind:kd(n)[1]},meta||{}),segs,si:0,qs:segs[0].qs,i:0,resp:{},graded:[]};SS.perm={};segs.forEach(x=>Object.assign(SS.perm,mkPerm(x.qs)));draft=null;QS0=Date.now();quiz()}
+function startRun(n,segs,meta){OPEN=-1;SS={pid:'run',cat:'all',meta:Object.assign({subj:n,back:"socPage('"+n+"')",backLabel:kd(n)[1]+' 선택으로',kind:kd(n)[1]},meta||{}),segs,si:0,qs:segs[0].qs,i:0,resp:{},graded:[]};SS.base={};Object.keys(R).forEach(k=>{if(k[0]!='_')SS.base[k]=1});SS.perm={};segs.forEach(x=>Object.assign(SS.perm,mkPerm(x.qs)));draft=null;QS0=Date.now();quiz()}
 function start(id,cat,qs,meta){const n=(meta&&meta.subj)||'독서와|작문';const p=P(id);qs=qs||(cat=='all'?p.Q:p.Q.filter(q=>q.cat==cat));startRun(n,[{label:(meta&&meta.cat)||'문제 풀기',qs}],meta)}
 const ttl=()=>SS.meta?SS.meta.title:P(SS.pid).name;
-function goBack(){if(SS&&SS.meta&&SS.meta.subj)return subj(SS.meta.subj);subjects()}
+function goBack(){if(SS&&SS.meta&&SS.meta.wp)return wrongPage(SS.meta.subj);if(SS&&SS.meta&&SS.meta.subj)return subj(SS.meta.subj);subjects()}
 const qtx=t=>esc(t).replace(/\[빈칸\]/g,'<span class="blk"></span>');
 function quiz(){const q=SS.qs[SS.i],N=SS.qs.length,seg=SS.segs[SS.si],r=SS.resp[q.id]||{};QID=q.id;if(!QS0)QS0=Date.now();
  const tn={mc:'객관식',ox:'O/X',sh:'빈칸 채우기',es:'서술형'}[q.t];
- let h=`<div class="tag">${esc(ttl())} · ${esc(seg.label)}${SS.segs.length>1?` <span class="sgn">${SS.si+1}/${SS.segs.length}</span>`:''}</div><div class="qpr"><b>${SS.i+1}</b><span>/ ${N}</span><div class="bar"><i style="width:${(SS.i+1)/N*100}%"></i></div></div><div class="card"><div class="tag" style="margin-bottom:2px">${tn}</div><div class="q">${qtx(q.q)}</div>`;
+ let h=`<div class="tag">${SS.meta&&SS.meta.mode=='wrong'?'<span class="prc" style="background:#f3c9c4;color:#7a2e26">오답노트</span> ':SS.meta&&SS.meta.practice?'<span class="prc">다시 풀기</span> ':''}${esc(ttl())} · ${esc(seg.label)}${SS.segs.length>1?` <span class="sgn">${SS.si+1}/${SS.segs.length}</span>`:''}</div><div class="qpr"><b>${SS.i+1}</b><span>/ ${N}</span><div class="bar"><i style="width:${(SS.i+1)/N*100}%"></i></div></div><div class="card"><div class="tag" style="margin-bottom:2px">${tn}</div><div class="q">${qtx(q.q)}</div>`;
  if(q.t=='mc')pmOf(q).forEach((k,pos)=>{h+=`<button class="opt${r.v===k?' sel':''}" onclick="pk(${k})"><span class="on">${pos+1}</span>${esc(q.o[k])}</button>`});
  else if(q.t=='ox')h+=`<div class="oxr">${[true,false].map(k=>`<button class="opt ox${r.v===k?' sel':''}" onclick="pk(${k})">${k?'O':'X'}</button>`).join('')}</div>`;
  else if(q.t=='sh')h+=`<input type="text" id="in" placeholder="빈칸에 들어갈 말" value="${esc(r.v||'')}" autocomplete="off" onkeydown="if(event.key=='Enter'){event.preventDefault();${SS.i<N-1?'nav(1)':'submitSeg()'}}">`;
@@ -420,7 +454,8 @@ function esCheck(es){let h=`<h2>서술형 채점</h2><p class="tag">모범 답�
  es.forEach(q=>{const r=SS.resp[q.id];h+=`<div class="card"><div class="q" style="font-weight:600">${qtx(q.q)}</div><div class="mut" style="font-size:13px">내 답안</div><div class="mya">${esc(r.v)}</div><div class="fb" style="border-color:var(--ac)"><b>모범 답안</b>\n${esc(q.m)}</div>${q.pts.map((p,k)=>`<label class="ck"><input type="checkbox" onchange="SS.resp['${q.id}'].chk[${k}]=this.checked"> ${esc(p)}</label>`).join('')}</div>`});
  h+=`<div class="row"><button class="b" onclick="esDone()">채점 완료</button></div>`;SS.esq=es.map(q=>q.id);show(h)}
 function esDone(){(SS.esq||[]).forEach(id=>{const q=findQ(id),r=SS.resp[id],c=r.chk.filter(Boolean).length;r.ok=c>=Math.ceil(q.pts.length*0.6);r.done=true});SS.esq=null;finishSeg()}
-async function finishSeg(){SS.qs.forEach(q=>{const r=SS.resp[q.id];if(r&&r.done)R[q.id]={ok:r.ok?1:0}});save();SS.graded=SS.graded.concat(SS.qs);
+const recOK=id=>!(SS.meta&&SS.meta.practice)&&!(SS.base&&SS.base[id]);
+async function finishSeg(){SS.qs.forEach(q=>{const r=SS.resp[q.id];if(!(r&&r.done))return;if(SS.meta&&SS.meta.mode=='wrong'){if(r.ok){R._fx=R._fx||{};R._fx[q.id]=1}}else if(recOK(q.id))R[q.id]={ok:r.ok?1:0}});save();SS.graded=SS.graded.concat(SS.qs);
  const nx=SS.segs[SS.si+1];
  if(nx&&(await askBox(`다음 ${SS.meta.kind}도 풀까요?`,`<b>${esc(nx.label)}</b><br>${nx.qs.length}문제를 이어서 풀 수 있어요.<br>취소하면 지금까지 푼 결과를 보여 드려요.`,'다음'))){SS.si++;SS.qs=nx.qs;SS.i=0;QS0=Date.now();return quiz()}
  result()}
@@ -438,7 +473,7 @@ function result(){QS0=0;const rs=(SS.graded||[]).filter(q=>SS.resp[q.id]&&SS.res
  const c=rs.filter(q=>SS.resp[q.id].ok).length,wr=rs.filter(q=>!SS.resp[q.id].ok),labs=SS.segs.slice(0,SS.si+1).map(x=>x.label);
  const tg={};rs.forEach(q=>{const t=tg[q.g]=tg[q.g]||{n:0,c:0};t.n++;if(SS.resp[q.id].ok)t.c++});
  const weak=Object.keys(tg).filter(k=>tg[k].c<tg[k].n).sort((a,b)=>tg[a].c/tg[a].n-tg[b].c/tg[b].n),pc=Math.round(c/rs.length*100);
- let h=`<div class="card"><div class="tag">${esc(ttl())} · ${labs.map(esc).join(', ')}</div><h2 style="margin:4px 0">결과</h2><div class="big">${c} / ${rs.length}</div><div class="mut">정답률 ${pc}%</div><div class="bar" style="height:9px;margin-top:10px"><i data-w="${pc}" style="width:0"></i></div></div>`;
+ let h=`<div class="card"><div class="tag">${esc(ttl())} · ${labs.map(esc).join(', ')}</div><h2 style="margin:4px 0">결과</h2><div class="big">${c} / ${rs.length}</div><div class="mut">정답률 ${pc}%</div>${SS.meta.mode=='wrong'?`<div class="prn" style="background:#e3f0e6;color:#2f6a43">맞힌 ${c}문제는 오답 완료로 표시됐어요. 진행 상황(통계)에는 반영되지 않아요.</div>`:''}${SS.meta.mode!='wrong'&&(SS.meta.practice||rs.every(q=>SS.base&&SS.base[q.id]))?'<div class="prn">다시 푼 결과라서 진행 상황(통계)에는 반영되지 않았어요.</div>':rs.some(q=>SS.base&&SS.base[q.id])?'<div class="prn">전에 풀었던 문제는 처음 결과가 그대로 유지돼요.</div>':''}<div class="bar" style="height:9px;margin-top:10px"><i data-w="${pc}" style="width:0"></i></div></div>`;
  h+=`<h3 class="sec">영역별 정답률</h3><div class="card">${Object.keys(tg).map(k=>{const t=tg[k],r=Math.round(t.c/t.n*100);return `<div class="arw"><div class="al"><span>${esc(k)}</span><b>${t.c}/${t.n}</b></div><div class="bar"><i data-w="${r}" style="width:0"></i></div></div>`}).join('')}</div>`;
  h+=`<h3 class="sec">보완해야 할 약점</h3>`+(weak.length?weak.map(k=>`<div class="card"><b class="no-t">${esc(k)}</b> <span class="mut">(${tg[k].n-tg[k].c}문제 틀림)</span>${TIPS[k]?`<div class="mut" style="margin-top:6px;font-size:14px">${esc(TIPS[k])}</div>`:''}</div>`).join(''):'<div class="card">약점이 없어요. 이 범위는 완벽해요! 🎉</div>');
  if(wr.length){h+=`<h3 class="sec">틀린 문제 해설</h3>`;wr.forEach(q=>{const r=SS.resp[q.id];
@@ -446,8 +481,8 @@ function result(){QS0=0;const rs=(SS.graded||[]).filter(q=>SS.resp[q.id]&&SS.res
   if(q.t=='es'){const miss=q.pts.filter((p,k)=>!(r.chk||[])[k]);h+=`<div class="fb no">빠진 요소:\n${miss.map(x=>'· '+esc(x)).join('\n')}</div>`}else h+=`<div class="fb ok">${exT(q)}</div>`;
   if(q.t=='sh'&&!r.blank)h+=`<button class="lk" style="margin-top:6px" onclick="ovr2('${q.id}')">내 답도 맞는 표현이에요 (정답 처리)</button>`;h+=`</div>`})}
  h+=`<div class="row">${wr.length?`<button class="b" onclick="retryWrong()">틀린 문제만 다시</button>`:''}<button class="b g" onclick="goBack()">${esc(SS.meta.backLabel)}</button></div><div class="row"><button class="b g" onclick="subjects()">과목 선택으로</button></div>`;show(h);animBars()}
-function ovr2(id){SS.resp[id].ok=true;R[id]={ok:1};save();result()}
-function retryWrong(){const wr=(SS.graded||[]).filter(q=>SS.resp[q.id]&&!SS.resp[q.id].ok);startRun(SS.meta.subj,[{label:'틀린 문제 다시 풀기',qs:wr}],{title:SS.meta.title})}
+function ovr2(id){SS.resp[id].ok=true;if(SS.meta&&SS.meta.mode=='wrong'){R._fx=R._fx||{};R._fx[id]=1;save()}else if(recOK(id)){R[id]={ok:1};save()}result()}
+function retryWrong(){const wr=(SS.graded||[]).filter(q=>SS.resp[q.id]&&!SS.resp[q.id].ok);startRun(SS.meta.subj,[{label:'틀린 문제 다시 풀기',qs:wr}],{title:SS.meta.title,mode:SS.meta.mode=='wrong'||wr.every(q=>R[q.id])?'wrong':undefined,practice:true,wp:SS.meta.wp})}
 
 const fd=t=>new Date(t).toLocaleString('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'});
 
@@ -457,7 +492,7 @@ async function adminIn(){if(!DB)return soonMsg('서버에 연결되지 않았어
 
 // ---------- 공부 시간 ----------
 const dkey=(d=new Date())=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
-function mergeR(a,b){const o=Object.assign({},a,b),t={},A=a._t||{},B=b._t||{};for(const k in A)t[k]=A[k];for(const k in B)t[k]=Math.max(t[k]||0,B[k]);o._t=t;return o}
+function mergeR(a,b){const o=Object.assign({},a,b);o._fx=Object.assign({},a._fx||{},b._fx||{});const t={},A=a._t||{},B=b._t||{};for(const k in A)t[k]=A[k];for(const k in B)t[k]=Math.max(t[k]||0,B[k]);o._t=t;return o}
 function fmtT(sec,short){sec=Math.round(sec||0);if(sec<60)return sec>0?'1분 미만':'0분';const h=Math.floor(sec/3600),m=Math.round(sec%3600/60);return h?(short?h+'시간'+(m?'<br>'+m+'분':''):h+'시간'+(m?' '+m+'분':'')):m+'분'}
 let QID=null,QS0=0;
 document.addEventListener('visibilitychange',()=>{if(document.hidden){if(SS&&document.getElementById('in')!==undefined&&QID)tick();QS0=0}else if(QID&&SS){const r=SS.resp[QID];if(!(r&&(r.done||r.rev)))QS0=Date.now()}});
@@ -519,14 +554,14 @@ function parentOf(r){const [k,...rest]=r.split('/'),v=rest.join('/');
  if(!r)return null;if(k=='subjects')return null;
  if(k=='menu')return 'pick';if(k=='pick'||k=='subj'||k=='stats'||k=='profile'&&!v||k=='admin'&&!v)return 'subjects';
  if(k=='profile')return 'profile';if(k=='admin'){if(/^t\/./.test(v))return 'admin/t';if(/^p\/./.test(v))return 'admin/p';return 'admin'}if(k=='fb')return v=='1'?'subjects':'';
- if(k=='quiz'||k=='result'){if(SS&&SS.meta&&SS.meta.subj)return 'subj/'+SS.meta.subj;if(SS&&SS.pid&&!SS.meta)return 'menu/'+SS.pid;return 'subjects'}
+ if(k=='wrong')return 'subj/'+v;if(k=='quiz'||k=='result'){if(SS&&SS.meta&&SS.meta.wp)return 'wrong/'+SS.meta.subj;if(SS&&SS.meta&&SS.meta.subj)return 'subj/'+SS.meta.subj;if(SS&&SS.pid&&!SS.meta)return 'menu/'+SS.pid;return 'subjects'}
  return 'subjects'}
 const curR=()=>{const h=location.hash||'';if(!h.startsWith('#/'))return '';try{return decodeURIComponent(h.slice(2))}catch(e){return ''}};
 function findQ(id){for(const p of PASS)for(const q of p.Q)if(q.id==id)return q;for(const n in CUR)for(const U of CUR[n])for(const M of U.m)for(const q of M.q)if(q.id==id)return q;return null}
-function saveSS(){try{if(SS&&SS.segs){keepSafe();sessionStorage.setItem(KEY+'ss',JSON.stringify({meta:SS.meta,si:SS.si,i:SS.i,resp:SS.resp,segs:SS.segs.map(x=>({label:x.label,ids:x.qs.map(q=>q.id)})),gr:(SS.graded||[]).map(q=>q.id),perm:SS.perm||{}}))}}catch(e){}}
+function saveSS(){try{if(SS&&SS.segs){keepSafe();sessionStorage.setItem(KEY+'ss',JSON.stringify({meta:SS.meta,si:SS.si,i:SS.i,resp:SS.resp,segs:SS.segs.map(x=>({label:x.label,ids:x.qs.map(q=>q.id)})),gr:(SS.graded||[]).map(q=>q.id),perm:SS.perm||{},base:SS.base||{}}))}}catch(e){}}
 function keepSafe(){try{const q=SS.qs[SS.i],e=document.getElementById('in');if(e&&q&&(q.t=='sh'||q.t=='es')&&!(SS.resp[q.id]&&SS.resp[q.id].done))SS.resp[q.id]={v:e.value}}catch(e){}}
 window.addEventListener('pagehide',saveSS);
-function loadSS(){try{const o=JSON.parse(sessionStorage.getItem(KEY+'ss'));if(!o||!o.segs)return false;const segs=o.segs.map(x=>({label:x.label,qs:x.ids.map(findQ).filter(Boolean)})).filter(x=>x.qs.length);if(!segs.length)return false;const si=Math.min(o.si,segs.length-1);SS={pid:'run',cat:'all',meta:o.meta,segs,si,qs:segs[si].qs,i:Math.min(o.i,segs[si].qs.length-1),resp:o.resp||{},graded:(o.gr||[]).map(findQ).filter(Boolean),perm:o.perm||{}};if(!o.perm)segs.forEach(x=>Object.assign(SS.perm,mkPerm(x.qs)));return true}catch(e){return false}}
+function loadSS(){try{const o=JSON.parse(sessionStorage.getItem(KEY+'ss'));if(!o||!o.segs)return false;const segs=o.segs.map(x=>({label:x.label,qs:x.ids.map(findQ).filter(Boolean)})).filter(x=>x.qs.length);if(!segs.length)return false;const si=Math.min(o.si,segs.length-1);SS={pid:'run',cat:'all',meta:o.meta,segs,si,qs:segs[si].qs,i:Math.min(o.i,segs[si].qs.length-1),resp:o.resp||{},graded:(o.gr||[]).map(findQ).filter(Boolean),perm:o.perm||{},base:o.base||{}};if(!o.perm)segs.forEach(x=>Object.assign(SS.perm,mkPerm(x.qs)));return true}catch(e){return false}}
 function go2(r){
  const [k,...rest]=r.split('/'),v=rest.join('/');
  if(!r)return home();
@@ -536,6 +571,7 @@ function go2(r){
  if(k=='menu'&&v)return menu(v);
  if(k=='subj'&&v&&SUBJ.flat().some(x=>x[0]==v))return subj(v);
  if(k=='stats')return allStats();
+ if(k=='wrong'&&v&&CUR[v])return wrongPage(v);
  if(k=='profile'){if(v=='cal')return cal();if(v=='nick')return pfNick();if(v=='pin')return pfPin();return profile()}
  if(k=='fb')return fbForm(+v||0);
  if(k=='admin'&&OWNER){const [a,...b]=v.split('/'),w=b.join('/');if(a=='t'&&w)return fbType(w);if(a=='t')return fbTypes();if(a=='p'&&w)return fbPerson(w);if(a=='p')return fbPeople();if(a=='u'&&w)return adminOne(w);return admin()}
@@ -547,7 +583,7 @@ const H=(f,mk)=>function(...a){setR(mk(...a));return f.apply(this,a)};
 home=H(home,()=>'');subjects=H(subjects,()=>'subjects');pick=H(pick,()=>'pick');menu=H(menu,id=>'menu/'+id);
 subj=H(subj,n=>'subj/'+n);socPage=H(socPage,n=>'subj/'+n);allStats=H(allStats,()=>'stats');fbForm=H(fbForm,f=>'fb/'+(f||0));
 admin=H(admin,()=>'admin');adminOne=H(adminOne,n=>'admin/u/'+n);fbTypes=H(fbTypes,()=>'admin/t');fbType=H(fbType,k=>'admin/t/'+k);fbPeople=H(fbPeople,()=>'admin/p');fbPerson=H(fbPerson,n=>'admin/p/'+n);
-profile=H(profile,()=>'profile');cal=H(cal,()=>'profile/cal');pfNick=H(pfNick,()=>'profile/nick');pfPin=H(pfPin,()=>'profile/pin');
+wrongPage=H(wrongPage,n=>'wrong/'+n);profile=H(profile,()=>'profile');cal=H(cal,()=>'profile/cal');pfNick=H(pfNick,()=>'profile/nick');pfPin=H(pfPin,()=>'profile/pin');
 quiz=(f=>function(){setR('quiz');const x=f.apply(this,arguments);saveSS();return x})(quiz);
 result=(f=>function(){REPL=true;setR('result');const x=f.apply(this,arguments);saveSS();return x})(result);
 // 아이폰 홈 화면 앱: 왼쪽 가장자리에서 오른쪽으로 밀면 뒤로 가기
