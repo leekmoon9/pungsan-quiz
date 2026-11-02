@@ -76,6 +76,16 @@ body:has(.hero) #rf{display:none}
 .sd{display:none}
 @media (min-width:860px) and (min-aspect-ratio:1/1){.sd{display:block;position:fixed;top:0;bottom:0;width:calc((100vw - 640px)/2);z-index:0;pointer-events:none;overflow:hidden}.sdl{left:0}.sdr{right:0}.sd .st{max-width:none}}
 @media (min-width:860px) and (max-width:1260px) and (min-aspect-ratio:1/1){.sd .pl{font-size:12px!important;padding:5px 10px}.sd img.st{width:46px!important}}
+.sbt{font-size:14px;font-weight:700;color:var(--mut);margin:16px 2px 6px}
+.evh{display:flex;align-items:center;gap:8px}.evh b{font-size:20px}.evd{width:12px;height:12px;border-radius:50%}
+.seg{display:flex;height:12px;border-radius:999px;overflow:hidden;gap:2px;background:var(--bd)}.seg i{display:block;height:100%}
+.lgd{display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:10px;font-size:12.5px;color:var(--mut)}.lgd i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:4px}
+.chp{display:inline-block;padding:2px 9px;border-radius:999px;font-size:12px;font-weight:700;color:#2a2620;white-space:nowrap}
+.fbc{padding:12px 14px}.fbh{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.fbh .mut{margin-left:auto;font-size:12px}.fbt{white-space:pre-line;margin-top:8px;font-size:15px}
+.arw{margin:4px 0 10px}.arw:last-child{margin-bottom:0}.al{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.arw .bar,.tyc .bar,.card>.bar{height:8px}.arw .bar i,.tyc .bar i,.card>.bar i{border-radius:4px;transition:width 1.05s cubic-bezier(.3,1.7,.5,1)}
+.ppl{display:grid;grid-template-columns:1fr 1fr;gap:8px}.ppl button{padding:14px 10px;border:none;border-radius:14px;background:var(--card);color:var(--tx);font:inherit;font-weight:700;box-shadow:0 2px 10px rgba(90,70,40,.12);cursor:pointer;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.strip{display:grid;grid-template-columns:repeat(14,1fr);gap:3px}.sd2{display:flex;flex-direction:column;align-items:center;gap:3px}.sd2 i{display:block;width:100%;height:22px;border-radius:5px}.sd2 small{font-size:10px;color:var(--mut)}
 h3.sec{font-size:19px;font-weight:600;margin:20px 0 8px}
 .fbw{min-height:calc(100vh - 60px);min-height:calc(100svh - 60px);display:flex;flex-direction:column;justify-content:center;text-align:center}
 .fbw .tag{max-width:420px;margin:0 auto 6px}
@@ -302,11 +312,69 @@ function fbForm(f){FBF=f;show(`<div class="fbw"><h2>의견 남기기</h2><p clas
 function soonMsg(m){const o=document.getElementById('toast');if(o)o.remove();const t=document.createElement('div');t.id='toast';t.className='toast';t.textContent=m;document.body.appendChild(t);setTimeout(()=>t.remove(),1850)}
 async function fbSend(){const t=document.getElementById('fbt').value.trim(),b=document.getElementById('fbs');if(!t)return;if(!DB||CANW===false){const ok=()=>soonMsg('복사했어요. 카톡으로 보내 주세요.');try{navigator.clipboard.writeText(t).then(ok,()=>{document.getElementById('fbt').select();soonMsg('길게 눌러서 복사해 주세요.')})}catch(e){document.getElementById('fbt').select();soonMsg('길게 눌러서 복사해 주세요.')}return}b.disabled=true;b.textContent='보내는 중…';
  try{const {error}=await DB.from('feedback').insert({nick:(NICK||lastNick()||'익명').slice(0,12),body:t});if(error)throw error;soonMsg('의견이 전달됐어요. 고마워요!');FBF?subjects():home()}catch(e){b.disabled=false;b.textContent='보내기';soonMsg('보내지 못했어요. 다시 시도해 주세요.')}}
-async function fbAdmin(){show('<h2>의견함</h2><p class="mut">불러오는 중…</p>');let L=[];
- try{const {data,error}=await DB.rpc('admin_feedback',{p_key:AK()});if(error||!data)throw error;L=data.map(x=>({nick:x.nick,text:x.body,t:Date.parse(x.created_at)}))}catch(e){return show('<h2>의견함</h2><p>불러오지 못했어요.</p><div class="row"><button class="b g" onclick="admin()">관리자 통계로</button></div>')}
- let h=`<h2>의견함</h2><p class="tag">받은 의견 ${L.length}개 · 최신순</p>`;if(!L.length)h+='<div class="card mut">아직 받은 의견이 없어요.</div>';
- L.forEach(x=>{h+=`<div class="card"><div style="display:flex;justify-content:space-between;gap:8px"><b>${esc(x.nick||'익명')}</b><span class="mut">${fd(x.t)}</span></div><div style="white-space:pre-line;margin-top:6px">${esc(x.text||'')}</div></div>`});
- h+='<div class="row"><button class="b g" onclick="fbAdmin()">새로고침</button><button class="b g" onclick="admin()">관리자 통계로</button></div>';show(h)}
+
+// ================= 관리자 =================
+let FB=[];
+const FBT=[['bug','사이트 오류·버그','#e57c72',4],['qerr','문제·정답 오류','#f0a35e',3],['ui','디자인·사용 불편','#f1cf6b',2],['req','과목·기능 추가 요청','#8fb8ec',1],['good','칭찬·응원','#9bd3ae',0],['etc','기타','#c9c2b3',0]];
+const FBR=[['qerr',/정답|오답|해설|답이|답을|채점|틀렸|틀린|오타|선지|선택지|번\s?문제|문제\s?(가|에|오류|이상)/],
+ ['bug',/안\s?(돼|되|됨|열|나와|나오|보여|들어가|눌)|오류|에러|버그|멈|튕|깨져|로딩|렉|느려|작동|먹통|저장|사라졌|초기화|로그인/],
+ ['ui',/디자인|색|글씨|글자|폰트|버튼|화면|불편|크기|작아|커서|안\s?보|보기\s?힘|레이아웃|배치|스크롤|다크|눈/],
+ ['req',/추가|열어|만들어|생겼으면|있었으면|원해|해\s?주세요|해줘|늘려|더\s?많|과목|단원|기능|넣어/],
+ ['good',/좋|최고|감사|고마|도움|짱|굿|편해|유용|재밌|재미|👍|❤|ㄱㅅ|잘\s?쓰/]];
+const fbCls=t=>{for(const [k,r] of FBR)if(r.test(t||''))return k;return 'etc'};
+const FT=k=>FBT.find(x=>x[0]==k);
+const allQ=()=>[].concat(...PASS.map(p=>p.Q)).concat(...SOCN.map(n=>socQ(n)));
+function achX(n,X){const o=SUBJ.flat().find(x=>x[0]==n)[2];const qs=isSoc(n)?socQ(n):o?[].concat(...PASS.map(p=>p.Q)):[1,2,3,4].reduce((a,u)=>a.concat(UNITQ[n+u]||[]),[]);return qs.length?Math.round(st(qs,X).c/qs.length*100):0}
+async function admLoad(force){if(!force&&ADM.length+FB.length&&admLoad.ok)return true;
+ try{const [a,b]=await Promise.all([DB.rpc('admin_players',{p_key:AK()}),DB.rpc('admin_feedback',{p_key:AK()})]);if(a.error||!a.data)throw 0;
+  ADM=a.data.map(x=>({nick:x.nick,R:x.data||{},t:Date.parse(x.updated_at)}));FB=(b.data||[]).map(x=>({nick:x.nick||'익명',text:x.body,t:Date.parse(x.created_at),k:fbCls(x.body)}));admLoad.ok=true;return true}catch(e){return false}}
+const chip=k=>{const t=FT(k);return `<span class="chp" style="background:${t[2]}">${t[1]}</span>`};
+const fbCard=x=>`<div class="card fbc"><div class="fbh">${chip(x.k)}<b>${esc(x.nick)}</b><span class="mut">${fd(x.t)}</span></div><div class="fbt">${esc(x.text||'')}</div></div>`;
+async function admin(force){if(!(await admLoad(force)))return show('<h2>관리자</h2><p>불러오지 못했어요.</p><div class="row"><button class="b g" onclick="subjects()">뒤로</button></div>');
+ let h=`<h2>관리자</h2><p class="tag">참여자 ${ADM.length}명 · 의견 ${FB.length}개 · 나만 볼 수 있는 화면이에요.</p>`;
+ // ---- 의견 보기 ----
+ const now=Date.now(),rec=FB.filter(x=>now-x.t<14*864e5),base=rec.length?rec:FB,cnt={};FBT.forEach(t=>cnt[t[0]]=0);base.forEach(x=>cnt[x.k]++);
+ const urg=cnt.bug+cnt.qerr,imp=cnt.ui+cnt.req;
+ const [sl,sc,sd]=!base.length?['의견 없음','#c9c2b3','아직 들어온 의견이 없어요.']:urg>=3?['수정 시급','#e05a4f',`오류 신고가 ${urg}건 있어요. 먼저 확인해 주세요.`]:urg>=1?['수정 의견 있음','#f0a35e',`오류 신고 ${urg}건을 확인해 보세요.`]:imp>=3?['개선 요청 많음','#e6b93f',`디자인·추가 요청이 ${imp}건 모였어요.`]:['양호','#5fb27c','큰 문제 없이 잘 쓰이고 있어요.'];
+ h+=`<h3 class="sec">의견 보기</h3><div class="card"><div class="evh"><span class="evd" style="background:${sc}"></span><b style="color:${sc}">${sl}</b><span class="mut" style="margin-left:auto;font-size:13px">${rec.length?'최근 2주':'전체'} ${base.length}건</span></div><div class="mut" style="font-size:14px;margin:4px 0 10px">${sd}</div>
+  <div class="seg">${base.length?FBT.filter(t=>cnt[t[0]]).map(t=>`<i style="flex:${cnt[t[0]]};background:${t[2]}"></i>`).join(''):'<i style="flex:1;background:var(--bd)"></i>'}</div>
+  <div class="lgd">${FBT.filter(t=>cnt[t[0]]).map(t=>`<span><i style="background:${t[2]}"></i>${t[1]} ${cnt[t[0]]}</span>`).join('')}</div></div>`;
+ const top=FB.filter(x=>FT(x.k)[3]>=2).sort((a,b)=>FT(b.k)[3]-FT(a.k)[3]||b.t-a.t).slice(0,3);
+ h+=`<div class="sbt">가장 시급한 것</div>`+(top.length?top.map(fbCard).join(''):'<div class="card mut">지금 급하게 고칠 의견은 없어요.</div>');
+ h+=`<div class="qk"><button onclick="fbTypes()">유형별 보기</button><button onclick="fbPeople()">개인별 보기</button></div>`;
+ // ---- 오답 분석 ----
+ const Q=allQ(),tg={};Q.forEach(q=>ADM.forEach(r=>{const x=(r.R||{})[q.id];if(x){const t=tg[q.g]=tg[q.g]||{n:0,w:0};t.n++;if(!x.ok)t.w++}}));
+ const ar=Object.keys(tg).filter(k=>tg[k].w).sort((a,b)=>tg[b].w/tg[b].n-tg[a].w/tg[a].n||tg[b].w-tg[a].w).slice(0,6);
+ h+=`<h3 class="sec">오답 분석</h3><div class="sbt">많이 틀리는 영역</div>`;
+ h+=ar.length?`<div class="card">${ar.map(k=>{const r=Math.round(tg[k].w/tg[k].n*100);return `<div class="arw"><div class="al"><span>${esc(k)}</span><b class="no-t">${r}%</b></div><div class="bar"><i data-w="${r}" style="width:0;background:#e9978f"></i></div><div class="mut" style="font-size:12px">${tg[k].w}/${tg[k].n}번 틀림</div></div>`}).join('')}</div>`:'<div class="card mut">아직 틀린 기록이 없어요.</div>';
+ const ms=Q.map(q=>{let n=0,w=0;ADM.forEach(r=>{const x=(r.R||{})[q.id];if(x){n++;if(!x.ok)w++}});return{q,n,w}}).filter(x=>x.w).sort((a,b)=>b.w/b.n-a.w/a.n||b.w-a.w).slice(0,5);
+ if(ms.length){h+=`<div class="sbt">많이 틀린 문제</div>`;ms.forEach(x=>{h+=`<div class="card"><div class="tag">${esc(x.q.g||'')}</div><div style="white-space:pre-line;font-size:15px">${esc(x.q.q.slice(0,90))}${x.q.q.length>90?'…':''}</div><div class="no-t" style="margin-top:4px">오답률 ${Math.round(x.w/x.n*100)}% <span class="mut">(${x.w}/${x.n}명)</span></div></div>`})}
+ // ---- 개인별 통계 ----
+ h+=`<h3 class="sec">개인별 통계</h3>`+(ADM.length?`<div class="ppl">${ADM.map(r=>`<button onclick="adminOne(decodeURIComponent('${encodeURIComponent(r.nick)}'))">${esc(r.nick)}</button>`).join('')}</div>`:'<div class="card mut">아직 참여한 사람이 없어요.</div>');
+ h+=`<div class="row" style="margin-top:16px"><button class="b g" onclick="admin(1)">새로고침</button><button class="b g" onclick="subjects()">나가기</button></div>`;
+ show(h);animBars()}
+async function fbTypes(){if(!(await admLoad()))return admin();const cnt={};FBT.forEach(t=>cnt[t[0]]=0);FB.forEach(x=>cnt[x.k]++);const mx=Math.max(1,...Object.values(cnt));
+ let h=`<h2>유형별 의견</h2><p class="tag">전체 ${FB.length}개 · 유형을 누르면 의견을 볼 수 있어요.</p>`;
+ FBT.forEach(t=>{h+=`<div class="card pc tyc" onclick="fbType('${t[0]}')"><div class="al"><span>${chip(t[0])}</span><b>${cnt[t[0]]}개</b></div><div class="bar"><i data-w="${Math.round(cnt[t[0]]/mx*100)}" style="width:0;background:${t[2]}"></i></div></div>`});
+ h+=`<div class="row"><button class="b g" onclick="admin()">관리자로</button></div>`;show(h);animBars()}
+async function fbType(k){if(!(await admLoad()))return admin();const t=FT(k)||FBT[5],L=FB.filter(x=>x.k==t[0]);
+ show(`<h2>${t[1]}</h2><p class="tag">${L.length}개 · 최신순</p>`+(L.length?L.map(fbCard).join(''):'<div class="card mut">이 유형의 의견은 없어요.</div>')+`<div class="row"><button class="b g" onclick="fbTypes()">유형별로</button></div>`)}
+async function fbPeople(){if(!(await admLoad()))return admin();const g={};FB.forEach(x=>{(g[x.nick]=g[x.nick]||[]).push(x)});const ns=Object.keys(g).sort((a,b)=>g[b].length-g[a].length);
+ let h=`<h2>개인별 의견</h2><p class="tag">${ns.length}명이 의견을 남겼어요.</p>`;
+ h+=ns.length?ns.map(n=>`<div class="card pc" onclick="fbPerson(decodeURIComponent('${encodeURIComponent(n)}'))"><div class="al"><b>${esc(n)}</b><span class="mut">${g[n].length}개 · 최근 ${fd(g[n][0].t)}</span></div><div style="margin-top:6px;display:flex;gap:4px;flex-wrap:wrap">${[...new Set(g[n].map(x=>x.k))].map(chip).join('')}</div></div>`).join(''):'<div class="card mut">아직 의견이 없어요.</div>';
+ h+=`<div class="row"><button class="b g" onclick="admin()">관리자로</button></div>`;show(h)}
+async function fbPerson(n){if(!(await admLoad()))return admin();const L=FB.filter(x=>x.nick==n);
+ show(`<h2>${esc(n)}</h2><p class="tag">의견 ${L.length}개 · 최신순</p>`+L.map(fbCard).join('')+`<div class="row"><button class="b g" onclick="fbPeople()">개인별로</button></div>`)}
+async function adminOne(n){if(!(await admLoad()))return admin();const r=ADM.find(x=>x.nick==n);if(!r)return admin();const X=r.R||{},TT=X._t||{},TD=Object.keys(TT).filter(k=>TT[k]>=1),tot=TD.reduce((a,k)=>a+TT[k],0);
+ let h=`<h2>${esc(r.nick)}</h2><p class="tag">최근 활동 ${fd(r.t)}</p>`;
+ h+=`<div class="pg2"><div class="card st2"><span>총 공부 시간</span><b>${fmtT(tot)}</b><small>오늘 ${fmtT(TT[dkey()]||0)}</small></div><div class="card st2"><span>공부한 날</span><b>${TD.length}일</b><small>${TD.length?'마지막 '+TD.sort().slice(-1)[0].slice(5).replace('-','/'):'기록 없음'}</small></div></div>`;
+ let strip='';for(let i=13;i>=0;i--){const d=new Date(Date.now()-i*864e5),k=dkey(d),v=TT[k]||0,a=v>=1?Math.min(1,.25+v/3600):0;strip+=`<div class="sd2" title="${k}"><i style="background:${v>=1?`rgba(91,127,168,${a})`:'var(--bd)'}"></i><small>${d.getDate()}</small></div>`}
+ h+=`<div class="card"><div class="mut" style="font-size:13px;margin-bottom:6px">최근 2주 공부</div><div class="strip">${strip}</div></div>`;
+ h+=`<h3 class="sec">과목별 성취율</h3><div class="card">${SUBJ.flat().map(([n,c,o])=>{const a=achX(n,X);return `<div class="arw"><div class="al"><span>${n.split('|').join(' ')}</span><b>${a}%</b></div><div class="bar"><i data-w="${a}" style="width:0;background:${SC[c]}"></i></div></div>`}).join('')}</div>`;
+ const tg={};allQ().forEach(q=>{const x=X[q.id];if(x){const t=tg[q.g]=tg[q.g]||{n:0,w:0};t.n++;if(!x.ok)t.w++}});const wk=Object.keys(tg).filter(k=>tg[k].w).sort((a,b)=>tg[b].w/tg[b].n-tg[a].w/tg[a].n);
+ h+=`<h3 class="sec">오답 유형 분석</h3>`+(wk.length?wk.map(k=>{const rr=Math.round(tg[k].w/tg[k].n*100);return `<div class="card"><div class="al"><b>${esc(k)}</b><span class="no-t">${tg[k].w}/${tg[k].n} 틀림</span></div><div class="bar"><i data-w="${rr}" style="width:0;background:#e9978f"></i></div>${TIPS[k]?`<div class="mut" style="font-size:13px;margin-top:6px">${esc(TIPS[k])}</div>`:''}</div>`}).join(''):`<div class="card mut">${Object.keys(tg).length?'틀린 영역이 없어요.':'아직 푼 문제가 없어요.'}</div>`);
+ h+=`<div class="row"><button class="b g" onclick="admin()">관리자로</button></div>`;show(h);animBars()}
+
 const UNITQ={};
 const SOCN=['정치','경제','동아시아|역사기행','현대사회와|윤리','한국지리|탐구'];
 const isSoc=n=>SOCN.includes(n);
@@ -403,25 +471,11 @@ function result(){const rs=SS.qs.filter(q=>SS.resp[q.id]&&SS.resp[q.id].done),c=
    if(q.t=='es'){const miss=q.pts.filter((p,k)=>!r.chk[k]);h+=`<div class="fb no">빠진 요소:\n${miss.map(esc).map(x=>'· '+x).join('\n')}</div>`}else h+=`<div class="fb ok">${esc(q.e)}</div>`;h+=`</div>`})}
  h+=`<div class="row">${wr.length?`<button class="b" onclick="start(SS.pid,SS.cat,SS.qs.filter(q=>SS.resp[q.id]&&!SS.resp[q.id].ok),SS.meta)">틀린 문제만 다시</button>`:''}<button class="b g" onclick="goBack()">${SS.meta?SS.meta.backLabel:'지문 메뉴로'}</button></div><div class="row"><button class="b g" onclick="${SS.meta?'subjects()':'pick()'}">${SS.meta?'과목 선택으로':'지문 선택으로'}</button></div>`;show(h)}
 const fd=t=>new Date(t).toLocaleString('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'});
-async function admin(){show('<h2>관리자 통계</h2><p class="mut">불러오는 중…</p>');
- try{const {data,error}=await DB.rpc('admin_players',{p_key:AK()});if(error||!data)throw error;ADM=data.map(x=>({nick:x.nick,R:x.data||{},t:Date.parse(x.updated_at)}))}catch(e){return show('<h2>관리자 통계</h2><p>불러오지 못했어요.</p><div class="row"><button class="b g" onclick="subjects()">뒤로</button></div>')}
- let h=`<h2>관리자 통계</h2><p class="tag">참여자 ${ADM.length}명 · 나만 볼 수 있는 화면이에요.</p><div class="row" style="margin-bottom:6px"><button class="b" onclick="fbAdmin()">의견함 보기</button></div>`;
- if(!ADM.length)h+='<div class="card">아직 푼 사람이 없어요.</div>';
- ADM.forEach((r,i)=>{const all=[].concat(...PASS.map(p=>p.Q)),s=st(all,r.R||{});h+=`<div class="card pc" onclick="adminOne(${i})"><b>${esc(r.nick)}</b><div class="mut">${s.n}문제 풀이 · 정답률 ${s.r==null?'-':s.r+'%'} · 최근 ${fd(r.t)}</div><div class="bar"><i style="width:${s.r||0}%"></i></div></div>`});
- const qs=[].concat(...PASS.map(p=>p.Q)),ms=qs.map(q=>{let n=0,w=0;ADM.forEach(r=>{const x=(r.R||{})[q.id];if(x){n++;if(!x.ok)w++}});return{q,n,w}}).filter(x=>x.n&&x.w).sort((a,b)=>b.w/b.n-a.w/a.n||b.n-a.n).slice(0,8);
- if(ms.length){h+='<h3>많이 틀린 문제 (전체 참여자)</h3>';ms.forEach(x=>{h+=`<div class="card"><div class="tag">${P(x.q.id.replace(/\d+$/,'')).name} · ${x.q.g} · ${CATS.find(c=>c[0]==x.q.cat)[1]}</div><div style="white-space:pre-line">${esc(x.q.q.slice(0,90))}${x.q.q.length>90?'…':''}</div><div class="no-t">오답률 ${Math.round(x.w/x.n*100)}% <span class="mut">(${x.w}/${x.n}명)</span></div></div>`})}
- h+='<div class="row"><button class="b g" onclick="admin()">새로고침</button><button class="b g" onclick="subjects()">나가기</button></div>';show(h)}
+
 function adminLogin(){show(`<div class="fbw"><h2>관리자 로그인</h2><p class="tag">Supabase에 만든 관리자 계정으로 로그인하세요.</p><div class="card"><input type="email" id="ae" placeholder="이메일" autocomplete="username"><div style="height:8px"></div><input type="text" class="pw" id="ap" placeholder="비밀번호" autocomplete="off" autocapitalize="off" spellcheck="false" onkeydown="if(event.key=='Enter')adminIn()"></div><div class="row"><button class="b g" onclick="home()">뒤로</button><button class="b" onclick="adminIn()">로그인</button></div></div>`)}
 async function adminIn(){if(!DB)return soonMsg('서버에 연결되지 않았어요.');const e=document.getElementById('ae').value.trim(),p=document.getElementById('ap').value;
  try{const {error}=await DB.auth.signInWithPassword({email:e,password:p});if(error)throw error;OWNER=true;adminOn();await adminLoad();soonMsg('관리자로 로그인했어요.');admin()}catch(x){soonMsg('로그인하지 못했어요. 이메일과 비밀번호를 확인해 주세요.')}}
-function adminOne(i){const r=ADM[i],X=r.R||{};const TT=X._t||{},TD=Object.keys(TT).filter(k=>TT[k]>=1);let h=`<h2>${esc(r.nick)}</h2><p class="tag">최근 활동 ${fd(r.t)} · 공부 ${TD.length}일 · ${fmtT(TD.reduce((a,k)=>a+TT[k],0))}</p>`;
- PASS.forEach(p=>{const s=st(p.Q,X);h+=`<div class="card"><b>${p.name}</b><div class="mut">${stTxt(s)}</div><div class="bar"><i style="width:${s.r||0}%"></i></div>`;
-  CATS.forEach(([k,l])=>{const t=st(p.Q.filter(q=>q.cat==k),X);h+=`<div class="mut">${l}: ${t.n?t.c+'/'+t.n+' ('+t.r+'%)':'안 풂'}</div>`});
-  const tg={};p.Q.forEach(q=>{if(X[q.id]){const t=tg[q.g]=tg[q.g]||{n:0,c:0};t.n++;if(X[q.id].ok)t.c++}});
-  const wk=Object.keys(tg).filter(k=>tg[k].c<tg[k].n).sort((a,b)=>tg[a].c/tg[a].n-tg[b].c/tg[b].n);
-  h+=wk.length?`<div style="margin-top:8px"><b class="no-t">약점</b> ${wk.map(k=>k+' '+tg[k].c+'/'+tg[k].n).join(' · ')}</div>`:(st(p.Q,X).n?'<div class="ok-t" style="margin-top:8px">틀린 영역 없음</div>':'');
-  const wq=p.Q.filter(q=>X[q.id]&&!X[q.id].ok);if(wq.length)h+=`<div class="mut" style="margin-top:6px">틀린 문제: ${wq.map(q=>q.id.replace(/\D+/,'')*1+1).map((n,k)=>(wq[k].t=='es'?'서술':'')+n+'번').join(', ')}</div>`;h+='</div>'});
- h+='<div class="row"><button class="b g" onclick="admin()">목록으로</button></div>';show(h)}
+
 // ---------- 공부 시간 ----------
 const dkey=(d=new Date())=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
 function mergeR(a,b){const o=Object.assign({},a,b),t={},A=a._t||{},B=b._t||{};for(const k in A)t[k]=A[k];for(const k in B)t[k]=Math.max(t[k]||0,B[k]);o._t=t;return o}
@@ -488,7 +542,7 @@ function setR(r){CURR=r;const t=r?'#/'+encR(r):location.pathname+location.search
 function parentOf(r){const [k,...rest]=r.split('/'),v=rest.join('/');
  if(!r)return null;if(k=='subjects')return null;
  if(k=='menu')return 'pick';if(k=='pick'||k=='subj'||k=='stats'||k=='profile'&&!v||k=='admin'&&!v)return 'subjects';
- if(k=='profile')return 'profile';if(k=='admin'||k=='fbadmin')return 'admin';if(k=='fb')return v=='1'?'subjects':'';
+ if(k=='profile')return 'profile';if(k=='admin'){if(/^t\/./.test(v))return 'admin/t';if(/^p\/./.test(v))return 'admin/p';return 'admin'}if(k=='fb')return v=='1'?'subjects':'';
  if(k=='quiz'||k=='result'){if(SS&&SS.meta&&SS.meta.subj)return 'subj/'+SS.meta.subj;if(SS&&SS.pid&&!SS.meta)return 'menu/'+SS.pid;return 'subjects'}
  return 'subjects'}
 const curR=()=>{const h=location.hash||'';if(!h.startsWith('#/'))return '';try{return decodeURIComponent(h.slice(2))}catch(e){return ''}};
@@ -506,8 +560,7 @@ function go2(r){
  if(k=='stats')return allStats();
  if(k=='profile'){if(v=='cal')return cal();if(v=='nick')return pfNick();if(v=='pin')return pfPin();return profile()}
  if(k=='fb')return fbForm(+v||0);
- if(k=='admin'&&OWNER){if(v!==''&&ADM[+v])return adminOne(+v);return admin()}
- if(k=='fbadmin'&&OWNER)return fbAdmin();
+ if(k=='admin'&&OWNER){const [a,...b]=v.split('/'),w=b.join('/');if(a=='t'&&w)return fbType(w);if(a=='t')return fbTypes();if(a=='p'&&w)return fbPerson(w);if(a=='p')return fbPeople();if(a=='u'&&w)return adminOne(w);return admin()}
  if((k=='quiz'||k=='result')&&(SS||loadSS()))return k=='quiz'?quiz():result();
  return subjects()}
 function goR(r){ROUTING=true;try{go2(r)}finally{ROUTING=false}}
@@ -515,7 +568,7 @@ window.addEventListener('popstate',()=>{GUARD=false;if(location.hash=='#admin')r
 const H=(f,mk)=>function(...a){setR(mk(...a));return f.apply(this,a)};
 home=H(home,()=>'');subjects=H(subjects,()=>'subjects');pick=H(pick,()=>'pick');menu=H(menu,id=>'menu/'+id);
 subj=H(subj,n=>'subj/'+n);socPage=H(socPage,n=>'subj/'+n);allStats=H(allStats,()=>'stats');fbForm=H(fbForm,f=>'fb/'+(f||0));
-admin=H(admin,()=>'admin');adminOne=H(adminOne,i=>'admin/'+i);fbAdmin=H(fbAdmin,()=>'fbadmin');
+admin=H(admin,()=>'admin');adminOne=H(adminOne,n=>'admin/u/'+n);fbTypes=H(fbTypes,()=>'admin/t');fbType=H(fbType,k=>'admin/t/'+k);fbPeople=H(fbPeople,()=>'admin/p');fbPerson=H(fbPerson,n=>'admin/p/'+n);
 profile=H(profile,()=>'profile');cal=H(cal,()=>'profile/cal');pfNick=H(pfNick,()=>'profile/nick');pfPin=H(pfPin,()=>'profile/pin');
 quiz=(f=>function(){setR('quiz');const x=f.apply(this,arguments);saveSS();return x})(quiz);
 result=(f=>function(){REPL=true;setR('result');const x=f.apply(this,arguments);saveSS();return x})(result);
