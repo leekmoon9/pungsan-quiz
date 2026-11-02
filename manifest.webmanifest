@@ -1,6 +1,6 @@
 {
-  "name": "풍산고 기말 시험 대비",
-  "short_name": "풍산 기말",
+  "name": "풍산 문제",
+  "short_name": "풍산 문제",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
