@@ -72,6 +72,9 @@ body:has(.hero) #rf{display:none}
 .mdw{position:fixed;inset:0;z-index:60;background:rgba(40,32,20,.35);display:flex;align-items:center;justify-content:center;padding:24px;animation:pop .2s ease-out both}
 .mdc{width:100%;max-width:320px;background:var(--card);border-radius:20px;padding:22px 18px 16px;box-shadow:0 16px 40px rgba(40,30,15,.3);text-align:center}
 .mdc h3{margin:0 0 6px;font-size:18px}.mdc p{margin:0 0 16px;color:var(--mut);font-size:14px;line-height:1.5}
+.sd{display:none}
+@media (min-width:860px) and (min-aspect-ratio:1/1){.sd{display:block;position:fixed;top:0;bottom:0;width:calc((100vw - 640px)/2);z-index:0;pointer-events:none;overflow:hidden}.sdl{left:0}.sdr{right:0}.sd .st{max-width:none}}
+@media (min-width:860px) and (max-width:1260px) and (min-aspect-ratio:1/1){.sd .pl{font-size:12px!important;padding:5px 10px}.sd img.st{width:46px!important}}
 h3.sec{font-size:19px;font-weight:600;margin:20px 0 8px}
 .fbw{min-height:calc(100vh - 60px);min-height:calc(100svh - 60px);display:flex;flex-direction:column;justify-content:center;text-align:center}
 .fbw .tag{max-width:420px;margin:0 auto 6px}
@@ -252,7 +255,7 @@ const norm=s=>s.replace(/[\s.,·]/g,'').toLowerCase();
 const grade=(q,v)=>{const n=norm(v);return n&&q.a.some(k=>k.split('&').every(p=>n.includes(norm(p))))};
 function st(qs,X){X=X||R;const d=qs.filter(q=>X[q.id]),c=d.filter(q=>X[q.id].ok).length;return{n:d.length,c,t:qs.length,r:d.length?Math.round(c/d.length*100):null}}
 const stTxt=s=>s.n?`${s.n}/${s.t}문제 풀이 · 정답률 ${s.r}%`:`${s.t}문제 · 아직 풀지 않음`;
-let LK=null;const show=(h,k)=>{const nw=k===undefined||k!==LK;LK=k===undefined?null:k;A.innerHTML=h;if(nw){window.scrollTo(0,0);A.classList.remove('in');void A.offsetWidth;A.classList.add('in')}};
+let LK=null;const show=(h,k)=>{const nw=k===undefined||k!==LK;LK=k===undefined?null:k;{const sd=document.getElementById('sides');if(sd)sd.remove()}A.innerHTML=h;if(nw){window.scrollTo(0,0);A.classList.remove('in');void A.offsetWidth;A.classList.add('in')}};
 let SS=null,draft=null;
 function stk(side){const col={};SUBJ.flat().forEach(([n,c])=>col[n]=c);
  const T=[['c','독서와|작문',1,4,-9,44],['p','독서와|작문',18,14,5],['c','영어',50,2,8,42],['p','영어',66,16,-6],['e','⭐',88,4,15],
@@ -264,7 +267,16 @@ function stk(side){const col={};SUBJ.flat().forEach(([n,c])=>col[n]=c);
   if(x[0]=='p')return`<span class="st pl${x[5]?' r1':''}" style="${d};--pc:${SC[col[x[1]]]}">${x[1].split('|').join(' ')}</span>`;
   return`<span class="st" style="${d};font-size:26px">${x[1]}</span>`}).join('')}
 function ckGo(){const n=document.getElementById('nk'),p=document.getElementById('pn');document.getElementById('go').disabled=!(n&&n.value.trim()&&p&&/^\d{4}$/.test(p.value))}
-function home(){if(location.hash=='#admin'){location.hash='';return adminLogin()}const lk=lastNick(),cu=document.getElementById('nk'),nv=cu?cu.value:'';show(`<div class="hero"><div class="sa">${stk(0)}</div><div class="hc"><h1>풍산고 기말 시험 대비</h1>${lk?`<p style="font-size:17px;margin:6px 0 0;color:#2a2620"><b>${esc(lk)}</b>님 환영합니다.</p>`:'<p class="tag">닉네임을 입력하고 시작하세요</p>'}<div class="row" style="justify-content:center;margin-top:20px;flex-direction:column;align-items:center;gap:10px">${lk?'':`<input type="text" id="nk" maxlength="12" placeholder="닉네임 (최대 12자)" value="${esc(nv)}" style="max-width:260px;text-align:center" oninput="ckGo()"><input type="text" class="pw" autocomplete="off" id="pn" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호 숫자 4자리" style="max-width:260px;text-align:center;letter-spacing:4px" oninput="this.value=this.value.replace(/\D/g,'');ckGo()" onkeydown="if(event.key=='Enter'&&!document.getElementById('go').disabled)enter()"><div class="mut" style="font-size:12px;margin-top:-6px;max-width:260px;line-height:1.5">처음 쓰는 닉네임이면 새로 만들어져요.<br>다른 기기에서도 같은 닉네임·비밀번호로<br>이어서 풀 수 있어요.</div>`}<button class="b" id="go" style="max-width:260px" ${lk?'':'disabled'} onclick="enter()">시작하기</button></div></div><div class="sa">${stk(1)}</div></div>`);requestAnimationFrame(fitSt)}
+
+function stkSide(){const col={};SUBJ.flat().forEach(([n,c])=>col[n]=c);const N=SUBJ.flat().map(x=>x[0]);
+ const ev=N.filter((_,i)=>i%2==0),od=N.filter((_,i)=>i%2==1);
+ const mk=(cov,pil,seed)=>{const rows=Math.max(cov.length,pil.length),rh=94/rows;let h='',k=0;
+  for(let r=0;r<rows;r++){const flip=(r+seed)%2,jy=((r*7+seed*5)%5)*0.6;
+   const it=[];if(cov[r])it.push(['c',cov[r],flip?52:8]);if(pil[r])it.push(['p',pil[r],flip?6:46]);
+   it.forEach(([t,n,x])=>{const rot=((k*29+seed*11)%21)-10,top=3+r*rh+(t=='p'?rh*0.32:0)+jy,d=`left:${x}%;top:${top}%;--r:${rot}deg;animation-delay:${k*30}ms`;k++;
+    h+=t=='c'?`<img class="st" src="${COVER[n]}" alt="" style="${d};width:60px">`:`<span class="st pl" style="${d};--pc:${SC[col[n]]};font-size:14px">${n.split('|').join(' ')}</span>`})}return h};
+ return `<div class="sd sdl">${mk(ev,od,0)}</div><div class="sd sdr">${mk(od,ev,1)}</div>`}
+function home(){if(location.hash=='#admin'){location.hash='';return adminLogin()}const lk=lastNick(),cu=document.getElementById('nk'),nv=cu?cu.value:'';show(`<div class="hero"><div class="sa">${stk(0)}</div><div class="hc"><h1>풍산고 기말 시험 대비</h1>${lk?`<p style="font-size:17px;margin:6px 0 0;color:#2a2620"><b>${esc(lk)}</b>님 환영합니다.</p>`:'<p class="tag">닉네임을 입력하고 시작하세요</p>'}<div class="row" style="justify-content:center;margin-top:20px;flex-direction:column;align-items:center;gap:10px">${lk?'':`<input type="text" id="nk" maxlength="12" placeholder="닉네임 (최대 12자)" value="${esc(nv)}" style="max-width:260px;text-align:center" oninput="ckGo()"><input type="text" class="pw" autocomplete="off" id="pn" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호 숫자 4자리" style="max-width:260px;text-align:center;letter-spacing:4px" oninput="this.value=this.value.replace(/\D/g,'');ckGo()" onkeydown="if(event.key=='Enter'&&!document.getElementById('go').disabled)enter()"><div class="mut" style="font-size:12px;margin-top:-6px;max-width:260px;line-height:1.5">처음 쓰는 닉네임이면 새로 만들어져요.<br>다른 기기에서도 같은 닉네임·비밀번호로<br>이어서 풀 수 있어요.</div>`}<button class="b" id="go" style="max-width:260px" ${lk?'':'disabled'} onclick="enter()">시작하기</button></div></div><div class="sa">${stk(1)}</div></div>`);const sd=document.createElement('div');sd.id='sides';sd.innerHTML=stkSide();document.body.appendChild(sd);requestAnimationFrame(fitSt)}
 function fitSt(){document.querySelectorAll('.sa').forEach(a=>{const h=a.getBoundingClientRect().height;a.classList.toggle('lo',h<135);a.classList.toggle('no',h<64)})}
 window.addEventListener('resize',()=>{if(document.querySelector('.hero'))fitSt()});
 
@@ -395,7 +407,7 @@ async function admin(){show('<h2>관리자 통계</h2><p class="mut">불러오�
  h+='<div class="row"><button class="b g" onclick="admin()">새로고침</button><button class="b g" onclick="subjects()">나가기</button></div>';show(h)}
 function adminLogin(){show(`<div class="fbw"><h2>관리자 로그인</h2><p class="tag">Supabase에 만든 관리자 계정으로 로그인하세요.</p><div class="card"><input type="email" id="ae" placeholder="이메일" autocomplete="username"><div style="height:8px"></div><input type="text" class="pw" id="ap" placeholder="비밀번호" autocomplete="off" autocapitalize="off" spellcheck="false" onkeydown="if(event.key=='Enter')adminIn()"></div><div class="row"><button class="b g" onclick="home()">뒤로</button><button class="b" onclick="adminIn()">로그인</button></div></div>`)}
 async function adminIn(){if(!DB)return soonMsg('서버에 연결되지 않았어요.');const e=document.getElementById('ae').value.trim(),p=document.getElementById('ap').value;
- try{const {error}=await DB.auth.signInWithPassword({email:e,password:p});if(error)throw error;OWNER=true;soonMsg('관리자로 로그인했어요.');NICK?admin():home()}catch(x){soonMsg('로그인하지 못했어요. 이메일과 비밀번호를 확인해 주세요.')}}
+ try{const {error}=await DB.auth.signInWithPassword({email:e,password:p});if(error)throw error;OWNER=true;soonMsg('관리자로 로그인했어요.');if(NICK)admin();else home()}catch(x){soonMsg('로그인하지 못했어요. 이메일과 비밀번호를 확인해 주세요.')}}
 function adminOne(i){const r=ADM[i],X=r.R||{};const TT=X._t||{},TD=Object.keys(TT).filter(k=>TT[k]>=1);let h=`<h2>${esc(r.nick)}</h2><p class="tag">최근 활동 ${fd(r.t)} · 공부 ${TD.length}일 · ${fmtT(TD.reduce((a,k)=>a+TT[k],0))}</p>`;
  PASS.forEach(p=>{const s=st(p.Q,X);h+=`<div class="card"><b>${p.name}</b><div class="mut">${stTxt(s)}</div><div class="bar"><i style="width:${s.r||0}%"></i></div>`;
   CATS.forEach(([k,l])=>{const t=st(p.Q.filter(q=>q.cat==k),X);h+=`<div class="mut">${l}: ${t.n?t.c+'/'+t.n+' ('+t.r+'%)':'안 풂'}</div>`});
@@ -506,7 +518,7 @@ result=(f=>function(){REPL=true;setR('result');const x=f.apply(this,arguments);s
  document.addEventListener('touchstart',e=>{const t=e.touches[0];if(t.clientX<26&&history.length>1){sx=t.clientX;sy=t.clientY;dx=0;A.style.transition='none'}else sx=null},{passive:true});
  document.addEventListener('touchmove',e=>{if(sx==null)return;const t=e.touches[0];dx=t.clientX-sx;if(Math.abs(t.clientY-sy)>Math.abs(dx)&&dx<30){sx=null;A.style.transform='';return}A.style.transform='translateX('+Math.max(0,dx*.6)+'px)'},{passive:true});
  document.addEventListener('touchend',()=>{if(sx==null)return;A.style.transition='transform .2s ease';A.style.transform='';if(dx>80)history.back();sx=null})})();
-async function boot(){if(location.hash=='#admin'){chkAdmin();return home()}
+async function boot(){if(location.hash=='#admin'){chkAdmin();const lk=lastNick(),pn=ls('pin');if(lk&&/^\d{4}$/.test(pn)){NICK=lk;PIN=pn;try{R=JSON.parse(ls('rec:'+lk))||{}}catch(e){R={}}}return adminLogin()}
  const lk=lastNick(),pn=ls('pin');
  if(!lk||!/^\d{4}$/.test(pn)){chkAdmin();return home()}
  NICK=lk;PIN=pn;try{R=JSON.parse(ls('rec:'+lk))||{}}catch(e){R={}}
