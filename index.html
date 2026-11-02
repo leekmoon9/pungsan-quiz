@@ -247,9 +247,9 @@ const ls=(k,v)=>{try{if(v===undefined)return localStorage.getItem(KEY+k)||'';if(
 function save(){ls('rec:'+NICK,JSON.stringify(R));clearTimeout(tm);tm=setTimeout(sync,700)}
 async function sync(){if(ADMINMODE){if(DB)try{await DB.rpc('admin_save',{p_key:AK(),p_data:R})}catch(e){}return}if(!DB||!NICK||!PIN)return;try{const {data,error}=await DB.rpc('player_save',{p_nick:NICK,p_pin:PIN,p_data:R});if(error||data!==true)throw 0}catch(e){}}
 const lastNick=()=>ls('last');
-const ADM_NICK='풍산동신라면';let ADMINMODE=false;
-async function adminLoad(){if(!DB)return;try{const {data,error}=await DB.rpc('admin_me',{p_key:AK()});if(error)return;if(!data){ls('ak',null);OWNER=false;ADMINMODE=false;NICK='';ls('last',null);home();soonMsg('관리자 링크가 맞지 않아요.');return}R=mergeR(data.data||{},R);ls('rec:'+NICK,JSON.stringify(R));sync()}catch(e){}}
-function adminOn(){ADMINMODE=true;NICK=ADM_NICK;PIN='';ls('last',ADM_NICK);ls('pin',null);try{R=JSON.parse(ls('rec:'+NICK))||{}}catch(e){R={}}}
+const ADM_NICK='풍산동신라면',ADM_RV='r1';let ADMINMODE=false;
+async function adminLoad(){if(!DB)return;try{const {data,error}=await DB.rpc('admin_me',{p_key:AK()});if(error)return;if(!data){ls('ak',null);OWNER=false;ADMINMODE=false;NICK='';ls('last',null);home();soonMsg('관리자 링크가 맞지 않아요.');return}const srv=data.data||{};if(srv._rv!==ADM_RV)R={_t:{}};else R=(R._rv===ADM_RV)?mergeR(srv,R):srv;R._rv=ADM_RV;ls('rec:'+NICK,JSON.stringify(R));sync()}catch(e){}}
+function adminOn(){ADMINMODE=true;NICK=ADM_NICK;PIN='';ls('last',ADM_NICK);ls('pin',null);try{R=JSON.parse(ls('rec:'+NICK))||{}}catch(e){R={}}if(R._rv!==ADM_RV)R={}}
 async function enter(){if(ADMINMODE){const go=document.getElementById('go');if(go){go.disabled=true;go.textContent='확인 중…'}await adminLoad();REPL=true;return subjects()}const lk=lastNick(),el=document.getElementById('nk'),pe=document.getElementById('pn');
  const v=(lk||(el?el.value:'')).trim(),p=lk?ls('pin'):(pe?pe.value.trim():'');if(!v)return;
  if(!/^\d{4}$/.test(p)){soonMsg('비밀번호는 숫자 4자리예요.');return}
