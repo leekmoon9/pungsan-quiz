@@ -342,6 +342,8 @@ async function admin(force){if(!(await admLoad(force)))return show('<h2>관리�
  const top=FB.filter(x=>FT(x.k)[3]>=2).sort((a,b)=>FT(b.k)[3]-FT(a.k)[3]||b.t-a.t).slice(0,3);
  h+=`<div class="sbt">가장 시급한 것</div>`+(top.length?top.map(fbCard).join(''):'<div class="card mut">지금 급하게 고칠 의견은 없어요.</div>');
  h+=`<div class="qk"><button onclick="fbTypes()">유형별 보기</button><button onclick="fbPeople()">개인별 보기</button></div>`;
+ // ---- 개인별 통계 ----
+ h+=`<h3 class="sec">개인별 통계</h3>`+(ADM.length?`<div class="ppl">${ADM.map(r=>`<button onclick="adminOne(decodeURIComponent('${encodeURIComponent(r.nick)}'))">${esc(r.nick)}</button>`).join('')}</div>`:'<div class="card mut">아직 참여한 사람이 없어요.</div>');
  // ---- 오답 분석 ----
  const Q=allQ(),tg={};Q.forEach(q=>ADM.forEach(r=>{const x=(r.R||{})[q.id];if(x){const t=tg[q.g]=tg[q.g]||{n:0,w:0};t.n++;if(!x.ok)t.w++}}));
  const ar=Object.keys(tg).filter(k=>tg[k].w).sort((a,b)=>tg[b].w/tg[b].n-tg[a].w/tg[a].n||tg[b].w-tg[a].w).slice(0,6);
@@ -349,8 +351,6 @@ async function admin(force){if(!(await admLoad(force)))return show('<h2>관리�
  h+=ar.length?`<div class="card">${ar.map(k=>{const r=Math.round(tg[k].w/tg[k].n*100);return `<div class="arw"><div class="al"><span>${esc(k)}</span><b class="no-t">${r}%</b></div><div class="bar"><i data-w="${r}" style="width:0;background:#e9978f"></i></div><div class="mut" style="font-size:12px">${tg[k].w}/${tg[k].n}번 틀림</div></div>`}).join('')}</div>`:'<div class="card mut">아직 틀린 기록이 없어요.</div>';
  const ms=Q.map(q=>{let n=0,w=0;ADM.forEach(r=>{const x=(r.R||{})[q.id];if(x){n++;if(!x.ok)w++}});return{q,n,w}}).filter(x=>x.w).sort((a,b)=>b.w/b.n-a.w/a.n||b.w-a.w).slice(0,5);
  if(ms.length){h+=`<div class="sbt">많이 틀린 문제</div>`;ms.forEach(x=>{h+=`<div class="card"><div class="tag">${esc(x.q.g||'')}</div><div style="white-space:pre-line;font-size:15px">${esc(x.q.q.slice(0,90))}${x.q.q.length>90?'…':''}</div><div class="no-t" style="margin-top:4px">오답률 ${Math.round(x.w/x.n*100)}% <span class="mut">(${x.w}/${x.n}명)</span></div></div>`})}
- // ---- 개인별 통계 ----
- h+=`<h3 class="sec">개인별 통계</h3>`+(ADM.length?`<div class="ppl">${ADM.map(r=>`<button onclick="adminOne(decodeURIComponent('${encodeURIComponent(r.nick)}'))">${esc(r.nick)}</button>`).join('')}</div>`:'<div class="card mut">아직 참여한 사람이 없어요.</div>');
  h+=`<div class="row" style="margin-top:16px"><button class="b g" onclick="admin(1)">새로고침</button><button class="b g" onclick="subjects()">나가기</button></div>`;
  show(h);animBars()}
 async function fbTypes(){if(!(await admLoad()))return admin();const cnt={};FBT.forEach(t=>cnt[t[0]]=0);FB.forEach(x=>cnt[x.k]++);const mx=Math.max(1,...Object.values(cnt));
