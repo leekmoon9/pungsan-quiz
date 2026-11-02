@@ -22,8 +22,8 @@ img.st{border:none;border-radius:7px;box-shadow:0 3px 9px rgba(0,0,0,.3);height:
 .hc .mut{color:#8b8374}
 .hc .row{width:100%}
 .hc input,.hc .b{max-width:none!important;box-sizing:border-box}
-.hc input[type=text],.hc input[type=password]{width:100%;background:#fff;border:1.5px solid #e6dfd0;border-radius:14px;padding:12px 16px;box-shadow:none;transition:border-color .2s}
-.hc input[type=text]:focus,.hc input[type=password]:focus{outline:none;border-color:#8fb8ec}
+.hc input[type=text]{width:100%;background:#fff;border:1.5px solid #e6dfd0;border-radius:14px;padding:12px 16px;box-shadow:none;transition:border-color .2s}
+.hc input[type=text]:focus{outline:none;border-color:#8fb8ec}
 .hc .b{background:#8fb8ec;color:#1d2b3a;border-radius:14px;box-shadow:0 4px 12px rgba(91,127,168,.28)}
 .hc .b:disabled{box-shadow:none}
 
@@ -61,6 +61,15 @@ input,textarea,select{font-size:16px!important}
 .cd{min-height:52px;border-radius:9px;padding:4px 2px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:2px}
 .cd b{font-size:13px;font-weight:500}.cd small{font-size:9.5px;line-height:1.15;color:#2f4f73;font-weight:700}
 .cd.on{background:#d9e6f6}.cd.on b{font-weight:800}.cd.td{box-shadow:inset 0 0 0 1.5px var(--ac)}
+html,body{overscroll-behavior-y:none;overscroll-behavior:none}
+.pw{-webkit-text-security:disc;text-security:disc}
+main{padding-bottom:84px!important}
+#rf{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));z-index:40;width:44px;height:44px;border-radius:50%;border:none;background:var(--card);color:var(--tx);box-shadow:0 4px 14px rgba(90,70,40,.22);display:flex;align-items:center;justify-content:center;cursor:pointer;-webkit-tap-highlight-color:transparent}
+body:has(.hero) #rf{display:none}
+#rf svg{width:20px;height:20px;transition:transform .5s ease}#rf.spin svg{transform:rotate(360deg)}
+.mdw{position:fixed;inset:0;z-index:60;background:rgba(40,32,20,.35);display:flex;align-items:center;justify-content:center;padding:24px;animation:pop .2s ease-out both}
+.mdc{width:100%;max-width:320px;background:var(--card);border-radius:20px;padding:22px 18px 16px;box-shadow:0 16px 40px rgba(40,30,15,.3);text-align:center}
+.mdc h3{margin:0 0 6px;font-size:18px}.mdc p{margin:0 0 16px;color:var(--mut);font-size:14px;line-height:1.5}
 h3.sec{font-size:19px;font-weight:600;margin:20px 0 8px}
 .fbw{min-height:calc(100vh - 60px);min-height:calc(100svh - 60px);display:flex;flex-direction:column;justify-content:center;text-align:center}
 .fbw .tag{max-width:420px;margin:0 auto 6px}
@@ -75,7 +84,7 @@ h3.sec{font-size:19px;font-weight:600;margin:20px 0 8px}
 .opt.sel{border-color:var(--ac);background:var(--card);background:color-mix(in srgb,var(--ac) 12%,transparent)}
 .opt.right{border-color:var(--ok)}.opt.wrong{border-color:var(--no)}
 .pc{cursor:pointer}.pc:active{opacity:.7}
-input[type=text],input[type=password],input[type=email],textarea{width:100%;box-sizing:border-box;padding:12px;border:1.5px solid var(--bd);border-radius:12px;background:#fff;color:var(--tx);font:inherit;-webkit-appearance:none;appearance:none}
+input[type=text],input[type=email],textarea{width:100%;box-sizing:border-box;padding:12px;border:1.5px solid var(--bd);border-radius:12px;background:#fff;color:var(--tx);font:inherit;-webkit-appearance:none;appearance:none}
 input:focus,textarea:focus{outline:none;border-color:#8fb8ec}
 textarea{min-height:150px;resize:vertical}
 .row{display:flex;gap:8px;margin-top:12px}
@@ -253,7 +262,7 @@ function stk(side){const col={};SUBJ.flat().forEach(([n,c])=>col[n]=c);
   if(x[0]=='p')return`<span class="st pl${x[5]?' r1':''}" style="${d};--pc:${SC[col[x[1]]]}">${x[1].split('|').join(' ')}</span>`;
   return`<span class="st" style="${d};font-size:26px">${x[1]}</span>`}).join('')}
 function ckGo(){const n=document.getElementById('nk'),p=document.getElementById('pn');document.getElementById('go').disabled=!(n&&n.value.trim()&&p&&/^\d{4}$/.test(p.value))}
-function home(){if(location.hash=='#admin'){location.hash='';return adminLogin()}const lk=lastNick(),cu=document.getElementById('nk'),nv=cu?cu.value:'';show(`<div class="hero"><div class="sa">${stk(0)}</div><div class="hc"><h1>풍산고 기말 시험 대비</h1>${lk?`<p style="font-size:17px;margin:6px 0 0;color:#2a2620"><b>${esc(lk)}</b>님 환영합니다.</p>`:'<p class="tag">닉네임을 입력하고 시작하세요</p>'}<div class="row" style="justify-content:center;margin-top:20px;flex-direction:column;align-items:center;gap:10px">${lk?'':`<input type="text" id="nk" maxlength="12" placeholder="닉네임 (최대 12자)" value="${esc(nv)}" style="max-width:260px;text-align:center" oninput="ckGo()"><input type="password" id="pn" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호 숫자 4자리" style="max-width:260px;text-align:center;letter-spacing:4px" oninput="this.value=this.value.replace(/\D/g,'');ckGo()" onkeydown="if(event.key=='Enter'&&!document.getElementById('go').disabled)enter()"><div class="mut" style="font-size:12px;margin-top:-6px;max-width:260px;line-height:1.5">처음 쓰는 닉네임이면 새로 만들어져요.<br>다른 기기에서도 같은 닉네임·비밀번호로<br>이어서 풀 수 있어요.</div>`}<button class="b" id="go" style="max-width:260px" ${lk?'':'disabled'} onclick="enter()">시작하기</button></div></div><div class="sa">${stk(1)}</div></div>`);requestAnimationFrame(fitSt)}
+function home(){if(location.hash=='#admin'){location.hash='';return adminLogin()}const lk=lastNick(),cu=document.getElementById('nk'),nv=cu?cu.value:'';show(`<div class="hero"><div class="sa">${stk(0)}</div><div class="hc"><h1>풍산고 기말 시험 대비</h1>${lk?`<p style="font-size:17px;margin:6px 0 0;color:#2a2620"><b>${esc(lk)}</b>님 환영합니다.</p>`:'<p class="tag">닉네임을 입력하고 시작하세요</p>'}<div class="row" style="justify-content:center;margin-top:20px;flex-direction:column;align-items:center;gap:10px">${lk?'':`<input type="text" id="nk" maxlength="12" placeholder="닉네임 (최대 12자)" value="${esc(nv)}" style="max-width:260px;text-align:center" oninput="ckGo()"><input type="text" class="pw" autocomplete="off" id="pn" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호 숫자 4자리" style="max-width:260px;text-align:center;letter-spacing:4px" oninput="this.value=this.value.replace(/\D/g,'');ckGo()" onkeydown="if(event.key=='Enter'&&!document.getElementById('go').disabled)enter()"><div class="mut" style="font-size:12px;margin-top:-6px;max-width:260px;line-height:1.5">처음 쓰는 닉네임이면 새로 만들어져요.<br>다른 기기에서도 같은 닉네임·비밀번호로<br>이어서 풀 수 있어요.</div>`}<button class="b" id="go" style="max-width:260px" ${lk?'':'disabled'} onclick="enter()">시작하기</button></div></div><div class="sa">${stk(1)}</div></div>`);requestAnimationFrame(fitSt)}
 function fitSt(){document.querySelectorAll('.sa').forEach(a=>{const h=a.getBoundingClientRect().height;a.classList.toggle('lo',h<135);a.classList.toggle('no',h<64)})}
 window.addEventListener('resize',()=>{if(document.querySelector('.hero'))fitSt()});
 
@@ -382,7 +391,7 @@ async function admin(){show('<h2>관리자 통계</h2><p class="mut">불러오�
  const qs=[].concat(...PASS.map(p=>p.Q)),ms=qs.map(q=>{let n=0,w=0;ADM.forEach(r=>{const x=(r.R||{})[q.id];if(x){n++;if(!x.ok)w++}});return{q,n,w}}).filter(x=>x.n&&x.w).sort((a,b)=>b.w/b.n-a.w/a.n||b.n-a.n).slice(0,8);
  if(ms.length){h+='<h3>많이 틀린 문제 (전체 참여자)</h3>';ms.forEach(x=>{h+=`<div class="card"><div class="tag">${P(x.q.id.replace(/\d+$/,'')).name} · ${x.q.g} · ${CATS.find(c=>c[0]==x.q.cat)[1]}</div><div style="white-space:pre-line">${esc(x.q.q.slice(0,90))}${x.q.q.length>90?'…':''}</div><div class="no-t">오답률 ${Math.round(x.w/x.n*100)}% <span class="mut">(${x.w}/${x.n}명)</span></div></div>`})}
  h+='<div class="row"><button class="b g" onclick="admin()">새로고침</button><button class="b g" onclick="subjects()">나가기</button></div>';show(h)}
-function adminLogin(){show(`<div class="fbw"><h2>관리자 로그인</h2><p class="tag">Supabase에 만든 관리자 계정으로 로그인하세요.</p><div class="card"><input type="email" id="ae" placeholder="이메일" autocomplete="username"><div style="height:8px"></div><input type="password" id="ap" placeholder="비밀번호" autocomplete="current-password" onkeydown="if(event.key=='Enter')adminIn()"></div><div class="row"><button class="b g" onclick="home()">뒤로</button><button class="b" onclick="adminIn()">로그인</button></div></div>`)}
+function adminLogin(){show(`<div class="fbw"><h2>관리자 로그인</h2><p class="tag">Supabase에 만든 관리자 계정으로 로그인하세요.</p><div class="card"><input type="email" id="ae" placeholder="이메일" autocomplete="username"><div style="height:8px"></div><input type="text" class="pw" id="ap" placeholder="비밀번호" autocomplete="off" autocapitalize="off" spellcheck="false" onkeydown="if(event.key=='Enter')adminIn()"></div><div class="row"><button class="b g" onclick="home()">뒤로</button><button class="b" onclick="adminIn()">로그인</button></div></div>`)}
 async function adminIn(){if(!DB)return soonMsg('서버에 연결되지 않았어요.');const e=document.getElementById('ae').value.trim(),p=document.getElementById('ap').value;
  try{const {error}=await DB.auth.signInWithPassword({email:e,password:p});if(error)throw error;OWNER=true;soonMsg('관리자로 로그인했어요.');NICK?admin():home()}catch(x){soonMsg('로그인하지 못했어요. 이메일과 비밀번호를 확인해 주세요.')}}
 function adminOne(i){const r=ADM[i],X=r.R||{};const TT=X._t||{},TD=Object.keys(TT).filter(k=>TT[k]>=1);let h=`<h2>${esc(r.nick)}</h2><p class="tag">최근 활동 ${fd(r.t)} · 공부 ${TD.length}일 · ${fmtT(TD.reduce((a,k)=>a+TT[k],0))}</p>`;
@@ -405,8 +414,15 @@ document.addEventListener('visibilitychange',()=>{if(document.hidden)QS0=0;else 
 
 // ---------- 프로필 ----------
 document.addEventListener('gesturestart',e=>e.preventDefault());document.addEventListener('dblclick',e=>e.preventDefault(),{passive:false});
+
+(function(){const b=document.createElement('button');b.id='rf';b.setAttribute('aria-label','새로고침');
+ b.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 11a8 8 0 1 0-2.34 5.66"/><path d="M20 4v7h-7"/></svg>';
+ b.onclick=()=>{b.classList.add('spin');setTimeout(()=>location.reload(),280)};document.body.appendChild(b)})();
+function askBox(title,msg,ok){return new Promise(res=>{const w=document.createElement('div');w.className='mdw';
+ w.innerHTML=`<div class="mdc"><h3>${title}</h3><p>${msg}</p><div class="row" style="margin:0"><button class="b g" data-v="0">취소</button><button class="b" data-v="1">${ok||'확인'}</button></div></div>`;
+ w.onclick=e=>{const v=e.target.dataset&&e.target.dataset.v;if(v===undefined&&e.target!==w)return;w.remove();res(v==='1')};document.body.appendChild(w)})}
 let PFOK=false,CALM=null;
-function pfGate(next){show(`<div class="fbw"><h2>프로필 보기</h2><p class="tag">비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="password" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div><div class="row" style="max-width:320px;margin:0 auto;width:100%"><button class="b g" onclick="history.back()">뒤로</button></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
+function pfGate(next){show(`<div class="fbw"><h2>프로필 보기</h2><p class="tag">비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div><div class="row" style="max-width:320px;margin:0 auto;width:100%"><button class="b g" onclick="history.back()">뒤로</button></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
 function profile(){if(!PFOK)return pfGate();const t=R._t||{},days=Object.keys(t).filter(k=>t[k]>=1),tot=days.reduce((a,k)=>a+t[k],0),td=t[dkey()]||0;
  show(`<h2>내 프로필</h2><p class="tag">기본 정보와 공부 기록이에요.</p>
@@ -431,16 +447,16 @@ function nkChk(){const v=document.getElementById('nn').value.trim(),st=document.
  if(!DB){st.innerHTML='<span class="no-t">서버에 연결되지 않아 바꿀 수 없어요.</span>';return}
  st.textContent='확인 중…';NKT=setTimeout(async()=>{try{const {data,error}=await DB.rpc('nick_available',{p_nick:v});if(document.getElementById('nn').value.trim()!==v)return;if(error)throw error;
   if(data===true){NKOK=true;b.disabled=false;st.innerHTML='<span class="ok-t">사용할 수 있는 닉네임이에요.</span>'}else st.innerHTML='<span class="no-t">이미 사용 중인 닉네임이에요.</span>'}catch(e){st.innerHTML='<span class="no-t">확인하지 못했어요. 잠시 뒤 다시 해 주세요.</span>'}},350)}
-async function nkSave(){const v=document.getElementById('nn').value.trim(),b=document.getElementById('nb');if(!NKOK)return;b.disabled=true;b.textContent='바꾸는 중…';
+async function nkSave(){const v=document.getElementById('nn').value.trim(),b=document.getElementById('nb');if(!NKOK)return;if(!(await askBox('닉네임을 바꿀까요?',`<b>${esc(NICK)}</b> → <b>${esc(v)}</b><br>다른 기기에서도 새 닉네임으로 들어와야 해요.`,'바꾸기')))return;b.disabled=true;b.textContent='바꾸는 중…';
  try{const {data,error}=await DB.rpc('player_rename',{p_nick:NICK,p_pin:PIN,p_new:v});if(error)throw error;
   if(data==='ok'){const old=NICK;NICK=v;ls('last',v);ls('rec:'+v,JSON.stringify(R));ls('rec:'+old,null);soonMsg('닉네임을 바꿨어요.');return profile()}
   if(data==='taken'){soonMsg('방금 다른 사람이 쓰기 시작한 닉네임이에요.');return nkChk()}soonMsg('바꾸지 못했어요. 다시 해 주세요.')}catch(e){soonMsg('바꾸지 못했어요. 다시 해 주세요.')}b.disabled=false;b.textContent='변경하기'}
-function pfPin(){if(!PFOK)return pfGate('pin');show(`<div class="fbw"><h2>비밀번호 변경</h2><p class="tag">새 비밀번호를 두 번 입력해 주세요.</p><div class="card" style="max-width:340px;margin:10px auto;width:100%;box-sizing:border-box"><input type="password" id="p1" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="새 비밀번호 4자리" style="text-align:center;letter-spacing:4px" oninput="this.value=this.value.replace(/\D/g,'');pnChk()"><div style="height:8px"></div><input type="password" id="p2" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="한 번 더 입력" style="text-align:center;letter-spacing:4px" oninput="this.value=this.value.replace(/\D/g,'');pnChk()"><div id="ps" class="mut" style="margin-top:8px;min-height:20px;font-size:14px"></div></div><div class="row" style="max-width:340px;margin:0 auto;width:100%"><button class="b g" onclick="profile()">취소</button><button class="b" id="pb" disabled onclick="pnSave()">변경하기</button></div></div>`)}
+function pfPin(){if(!PFOK)return pfGate('pin');show(`<div class="fbw"><h2>비밀번호 변경</h2><p class="tag">새 비밀번호를 두 번 입력해 주세요.</p><div class="card" style="max-width:340px;margin:10px auto;width:100%;box-sizing:border-box"><input type="text" class="pw" autocomplete="off" id="p1" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="새 비밀번호 4자리" style="text-align:center;letter-spacing:4px" oninput="this.value=this.value.replace(/\D/g,'');pnChk()"><div style="height:8px"></div><input type="text" class="pw" autocomplete="off" id="p2" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="한 번 더 입력" style="text-align:center;letter-spacing:4px" oninput="this.value=this.value.replace(/\D/g,'');pnChk()"><div id="ps" class="mut" style="margin-top:8px;min-height:20px;font-size:14px"></div></div><div class="row" style="max-width:340px;margin:0 auto;width:100%"><button class="b g" onclick="profile()">취소</button><button class="b" id="pb" disabled onclick="pnSave()">변경하기</button></div></div>`)}
 function pnChk(){const a=document.getElementById('p1').value,b=document.getElementById('p2').value,st=document.getElementById('ps'),bt=document.getElementById('pb');bt.disabled=true;
  if(a.length<4){st.textContent='';return}if(b.length<4){st.textContent='확인을 위해 한 번 더 입력해 주세요.';return}
  if(a!==b){st.innerHTML='<span class="no-t">두 비밀번호가 달라요.</span>';return}if(a===PIN){st.innerHTML='<span class="no-t">지금 비밀번호와 같아요.</span>';return}
  st.innerHTML='<span class="ok-t">두 비밀번호가 같아요.</span>';bt.disabled=!DB}
-async function pnSave(){const a=document.getElementById('p1').value,bt=document.getElementById('pb');bt.disabled=true;bt.textContent='바꾸는 중…';
+async function pnSave(){const a=document.getElementById('p1').value,bt=document.getElementById('pb');if(!(await askBox('비밀번호를 바꿀까요?','다음부터는 새 비밀번호로 들어와야 해요.<br>다른 기기에서도 새 비밀번호를 써 주세요.','바꾸기')))return;bt.disabled=true;bt.textContent='바꾸는 중…';
  try{const {data,error}=await DB.rpc('player_repin',{p_nick:NICK,p_pin:PIN,p_new:a});if(error)throw error;if(data===true){PIN=a;ls('pin',a);soonMsg('비밀번호를 바꿨어요.');return profile()}}catch(e){}
  soonMsg('바꾸지 못했어요. 다시 해 주세요.');bt.disabled=false;bt.textContent='변경하기'}
 
