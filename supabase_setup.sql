@@ -125,8 +125,9 @@ grant execute on function public.player_rename(text, text, text) to anon, authen
 grant execute on function public.player_repin(text, text, text) to anon, authenticated;
 
 -- ===== 관리자 고정 계정 (2026-11-03 추가) =====
+-- '비밀번호4자리' 부분을 실제 비밀번호로 바꿔서 실행 (저장소가 공개라 실제 값은 여기 적지 않음)
 -- 관리자로 로그인한 기기에서는 닉네임/비밀번호 입력 없이 이 계정으로 자동 접속
-insert into public.players(nick, pin_hash) values ('풍산동신라면', crypt('0526', gen_salt('bf')))
+insert into public.players(nick, pin_hash) values ('풍산동신라면', crypt('비밀번호4자리', gen_salt('bf')))
   on conflict (nick) do update set pin_hash = excluded.pin_hash, fail_count = 0, locked_until = null;
 
 create or replace function public.admin_me()
@@ -136,7 +137,7 @@ begin
   if not public.is_admin() then return null; end if;
   select * into r from public.players where nick = '풍산동신라면';
   if not found then
-    insert into public.players(nick, pin_hash) values ('풍산동신라면', crypt('0526', gen_salt('bf'))) returning * into r;
+    insert into public.players(nick, pin_hash) values ('풍산동신라면', crypt('비밀번호4자리', gen_salt('bf'))) returning * into r;
   end if;
   return jsonb_build_object('nick', r.nick, 'data', r.data);
 end $$;
