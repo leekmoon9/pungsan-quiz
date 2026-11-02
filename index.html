@@ -339,7 +339,7 @@ const UNITQ={};
 const SOCN=['정치','경제','동아시아|역사기행','현대사회와|윤리','한국지리|탐구'];
 const isSoc=n=>!!CUR[n];
 // 단원 구성: 이름을 받으면 여기만 바꾸면 됨. q: 문제 배열
-const CUR={};SOCN.forEach(n=>{CUR[n]=[1,2,3,4].map(u=>({n:u+'단원',m:[1,2,3].map(k=>({n:u+'-'+k+' 중단원',q:[]}))}))});
+const CUR={};SOCN.concat(['중국어|회화','일본어|회화','세포와|물질대사','물질과|에너지','역학과|에너지','행성우주|과학']).forEach(n=>{CUR[n]=[1,2,3,4].map(u=>({n:u+'단원',m:[1,2,3].map(k=>({n:u+'-'+k+' 중단원',q:[]}))}))});
 CUR['독서와|작문']=PASS.map(p=>({n:p.name,m:CATS.map(([k,l])=>({n:l,q:p.Q.filter(q=>q.cat==k)}))}));CUR['영어']=[];
 const KIND={'독서와|작문':['지문','유형'],'영어':['지문','유형']};const kd=n=>KIND[n]||['대단원','중단원'];
 const midQ=(n,u,k)=>CUR[n][u].m[k].q;
