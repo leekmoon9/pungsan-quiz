@@ -107,6 +107,13 @@ body:has(.hero) #rf{display:none}
 .mb>span:first-child{display:flex;align-items:center;flex-wrap:wrap}
 .wnb::before{content:"";position:absolute;top:0;left:0;bottom:0;width:22px;background:linear-gradient(to right,#e9978f 0,#e9978f 22%,transparent 100%);pointer-events:none}
 .b.xb{width:auto;flex:none;padding:8px 22px;margin-top:4px}
+.qback{position:fixed;left:14px;top:calc(12px + env(safe-area-inset-top,0px));z-index:40;width:40px;height:40px;border-radius:50%;border:none;background:var(--card);color:var(--tx);box-shadow:0 4px 14px rgba(90,70,40,.22);display:flex;align-items:center;justify-content:center;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.qback svg{width:20px;height:20px}
+.qz{text-align:center;padding-top:2px}.qz>.tag{margin:0 50px}.qz .qpr{justify-content:center;margin-left:50px;margin-right:50px}
+.qz .q{text-align:center}.qz .card>.tag{text-align:center}
+#app .qz .opt{justify-content:center;text-align:center;align-items:center}
+.qz input[type=text]{text-align:center}.qz textarea{text-align:left}
+.qz .row{justify-content:center}
 h3.sec{font-size:19px;font-weight:600;margin:20px 0 8px}
 .fbw{min-height:calc(100vh - 60px);min-height:calc(100svh - 60px);display:flex;flex-direction:column;justify-content:center;text-align:center}
 .fbw .tag{max-width:420px;margin:0 auto 6px}
@@ -433,14 +440,14 @@ function goBack(){if(SS&&SS.meta&&SS.meta.wp)return wrongPage(SS.meta.subj);if(S
 const qtx=t=>esc(t).replace(/\[빈칸\]/g,'<span class="blk"></span>');
 function quiz(){const q=SS.qs[SS.i],N=SS.qs.length,seg=SS.segs[SS.si],r=SS.resp[q.id]||{};QID=q.id;if(!QS0)QS0=Date.now();
  const tn={mc:'객관식',ox:'O/X',sh:'빈칸 채우기',es:'서술형'}[q.t];
- let h=`<div class="tag">${SS.meta&&SS.meta.mode=='wrong'?'<span class="prc" style="background:#f3c9c4;color:#7a2e26">오답노트</span> ':SS.meta&&SS.meta.practice?'<span class="prc">다시 풀기</span> ':''}${esc(ttl())} · ${esc(seg.label)}${SS.segs.length>1?` <span class="sgn">${SS.si+1}/${SS.segs.length}</span>`:''}</div><div class="qpr"><b>${SS.i+1}</b><span>/ ${N}</span><div class="bar"><i style="width:${(SS.i+1)/N*100}%"></i></div></div><div class="card"><div class="tag" style="margin-bottom:2px">${tn}</div><div class="q">${qtx(q.q)}</div>`;
+ let h=`<button class="qback" aria-label="나가기" onclick="exitQuiz()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button><div class="qz"><div class="tag">${SS.meta&&SS.meta.mode=='wrong'?'<span class="prc" style="background:#f3c9c4;color:#7a2e26">오답노트</span> ':SS.meta&&SS.meta.practice?'<span class="prc">다시 풀기</span> ':''}${esc(ttl())} · ${esc(seg.label)}${SS.segs.length>1?` <span class="sgn">${SS.si+1}/${SS.segs.length}</span>`:''}</div><div class="qpr"><b>${SS.i+1}</b><span>/ ${N}</span><div class="bar"><i style="width:${(SS.i+1)/N*100}%"></i></div></div><div class="card"><div class="tag" style="margin-bottom:2px">${tn}</div><div class="q">${qtx(q.q)}</div>`;
  if(q.t=='mc')pmOf(q).forEach((k,pos)=>{h+=`<button class="opt${r.v===k?' sel':''}" onclick="pk(${k})"><span class="on">${pos+1}</span>${esc(q.o[k])}</button>`});
  else if(q.t=='ox')h+=`<div class="oxr">${[true,false].map(k=>`<button class="opt ox${r.v===k?' sel':''}" onclick="pk(${k})">${k?'O':'X'}</button>`).join('')}</div>`;
  else if(q.t=='sh')h+=`<input type="text" id="in" placeholder="빈칸에 들어갈 말" value="${esc(r.v||'')}" autocomplete="off" onkeydown="if(event.key=='Enter'){event.preventDefault();${SS.i<N-1?'nav(1)':'submitSeg()'}}">`;
  else h+=`<textarea id="in" placeholder="답안을 직접 써 보세요">${esc(r.v||'')}</textarea>`;
  h+=`<div class="row"><button class="b g" ${SS.i?'':'disabled'} onclick="nav(-1)">이전</button>${SS.i<N-1?'<button class="b" onclick="nav(1)">다음</button>':'<button class="b sbm" onclick="submitSeg()">제출</button>'}</div></div>`;
- const left=SS.qs.filter(x=>!hasAns(x)).length;h+=`<p class="mut" style="text-align:center;font-size:13px;margin:10px 0 0">${left?`아직 안 푼 문제 ${left}개 · `:''}제출하면 정답과 해설이 나와요</p><div class="row" style="justify-content:center"><button class="b g s xb" onclick="exitQuiz()">나가기</button></div>`;
- show(h,'q'+q.id);const e=document.getElementById('in');if(e&&q.t=='sh'&&!('ontouchstart' in window))e.focus()}
+ const left=SS.qs.filter(x=>!hasAns(x)).length;h+=`<p class="mut" style="text-align:center;font-size:13px;margin:10px 0 0">${left?`아직 안 푼 문제 ${left}개 · `:''}제출하면 정답과 해설이 나와요</p>`;
+ show(h+'</div>','q'+q.id);const e=document.getElementById('in');if(e&&q.t=='sh'&&!('ontouchstart' in window))e.focus()}
 const hasAns=q=>{const r=SS.resp[q.id];return r&&r.v!==undefined&&r.v!==null&&String(r.v).trim()!==''};
 function keep(){const q=SS.qs[SS.i],e=document.getElementById('in');if(e&&(q.t=='sh'||q.t=='es'))SS.resp[q.id]={v:e.value}}
 function tick(){if(QS0){const sec=Math.min((Date.now()-QS0)/1000,300);if(sec>=1){R._t=R._t||{};const k=dkey();R._t[k]=(R._t[k]||0)+sec;save()}QS0=Date.now()}}
@@ -465,7 +472,7 @@ function quitRun(){submitSeg()}
 let EXITING=false;
 async function exitQuiz(){if(EXITING)return;EXITING=true;keep();tick();
  const fresh=!(SS.meta&&(SS.meta.practice||SS.meta.mode=='wrong'))&&SS.qs.some(q=>!(SS.base&&SS.base[q.id]));
- const ok=fresh?await askBox('문제 풀이를 그만둘까요?','처음 푸는 유형이라 지금 나가면<br>이번 유형의 진행 상황이 저장되지 않아요.','다음'):await askBox('나가시겠어요?','','다음');
+ const ok=fresh?await askBox('나가시겠습니까?','진행 상황이 저장되지 않습니다.','다음'):await askBox('나가시겠습니까?','','다음');
  EXITING=false;if(!ok){QS0=Date.now();return}QS0=0;try{sessionStorage.removeItem(KEY+'ss')}catch(e){}goBack()}
 
 function sub(){const q=SS.qs[SS.i];
