@@ -154,3 +154,52 @@ revoke all on function public.admin_me() from public;
 revoke all on function public.admin_save(jsonb) from public;
 grant execute on function public.admin_me() to authenticated;
 grant execute on function public.admin_save(jsonb) to authenticated;
+
+-- ===== 관리자 비밀 링크 방식 (2026-11-03 변경) =====
+-- '관리자키' 부분은 실제 키로 바꿔서 실행 (저장소가 공개라 실제 값은 적지 않음)
+create table if not exists public.admin_keys (key_hash text primary key);
+alter table public.admin_keys enable row level security;
+insert into public.admin_keys values (encode(extensions.digest('관리자키', 'sha256'), 'hex')) on conflict do nothing;
+create or replace function public.admin_ok(p_key text) returns boolean
+language sql stable security definer set search_path = public, extensions as $$
+  select exists (select 1 from public.admin_keys where key_hash = encode(digest(coalesce(p_key, ''), 'sha256'), 'hex'))
+$$;
+revoke all on function public.admin_ok(text) from public, anon, authenticated;
+-- 관리자 계정은 일반 로그인으로는 못 들어오게 비밀번호를 무작위로
+update public.players set pin_hash = crypt(gen_random_uuid()::text, gen_salt('bf')) where nick = '풍산동신라면';
+drop function if exists public.admin_me();
+drop function if exists public.admin_save(jsonb);
+create or replace function public.admin_me(p_key text) returns jsonb
+language plpgsql security definer set search_path = public, extensions as $$
+declare r public.players;
+begin
+  if not public.admin_ok(p_key) then return null; end if;
+  select * into r from public.players where nick = '풍산동신라면';
+  if not found then
+    insert into public.players(nick, pin_hash) values ('풍산동신라면', crypt(gen_random_uuid()::text, gen_salt('bf'))) returning * into r;
+  end if;
+  return jsonb_build_object('nick', r.nick, 'data', r.data);
+end $$;
+create or replace function public.admin_save(p_key text, p_data jsonb) returns boolean
+language plpgsql security definer set search_path = public as $$
+begin
+  if not public.admin_ok(p_key) or octet_length(p_data::text) > 200000 then return false; end if;
+  update public.players set data = p_data, updated_at = now() where nick = '풍산동신라면';
+  return found;
+end $$;
+create or replace function public.admin_players(p_key text) returns setof jsonb
+language plpgsql stable security definer set search_path = public as $$
+begin
+  if not public.admin_ok(p_key) then return; end if;
+  return query select jsonb_build_object('nick', nick, 'data', data, 'updated_at', updated_at) from public.players order by updated_at desc;
+end $$;
+create or replace function public.admin_feedback(p_key text) returns setof jsonb
+language plpgsql stable security definer set search_path = public as $$
+begin
+  if not public.admin_ok(p_key) then return; end if;
+  return query select jsonb_build_object('nick', nick, 'body', body, 'created_at', created_at) from public.feedback order by created_at desc limit 500;
+end $$;
+grant execute on function public.admin_me(text) to anon, authenticated;
+grant execute on function public.admin_save(text, jsonb) to anon, authenticated;
+grant execute on function public.admin_players(text) to anon, authenticated;
+grant execute on function public.admin_feedback(text) to anon, authenticated;
