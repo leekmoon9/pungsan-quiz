@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko"><head><meta charset="utf-8"><meta name="color-scheme" content="light">
+<html lang="ko"><head><meta charset="utf-8"><meta name="color-scheme" content="light"><link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#f3ede1"><link rel="apple-touch-icon" href="apple-touch-icon.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="풍산 기말">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>풍산고 기말 시험 대비</title>
 <style>
@@ -377,4 +377,5 @@ function adminOne(i){const r=ADM[i],X=r.R||{};let h=`<h2>${esc(r.nick)}</h2><p c
   const wq=p.Q.filter(q=>X[q.id]&&!X[q.id].ok);if(wq.length)h+=`<div class="mut" style="margin-top:6px">틀린 문제: ${wq.map(q=>q.id.replace(/\D+/,'')*1+1).map((n,k)=>(wq[k].t=='es'?'서술':'')+n+'번').join(', ')}</div>`;h+='</div>'});
  h+='<div class="row"><button class="b g" onclick="admin()">목록으로</button></div>';show(h)}
 chkAdmin().then(()=>{});home();
+if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
 </script></body></html>
