@@ -85,3 +85,41 @@ revoke all on function public.player_login(text, text) from public;
 revoke all on function public.player_save(text, text, jsonb) from public;
 grant execute on function public.player_login(text, text) to anon, authenticated;
 grant execute on function public.player_save(text, text, jsonb) to anon, authenticated;
+
+-- ===== 프로필: 닉네임 확인·변경, 비밀번호 변경 (2026-11-03 추가) =====
+create or replace function public.nick_available(p_nick text)
+returns boolean language sql security definer set search_path = public as $$
+  select char_length(btrim(p_nick)) between 1 and 12
+     and not exists (select 1 from public.players where nick = btrim(p_nick))
+$$;
+
+create or replace function public.player_rename(p_nick text, p_pin text, p_new text)
+returns text language plpgsql security definer set search_path = public, extensions as $$
+declare r public.players;
+begin
+  p_new := btrim(p_new);
+  if p_new is null or char_length(p_new) not between 1 and 12 then return 'bad'; end if;
+  select * into r from public.players where nick = btrim(p_nick) for update;
+  if not found or r.pin_hash <> crypt(p_pin, r.pin_hash) then return 'auth'; end if;
+  if exists (select 1 from public.players where nick = p_new) then return 'taken'; end if;
+  update public.players set nick = p_new, updated_at = now() where nick = r.nick;
+  return 'ok';
+end $$;
+
+create or replace function public.player_repin(p_nick text, p_pin text, p_new text)
+returns boolean language plpgsql security definer set search_path = public, extensions as $$
+declare r public.players;
+begin
+  if p_new !~ '^[0-9]{4}$' then return false; end if;
+  select * into r from public.players where nick = btrim(p_nick) for update;
+  if not found or r.pin_hash <> crypt(p_pin, r.pin_hash) then return false; end if;
+  update public.players set pin_hash = crypt(p_new, gen_salt('bf')), fail_count = 0, locked_until = null where nick = r.nick;
+  return true;
+end $$;
+
+revoke all on function public.nick_available(text) from public;
+revoke all on function public.player_rename(text, text, text) from public;
+revoke all on function public.player_repin(text, text, text) from public;
+grant execute on function public.nick_available(text) to anon, authenticated;
+grant execute on function public.player_rename(text, text, text) to anon, authenticated;
+grant execute on function public.player_repin(text, text, text) to anon, authenticated;
