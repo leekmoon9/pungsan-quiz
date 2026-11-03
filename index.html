@@ -113,7 +113,7 @@ body:has(.hero) #rf{display:none}
 .qz{text-align:center;padding-top:2px}.qz>.tag{margin:0 50px}.qz .qpr{justify-content:center;margin-left:50px;margin-right:50px}
 .qz .q{text-align:center}.qz .card>.tag{text-align:center}
 #app .qz .opt{justify-content:flex-start;text-align:left;align-items:center}
-.qz .opt.ox{justify-content:center;text-align:center}
+#app .qz .opt.ox{justify-content:center;text-align:center}
 .qz .opt,.qz .q,.fb,.fbt{word-break:keep-all;overflow-wrap:anywhere}
 .qz input[type=text]{text-align:center}.qz textarea{text-align:left}
 .qz .row{justify-content:center}
@@ -129,6 +129,7 @@ body.hasbk .fbw h2:first-child{padding-left:0}
 .cvs{position:absolute;right:4px;top:42px;width:50px;border-radius:6px;transform:rotate(7deg);box-shadow:0 4px 12px rgba(60,45,25,.28);pointer-events:none}
 .b.admb{width:auto;flex:none;min-height:0!important;padding:8px 16px;margin-top:4px;background:var(--card);border:none;font-weight:700;box-shadow:0 3px 10px rgba(90,70,40,.18)}
 .fbd{font-size:14px;line-height:1.75;word-break:keep-all;margin:6px auto 10px!important}.fbd span{display:inline-block;margin-top:4px;padding:1px 10px;border-radius:999px;background:var(--bd);font-size:12.5px}
+.admw{display:flex;gap:6px;flex:none}.b.rsb{color:#a3392f}
 h3.sec{font-size:19px;font-weight:600;margin:20px 0 8px}
 .fbw{min-height:calc(100vh - 60px);min-height:calc(100svh - 60px);display:flex;flex-direction:column;justify-content:center;text-align:center}
 .fbw .tag{max-width:420px;margin:0 auto 6px}
@@ -287,7 +288,7 @@ function animBars(){setTimeout(()=>document.querySelectorAll('[data-w]').forEach
 const SUBJ=[[['독서와|작문','b',1],['영어','r'],['중국어|회화','t'],['일본어|회화','j']],[['정치','g'],['경제','g'],['동아시아|역사기행','g'],['현대사회와|윤리','g'],['한국지리|탐구','g']],[['세포와|물질대사','p'],['물질과|에너지','p'],['역학과|에너지','p'],['행성우주|과학','p']]];
 const SECN=['언어 영역','사회 영역','과학 영역'];
 const SC={b:'#8fb8ec',r:'#ee9a9a',t:'#93d3d8',j:'#c9b6ec',g:'#9bd3ae',p:'#f1a9c8'};
-function subjects(){let h=`<div class="hd" style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px"><div><h2>과목 선택</h2><p class="tag"><b>${esc(NICK)}</b> 님 <a class="pfl" onclick="profile()">프로필 보기</a></p></div>${OWNER&&DB?'<button class="b g s admb" onclick="admin()">관리자</button>':''}</div><div class="qk"><button onclick="allStats()">전체 통계</button><button onclick="fbForm(1)">의견 남기기</button></div>`;
+function subjects(){let h=`<div class="hd" style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px"><div><h2>과목 선택</h2><p class="tag"><b>${esc(NICK)}</b> 님 <a class="pfl" onclick="profile()">프로필 보기</a></p></div>${OWNER&&DB?'<span class="admw"><button class="b g s admb rsb" onclick="myReset()">초기화</button><button class="b g s admb" onclick="admin()">관리자</button></span>':''}</div><div class="qk"><button onclick="allStats()">전체 통계</button><button onclick="fbForm(1)">의견 남기기</button></div>`;
  SUBJ.forEach((row,ri)=>{h+=`<h3 class="sec">${SECN[ri]}</h3><div class="sg c2">`;row.forEach(([n,c,o])=>{if(COVER[n]){h+=bk(n,c,o);return}h+=`<div class="card pc" style="margin:0;padding:0;overflow:hidden;text-align:center;background:var(--bg);aspect-ratio:6/5;display:flex;flex-direction:column" onclick="subj('${n}')"><div style="position:absolute;top:0;left:0;right:0;pointer-events:none;height:34px;background:linear-gradient(to bottom,${SC[c]} 0,${SC[c]} 18%,transparent 100%)"></div><div style="flex:1;display:flex;align-items:center;justify-content:center;padding:4px;line-height:1.3;font-weight:600;white-space:nowrap" class="sl">${n.split('|').join('<br>')}</div></div>`});h+='</div>'});
  show(h);animBars()}
 let FBF=0;
@@ -391,6 +392,8 @@ const wkBadge=g=>(g.weak?'<span class="wkb">취약</span>':'')+(g.weak&&g.fixed?
 function allSegs(n,u,k){const segs=[];CUR[n].forEach((U,ui)=>{if(u!==undefined&&ui!==u)return;U.m.forEach((M,ki)=>{if(k!==undefined&&ki<k)return;if(M.q.length)segs.push({label:(u===undefined||CUR[n].length>1&&KIND[n]?U.n+' · ':'')+M.n,qs:M.q})})});return segs}
 function startWrong(n,segs,extra){const ws=segs.map(x=>({label:x.label,qs:x.qs.filter(isUnf)})).filter(x=>x.qs.length);if(!ws.length){soonMsg('고칠 오답이 없어요.');return}
  startRun(n,ws,Object.assign({title:n.split('|').join(' ')+' 오답노트',mode:'wrong',practice:true},extra||{}))}
+async function myReset(){if(!OWNER)return;if(!(await askBox('내 기록을 초기화할까요?','풀이 기록, 오답노트, 공부 시간이 모두 지워집니다.','초기화')))return;
+ R={_dv:DV,_t:{},_fx:{}};ls('rec:'+NICK,JSON.stringify(R));try{sessionStorage.removeItem(KEY+'ss')}catch(e){}await sync();soonMsg('초기화했어요.');subjects()}
 function wrongPage(n){const nm=n.split('|').join(' '),c=SUBJ.flat().find(x=>x[0]==n)[1],col=SC[c];
  const all=socQ(n),wr=all.filter(q=>R[q.id]&&!R[q.id].ok),un=wr.filter(isUnf);
  let h=`<div class="shd"><h2 style="--hlc:#f3b8b1">오답노트</h2><p class="tag">${esc(nm)} · 틀린 문제를 다시 풀어서 고쳐요. 여기서 푼 결과는 진행 상황에 반영되지 않아요.</p>${COVER[n]?`<img class="cvs" src="${COVER[n]}" alt="">`:''}</div>`;
