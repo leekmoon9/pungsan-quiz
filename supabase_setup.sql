@@ -373,3 +373,95 @@ grant execute on function public.push_unsubscribe(text) to anon, authenticated;
 grant execute on function public.admin_feedback(text) to anon, authenticated;
 grant execute on function public.admin_reply(text, text, bigint, text, text) to anon, authenticated;
 grant execute on function public.admin_notice(text, text, text) to anon, authenticated;
+
+-- ===== 보조 관리자 5명 (2026-11-03 추가) =====
+-- '보조키1'~'보조키5' 부분은 실제 키로 바꿔서 실행 (저장소가 공개라 실제 값은 적지 않음)
+create table if not exists public.sub_keys (
+  key_hash   text primary key,
+  slot       int,
+  nick       text unique,
+  created_at timestamptz not null default now()
+);
+alter table public.sub_keys enable row level security;
+insert into public.sub_keys(key_hash, slot) values
+  (encode(extensions.digest('보조키1', 'sha256'), 'hex'), 1),
+  (encode(extensions.digest('보조키2', 'sha256'), 'hex'), 2),
+  (encode(extensions.digest('보조키3', 'sha256'), 'hex'), 3),
+  (encode(extensions.digest('보조키4', 'sha256'), 'hex'), 4),
+  (encode(extensions.digest('보조키5', 'sha256'), 'hex'), 5)
+on conflict do nothing;
+
+create or replace function public.sub_ok(p_key text) returns boolean
+language sql stable security definer set search_path = public, extensions as $$
+  select exists (select 1 from public.sub_keys where key_hash = encode(digest(coalesce(p_key, ''), 'sha256'), 'hex'))
+$$;
+create or replace function public.sub_nick(p_key text) returns text
+language sql stable security definer set search_path = public, extensions as $$
+  select nick from public.sub_keys where key_hash = encode(digest(coalesce(p_key, ''), 'sha256'), 'hex')
+$$;
+revoke all on function public.sub_ok(text) from public, anon, authenticated;
+revoke all on function public.sub_nick(text) from public, anon, authenticated;
+
+create or replace function public.sub_me(p_key text) returns jsonb
+language plpgsql security definer set search_path = public as $$
+declare n text; d jsonb;
+begin
+  if not public.sub_ok(p_key) then return null; end if;
+  n := public.sub_nick(p_key);
+  if n is null then return jsonb_build_object('need_nick', true); end if;
+  select data into d from public.players where nick = n;
+  return jsonb_build_object('nick', n, 'data', coalesce(d, '{}'::jsonb));
+end $$;
+create or replace function public.sub_setnick(p_key text, p_nick text) returns text
+language plpgsql security definer set search_path = public, extensions as $$
+begin
+  if not public.sub_ok(p_key) then return 'auth'; end if;
+  if public.sub_nick(p_key) is not null then return 'already'; end if;
+  p_nick := btrim(p_nick);
+  if p_nick is null or char_length(p_nick) not between 1 and 12 then return 'bad'; end if;
+  if exists (select 1 from public.players where nick = p_nick) then return 'taken'; end if;
+  insert into public.players(nick, pin_hash) values (p_nick, crypt(gen_random_uuid()::text, gen_salt('bf')));
+  update public.sub_keys set nick = p_nick where key_hash = encode(digest(p_key, 'sha256'), 'hex');
+  return 'ok';
+end $$;
+create or replace function public.sub_save(p_key text, p_data jsonb) returns boolean
+language plpgsql security definer set search_path = public as $$
+declare n text := public.sub_nick(p_key);
+begin
+  if n is null or octet_length(p_data::text) > 200000 then return false; end if;
+  update public.players set data = p_data, updated_at = now() where nick = n;
+  return found;
+end $$;
+-- 보조 관리자는 닉네임 없이 풀이 기록만 (오답 분석용), 피드백은 번호·처리 상태 없이
+create or replace function public.sub_players(p_key text) returns setof jsonb
+language plpgsql stable security definer set search_path = public as $$
+begin
+  if not public.sub_ok(p_key) then return; end if;
+  return query select data from public.players;
+end $$;
+create or replace function public.sub_feedback(p_key text) returns setof jsonb
+language plpgsql stable security definer set search_path = public as $$
+begin
+  if not public.sub_ok(p_key) then return; end if;
+  return query select jsonb_build_object('nick', nick, 'body', body, 'created_at', created_at) from public.feedback order by created_at desc limit 500;
+end $$;
+
+-- 메시지함·알림도 보조 관리자 계정으로 받게
+create or replace function public.who(p_nick text, p_pin text, p_key text) returns text
+language plpgsql stable security definer set search_path = public, extensions as $$
+declare r public.players; s text;
+begin
+  if p_key is not null and public.admin_ok(p_key) then return '풍산동신라면'; end if;
+  if p_key is not null then s := public.sub_nick(p_key); if s is not null then return s; end if; end if;
+  select * into r from public.players where nick = btrim(coalesce(p_nick, ''));
+  if not found or (r.locked_until is not null and r.locked_until > now())
+     or coalesce(p_pin, '') !~ '^[0-9]{4}$' or r.pin_hash <> crypt(p_pin, r.pin_hash) then return null; end if;
+  return r.nick;
+end $$;
+revoke all on function public.who(text, text, text) from public, anon, authenticated;
+
+grant execute on function public.sub_me(text) to anon, authenticated;
+grant execute on function public.sub_setnick(text, text) to anon, authenticated;
+grant execute on function public.sub_save(text, jsonb) to anon, authenticated;
+grant execute on function public.sub_players(text) to anon, authenticated;
+grant execute on function public.sub_feedback(text) to anon, authenticated;
