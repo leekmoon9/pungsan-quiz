@@ -802,25 +802,18 @@ function mkLeft(n){const qs=socQ(n);return {un:qs.filter(q=>!R[q.id]).length,wr:
 const mkRate=n=>{const a=mkAns(n);return a.length?Math.round(a.filter(q=>R[q.id].ok).length/a.length*100):null};
 const mkN=n=>MOCK[n]&&MOCK[n].length?MOCK[n].length:5;
 const sDone=n=>!!MOCK[n]&&MOCK[n].length>0&&mkCnt(n)>=mkN(n);
-// ---- 모의고사 형식: 고2 전국연합학력평가 기준 (2028 수능 체제) ----
-// 탐구(통합사회·통합과학 방식) 25문항·40분·50점(1.5/2/2.5점), 국어 45문항·80분·100점, 영어 45문항·70분·100점, 수학 30문항·100분·100점
-function mkSpec(n){const c=(SUBJ.flat().find(x=>x[0]==n)||[])[1];
- if(c=='b')return {qn:45,min:80,pts:100,lab:'국어'};if(c=='r')return {qn:45,min:70,pts:100,lab:'영어'};if(c=='y')return {qn:30,min:100,pts:100,lab:'수학'};
- if(c=='t'||c=='j')return {qn:30,min:40,pts:50,lab:'제2외국어'};return {qn:25,min:40,pts:50,lab:'탐구'}}
-// 전연학처럼 자료(표·그래프·사례·보기)를 분석하는 문항일수록 점수가 높음
+// ---- 모의고사 형식: 문제 스타일은 고2 전국연합학력평가(자료 분석형), 분량은 학교 시험 기준 ----
+// 모든 과목 회차당 25문항 내외·50분·100점(3/4/5점 배점)
+function mkSpec(n){return {qn:25,min:50,pts:100}}
+// 자료(표·그래프·사례·보기)가 복잡한 문항일수록 높은 배점
 function mkSc(q){const t=q.q||'',bl=t.split(/\n\s*\n/);let v=0;if(q.tb)v+=3;if(q.fig)v+=3;
  if(bl.some(x=>!/\?(\s*\(단[^)]*\))?\s*$/.test(x)&&!/^<보기>/.test(x)&&!/^\[(표|그림)\]$/.test(x)))v+=2;if(/<보기>/.test(t))v+=1;
  if(/\(가\)|갑:|갑국|을국|A국|사례/.test(t))v+=1;if(t.length>160)v+=1;return v}
-// 학교 시험형(단순 개념 확인) 문항은 단원별 실전 문제로 옮기고, 전연학형 문항만 회차당 정해진 문항 수로 묶음
-function mkReform(){for(const n in MOCK){const sp=mkSpec(n),all=[].concat(...MOCK[n].map(r=>r.q));if(!all.length)continue;
- const pos=q=>{const m=gMid(n,q.g);return m?m[0]*100+m[1]:9999},mid=all.map(q=>[q,gMid(n,q.g)]);
- const keep=all.filter(q=>mkSc(q)>=2).sort((a,b)=>mkSc(b)-mkSc(a)||pos(a)-pos(b)),N=Math.floor(keep.length/sp.qn),use=new Set(keep.slice(0,N*sp.qn));
- mid.forEach(([q,m])=>{if(use.has(q)||!m)return;const x=Object.assign({},q,{lv:'x'});delete x.mk;CUR[n][m[0]].m[m[1]].q.push(x)});
- const L=[...use].sort((a,b)=>pos(a)-pos(b)),rs=Array.from({length:N},()=>[]);L.forEach((q,i)=>rs[i%N].push(q));
- MOCK[n]=rs.map((qs,r)=>{const k=Math.round(sp.qn/5),o=qs.slice().sort((a,b)=>mkSc(b)-mkSc(a));const pt=new Map();
-  o.forEach((q,i)=>pt.set(q,sp.pts/sp.qn==2?(i<k?2.5:i>=o.length-k?1.5:2):(sp.pts/sp.qn)));
-  return {n:(r+1)+'회',q:qs.map(q=>Object.assign({},q,{pt:pt.get(q)}))}});
- if(!N)delete MOCK[n];else MOCK[n].spec=sp}}
+function mkReform(){for(const n in MOCK){const sp=mkSpec(n);if(!MOCK[n].length){delete MOCK[n];continue}
+ MOCK[n].forEach(r=>{const qs=r.q,N=qs.length,k=Math.round(N/5),o=qs.map((q,i)=>[q,i]).sort((a,b)=>mkSc(b[0])-mkSc(a[0])||a[1]-b[1]);
+  const pt=new Map();o.forEach(([q],i)=>pt.set(q,N==25&&sp.pts==100?(i<k?5:i>=N-k?3:4):Math.round(sp.pts/N*10)/10));
+  r.q=qs.map(q=>Object.assign({},q,{pt:pt.get(q)}))});
+ MOCK[n].spec=sp}}
 const mkPts=(n,r)=>mkR(n,r).reduce((a,q)=>a+(R[q.id]&&R[q.id].ok?(q.pt||0):0),0);
 const nDone=n=>{const nv=(R._nv&&R._nv[n])||{},has=[];CUR[n].forEach((U,u)=>U.m.forEach((M,k)=>{if(noteOf(n,u,k))has.push(u+'-'+k)}));return has.length>0&&has.every(x=>nv[x])};
 function mockCard(n,col){const has=!!MOCK[n],op=has&&mkOpen(n),c=mkCnt(n),dots=Array.from({length:mkN(n)},(_,r)=>`<i class="${has&&MOCK[n][r]&&mkDone(n,r)?'on':''}"></i>`).join('');
@@ -830,11 +823,11 @@ function mockGo(n,r){if(!MOCK[n]){soonMsg('이 과목 모의고사는 아직 준
  if(r===undefined){r=MOCK[n].findIndex((_,i)=>!mkDone(n,i));if(r<0)return mockPage(n)}
  const nm=n.split('|').join(' '),qs=mkR(n,r),seg=[{label:`모의고사 ${r+1}회`,qs}],sp=MOCK[n].spec||mkSpec(n),m={title:nm+' 모의고사',mock:r+1,kind:'모의고사',mp:1,min:sp.min,back:"mockPage('"+n+"')"};
  if(mkDone(n,r)){askBox(`${r+1}회를 다시 풀까요?`,'다시 푼 결과는 통계에 반영되지 않아요.','다시 풀기').then(ok=>{if(ok)startRun(n,seg,Object.assign(m,{practice:true,t0:Date.now()}))});return}
- askBox(`모의고사 ${r+1}회`,`${qs.length}문항 · ${sp.min}분 · ${sp.pts}점 만점<small class="mdn">고2 전국연합학력평가 형식이에요. 문항마다 배점이 다르고, 끝까지 다 푼 뒤에 한 번에 채점돼요. 중간에 나가면 기록되지 않아요.</small>`,'시작').then(ok=>{if(ok)startRun(n,seg,Object.assign(m,{t0:Date.now()}))})}
+ askBox(`모의고사 ${r+1}회`,`${qs.length}문항 · ${sp.min}분 · ${sp.pts}점 만점<small class="mdn">문제는 고2 전국연합학력평가 스타일이고, 분량과 시간은 학교 시험 기준이에요. 문항마다 배점이 다르고, 끝까지 다 푼 뒤에 한 번에 채점돼요. 중간에 나가면 기록되지 않아요.</small>`,'시작').then(ok=>{if(ok)startRun(n,seg,Object.assign(m,{t0:Date.now()}))})}
 function mkWeak(n){const tg={};mkAns(n).forEach(q=>{const t=tg[q.g]=tg[q.g]||{n:0,c:0};t.n++;if(R[q.id].ok)t.c++});return Object.keys(tg).map(k=>({k,...tg[k],r:Math.round(tg[k].c/tg[k].n*100)})).sort((a,b)=>a.r-b.r||b.n-a.n)}
 function gMid(n,g){for(let u=0;u<CUR[n].length;u++)for(let k=0;k<CUR[n][u].m.length;k++)if(CUR[n][u].m[k].q.some(q=>q.g==g))return [u,k];return null}
 function mockPage(n){if(!MOCK[n]){soonMsg('이 과목 모의고사는 아직 준비 중이에요.');return}const col=sCol(n),nm=n.split('|').join(' '),c=mkCnt(n),op=mkOpen(n),rt=mkRate(n),wq=mkAll(n).filter(q=>R[q.id]&&!R[q.id].ok),uq=wq.filter(isUnf);
- let h=`<div class="shd"><h2 style="--hlc:${col}">모의고사</h2></div>`;{const sp=MOCK[n].spec||mkSpec(n);h+=`<p class="tag" style="margin:-4px 2px 10px">고2 전국연합학력평가 형식 · 회차당 ${sp.qn}문항 · ${sp.min}분 · ${sp.pts}점 만점</p>`}
+ let h=`<div class="shd"><h2 style="--hlc:${col}">모의고사</h2></div>`;{const sp=MOCK[n].spec||mkSpec(n);h+=`<p class="tag" style="margin:-4px 2px 10px">학평 스타일 문제 · 회차당 ${sp.qn}문항 · ${sp.min}분 · ${sp.pts}점 만점</p>`}
  h+=`<div class="mkg" style="--uc:${col}"><div class="card mks2"><span>완료</span><b>${c}<small>/${mkN(n)}회</small></b></div><div class="card mks2"><span>평균 정답률</span><b>${rt==null?'-':rt+'<small>%</small>'}</b></div></div>`;
  h+=`<h3 class="sec">회차별 점수</h3><div class="mkr" style="--uc:${col}">`+MOCK[n].map((M,r)=>{const d=mkDone(n,r),nx=!d&&MOCK[n].findIndex((_,i)=>!mkDone(n,i))==r,qs=M.q,cc=qs.filter(q=>R[q.id]&&R[q.id].ok).length,p=Math.round(cc/qs.length*100);
   return `<button class="mkrow${d?' dn':nx&&op?' nx':' lk'}" ${d||nx&&op?`onclick="mockGo('${n}',${r})"`:'disabled'}><b>${r+1}회</b>${d?`<span class="mkbar"><i data-w="${p}" style="width:0"></i></span><span class="mksc">${qs.some(q=>q.pt)?mkPts(n,r)+'점':cc+'/'+qs.length+' · '+p+'%'}</span>`:`<span class="mkst">${nx&&op?'풀러 가기':''}</span>`}<span class="chev">${d?'↻':nx&&op?'›':''}</span></button>`}).join('')+`</div>`;
@@ -1218,5 +1211,6 @@ if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.ser
 <script src="data/pol2.js?v=3"></script>
 <script src="data/pol3.js?v=3"></script>
 <script src="data/polm.js?v=2"></script>
-<script src="data/eco.js?v=1"></script>
+<script src="data/polrw.js?v=1"></script>
+<script src="data/eco.js?v=2"></script>
 <script>mkReform();boot()</script></body></html>
