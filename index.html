@@ -734,7 +734,7 @@ function nextNote(n,u,k){let x=[u,k];while((x=nextMid(n,x[0],x[1])))if(noteOf(n,
 function nextMid(n,u,k){if(k+1<CUR[n][u].m.length)return [u,k+1];if(u+1<CUR[n].length)return [u+1,0];return null}
 function learnHome(n){const col=sCol(n),nm=n.split('|').join(' '),mids=[].concat(...CUR[n].map((U,u)=>U.m.map((M,k)=>[u,k]))),nn=mids.filter(([u,k])=>noteOf(n,u,k)).length,qs=socQ(n);
  let h=`<div class="shd"><h2 style="--hlc:${col}">${nm}</h2><p class="tag"><b>${esc(NICK)}</b> 님</p>${COVER[n]?`<img class="cvs" src="${COVER[n]}" alt="">`:''}</div>`;
- h+=`<div class="lch" style="--uc:${col}"><button class="lcb" onclick="noteList('${n}')">${ICN_NOTE}<span><b>공부하기</b>${nn?`<em>필기 ${nn}/${mids.length}개</em>`:''}</span><span class="chev">›</span></button>`;
+ h+=`<div class="lch" style="--uc:${col}"><button class="lcb" onclick="noteList('${n}')">${ICN_NOTE}<span><b>공부하기</b></span><span class="chev">›</span></button>`;
  h+=`<button class="lcb${qDone(n)?' cpl':''}" onclick="socPage('${n}')">${ICN_PEN}<span><b>문제 풀기</b>${qs.length?`<em>${qDone(n)?'✓ 모두 완료 · ':`진행도 ${pct(qs)}% · `}${qs.length}문제</em>`:''}</span><span class="chev">›</span></button></div>`;
  if(NEWS(n))h+=mockCard(n,col);
  show(h)}
