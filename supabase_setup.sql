@@ -465,3 +465,27 @@ grant execute on function public.sub_setnick(text, text) to anon, authenticated;
 grant execute on function public.sub_save(text, jsonb) to anon, authenticated;
 grant execute on function public.sub_players(text) to anon, authenticated;
 grant execute on function public.sub_feedback(text) to anon, authenticated;
+
+-- ===== 시험 2주 전 모의고사 특별 공개 알림 (2026-11-03 추가) =====
+-- 2026-11-23(월) 오전 7시 30분(한국 시간)에 모든 사용자에게 공지 + 폰 알림이 한 번 가요.
+-- (모의고사 잠금 해제 자체는 앱에서 11월 23일 0시에 자동으로 풀려요)
+create extension if not exists pg_cron;
+
+create or replace function public.mock_open_notice() returns int
+language plpgsql security definer set search_path = public as $$
+declare n int;
+begin
+  if now() < timestamptz '2026-11-23 00:00:00+09' then return 0; end if;
+  if exists (select 1 from public.messages where meta->>'ev' = 'mock-open') then return 0; end if;
+  insert into public.messages(to_nick, title, body, meta)
+    select nick,
+      '[시험 2주 전 특별 이벤트] 모든 과목 모의고사가 열렸어요!',
+      E'시험이 딱 2주 남았어요.\n\n아직 모의고사를 풀어 보지 못한 친구들을 위해, 오늘부터 문제 풀이를 다 끝내지 않았어도 모든 과목 모의고사를 특별히 열어 두었어요.\n\n실제 시험처럼 25문제를 끝까지 풀어 보고, 모의고사 통계에서 내 취약 유형과 시험 직전에 할 일을 확인해 보세요. 틀린 문제는 모의고사 오답에서 다시 풀 수 있어요.\n\n남은 2주, 지금 바로 와서 체험해 보고 끝까지 같이 달려 봐요!',
+      jsonb_build_object('kind', 'notice', 'ev', 'mock-open')
+    from public.players;
+  get diagnostics n = row_count;
+  begin perform cron.unschedule('mock-open-notice'); exception when others then null; end;
+  return n;
+end $$;
+
+select cron.schedule('mock-open-notice', '30 22 22 11 *', $$select public.mock_open_notice()$$);

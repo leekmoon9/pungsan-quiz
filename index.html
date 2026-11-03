@@ -377,6 +377,10 @@ body.cap .capm{display:flex}
 .mkov b{font-size:18px}.mkov small{font-size:13.5px;opacity:.92;word-break:keep-all}.mkov em{font-style:normal;font-size:12.5px;font-weight:700;margin-top:4px;padding:3px 10px;border-radius:999px;background:rgba(255,255,255,.18)}
 .lcb.cpl{background:color-mix(in oklch,color-mix(in oklch,var(--uc) 90%,#000) 40%,var(--bg))!important}.lcb.cpl em{color:color-mix(in srgb,var(--uc) 45%,#222)}
 .mkov b{margin-top:2px}
+.lch.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}.lch.two .lcb{padding:18px 10px 16px;gap:8px;justify-content:flex-start!important}.lch.two .lci{width:44px;height:44px}.lch.two .lcb b{font-size:17px}.lch.two .lcb em{font-size:11.5px}
+.mkc{flex-direction:row!important;justify-content:flex-start!important;text-align:left!important;padding:14px 16px!important;gap:14px!important}.mkc>span:nth-child(2){align-items:flex-start!important}.mkc .lci{width:44px;height:44px}
+.sumc{margin:6px 0 12px;border:1.5px solid var(--ln);border-radius:14px;background:var(--card);overflow:hidden}.sumgo{display:flex;align-items:center;width:100%;padding:12px 16px;border:none;background:color-mix(in srgb,var(--uc) 22%,var(--card));font:inherit;color:var(--tx);text-align:left;cursor:pointer}.sumgo>span:first-child{flex:1;display:flex;flex-direction:column}.sumgo small{font-size:12px;color:var(--mut)}.sumgo b{font-size:16px}.sumgo .chev{display:block}
+.sumst{display:grid;grid-template-columns:repeat(3,1fr)}.sumst>div{padding:10px 6px;text-align:center;border-left:1px solid var(--ln)}.sumst>div:first-child{border-left:none}.sumst b{display:block;font-size:17px}.sumst small{font-size:12px;color:var(--mut)}
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -725,16 +729,20 @@ function ntBlock(b){const [t,...a]=b;
  if(t=='tip')return `<div class="ntip"><span>★ 시험 포인트</span><p>${ntIn(a[0])}</p></div>`;
  if(t=='img')return `<figure class="nim"><img src="${esc(a[0])}" alt="" loading="lazy">${a[1]?`<figcaption>${ntIn(a[1])}</figcaption>`:''}</figure>`;
  return ''}
-const ICN_NOTE='<svg class="lci" viewBox="0 0 48 48" aria-hidden="true"><rect x="10" y="5" width="30" height="38" rx="4" fill="#fffdf7" stroke="#6e5236" stroke-width="2.2"/><path d="M17 15h16M17 21h16M17 27h10" stroke="#9fb6d3" stroke-width="2.2" stroke-linecap="round"/><path d="M17 27h10" stroke="#f9df99" stroke-width="5" stroke-linecap="round" opacity=".8"/><path d="M6 12h6M6 20h6M6 28h6M6 36h6" stroke="#6e5236" stroke-width="2.2" stroke-linecap="round"/></svg>';
-const ICN_PEN='<svg class="lci" viewBox="0 0 48 48" aria-hidden="true"><rect x="7" y="9" width="26" height="32" rx="4" fill="#fffdf7" stroke="#6e5236" stroke-width="2.2"/><path d="M13 18l2.5 2.5L20 16M13 28l2.5 2.5L20 26" fill="none" stroke="#5fb27c" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M24 18h4M24 28h4" stroke="#9fb6d3" stroke-width="2.2" stroke-linecap="round"/><path d="M41.5 13.5 30 35l-4.5 2.5.5-5 11.5-21.5a2.3 2.3 0 0 1 4 2.5z" fill="#f9df99" stroke="#6e5236" stroke-width="2.2" stroke-linejoin="round"/></svg>';
+const ICN_NOTE='<svg class="lci" viewBox="0 0 48 48" fill="none" stroke="#1f1a15" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M24 13c-5-3.4-11-4-17-2.4v25c6-1.6 12-1 17 2.4 5-3.4 11-4 17-2.4v-25c-6-1.6-12-1-17 2.4z"/><path d="M24 13v25"/></svg>';
+const ICN_PEN='<svg class="lci" viewBox="0 0 48 48" fill="none" stroke="#1f1a15" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="7" y="11" width="27" height="27" rx="3.5"/><path d="M12.5 21.5l3.6 3.6 6.4-7M12.5 31h9"/><path d="M41.6 14.6 32 31.8l-4.4 2.1.3-4.8 9.6-17.2a2.3 2.3 0 0 1 4.1 2.7z"/></svg>';
 const ICN_BOOK='<svg class="tbi" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5.5C5.5 4.3 8.6 4.3 12 6c3.4-1.7 6.5-1.7 9-.5V19c-2.5-1.2-5.6-1.2-9 .5-3.4-1.7-6.5-1.7-9-.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 6v13.5" stroke="currentColor" stroke-width="1.8"/></svg>';
 const sCol=n=>SC[SUBJ.flat().find(x=>x[0]==n)[1]];
 function midSegs(n,u,k){const M=CUR[n][u].m[k],g=u+'-'+k;return [[M.q.filter(q=>q.lv!='x'),'기본 개념'],[M.q.filter(q=>q.lv=='x'),'실전 문제']].filter(a=>a[0].length).map(([qs,l])=>({label:M.n+' · '+l,qs,grp:g}))}
 function nextNote(n,u,k){let x=[u,k];while((x=nextMid(n,x[0],x[1])))if(noteOf(n,x[0],x[1])||STAFF())return x;return null}
 function nextMid(n,u,k){if(k+1<CUR[n][u].m.length)return [u,k+1];if(u+1<CUR[n].length)return [u+1,0];return null}
+function lhSum(n,col,mids,qs){const nv=(R._nv&&R._nv[n])||{},has=mids.filter(([u,k])=>noteOf(n,u,k)),seen=has.filter(([u,k])=>nv[u+'-'+k]).length,ln=R._ln&&R._ln[n],go=ln&&noteOf(n,ln[0],ln[1])?ln:has[0];
+ if(!go&&!qs.length)return '';const M=go&&CUR[n][go[0]].m[go[1]];
+ return `<div class="sumc" style="--uc:${col}">${go?`<button class="sumgo" onclick="noteView('${n}',${go[0]},${go[1]})"><span><small>${ln?'이어서 공부하기':'처음부터 공부하기'}</small><b>${esc(M.n)}</b></span><span class="chev">›</span></button>`:''}<div class="sumst"><div><b>${seen}/${has.length}</b><small>필기</small></div><div><b>${pct(qs)}%</b><small>문제</small></div><div><b>${mkCnt(n)}/${MKN}</b><small>모의고사</small></div></div></div>`}
 function learnHome(n){const col=sCol(n),nm=n.split('|').join(' '),mids=[].concat(...CUR[n].map((U,u)=>U.m.map((M,k)=>[u,k]))),nn=mids.filter(([u,k])=>noteOf(n,u,k)).length,qs=socQ(n);
  let h=`<div class="shd"><h2 style="--hlc:${col}">${nm}</h2><p class="tag"><b>${esc(NICK)}</b> 님</p>${COVER[n]?`<img class="cvs" src="${COVER[n]}" alt="">`:''}</div>`;
- h+=`<div class="lch" style="--uc:${col}"><button class="lcb" onclick="noteList('${n}')">${ICN_NOTE}<span><b>공부하기</b></span><span class="chev">›</span></button>`;
+ h+=lhSum(n,col,mids,qs);
+ h+=`<div class="lch two" style="--uc:${col}"><button class="lcb" onclick="noteList('${n}')">${ICN_NOTE}<span><b>공부하기</b></span><span class="chev">›</span></button>`;
  h+=`<button class="lcb${qDone(n)?' cpl':''}" onclick="socPage('${n}')">${ICN_PEN}<span><b>문제 풀기</b>${qs.length?`<em>${qDone(n)?'✓ 모두 완료 · ':`진행도 ${pct(qs)}% · `}${qs.length}문제</em>`:''}</span><span class="chev">›</span></button></div>`;
  if(NEWS(n))h+=mockCard(n,col);
  show(h)}
@@ -743,6 +751,7 @@ function noteList(n){if(!NEWS(n))return subj(n);const col=sCol(n),nm=n.split('|'
  CUR[n].forEach((U,u)=>{const dn=uDone(n,u);h+=`<div class="nlg${dn?' dn':''}" style="--uc:${col}"><div class="nlh">${esc(U.n)}${dn?DNB:''}</div>${U.m.map((M,k)=>{const o=noteOf(n,u,k);const ok=o||STAFF();return `<button class="nlb${o?'':' nlx'}"${ok?` onclick="noteView('${n}',${u},${k})"`:' disabled'}><span>${esc(M.n)}</span><span class="mut">${o?'필기 보기':'준비 중'}</span>${ok?'<span class="chev">›</span>':''}</button>`}).join('')}</div>`});
  show(h)}
 function noteView(n,u,k){u=+u;k=+k;const U=CUR[n]&&CUR[n][u],M=U&&U.m[k];if(!M||!NEWS(n))return subjects();
+ if(noteOf(n,u,k)){R._ln=R._ln||{};R._ln[n]=[u,k];R._nv=R._nv||{};R._nv[n]=R._nv[n]||{};R._nv[n][u+'-'+k]=1;save()}
  const col=sCol(n),nm=n.split('|').join(' '),o=noteOf(n,u,k)||(STAFF()?NOTE_DEMO:null);if(!o)return noteList(n);const nx=nextNote(n,u,k),pg=o&&o.pg&&o.pg.length;
  let h=`<div class="nth"><h2 style="--hlc:${col}">${esc(M.n)}</h2><p class="tag">${esc(nm)} · ${esc(U.n)}</p></div>`;
  if(pg)h+=`<button class="tbb" onclick="tbOpen('${n}',${u},${k})">${ICN_BOOK}<span>교과서 원문 보기</span></button>`;
@@ -758,17 +767,18 @@ function endUnit(n,u){R._nd=R._nd||{};R._nd[n+'|'+u]=1;save();const U=CUR[n][u],
  w.innerHTML=`<div class="mdc"><h3>모두 공부하셨네요!</h3><p>${dn?`${esc(uLab(U,u))} 문제도 이미 다 풀었어요.<small class="mdn">한 번 더 풀면 통계에는 반영되지 않아요.</small>`:`바로 복습을 진행해 볼까요?<small class="mdn">${esc(uLab(U,u))} 문제를 풀어요. 다 풀면 &lsquo;학습 완료&rsquo; 표시가 붙어요.</small>`}</p><div class="row" style="margin:0"><button class="b g" data-v="0">나가기</button><button class="b" data-v="1">문제 풀기</button></div></div>`;
  w.onclick=e=>{const v=e.target.dataset&&e.target.dataset.v;if(v===undefined)return;w.remove();if(v==='1')socGo(n,u,undefined,{nl:1});else noteList(n)};document.body.appendChild(w)}
 // ---- 모의고사 ----
-const MKN=5,ICN_EXAM='<svg class="lci" viewBox="0 0 48 48" aria-hidden="true"><rect x="9" y="6" width="26" height="34" rx="4" fill="#fffdf7" stroke="#6e5236" stroke-width="2.2"/><path d="M15 15h14M15 21h14M15 27h8" stroke="#9fb6d3" stroke-width="2.2" stroke-linecap="round"/><circle cx="34" cy="34" r="9" fill="#f9df99" stroke="#6e5236" stroke-width="2.2"/><path d="M34 29.5V34l3 2" fill="none" stroke="#6e5236" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const MKN=5,ICN_EXAM='<svg class="lci" viewBox="0 0 48 48" fill="none" stroke="#1f1a15" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="24" cy="26.5" r="12.5"/><path d="M24 20v6.5l4.5 2.7M20 9.5h8M24 9.5V14M34.6 16.4l2.4-2.4"/></svg>';
 const mkR=(n,r)=>MOCK[n][r].q,mkDone=(n,r)=>mkR(n,r).every(q=>R[q.id]),mkCnt=n=>MOCK[n]?MOCK[n].filter((_,r)=>mkDone(n,r)).length:0;
 const mkAll=n=>MOCK[n]?[].concat(...MOCK[n].map(x=>x.q)):[],mkAns=n=>mkAll(n).filter(q=>R[q.id]);
 const qDone=n=>{const qs=socQ(n);return qs.length>0&&qs.every(q=>R[q.id])&&!qs.some(isUnf)};
-function mkOpen(n){return STAFF()||qDone(n)}
+const MK_OPEN_AT=Date.parse('2026-11-23T00:00:00+09:00'),mkEvent=()=>Date.now()>=MK_OPEN_AT;
+function mkOpen(n){return STAFF()||qDone(n)||mkEvent()}
 function mkLeft(n){const qs=socQ(n);return {un:qs.filter(q=>!R[q.id]).length,wr:qs.filter(isUnf).length}}
 const mkRate=n=>{const a=mkAns(n);return a.length?Math.round(a.filter(q=>R[q.id].ok).length/a.length*100):null};
 const sDone=n=>!!MOCK[n]&&mkCnt(n)>=MKN;
 function mockCard(n,col){const has=!!MOCK[n],op=has&&mkOpen(n),c=mkCnt(n),dots=Array.from({length:MKN},(_,r)=>`<i class="${has&&MOCK[n][r]&&mkDone(n,r)?'on':''}"></i>`).join('');
  const l=op?null:mkLeft(n);
- return `<div class="mkw${op?'':' mklk'}" style="--uc:${col}"><button class="lcb mkc" onclick="mockGo('${n}')"${op?'':' tabindex="-1"'}>${ICN_EXAM}<span><b>${c>=MKN?'모의고사 완료':'모의고사 풀기'}</b><span class="mkd">${dots}</span><em>${c}/${MKN} 완료${has&&c<MKN?` · 다음은 ${c+1}회 (${mkR(n,c).length}문제)`:''}</em></span></button><button class="mks" onclick="mockPage('${n}')"><span><b>모의고사 통계</b></span><span class="chev">›</span></button>${op?'':`<div class="mkov" onclick="mockGo('${n}')"><span class="mklc">${LOCK.replace('lki','')}</span><b>문제 풀이 완료 시 잠금 해제</b></div>`}</div>`}
+ return `<div class="mkw${op?'':' mklk'}" style="--uc:${col}"><button class="lcb mkc" onclick="mockGo('${n}')"${op?'':' tabindex="-1"'}>${ICN_EXAM}<span><b>${c>=MKN?'모의고사 완료':'모의고사 풀기'}</b><span class="mkd">${dots}</span><em>${has&&op&&!qDone(n)&&mkEvent()&&!STAFF()?'특별 공개 · ':''}${c}/${MKN} 완료${has&&c<MKN?` · 다음은 ${c+1}회`:''}</em></span></button><button class="mks" onclick="mockPage('${n}')"><span><b>모의고사 통계</b></span><span class="chev">›</span></button>${op?'':`<div class="mkov" onclick="mockGo('${n}')"><span class="mklc">${LOCK.replace('lki','')}</span><b>문제 풀이 완료 시 잠금 해제</b></div>`}</div>`}
 function mockGo(n,r){if(!MOCK[n]){soonMsg('이 과목 모의고사는 아직 준비 중이에요.');return}if(!mkOpen(n)){const l=mkLeft(n);askBox('아직 잠겨 있어요',`모든 문제를 풀고 오답까지 끝내면 모의고사가 열려요.<small class="mdn">${l.un?`안 푼 문제 ${l.un}개`:''}${l.un&&l.wr?', ':''}${l.wr?`남은 오답 ${l.wr}개`:''}가 남았어요.</small>`,'문제 풀러 가기').then(ok=>{if(ok)socPage(n)});return}
  if(r===undefined){r=MOCK[n].findIndex((_,i)=>!mkDone(n,i));if(r<0)return mockPage(n)}
  const nm=n.split('|').join(' '),qs=mkR(n,r),seg=[{label:`모의고사 ${r+1}회`,qs}],m={title:nm+' 모의고사',mock:r+1,kind:'모의고사',mp:1,back:"mockPage('"+n+"')"};
