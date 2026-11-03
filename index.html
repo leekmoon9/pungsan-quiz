@@ -164,7 +164,7 @@ body.hasbk .fbw h2:first-child{padding-left:0}
 @media(prefers-reduced-motion:reduce){.svp,.svi{transition:none}}
 #app p.mut,#app p.tag,.svk .mut,.fb,.mdc p,.prn{text-align:justify;text-justify:inter-character}
 .mlb{position:relative;flex:none;width:44px;height:40px;margin-top:4px;border:none;border-radius:12px;background:var(--card);box-shadow:0 3px 10px rgba(90,70,40,.18);display:flex;align-items:center;justify-content:center;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .15s}
-.mlb:active{transform:scale(.93)}.mli{width:30px;height:27px}
+.mlb:active{transform:scale(.93)}.mli{width:23px;height:23px;color:#1f1a15}
 .mlc{position:absolute;top:-5px;right:-5px;min-width:19px;height:19px;padding:0 5px;box-sizing:border-box;border-radius:999px;background:#e05a4f;color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px var(--bg)}
 .mgc{display:flex;align-items:center;gap:10px;width:100%;margin:0 0 10px;padding:14px 12px 14px 14px;border:none;border-radius:14px;background:var(--card);box-shadow:0 2px 10px rgba(90,70,40,.1);color:var(--tx);font:inherit;text-align:left;cursor:pointer;transition:opacity .2s}
 .mgc.rd{opacity:.5}.mgd{flex:none;width:9px;height:9px;border-radius:50%;background:#e05a4f}.mgc.rd .mgd{background:transparent}
@@ -525,7 +525,7 @@ let MSGS=null;
 async function msgLoad(){if(!DB||!NICK)return MSGS=MSGS||[];try{const {data,error}=await DB.rpc('msg_list',whoP());if(error)throw error;MSGS=data||[]}catch(e){MSGS=MSGS||[]}mailBadge();return MSGS}
 const unread=()=>(MSGS||[]).filter(m=>!m.read).length;
 function mailBadge(){const n=unread();document.querySelectorAll('.mlb .mlc').forEach(c=>{c.textContent=n>9?'9+':n;c.hidden=!n})}
-const MAIL='<svg class="mli" viewBox="0 0 34 30" aria-hidden="true"><rect x="2.5" y="4.5" width="29" height="21" rx="4" fill="#fdf3dd" stroke="#6e5236" stroke-width="1.9"/><path d="M3.6 24.2 13.4 15.6M30.4 24.2 20.6 15.6" stroke="#6e5236" stroke-width="1.5" stroke-linecap="round" opacity=".45"/><path d="M4 7.2 17 17.1 30 7.2" fill="#f6e2bd" stroke="#6e5236" stroke-width="1.9" stroke-linejoin="round" stroke-linecap="round"/><path d="M17 20.6c-.3-.2-3.2-2-3.2-4 0-1.1.8-1.9 1.8-1.9.6 0 1.1.3 1.4.8.3-.5.8-.8 1.4-.8 1 0 1.8.8 1.8 1.9 0 2-2.9 3.8-3.2 4z" fill="#e05a4f"/></svg>';
+const MAIL='<svg class="mli" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5.5" width="18" height="13" rx="2.2"/><path d="M3.6 6.8 12 13l8.4-6.2"/></svg>';
 const mailBtn=()=>`<button class="mlb" aria-label="메시지함" onclick="inbox()">${MAIL}<span class="mlc" hidden></span></button>`;
 const fdt=t=>{const d=new Date(t);return (d.getMonth()+1)+'/'+d.getDate()+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')};
 const nl=t=>esc(t||'').replace(/\n/g,'<br>');
@@ -768,7 +768,7 @@ const mkRate=n=>{const a=mkAns(n);return a.length?Math.round(a.filter(q=>R[q.id]
 const sDone=n=>!!MOCK[n]&&mkCnt(n)>=MKN;
 function mockCard(n,col){const has=!!MOCK[n],op=has&&mkOpen(n),c=mkCnt(n),dots=Array.from({length:MKN},(_,r)=>`<i class="${has&&MOCK[n][r]&&mkDone(n,r)?'on':''}"></i>`).join('');
  const l=op?null:mkLeft(n);
- return `<div class="mkw${op?'':' mklk'}" style="--uc:${col}"><button class="lcb mkc" onclick="mockGo('${n}')"${op?'':' tabindex="-1"'}>${ICN_EXAM}<span><b>${c>=MKN?'모의고사 완료':'모의고사 풀기'}</b><span class="mkd">${dots}</span><em>${c}/${MKN} 완료${has&&c<MKN?` · 다음은 ${c+1}회 (${mkR(n,c).length}문제)`:''}</em></span></button><button class="mks" onclick="mockPage('${n}')"><span><b>모의고사 통계</b><small>${c?`정답률 ${mkRate(n)}% · 취약 유형 · 시험 직전 체크`:'회차별 점수와 취약 유형을 볼 수 있어요'}</small></span><span class="chev">›</span></button>${op?'':`<div class="mkov" onclick="mockGo('${n}')"><span class="mklc">${LOCK.replace('lki','')}</span><b>문제 풀이 완료 시 잠금 해제</b></div>`}</div>`}
+ return `<div class="mkw${op?'':' mklk'}" style="--uc:${col}"><button class="lcb mkc" onclick="mockGo('${n}')"${op?'':' tabindex="-1"'}>${ICN_EXAM}<span><b>${c>=MKN?'모의고사 완료':'모의고사 풀기'}</b><span class="mkd">${dots}</span><em>${c}/${MKN} 완료${has&&c<MKN?` · 다음은 ${c+1}회 (${mkR(n,c).length}문제)`:''}</em></span></button><button class="mks" onclick="mockPage('${n}')"><span><b>모의고사 통계</b></span><span class="chev">›</span></button>${op?'':`<div class="mkov" onclick="mockGo('${n}')"><span class="mklc">${LOCK.replace('lki','')}</span><b>문제 풀이 완료 시 잠금 해제</b></div>`}</div>`}
 function mockGo(n,r){if(!MOCK[n]){soonMsg('이 과목 모의고사는 아직 준비 중이에요.');return}if(!mkOpen(n)){const l=mkLeft(n);askBox('아직 잠겨 있어요',`모든 문제를 풀고 오답까지 끝내면 모의고사가 열려요.<small class="mdn">${l.un?`안 푼 문제 ${l.un}개`:''}${l.un&&l.wr?', ':''}${l.wr?`남은 오답 ${l.wr}개`:''}가 남았어요.</small>`,'문제 풀러 가기').then(ok=>{if(ok)socPage(n)});return}
  if(r===undefined){r=MOCK[n].findIndex((_,i)=>!mkDone(n,i));if(r<0)return mockPage(n)}
  const nm=n.split('|').join(' '),qs=mkR(n,r),seg=[{label:`모의고사 ${r+1}회`,qs}],m={title:nm+' 모의고사',mock:r+1,kind:'모의고사',mp:1,back:"mockPage('"+n+"')"};
