@@ -388,6 +388,7 @@ body.cap .capm{display:flex}
 .hd2.ha{margin-top:8px!important}
 .mkrow.mkwr{border-left:6px solid #e79a90;background:color-mix(in srgb,#e79a90 10%,var(--card))}.mkrow.mkwr>b{width:auto;min-width:34px}.mkrow.mkwr .mkst{color:var(--tx);font-weight:700}.mkrow.mkwr.lk{opacity:1;cursor:default}.mkrow.mkwr.lk .mkst{color:var(--mut);font-weight:400}.mkrow .wnc{margin-left:auto}
 .ntb th{white-space:normal!important;word-break:keep-all}.ntb td{word-break:keep-all;overflow-wrap:anywhere}
+.sumgo.sumx{cursor:default}.sumgo.sumx b{color:var(--mut)}
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -744,8 +745,8 @@ function midSegs(n,u,k){const M=CUR[n][u].m[k],g=u+'-'+k;return [[M.q.filter(q=>
 function nextNote(n,u,k){let x=[u,k];while((x=nextMid(n,x[0],x[1])))if(noteOf(n,x[0],x[1])||STAFF())return x;return null}
 function nextMid(n,u,k){if(k+1<CUR[n][u].m.length)return [u,k+1];if(u+1<CUR[n].length)return [u+1,0];return null}
 function lhSum(n,col,mids,qs){const nv=(R._nv&&R._nv[n])||{},has=mids.filter(([u,k])=>noteOf(n,u,k)),seen=has.filter(([u,k])=>nv[u+'-'+k]).length,ln=R._ln&&R._ln[n],go=ln&&noteOf(n,ln[0],ln[1])?ln:has[0];
- if(!go&&!qs.length)return '';const M=go&&CUR[n][go[0]].m[go[1]];
- return `<div class="sumc" style="--uc:${col}">${go?`<button class="sumgo" onclick="noteView('${n}',${go[0]},${go[1]})"><span><small>${ln?'이어서 공부하기':'처음부터 공부하기'}</small><b>${esc(M.n)}</b></span><span class="chev">›</span></button>`:''}<div class="sumst"><div><b>${qs.filter(isUnf).length}개</b><small>남은 오답</small></div><div><b>${pct(qs)}%</b><small>문제</small></div><div><b>${mkCnt(n)}/${MKN}</b><small>모의고사</small></div></div></div>`}
+ const M=go&&CUR[n][go[0]].m[go[1]];
+ return `<div class="sumc" style="--uc:${col}">${go?`<button class="sumgo" onclick="noteView('${n}',${go[0]},${go[1]})"><span><small>${ln?'이어서 공부하기':'처음부터 공부하기'}</small><b>${esc(M.n)}</b></span><span class="chev">›</span></button>`:`<div class="sumgo sumx"><span><small>처음부터 공부하기</small><b>필기가 곧 올라와요</b></span></div>`}<div class="sumst"><div><b>${qs.filter(isUnf).length}개</b><small>남은 오답</small></div><div><b>${pct(qs)}%</b><small>문제</small></div><div><b>${mkCnt(n)}/${MKN}</b><small>모의고사</small></div></div></div>`}
 function learnHome(n){const col=sCol(n),nm=n.split('|').join(' '),mids=[].concat(...CUR[n].map((U,u)=>U.m.map((M,k)=>[u,k]))),nn=mids.filter(([u,k])=>noteOf(n,u,k)).length,qs=socQ(n);
  let h=`<div class="shd"><h2 style="--hlc:${col}">${nm}</h2>${COVER[n]?`<img class="cvs" src="${COVER[n]}" alt="">`:''}</div>`;
  h+=lhSum(n,col,mids,qs);
