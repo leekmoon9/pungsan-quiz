@@ -231,6 +231,13 @@ body.hasbk .fbw h2:first-child{padding-left:0}
  .hero .b{min-height:44px}.hero input{padding:9px 12px}
  main:has(.hero){max-width:none;padding-top:10px;padding-bottom:10px}
  .hero .sa{zoom:.8;margin:0 6px}}
+.pfb{flex:none;width:40px;height:40px;margin-top:4px;border-radius:50%;border:none;background:var(--card);color:var(--tx);box-shadow:0 4px 14px rgba(90,70,40,.22);display:flex;align-items:center;justify-content:center;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .15s}
+.pfb:active{transform:scale(.93)}.pfb svg{width:20px;height:20px}
+#app .b.admb{background:var(--card);box-shadow:0 3px 10px rgba(90,70,40,.18);border-color:transparent}#app .b.rsb{color:#a3392f}
+body:has(.pfb) #rf{display:none}#app .hd:has(.pfb){padding-right:0!important}
+/* 글자를 눌렀을 때 구글 검색(터치하여 검색)·글자 선택이 뜨지 않게. 입력칸은 그대로 */
+body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+input,textarea,[contenteditable]{-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}
 h3.sec{font-size:19px;font-weight:600;margin:20px 0 8px}
 .fbw{min-height:calc(100vh - 60px);min-height:calc(100svh - 60px);display:flex;flex-direction:column;justify-content:center;text-align:center}
 .fbw .tag{max-width:420px;margin:0 auto 6px}
@@ -390,7 +397,7 @@ function animBars(){setTimeout(()=>document.querySelectorAll('[data-w]').forEach
 const SUBJ=[[['독서와|작문','b',1],['영어','r'],['중국어|회화','t'],['일본어|회화','j']],[['정치','g'],['경제','g'],['동아시아|역사기행','g'],['현대사회와|윤리','g'],['한국지리|탐구','g']],[['세포와|물질대사','p'],['물질과|에너지','p'],['역학과|에너지','p'],['행성우주|과학','p']]];
 const SECN=['언어 영역','사회 영역','과학 영역'];
 const SC={b:'#8fb8ec',r:'#ee9a9a',t:'#93d3d8',j:'#c9b6ec',g:'#9bd3ae',p:'#f1a9c8'};
-function subjects(){let h=`<div class="hd" style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px"><div><h2>학습하기</h2></div><span class="admw">${OWNER&&DB?'<button class="b g s admb rsb" onclick="myReset()">초기화</button><button class="b g s admb" onclick="admin()">관리자</button>':''}${mailBtn()}</span></div><p class="tag" style="margin-top:-2px"><b>${esc(NICK)}</b> 님</p><div class="qk">${isApp()?'<button onclick="allStats()">전체 통계</button>':`<button class="lkd" onclick="lockMsg()">${LOCK}전체 통계</button>`}<button onclick="fbForm(1)">피드백</button></div>`;
+function subjects(){let h=`<div class="hd" style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px"><div><h2>학습하기</h2></div><span class="admw">${OWNER&&DB?'<button class="b g s admb rsb" onclick="myReset()">초기화</button><button class="b g s admb" onclick="admin()">관리자</button>':''}${mailBtn()}<button class="pfb" aria-label="내 프로필" onclick="profile()">${PSVG}</button></span></div><p class="tag" style="margin-top:-2px"><b>${esc(NICK)}</b> 님</p><div class="qk">${isApp()?'<button onclick="allStats()">전체 통계</button>':`<button class="lkd" onclick="lockMsg()">${LOCK}전체 통계</button>`}<button onclick="fbForm(1)">피드백</button></div>`;
  SUBJ.forEach((row,ri)=>{h+=`<h3 class="sec">${SECN[ri]}</h3><div class="sg c2">`;row.forEach(([n,c,o])=>{if(COVER[n]){h+=bk(n,c,o);return}h+=`<div class="card pc" style="margin:0;padding:0;overflow:hidden;text-align:center;background:var(--bg);aspect-ratio:6/5;display:flex;flex-direction:column" onclick="subj('${n}')"><div style="position:absolute;top:0;left:0;right:0;pointer-events:none;height:34px;background:linear-gradient(to bottom,${SC[c]} 0,${SC[c]} 18%,transparent 100%)"></div><div style="flex:1;display:flex;align-items:center;justify-content:center;padding:4px;line-height:1.3;font-weight:600;white-space:nowrap" class="sl">${n.split('|').join('<br>')}</div></div>`});h+='</div>'});
  show(h);animBars();mailBadge();afterHome()}
 let FBF=0;
@@ -795,8 +802,9 @@ document.addEventListener('visibilitychange',()=>{if(document.hidden){if(SS&&doc
 // ---------- 프로필 ----------
 document.addEventListener('gesturestart',e=>e.preventDefault());document.addEventListener('dblclick',e=>e.preventDefault(),{passive:false});
 
+const PSVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8.2" r="3.9"/><path d="M4.6 20.2c.9-3.9 3.9-6 7.4-6s6.5 2.1 7.4 6"/></svg>';
 (function(){const b=document.createElement('button');b.id='rf';b.setAttribute('aria-label','내 프로필');
- b.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8.2" r="3.9"/><path d="M4.6 20.2c.9-3.9 3.9-6 7.4-6s6.5 2.1 7.4 6"/></svg>';
+ b.innerHTML=PSVG;
  b.onclick=()=>{if(NICK)profile()};document.body.appendChild(b)})();
 function askBox(title,msg,ok){return new Promise(res=>{const w=document.createElement('div');w.className='mdw';
  w.innerHTML=`<div class="mdc"><h3>${title}</h3>${msg?`<p>${msg}</p>`:'<div style="height:10px"></div>'}<div class="row" style="margin:0"><button class="b g" data-v="0">취소</button><button class="b" data-v="1">${ok||'확인'}</button></div></div>`;
