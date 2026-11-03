@@ -398,7 +398,7 @@ body.cap .capm{display:flex}
 .qbk>i{position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:#fff;padding:0 10px;font-style:normal;font-weight:700;font-size:13px;color:var(--mut);letter-spacing:2px}
 .qli{display:flex;gap:6px;text-align:left}.qli>b{flex:none;font-weight:700;min-width:1.4em}.qli+.qli,.qli+div,div+.qli{margin-top:4px}
 .qfg{display:flex;justify-content:center;margin:8px 0}.qgr{width:100%;max-width:300px;height:auto}
-.qtw{overflow-x:auto;margin:10px 0}.qtb{border-collapse:collapse;width:100%;font-size:.92em;font-weight:500;text-align:center}.qtb th,.qtb td{border:1.2px solid var(--bd);padding:6px 4px;white-space:nowrap}.qtb{font-size:.86em!important}.qtb th{background:var(--card);font-weight:700}
+.qtw{overflow-x:auto;margin:10px 0}.qtb{border-collapse:collapse;width:100%;font-size:.92em;font-weight:500;text-align:center}.qtb th,.qtb td{border:1.2px solid var(--bd);padding:6px 4px;white-space:nowrap}.qtb{font-size:.86em!important}.qtb th:first-child,.qtb td:first-child{white-space:normal;min-width:4.5em}.qtb td,.qtb th{white-space:normal}.qtb th,.qtb td{overflow-wrap:normal!important;word-break:keep-all}.qtb th{background:var(--card);font-weight:700}
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -925,7 +925,7 @@ function startRun(n,segs,meta){OPEN=-1;SS={pid:'run',cat:'all',meta:Object.assig
 const ttl=()=>SS.meta?SS.meta.title:P(SS.pid).name;
 function goBack(){if(STK.length){const t=STK.pop();svStk();return goR(t)}if(SS&&SS.meta&&SS.meta.mp)return mockPage(SS.meta.subj);if(SS&&SS.meta&&SS.meta.note)return noteView(...SS.meta.note);if(SS&&SS.meta&&SS.meta.nl)return noteList(SS.meta.subj);if(SS&&SS.meta&&SS.meta.wp)return wrongPage(SS.meta.subj);if(SS&&SS.meta&&SS.meta.subj)return NEWS(SS.meta.subj)?socPage(SS.meta.subj):subj(SS.meta.subj);subjects()}
 const qbl=t=>esc(t).replace(/\[빈칸\]/g,'<span class="blk"></span>').replace(/&lt;(보기|자료|표|그림)&gt;/g,'<span style="white-space:nowrap">&lt;$1&gt;</span>');
-function qln(b){return b.split('\n').map(l=>{const m=l.match(/^((?:[ㄱㄴㄷㄹㅁ]\.)|(?:\([가-하A-Z0-9]\))|(?:[•○◦])|(?:사례 ?\d+:))\s*(.*)$/);return m?`<div class="qli"><b>${esc(m[1])}</b><span>${qbl(m[2])}</span></div>`:`<div>${qbl(l)}</div>`}).join('')}
+function qln(b){return b.split('\n').map(l=>{const m=l.match(/^((?:[ㄱㄴㄷㄹㅁ]\.)|(?:\([가-하A-Z0-9]\))|(?:[•])|(?:사례 ?\d+:))\s*(.*)$/);return m?`<div class="qli"><b>${esc(m[1])}</b><span>${qbl(m[2])}</span></div>`:`<div>${qbl(l)}</div>`}).join('')}
 function tbH(t){return `<div class="qtw"><table class="qtb">${t.h?`<tr>${t.h.map(x=>`<th>${qbl(x)}</th>`).join('')}</tr>`:''}${t.r.map(r=>`<tr>${r.map((x,i)=>i==0&&t.h?`<th>${qbl(x)}</th>`:`<td>${qbl(x)}</td>`).join('')}</tr>`).join('')}</table></div>`}
 function GR(o){const W=250,H=196,X0=34,Y0=168,sx=x=>X0+x*19.5,sy=y=>Y0-y*15;let g='';
  g+=`<defs><marker id="ga" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#5b7fa8"/></marker><marker id="gx" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#2a2620"/></marker></defs>`;
@@ -945,7 +945,7 @@ function qtx(t,q){q=q||{};const bl=String(t).replace(/\n(?=<보기>)/g,'\n\n').s
   if(b=='[그림]'){if(q.fig)o+=`<div class="qfg">${GR(q.fig)}</div>`;return}
   if(b=='[표]'){if(q.tb)o+=tbH(q.tb);return}
   if(/^<보기>/.test(b)){o+=`<div class="qbk"><i>보기</i>${qln(b.replace(/^<보기>\s*\n?/,''))}</div>`;return}
-  if(bl.length==1||isQ(b))o+=`<div class="qst">${qln(b)}</div>`;else if(i==0&&!b.includes('\n')&&!/^(\(|[ㄱ-ㅎ]\.|[•○◦]|사례)/.test(b))o+=`<div class="qin">${qln(b)}</div>`;else o+=`<div class="qdt">${qln(b)}</div>`});
+  if(bl.length==1||isQ(b))o+=`<div class="qst">${qln(b)}</div>`;else if(i==0&&!b.includes('\n')&&!/^(\(|[ㄱ-ㅎ]\.|[•]|사례)/.test(b))o+=`<div class="qin">${qln(b)}</div>`;else o+=`<div class="qdt">${qln(b)}</div>`});
  if(q.fig&&!bl.includes('[그림]'))o=`<div class="qfg">${GR(q.fig)}</div>`+o;if(q.tb&&!bl.includes('[표]'))o=tbH(q.tb)+o;
  return `<div class="qbox">${o}</div>`}
 function quiz(){const q=SS.qs[SS.i],N=SS.qs.length,seg=SS.segs[SS.si],r=SS.resp[q.id]||{};QID=q.id;if(!QS0)QS0=Date.now();
@@ -1175,8 +1175,9 @@ if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.ser
  window.addEventListener('beforeprint',on);window.addEventListener('afterprint',off);})();
 </script>
 <!-- 과목별 필기·문제 데이터: 여기 추가하고 마지막에 boot() -->
-<script src="data/pol1.js?v=1"></script>
-<script src="data/pol2.js?v=2"></script>
-<script src="data/pol3.js?v=2"></script>
-<script src="data/polm.js?v=1"></script>
+<script src="data/pol1.js?v=2"></script>
+<script src="data/pol2.js?v=3"></script>
+<script src="data/pol3.js?v=3"></script>
+<script src="data/polm.js?v=2"></script>
+<script src="data/eco.js?v=1"></script>
 <script>boot()</script></body></html>
