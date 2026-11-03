@@ -68,7 +68,7 @@ html,body{overscroll-behavior-y:none;overscroll-behavior:none}
 main h2:first-child{padding-right:48px}
 #app>.tag:first-child,#app>.tag:first-child+.bar{margin-right:50px}
 #rf{position:fixed;right:14px;top:calc(12px + env(safe-area-inset-top,0px));z-index:40;width:40px;height:40px;border-radius:50%;border:none;background:var(--card);color:var(--tx);box-shadow:0 4px 14px rgba(90,70,40,.22);display:flex;align-items:center;justify-content:center;cursor:pointer;-webkit-tap-highlight-color:transparent}
-body:has(.hero) #rf,body:has(.qz) #rf,body:has(.pfg) #rf{display:none}
+body:has(.hero) #rf,body:has(.qz) #rf,body.onpf #rf{display:none}
 #rf svg{width:20px;height:20px;transition:transform .5s ease}#rf.spin svg{transform:rotate(360deg)}
 .mdw{position:fixed;inset:0;z-index:60;background:rgba(40,32,20,.35);display:flex;align-items:center;justify-content:center;padding:24px;animation:pop .2s ease-out both}
 .mdc{width:100%;max-width:320px;background:var(--card);border-radius:20px;padding:22px 18px 16px;box-shadow:0 16px 40px rgba(40,30,15,.3);text-align:center}
@@ -956,7 +956,7 @@ const encR=r=>r.split('/').map(encodeURIComponent).join('/');
 let CURR='',GUARD=false;
 function updBk(){let b=document.getElementById('bk');if(!b){b=document.createElement('button');b.id='bk';b.className='qback';b.setAttribute('aria-label','뒤로');
   b.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>';b.onclick=goUp;document.body.appendChild(b)}
- const show=CURR=='quiz'||(CURR!==''&&parentOf(CURR)!==null);b.hidden=!show;document.body.classList.toggle('hasbk',show)}
+ const show=CURR=='quiz'||(CURR!==''&&parentOf(CURR)!==null);b.hidden=!show;document.body.classList.toggle('hasbk',show);document.body.classList.toggle('onpf',/^profile/.test(CURR))}
 function goUp(){if(CURR=='quiz'&&SS&&document.querySelector('.qz'))return exitQuiz();const par=parentOf(CURR);if(par===null)return;goR(par)}
 function setR(r){CURR=r;updBk();const t=r?'#/'+encR(r):location.pathname+location.search;
  try{history.replaceState(history.state,'',t);if(!GUARD){history.pushState({g:1},'',t);GUARD=true}}catch(e){}}
