@@ -594,8 +594,7 @@ function cal(m,dir){if(!isApp()){setTimeout(lockMsg,50);return subjects()}if(m)C
  for(let i=0;i<first;i++)g+='<div></div>';
  for(let d=1;d<=n;d++){const k=y+'-'+String(mo+1).padStart(2,'0')+'-'+String(d).padStart(2,'0'),v=t[k]||0;if(v>=1){mt+=v;md++}
   g+=`<div class="cd${v>=1?' on':''}${k==tk?' td':''}"><b>${d}</b>${v>=1?`<small>${fmtT(v,1)}</small>`:''}</div>`}
- show(`<h2>공부 달력</h2><div class="cal card"><div class="ch"><button class="lk" aria-label="이전 달" onclick="calSlide(-1)">‹</button><b>${y}년 ${mo+1}월</b><button class="lk" aria-label="다음 달" onclick="calSlide(1)">›</button></div><div class="cgw"><div class="cg${dir>0?' pgn':dir<0?' pgp':''}" id="cg">${g}</div></div></div>
- <p class="tag" style="text-align:center">이번 달 ${md}일 · ${fmtT(mt)}</p><p class="mut" style="text-align:center;font-size:12.5px;margin-top:-4px">달력을 옆으로 밀어도 넘어가요</p>`,'cal');
+ show(`<h2>공부 달력</h2><div class="cal card"><div class="ch"><button class="lk" aria-label="이전 달" onclick="calSlide(-1)">‹</button><b>${y}년 ${mo+1}월</b><button class="lk" aria-label="다음 달" onclick="calSlide(1)">›</button></div><div class="cgw"><div class="cg${dir>0?' pgn':dir<0?' pgp':''}" id="cg">${g}</div></div></div>`,'cal');
  const el=document.getElementById('cg');if(el){let sx=null,sy=0,dx=0,hz=null,busy=false;const W=()=>el.offsetWidth||300;
   const out=d=>{busy=true;el.style.transition='transform .2s cubic-bezier(.4,0,.8,.6)';el.style.transform=`translateX(${d>0?-100:100}%)`;setTimeout(()=>calGo(d),190)};
   window.calSlide=out;
