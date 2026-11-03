@@ -145,6 +145,23 @@ body.hasbk .fbw h2:first-child{padding-left:0}
 @keyframes pgn{from{transform:translateX(100%)}to{transform:none}}
 @keyframes pgp{from{transform:translateX(-100%)}to{transform:none}}
 @media(prefers-reduced-motion:reduce){.cg.pgn,.cg.pgp{animation:none}}
+.svg{display:grid;grid-template-columns:1fr 1fr;gap:0 10px;margin-top:-10px}
+.svt{display:grid;grid-template-columns:1fr auto;align-items:center;gap:6px 6px;padding:12px 12px 12px 14px;border:none;border-radius:14px;background:var(--card);box-shadow:0 2px 10px rgba(90,70,40,.1);font:inherit;color:var(--tx);text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent;border-top:4px solid var(--sc);margin-top:10px;transition:transform .15s,box-shadow .2s}
+.svt:active{transform:scale(.97)}.svt.on{box-shadow:0 0 0 2px var(--sc),0 4px 14px rgba(90,70,40,.16)}
+.svn{font-size:14.5px;font-weight:700;line-height:1.3;word-break:keep-all}.svr{display:flex;align-items:center;gap:4px}.svr b{font-size:15px}
+.svt .chev{display:inline-block;transition:transform .3s;color:var(--mut)}.svt.on .chev{transform:rotate(90deg)}
+.svt .bar{grid-column:1/-1;margin:0;height:6px}
+.svp{grid-column:1/-1;display:grid;grid-template-rows:0fr;transition:grid-template-rows .35s cubic-bezier(.22,.8,.3,1),padding .35s;padding-top:0}
+.svp.on{grid-template-rows:1fr;padding-top:10px}
+.svi{overflow:hidden;min-height:0;background:var(--card);border-radius:14px;box-shadow:0 2px 10px rgba(90,70,40,.1);padding:0 14px;opacity:0;transition:opacity .25s,padding .35s}
+.svp.on .svi{padding:14px;opacity:1}
+.svs{display:flex;flex-direction:column;align-items:center;padding:2px 0 10px}.svs span{font-size:13px;color:var(--mut)}.svs b{font-size:30px;line-height:1.2}.svs small{font-size:13px;color:var(--mut)}
+.svw{display:flex;align-items:center;gap:10px;width:100%;padding:12px 12px 12px 14px;border:none;border-radius:12px;background:#f6e4df;color:var(--tx);font:inherit;text-align:left;cursor:pointer}
+.svw>span:first-child{flex:1;display:flex;flex-direction:column}.svw b{font-size:15px}.svw small{font-size:12.5px;color:var(--mut)}
+.svh{font-weight:800;font-size:14.5px;margin:14px 0 6px}.svk{padding:8px 0;border-top:1px solid color-mix(in srgb,var(--tx) 10%,transparent);font-size:14px}.svk:first-of-type{border-top:none}
+.svx{font-size:13.5px;text-align:center;padding:6px 0}
+@media(prefers-reduced-motion:reduce){.svp,.svi{transition:none}}
+#app p.mut,#app p.tag,.svk .mut,.fb,.mdc p,.prn{text-align:justify;text-justify:inter-character}
 h3.sec{font-size:19px;font-weight:600;margin:20px 0 8px}
 .fbw{min-height:calc(100vh - 60px);min-height:calc(100svh - 60px);display:flex;flex-direction:column;justify-content:center;text-align:center}
 .fbw .tag{max-width:420px;margin:0 auto 6px}
@@ -460,18 +477,22 @@ function subj(n){if(isSoc(n))return socPage(n);const c=SUBJ.flat().find(x=>x[0]=
  h+=`</div>`;show(h)}
 function allStats(){if(!isApp()){setTimeout(lockMsg,50);return subjects()}const qs=[].concat(...PASS.map(p=>p.Q)),s=st(qs);
  const t=R._t||{},days=Object.keys(t).filter(k=>t[k]>=1),tot=days.reduce((a,k)=>a+t[k],0),td=t[dkey()]||0;
- let h=`<h2>전체 통계</h2><p class="tag"><b>${esc(NICK)}</b> 님</p><div class="pg2"><div class="card st2"><span>총 공부 시간</span><b>${fmtT(tot)}</b><small>오늘 ${fmtT(td)}</small></div><div class="card st2 pc" onclick="cal()"><span>공부한 날</span><b>${days.length}일</b><small class="lku">달력으로 보기 ›</small></div></div><p class="mut" style="font-size:12.5px;margin:6px 2px 0">공부 시간은 문제를 보기 시작해서 답을 낼 때까지 잰 시간이에요. 한 문제에 최대 5분까지 세요.</p><div class="card"><div class="tag">전체 정답률</div><div class="big">${s.r==null?'-':s.r+'%'}</div><div class="mut">${s.n}문제 풀이 · ${s.c}문제 정답</div></div><h3>과목별 성취율</h3>`;
- SUBJ.flat().forEach(([n,c,o])=>{const a=ach(n,o);
-  h+=`<div class="card" style="padding:10px 14px"><div style="display:flex;justify-content:space-between"><span><span style="display:inline-block;width:10px;height:10px;border-radius:3px;background:${SC[c]};margin-right:8px"></span>${n.split('|').join(' ')}</span><b>${a}%</b></div><div class="bar"><i style="width:${a}%;background:${SC[c]}"></i></div></div>`});
- h+=`<h3>독서와 작문 지문별</h3>`;
- PASS.forEach(p=>{h+=`<div class="card" style="padding:10px 14px"><b>${p.name}</b><div class="mut">${stTxt(st(p.Q))}</div></div>`});
- const tg={};qs.forEach(q=>{const x=R[q.id];if(x){const t=tg[q.g]=tg[q.g]||{n:0,c:0};t.n++;if(x.ok)t.c++}});
- const wk=Object.keys(tg).filter(k=>tg[k].c<tg[k].n).sort((a,b)=>tg[a].c/tg[a].n-tg[b].c/tg[b].n).slice(0,5);
- h+=`<h3>보완할 약점 영역</h3>`;
- if(!Object.keys(tg).length)h+='<div class="card mut">아직 푸든 문제가 없어요.</div>';
- else if(!wk.length)h+='<div class="card">틀린 영역이 없어요.</div>';
- else wk.forEach(k=>{h+=`<div class="card"><b class="no-t">${k}</b> <span class="mut">(${tg[k].c}/${tg[k].n} 정답)</span><div class="mut" style="margin-top:6px">${esc(TIPS[k]||'')}</div></div>`});
- h+=``;show(h)}
+ let h=`<h2>전체 통계</h2><p class="tag"><b>${esc(NICK)}</b> 님</p><div class="pg2"><div class="card st2"><span>총 공부 시간</span><b>${fmtT(tot)}</b><small>오늘 ${fmtT(td)}</small></div><div class="card st2 pc" onclick="cal()"><span>공부한 날</span><b>${days.length}일</b><small class="lku">달력으로 보기 ›</small></div></div><p class="mut" style="font-size:12.5px;margin:6px 2px 0">공부 시간은 문제를 보기 시작해서 답을 낼 때까지 잰 시간이에요. 한 문제에 최대 5분까지 세요.</p><div class="card"><div class="tag">전체 정답률</div><div class="big">${s.r==null?'-':s.r+'%'}</div><div class="mut">${s.n}문제 풀이 · ${s.c}문제 정답</div></div><h3>과목별 보기</h3><div class="svg">`;
+ const L=SUBJ.flat();L.forEach(([n,c,o],ix)=>{const a=ach(n,o),col=SC[c];
+  h+=`<button class="svt" id="svt${ix}" style="--sc:${col}" onclick="svTog(${ix})" aria-expanded="false"><span class="svn">${esc(n.split('|').join(' '))}</span><span class="svr"><b>${a}%</b><span class="chev">›</span></span><span class="bar"><i style="width:${a}%;background:${col}"></i></span></button>`;
+  if(ix%2==1||ix==L.length-1)for(let k=ix-(ix%2);k<=ix;k++)h+=`<div class="svp" id="svp${k}"><div class="svi">${svBody(L[k][0],SC[L[k][1]])}</div></div>`});
+ h+=`</div>`;show(h)}
+function svWeak(n){const tg={},lab={};CUR[n].forEach(U=>U.m.forEach(M=>M.q.forEach(q=>{const x=R[q.id];if(!x)return;const k=q.g||((CUR[n].length>1?U.n+' · ':'')+M.n);const t=tg[k]=tg[k]||{n:0,c:0};t.n++;if(x.ok)t.c++})));
+ return Object.keys(tg).filter(k=>tg[k].c<tg[k].n).sort((a,b)=>tg[a].c/tg[a].n-tg[b].c/tg[b].n).slice(0,3).map(k=>({k,...tg[k]}))}
+function svBody(n,col){const qs=CUR[n]?socQ(n):[];if(!qs.length)return `<div class="mut svx">아직 문제가 준비되지 않았어요.</div>`;
+ const x=st(qs),wr=qs.filter(q=>R[q.id]&&!R[q.id].ok),un=wr.filter(isUnf),wk=svWeak(n);
+ let h=`<div class="svs"><span>정답률</span><b style="color:${col}">${x.r==null?'-':x.r+'%'}</b><small>${x.n?`${x.n}문제 풀이 · ${x.c}문제 정답`:'아직 푼 문제가 없어요'}</small></div>`;
+ h+=`<button class="svw" onclick="wrongPage('${n}')"><span><b>오답노트</b><small>${wr.length?(un.length?`남은 오답 ${un.length}문제`:'오답을 모두 고쳤어요'):'아직 틀린 문제가 없어요'}</small></span>${un.length?`<span class="wnc">${un.length}</span>`:''}<span class="chev">›</span></button>`;
+ h+=`<div class="svh">보완할 영역</div>`;
+ h+=!x.n?`<div class="mut svx">문제를 풀면 여기에 보여요.</div>`:!wk.length?`<div class="mut svx">틀린 영역이 없어요.</div>`:wk.map(w=>`<div class="svk"><div><b class="no-t">${esc(w.k)}</b> <span class="mut">${w.c}/${w.n} 정답</span></div>${TIPS[w.k]?`<div class="mut">${esc(TIPS[w.k])}</div>`:''}</div>`).join('');
+ return h}
+function svTog(ix){document.querySelectorAll('.svt').forEach(b=>{const on=b.id=='svt'+ix&&b.getAttribute('aria-expanded')!='true';b.setAttribute('aria-expanded',on);b.classList.toggle('on',on);document.getElementById('svp'+b.id.slice(3)).classList.toggle('on',on)})}
+
 function soon(){const o=document.getElementById('toast');if(o)o.remove();const t=document.createElement('div');t.id='toast';t.className='toast';t.textContent='아직 개설 전입니다.';document.body.appendChild(t);setTimeout(()=>t.remove(),1850)}
 function pick(){return subj('독서와|작문');let h=`<h2>지문 선택</h2><p class="tag"><b>${esc(NICK)}</b> 님 · 풀이 기록이 저장돼요.</p>`;
  PASS.forEach(p=>{const s=st(p.Q);h+=`<div class="card pc" onclick="menu('${p.id}')"><b>${p.name}</b><div class="bar"><i style="width:${s.n/s.t*100}%"></i></div><div class="mut">${stTxt(s)}</div></div>`});
