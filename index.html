@@ -223,24 +223,25 @@ try{DB=window.supabase.createClient(SB_URL,SB_KEY)}catch(e){DB=null}
 const AK=()=>ls('ak');
 async function chkAdmin(){OWNER=!!AK()}
 const ls=(k,v)=>{try{if(v===undefined)return localStorage.getItem(KEY+k)||'';if(v===null)localStorage.removeItem(KEY+k);else localStorage.setItem(KEY+k,v)}catch(e){return''}};
-function save(){ls('rec:'+NICK,JSON.stringify(R));clearTimeout(tm);tm=setTimeout(sync,700)}
+const DV='v2';const okDV=d=>(d&&d._dv===DV)?d:{};
+function save(){R._dv=DV;ls('rec:'+NICK,JSON.stringify(R));clearTimeout(tm);tm=setTimeout(sync,700)}
 async function sync(){if(ADMINMODE){if(DB)try{await DB.rpc('admin_save',{p_key:AK(),p_data:R})}catch(e){}return}if(!DB||!NICK||!PIN)return;try{const {data,error}=await DB.rpc('player_save',{p_nick:NICK,p_pin:PIN,p_data:R});if(error||data!==true)throw 0}catch(e){}}
 const lastNick=()=>ls('last');
 const ADM_NICK='풍산동신라면',ADM_RV='r1';let ADMINMODE=false;
-async function adminLoad(){if(!DB)return;try{const {data,error}=await DB.rpc('admin_me',{p_key:AK()});if(error)return;if(!data){ls('ak',null);OWNER=false;ADMINMODE=false;NICK='';ls('last',null);home();soonMsg('관리자 링크가 맞지 않아요.');return}const srv=data.data||{};if(srv._rv!==ADM_RV)R={_t:{}};else R=(R._rv===ADM_RV)?mergeR(srv,R):srv;R._rv=ADM_RV;ls('rec:'+NICK,JSON.stringify(R));sync()}catch(e){}}
-function adminOn(){ADMINMODE=true;NICK=ADM_NICK;PIN='';ls('last',ADM_NICK);ls('pin',null);try{R=JSON.parse(ls('rec:'+NICK))||{}}catch(e){R={}}if(R._rv!==ADM_RV)R={}}
+async function adminLoad(){if(!DB)return;try{const {data,error}=await DB.rpc('admin_me',{p_key:AK()});if(error)return;if(!data){ls('ak',null);OWNER=false;ADMINMODE=false;NICK='';ls('last',null);home();soonMsg('관리자 링크가 맞지 않아요.');return}const srv=okDV(data.data);R=(R._dv===DV)?mergeR(srv,R):srv;R._dv=DV;ls('rec:'+NICK,JSON.stringify(R));sync()}catch(e){}}
+function adminOn(){ADMINMODE=true;NICK=ADM_NICK;PIN='';ls('last',ADM_NICK);ls('pin',null);try{R=JSON.parse(ls('rec:'+NICK))||{}}catch(e){R={}}if(R._dv!==DV)R={}}
 async function enter(){if(ADMINMODE){const go=document.getElementById('go');if(go){go.disabled=true;go.textContent='확인 중…'}await adminLoad();REPL=true;return subjects()}const lk=lastNick(),el=document.getElementById('nk'),pe=document.getElementById('pn');
  const v=(lk||(el?el.value:'')).trim(),p=lk?ls('pin'):(pe?pe.value.trim():'');if(!v)return;
  if(!/^\d{4}$/.test(p)){soonMsg('비밀번호는 숫자 4자리예요.');return}
  const go=document.getElementById('go');if(go){go.disabled=true;go.textContent='확인 중…'}
- let loc={};try{loc=JSON.parse(ls('rec:'+v))||{}}catch(e){}
+ let loc={};try{loc=okDV(JSON.parse(ls('rec:'+v)))}catch(e){}
  let srv=null,st='offline';
  if(DB){try{const {data,error}=await DB.rpc('player_login',{p_nick:v,p_pin:p});if(!error&&data){st=data.status;srv=data.data||{}}}catch(e){}}
  if(st=='wrong'||st=='locked'||st=='bad_nick'||st=='bad_pin'){if(go){go.disabled=false;go.textContent='시작하기'}
   if(lk&&st=='wrong'){ls('last',null);ls('pin',null);home()}
   soonMsg(st=='locked'?'비밀번호를 여러 번 틀렸어요. 10분 뒤에 다시 해 주세요.':st=='wrong'?'비밀번호가 틀렸어요. 처음이면 다른 닉네임을 써 주세요.':'닉네임이나 비밀번호를 확인해 주세요.');return}
  NICK=v;PIN=p;ls('last',v);ls('pin',p);
- R=mergeR(srv||{},loc);ls('rec:'+NICK,JSON.stringify(R));
+ R=mergeR(okDV(srv),loc);R._dv=DV;ls('rec:'+NICK,JSON.stringify(R));
  if(st=='offline')soonMsg('서버에 연결되지 않아 이 기기에만 저장돼요.');else if(Object.keys(loc).length)sync();
  if(st=='new')soonMsg('새 닉네임으로 시작해요!');
  await chkAdmin();REPL=true;subjects()}
@@ -306,7 +307,7 @@ const allQ=()=>{const m=new Map();[].concat(...PASS.map(p=>p.Q)).concat(...Objec
 function achX(n,X){const o=SUBJ.flat().find(x=>x[0]==n)[2];const qs=isSoc(n)?socQ(n):o?[].concat(...PASS.map(p=>p.Q)):[1,2,3,4].reduce((a,u)=>a.concat(UNITQ[n+u]||[]),[]);return qs.length?Math.round(st(qs,X).c/qs.length*100):0}
 async function admLoad(force){if(!force&&ADM.length+FB.length&&admLoad.ok)return true;
  try{const [a,b]=await Promise.all([DB.rpc('admin_players',{p_key:AK()}),DB.rpc('admin_feedback',{p_key:AK()})]);if(a.error||!a.data)throw 0;
-  ADM=a.data.map(x=>({nick:x.nick,R:x.data||{},t:Date.parse(x.updated_at)}));FB=(b.data||[]).map(x=>({nick:x.nick||'익명',text:x.body,t:Date.parse(x.created_at),k:fbCls(x.body)}));admLoad.ok=true;return true}catch(e){return false}}
+  ADM=a.data.map(x=>({nick:x.nick,R:okDV(x.data),t:Date.parse(x.updated_at)}));FB=(b.data||[]).map(x=>({nick:x.nick||'익명',text:x.body,t:Date.parse(x.created_at),k:fbCls(x.body)}));admLoad.ok=true;return true}catch(e){return false}}
 const chip=k=>{const t=FT(k);return `<span class="chp" style="background:${t[2]}">${t[1]}</span>`};
 const fbCard=x=>`<div class="card fbc"><div class="fbh">${chip(x.k)}<b>${esc(x.nick)}</b><span class="mut">${fd(x.t)}</span></div><div class="fbt">${esc(x.text||'')}</div></div>`;
 async function admin(force){if(!(await admLoad(force)))return show('<h2>관리자</h2><p>불러오지 못했어요.</p>');
@@ -626,10 +627,10 @@ async function boot(){{const m=location.hash.match(/^#k=([A-Za-z0-9]{16,64})$/);
  if(OWNER){adminOn();if(FRESH)home();else goR(curR());adminLoad();return}
  const lk=lastNick(),pn=ls('pin');
  if(!lk||!/^\d{4}$/.test(pn)){chkAdmin();return home()}
- NICK=lk;PIN=pn;try{R=JSON.parse(ls('rec:'+lk))||{}}catch(e){R={}}
+ NICK=lk;PIN=pn;try{R=okDV(JSON.parse(ls('rec:'+lk)))}catch(e){R={}}
  if(FRESH)home();else goR(curR());
  if(DB){try{const {data,error}=await DB.rpc('player_login',{p_nick:lk,p_pin:pn});if(!error&&data){
-  if(data.status=='ok'||data.status=='new'){const loc=R;R=mergeR(data.data||{},loc);ls('rec:'+NICK,JSON.stringify(R));if(Object.keys(loc).length)sync()}
+  if(data.status=='ok'||data.status=='new'){const loc=R;R=mergeR(okDV(data.data),loc);R._dv=DV;ls('rec:'+NICK,JSON.stringify(R));if(Object.keys(loc).length)sync()}
   else if(data.status=='wrong'){ls('last',null);ls('pin',null);NICK='';PIN='';REPL=true;home();soonMsg('비밀번호가 바뀌어 다시 입력해야 해요.')}}}catch(e){}}}
 
 boot();
