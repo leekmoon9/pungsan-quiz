@@ -385,6 +385,9 @@ body.cap .capm{display:flex}
 @media (max-width:759px){body.hasbk #app>.shd>.tag,body.hasbk #app>.nth>.tag{margin-left:51px}}
 .shd{min-height:66px!important;padding-right:110px}.shd .cvs{top:-2px;right:60px;width:40px}
 .hd h2{margin-bottom:0}.hd2{margin-top:-8px!important}
+.hd2.ha{margin-top:8px!important}
+.mkrow.mkwr{border-left:6px solid #e79a90;background:color-mix(in srgb,#e79a90 10%,var(--card))}.mkrow.mkwr>b{width:auto;min-width:34px}.mkrow.mkwr .mkst{color:var(--tx);font-weight:700}.mkrow.mkwr.lk{opacity:1;cursor:default}.mkrow.mkwr.lk .mkst{color:var(--mut);font-weight:400}.mkrow .wnc{margin-left:auto}
+.ntb th{white-space:normal!important;word-break:keep-all}.ntb td{word-break:keep-all;overflow-wrap:anywhere}
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -517,7 +520,7 @@ function animBars(){setTimeout(()=>document.querySelectorAll('[data-w]').forEach
 const SUBJ=[[['독서와|작문','b',1],['영어','r'],['중국어|회화','t'],['일본어|회화','j']],[['미적분','y'],['기하','y']],[['정치','g'],['경제','g'],['동아시아|역사기행','g'],['현대사회와|윤리','g'],['한국지리|탐구','g']],[['세포와|물질대사','p'],['물질과|에너지','p'],['역학과|에너지','p'],['행성우주|과학','p']]];
 const SECN=['언어 영역','수리 영역','사회 영역','과학 영역'];
 const SC={y:'#f2cf6b',b:'#8fb8ec',r:'#ee9a9a',t:'#93d3d8',j:'#c9b6ec',g:'#9bd3ae',p:'#f1a9c8'};
-function subjects(){let h=`<div class="hd" style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px"><div><h2>학습하기</h2></div><span class="admw"><button class="b g s admb gdb2" onclick="guide()">사용법</button>${mailBtn()}<button class="pfb" aria-label="내 프로필" onclick="profile()">${PSVG}</button></span></div><div class="hd2"><p class="tag"><b>${esc(NICK)}</b> 님</p>${OWNER&&DB?'<span class="adm2"><button class="b g s admb rsb" onclick="myReset()">초기화</button><button class="b g s admb" onclick="admin()">관리자</button></span>':SUBMODE&&DB?'<span class="adm2"><button class="b g s admb" onclick="admin()">관리자</button></span>':''}</div><div class="qk">${isApp()?'<button onclick="allStats()">전체 통계</button>':`<button class="lkd" onclick="lockMsg()">${LOCK}전체 통계</button>`}<button onclick="fbForm(1)">피드백</button></div>`;
+function subjects(){let h=`<div class="hd" style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px"><div><h2>학습하기</h2></div><span class="admw"><button class="b g s admb gdb2" onclick="guide()">사용법</button>${mailBtn()}<button class="pfb" aria-label="내 프로필" onclick="profile()">${PSVG}</button></span></div><div class="hd2${(OWNER||SUBMODE)&&DB?' ha':''}"><p class="tag"><b>${esc(NICK)}</b> 님</p>${OWNER&&DB?'<span class="adm2"><button class="b g s admb rsb" onclick="myReset()">초기화</button><button class="b g s admb" onclick="admin()">관리자</button></span>':SUBMODE&&DB?'<span class="adm2"><button class="b g s admb" onclick="admin()">관리자</button></span>':''}</div><div class="qk">${isApp()?'<button onclick="allStats()">전체 통계</button>':`<button class="lkd" onclick="lockMsg()">${LOCK}전체 통계</button>`}<button onclick="fbForm(1)">피드백</button></div>`;
  SUBJ.forEach((row,ri)=>{h+=`<h3 class="sec">${SECN[ri]}</h3><div class="sg c2">`;row.forEach(([n,c,o])=>{if(COVER[n]){h+=bk(n,c,o);return}h+=`<div class="card pc" style="margin:0;padding:0;overflow:hidden;text-align:center;background:var(--bg);aspect-ratio:6/5;display:flex;flex-direction:column" onclick="subj('${n}')"><div style="position:absolute;top:0;left:0;right:0;pointer-events:none;height:34px;background:linear-gradient(to bottom,${SC[c]} 0,${SC[c]} 18%,transparent 100%)"></div><div style="flex:1;display:flex;align-items:center;justify-content:center;padding:4px;line-height:1.3;font-weight:600;white-space:nowrap" class="sl">${n.split('|').join('<br>')}</div></div>`});h+='</div>'});
  show(h);animBars();mailBadge();afterHome()}
 let FBF=0;
@@ -794,12 +797,12 @@ function mockGo(n,r){if(!MOCK[n]){soonMsg('이 과목 모의고사는 아직 준
 function mkWeak(n){const tg={};mkAns(n).forEach(q=>{const t=tg[q.g]=tg[q.g]||{n:0,c:0};t.n++;if(R[q.id].ok)t.c++});return Object.keys(tg).map(k=>({k,...tg[k],r:Math.round(tg[k].c/tg[k].n*100)})).sort((a,b)=>a.r-b.r||b.n-a.n)}
 function gMid(n,g){for(let u=0;u<CUR[n].length;u++)for(let k=0;k<CUR[n][u].m.length;k++)if(CUR[n][u].m[k].q.some(q=>q.g==g))return [u,k];return null}
 function mockPage(n){if(!MOCK[n]){soonMsg('이 과목 모의고사는 아직 준비 중이에요.');return}const col=sCol(n),nm=n.split('|').join(' '),c=mkCnt(n),op=mkOpen(n),rt=mkRate(n),wq=mkAll(n).filter(q=>R[q.id]&&!R[q.id].ok),uq=wq.filter(isUnf);
- let h=`<div class="shd"><h2 style="--hlc:${col}">모의고사</h2><p class="tag">${esc(nm)}</p></div>`;
+ let h=`<div class="shd"><h2 style="--hlc:${col}">모의고사</h2></div>`;
  h+=`<div class="mkg" style="--uc:${col}"><div class="card mks2"><span>완료</span><b>${c}<small>/${MKN}회</small></b></div><div class="card mks2"><span>평균 정답률</span><b>${rt==null?'-':rt+'<small>%</small>'}</b></div></div>`;
  h+=`<h3 class="sec">회차별 점수</h3><div class="mkr" style="--uc:${col}">`+MOCK[n].map((M,r)=>{const d=mkDone(n,r),nx=!d&&MOCK[n].findIndex((_,i)=>!mkDone(n,i))==r,qs=M.q,cc=qs.filter(q=>R[q.id]&&R[q.id].ok).length,p=Math.round(cc/qs.length*100);
-  return `<button class="mkrow${d?' dn':nx&&op?' nx':' lk'}" ${d||nx&&op?`onclick="mockGo('${n}',${r})"`:'disabled'}><b>${r+1}회</b>${d?`<span class="mkbar"><i data-w="${p}" style="width:0"></i></span><span class="mksc">${cc}/${qs.length} · ${p}%</span>`:`<span class="mkst">${nx&&op?'지금 풀 수 있어요':'이전 회차를 먼저 풀어요'}</span>`}<span class="chev">${d?'↻':nx&&op?'›':''}</span></button>`}).join('')+`</div>`;
+  return `<button class="mkrow${d?' dn':nx&&op?' nx':' lk'}" ${d||nx&&op?`onclick="mockGo('${n}',${r})"`:'disabled'}><b>${r+1}회</b>${d?`<span class="mkbar"><i data-w="${p}" style="width:0"></i></span><span class="mksc">${cc}/${qs.length} · ${p}%</span>`:`<span class="mkst">${nx&&op?'풀러 가기':''}</span>`}<span class="chev">${d?'↻':nx&&op?'›':''}</span></button>`}).join('')+`</div>`;
  if(!op)h+=`<div class="card mut" style="text-align:center">모든 문제를 풀고 오답까지 끝내면 모의고사가 열려요.</div>`;
- h+=`<button class="wnb" onclick="mkWrong('${n}')"><span><b>모의고사 오답</b><small>${wq.length?(uq.length?`남은 오답 ${uq.length}문제`:'오답을 모두 고쳤어요'):'아직 틀린 문제가 없어요'}</small></span>${uq.length?`<span class="wnc">${uq.length}</span>`:''}<span class="chev">›</span></button>`;
+ h+=`<h3 class="sec">모의고사 오답</h3><button class="mkrow mkwr${uq.length?'':' lk'}" onclick="mkWrong('${n}')"><b>오답</b><span class="mkst">${wq.length?(uq.length?`남은 오답 ${uq.length}문제 다시 풀기`:'오답을 모두 고쳤어요'):'아직 틀린 문제가 없어요'}</span>${uq.length?`<span class="wnc">${uq.length}</span>`:''}<span class="chev">${uq.length?'›':''}</span></button>`;
  const wk=mkWeak(n);
  if(wk.length){h+=`<h3 class="sec">유형별 정답률</h3><div class="card">`+wk.slice(0,6).map(t=>`<div class="arw"><div class="al"><span>${esc(t.k)}${t.r<70?'<span class="wkb">취약</span>':''}</span><b>${t.c}/${t.n}</b></div><div class="bar"><i data-w="${t.r}" style="width:0;background:${t.r<70?'#d98b80':col}"></i></div></div>`).join('')+`</div>`}
  h+=`<h3 class="sec">시험 직전에 할 일</h3><div class="card mkt">`+mkTodo(n,wk,uq.length)+`</div>`;
@@ -855,7 +858,7 @@ function lockMsg(){askBox(`${LOCK} 앱 전용 기능이에요`,'앱으로 다운
 
 function wrongPage(n){const nm=n.split('|').join(' '),c=SUBJ.flat().find(x=>x[0]==n)[1],col=SC[c];
  const all=socQ(n),wr=all.filter(q=>R[q.id]&&!R[q.id].ok),un=wr.filter(isUnf);
- let h=`<div class="shd"><h2 style="--hlc:#f3b8b1">오답노트</h2><p class="tag">${esc(nm)} · 여기서 푼 결과는 통계에 들어가지 않아요.</p>${COVER[n]?`<img class="cvs" src="${COVER[n]}" alt="">`:''}</div>`;
+ let h=`<div class="shd"><h2 style="--hlc:#f3b8b1">오답노트</h2><p class="tag">${esc(nm)} · 여기서 푼 결과는 통계에 들어가지 않아요.</p></div>`;
  h+=`<div class="pg2"><div class="card st2"><span>남은 오답</span><b class="${un.length?'no-t':''}">${un.length}문제</b></div><div class="card st2"><span>고친 오답</span><b class="ok-t">${wr.length-un.length}문제</b></div></div>`;
  if(!wr.length)h+=`<div class="card mut" style="text-align:center;padding:24px">아직 틀린 문제가 없어요.</div>`;
  else if(!un.length)h+=`<div class="card" style="text-align:center;padding:20px">오답을 모두 고쳤어요! 🎉</div>`;
