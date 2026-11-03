@@ -348,6 +348,13 @@ button,.pc,.nav span{-webkit-tap-highlight-color:transparent;touch-action:manipu
 .card.bk .bar i{border-radius:4px;transition:width 1.05s cubic-bezier(.3,1.7,.5,1)}
 .sl{font-size:clamp(12px,3.4vw,15px)}
 @media(max-width:520px),(pointer:coarse){main{max-width:520px;padding:14px 14px 28px}h1{font-size:24px}.hero{padding:0}.sg.c2{grid-template-columns:repeat(2,1fr);gap:10px}.sl{font-size:17px}.card.bk img{width:44px;height:62px}.card.bk .nm{font-size:15px}.card.bk .tp{gap:14px}.b{min-height:50px}.opt{padding:15px 14px}.nav span{width:34px;height:34px;font-size:13px}.nav{gap:6px}}
+.dnb{display:inline-flex;align-items:center;gap:3px;margin-left:8px;padding:2px 9px 2px 7px;border-radius:999px;background:color-mix(in srgb,var(--uc) 70%,#1d1d1d);color:#fff;font-size:11.5px;font-weight:800;vertical-align:2px;letter-spacing:.2px;white-space:nowrap}.dnb svg{width:12px;height:12px}
+.nlg.dn .nlh{border-left-width:7px}.nlg.dn .nlb{background:color-mix(in srgb,var(--uc) 28%,var(--card))!important;border-color:color-mix(in srgb,var(--uc) 60%,var(--ln))!important}
+.ub.udn{background:color-mix(in srgb,var(--uc) 26%,var(--card))!important;border-color:color-mix(in srgb,var(--uc) 60%,var(--ln))!important}
+body.cap>*:not(.capm){filter:blur(22px) saturate(.6);transition:none}
+.capm{display:none;position:fixed;inset:0;z-index:99999;align-items:center;justify-content:center;padding:24px;text-align:center;background:rgba(40,30,20,.35);color:#fff;font-weight:800;font-size:17px;line-height:1.5;text-shadow:0 1px 6px rgba(0,0,0,.5)}
+body.cap .capm{display:flex}
+@media print{body *{display:none!important}body:after{content:'인쇄할 수 없는 화면이에요.';display:block;padding:40px;font-size:20px}}
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -436,7 +443,7 @@ async function enter(){if(SUBMODE){const go=document.getElementById('go');if(go)
 const A=document.getElementById('app'),P=id=>PASS.find(p=>p.id==id)||{name:'',Q:[]};
 const esc=s=>String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
 const norm=s=>s.replace(/[\s.,·]/g,'').toLowerCase();
-const grade=(q,v)=>{const n=norm(v);return n&&q.a.some(k=>k.split('&').every(p=>n.includes(norm(p))))};
+const grade=(q,v)=>{const n=norm(v);return n&&q.a.some(k=>q.ex?n===norm(k):k.split('&').every(p=>n.includes(norm(p))))};
 function st(qs,X){X=X||R;const d=qs.filter(q=>X[q.id]),c=d.filter(q=>X[q.id].ok).length;return{n:d.length,c,t:qs.length,r:d.length?Math.round(c/d.length*100):null}}
 const stTxt=s=>s.n?`${s.n}/${s.t}문제 풀이 · 정답률 ${s.r}%`:`${s.t}문제 · 아직 풀지 않음`;
 let LK=null;const show=(h,k)=>{const nw=k===undefined||k!==LK;LK=k===undefined?null:k;{const sd=document.getElementById('sides');if(sd)sd.remove()}document.querySelectorAll('.tbv').forEach(e=>e.remove());A.innerHTML=h;if(nw){window.scrollTo(0,0);A.classList.remove('in');void A.offsetWidth;A.classList.add('in')}};
@@ -656,7 +663,7 @@ function socPage(n){const c=SUBJ.flat().find(x=>x[0]==n)[1],col=SC[c],nm=n.split
  {const wq=socQ(n).filter(q=>R[q.id]&&!R[q.id].ok),uq=wq.filter(isUnf);h+=`<button class="wnb" onclick="wrongPage('${n}')"><span><b>오답노트</b><small>${wq.length?(uq.length?`남은 오답 ${uq.length}문제`:'오답을 모두 고쳤어요'):'아직 틀린 문제가 없어요'}</small></span>${uq.length?`<span class="wnc">${uq.length}</span>`:''}<span class="chev">›</span></button>`}
  if(!CUR[n].length)h+=`<div class="card mut" style="text-align:center;padding:26px 16px">아직 ${K1}이 준비 중이에요.<br>곧 추가할게요!</div>`;
  CUR[n].forEach((U,u)=>{const a=pct(bigQ(n,u));
-  h+=`<div class="ub${OPEN==u?' op':''}" id="ub${u}" style="--uc:${col}"><div class="uh" onclick="tgl(${u})"><div class="ut"><b>${esc(U.n)}</b>${wkBadge(gInfo(bigQ(n,u)))}<div class="al"><span>진행도</span><b>${a}%</b></div><div class="bar"><i data-w="${a}" style="width:0;background:${col}"></i></div></div><button class="b us" onclick="event.stopPropagation();socGo('${n}',${u})">문제 풀기</button><span class="chev">›</span></div><div class="um"><div class="umi">`;
+  const dn=NEWS(n)&&uDone(n,u);h+=`<div class="ub${OPEN==u?' op':''}${dn?' udn':''}" id="ub${u}" style="--uc:${col}"><div class="uh" onclick="tgl(${u})"><div class="ut"><b>${esc(U.n)}</b>${dn?DNB:''}${wkBadge(gInfo(bigQ(n,u)))}<div class="al"><span>진행도</span><b>${a}%</b></div><div class="bar"><i data-w="${a}" style="width:0;background:${col}"></i></div></div><button class="b us" onclick="event.stopPropagation();socGo('${n}',${u})">문제 풀기</button><span class="chev">›</span></div><div class="um"><div class="umi">`;
   U.m.forEach((M,k)=>{const b=pct(M.q);h+=`<button class="mb" onclick="socGo('${n}',${u},${k})"><span>${esc(M.n)}${wkBadge(gInfo(M.q))}</span><span class="mut">${M.q.length?M.q.length+'문제 · '+b+'%':'준비 중'}</span></button>`});
   h+=`</div></div></div>`});
  if(CUR[n].length)h+=`<div class="ub ua" style="--uc:${col}" onclick="socGo('${n}')"><div class="uh"><div class="ut"><b>전체 풀기</b><div class="al"><span>전체 진행도 · ${socQ(n).length}문제</span><b>${pct(socQ(n))}%</b></div><div class="bar"><i data-w="${pct(socQ(n))}" style="width:0;background:${col}"></i></div></div><span class="chev">›</span></div></div>`;h+=``;
@@ -710,7 +717,7 @@ function learnHome(n){const col=sCol(n),nm=n.split('|').join(' '),mids=[].concat
  show(h)}
 function noteList(n){if(!NEWS(n))return subj(n);const col=sCol(n),nm=n.split('|').join(' ');
  let h=`<div class="shd"><h2 style="--hlc:${col}">공부하기</h2><p class="tag">${esc(nm)}</p></div>`;
- CUR[n].forEach((U,u)=>{h+=`<div class="nlg" style="--uc:${col}"><div class="nlh">${esc(U.n)}</div>${U.m.map((M,k)=>{const o=noteOf(n,u,k);const ok=o||STAFF();return `<button class="nlb${o?'':' nlx'}"${ok?` onclick="noteView('${n}',${u},${k})"`:' disabled'}><span>${esc(M.n)}</span><span class="mut">${o?'필기 보기':'준비 중'}</span>${ok?'<span class="chev">›</span>':''}</button>`}).join('')}</div>`});
+ CUR[n].forEach((U,u)=>{const dn=uDone(n,u);h+=`<div class="nlg${dn?' dn':''}" style="--uc:${col}"><div class="nlh">${esc(U.n)}${dn?DNB:''}</div>${U.m.map((M,k)=>{const o=noteOf(n,u,k);const ok=o||STAFF();return `<button class="nlb${o?'':' nlx'}"${ok?` onclick="noteView('${n}',${u},${k})"`:' disabled'}><span>${esc(M.n)}</span><span class="mut">${o?'필기 보기':'준비 중'}</span>${ok?'<span class="chev">›</span>':''}</button>`}).join('')}</div>`});
  show(h)}
 function noteView(n,u,k){u=+u;k=+k;const U=CUR[n]&&CUR[n][u],M=U&&U.m[k];if(!M||!NEWS(n))return subjects();
  const col=sCol(n),nm=n.split('|').join(' '),o=noteOf(n,u,k)||(STAFF()?NOTE_DEMO:null);if(!o)return noteList(n);const nx=nextNote(n,u,k),pg=o&&o.pg&&o.pg.length;
@@ -718,8 +725,15 @@ function noteView(n,u,k){u=+u;k=+k;const U=CUR[n]&&CUR[n][u],M=U&&U.m[k];if(!M||
  if(pg)h+=`<button class="tbb" onclick="tbOpen('${n}',${u},${k})">${ICN_BOOK}<span>교과서 원문 보기</span></button>`;
  if(o&&o.demo)h+=`<div class="prn">디자인 미리보기예요. 관리자에게만 보이고, 교과서를 받으면 실제 필기로 바뀌어요.</div>`;
  h+=o?`<article class="nt" style="--nc:${col}">${o.b.map(ntBlock).join('')}</article>`:`<div class="card ntx">${ICN_NOTE}<p>이 단원 필기는 준비 중이에요.<br>곧 채워질 예정이에요.</p></div>`;
- h+=`<div class="ntf"><button class="b ntq" onclick="socGo('${n}',${u},${k},{note:1})">문제 풀기</button>${nx?`<button class="ntn" onclick="noteView('${n}',${nx[0]},${nx[1]})">다음 단원 학습하기<span>→</span></button>`:''}</div>`;
+ h+=`<div class="ntf"><button class="b ntq" onclick="socGo('${n}',${u},${k},{note:1})">문제 풀기</button>${k==U.m.length-1&&!o.demo?`<button class="ntn" onclick="endUnit('${n}',${u})">${uLab(U,u)} 학습 끝내기<span>✓</span></button>`:nx?`<button class="ntn" onclick="noteView('${n}',${nx[0]},${nx[1]})">다음 단원 학습하기<span>→</span></button>`:''}</div>`;
  show(h,'nt|'+n+'|'+u+'|'+k)}
+const uLab=(U,u)=>{const r=(U.n||'').split('.')[0].trim();return (/^[ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩ]+$/.test(r)?r:(u+1))+'단원'};
+const uDone=(n,u)=>{const qs=bigQ(n,u);return !!(R._nd&&R._nd[n+'|'+u])&&qs.length>0&&qs.every(q=>R[q.id])};
+const DNB='<span class="dnb"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>학습 완료</span>';
+function endUnit(n,u){R._nd=R._nd||{};R._nd[n+'|'+u]=1;save();const U=CUR[n][u],dn=uDone(n,u);
+ const w=document.createElement('div');w.className='mdw';
+ w.innerHTML=`<div class="mdc"><h3>모두 공부하셨네요!</h3><p>${dn?`${esc(uLab(U,u))} 문제도 이미 다 풀었어요.<small class="mdn">한 번 더 풀면 통계에는 반영되지 않아요.</small>`:`바로 복습을 진행해 볼까요?<small class="mdn">${esc(uLab(U,u))} 문제를 풀어요. 다 풀면 &lsquo;학습 완료&rsquo; 표시가 붙어요.</small>`}</p><div class="row" style="margin:0"><button class="b g" data-v="0">나가기</button><button class="b" data-v="1">문제 풀기</button></div></div>`;
+ w.onclick=e=>{const v=e.target.dataset&&e.target.dataset.v;if(v===undefined)return;w.remove();if(v==='1')socGo(n,u,undefined,{nl:1});else noteList(n)};document.body.appendChild(w)}
 const WARN='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 21h20L12 3z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 10v5M12 17.6v.4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>';
 function tbOpen(n,u,k){const o=noteOf(n,u,k);if(!o||!o.pg||!o.pg.length)return soonMsg('교과서 원문은 아직 준비 중이에요.');
  const w=document.createElement('div');w.className='tbv';w.oncontextmenu=e=>{e.preventDefault()};
@@ -776,7 +790,7 @@ function socGo(n,u,k,opt){const segs=[];const nm=n.split('|').join(' ');opt=opt|
  if(NEWS(n))CUR[n].forEach((U,ui)=>{if(u!==undefined&&(k===undefined||opt.note?ui!==u:ui<u))return;U.m.forEach((M,ki)=>{if(k!==undefined&&ui==u&&(opt.note?ki!==k:ki<k))return;segs.push(...midSegs(n,ui,ki))})});
  else CUR[n].forEach((U,ui)=>{if(u!==undefined&&ui!==u)return;U.m.forEach((M,ki)=>{if(k!==undefined&&ki<k)return;if(M.q.length)segs.push({label:(u===undefined||CUR[n].length>1&&KIND[n]?U.n+' · ':'')+M.n,qs:M.q})})});
  if(!segs.length){soonMsg(opt.note?'이 단원 문제는 아직 준비 중이에요.':'아직 문제가 준비 중이에요.');return}
- const xm=opt.note?{note:[n,u,k]}:{};
+ const xm=opt.note?{note:[n,u,k]}:opt.nl?{nl:1}:{};
  const tsg=k!==undefined?(NEWS(n)?segs.filter(x=>x.grp==segs[0].grp):segs.slice(0,1)):segs,all=[].concat(...tsg.map(x=>x.qs)),done=all.every(q=>R[q.id]);
  const wseg=tsg.filter(x=>{const g=gInfo(x.qs);return g.weak&&g.u>0}),unN=[].concat(...wseg.map(x=>x.qs)).filter(isUnf).length;
  if(unN){askBox('취약한 유형이에요',`틀린 문제가 많아요. 먼저 오답부터 고쳐 보세요.<small class="mdn">오답 ${unN}문제를 다시 풀어요. 다 고치면 &lsquo;오답 완료&rsquo; 표시가 붙어요.</small>`,'오답 풀기').then(ok=>{if(ok)startWrong(n,wseg,xm)});return}
@@ -816,7 +830,7 @@ const exT=q=>esc(q.e||'').replace(/⟦(\d)⟧/g,(_,d)=>CIRC[q.t=='mc'?posOf(q,+d
 
 function startRun(n,segs,meta){OPEN=-1;SS={pid:'run',cat:'all',meta:Object.assign({subj:n,back:"socPage('"+n+"')",backLabel:kd(n)[1]+' 선택으로',kind:kd(n)[1]},meta||{}),segs,si:0,qs:segs[0].qs,i:0,resp:{},graded:[]};SS.base={};Object.keys(R).forEach(k=>{if(k[0]!='_')SS.base[k]=1});SS.perm={};segs.forEach(x=>Object.assign(SS.perm,mkPerm(x.qs)));draft=null;QS0=Date.now();quiz()}
 const ttl=()=>SS.meta?SS.meta.title:P(SS.pid).name;
-function goBack(){if(SS&&SS.meta&&SS.meta.note)return noteView(...SS.meta.note);if(SS&&SS.meta&&SS.meta.wp)return wrongPage(SS.meta.subj);if(SS&&SS.meta&&SS.meta.subj)return NEWS(SS.meta.subj)?socPage(SS.meta.subj):subj(SS.meta.subj);subjects()}
+function goBack(){if(SS&&SS.meta&&SS.meta.note)return noteView(...SS.meta.note);if(SS&&SS.meta&&SS.meta.nl)return noteList(SS.meta.subj);if(SS&&SS.meta&&SS.meta.wp)return wrongPage(SS.meta.subj);if(SS&&SS.meta&&SS.meta.subj)return NEWS(SS.meta.subj)?socPage(SS.meta.subj):subj(SS.meta.subj);subjects()}
 const qtx=t=>esc(t).replace(/\[빈칸\]/g,'<span class="blk"></span>');
 function quiz(){const q=SS.qs[SS.i],N=SS.qs.length,seg=SS.segs[SS.si],r=SS.resp[q.id]||{};QID=q.id;if(!QS0)QS0=Date.now();
  const tn={mc:'객관식',ox:'O/X',sh:'빈칸 채우기',es:'서술형'}[q.t];
@@ -868,7 +882,7 @@ function result(){QS0=0;const rs=(SS.graded||[]).filter(q=>SS.resp[q.id]&&SS.res
   if(q.t=='es'){const miss=q.pts.filter((p,k)=>!(r.chk||[])[k]);h+=`<div class="fb no">빠진 요소:\n${miss.map(x=>'· '+esc(x)).join('\n')}</div>`}else h+=`<div class="fb ok">${exT(q)}</div>`;
   if(q.t=='sh'&&!r.blank)h+=`<button class="lk" style="margin-top:6px" onclick="ovr2('${q.id}')">내 답도 맞는 표현이에요 (정답 처리)</button>`;h+=`</div>`})}
  h+=wr.length?`<div class="row"><button class="b" onclick="retryWrong()">틀린 문제만 다시</button></div>`:'';
- if(SS.meta.note)h+=`<div class="row"><button class="b${wr.length?' g':''}" onclick="noteView(...SS.meta.note)">필기로 돌아가기</button></div>`;else if(NEWS(SS.meta.subj)&&!SS.meta.wp)h+=`<div class="row"><button class="b g" onclick="socPage('${SS.meta.subj}')">단원 선택으로</button></div>`;
+ if(SS.meta.note)h+=`<div class="row"><button class="b${wr.length?' g':''}" onclick="noteView(...SS.meta.note)">필기로 돌아가기</button></div>`;else if(SS.meta.nl)h+=`<div class="row"><button class="b${wr.length?' g':''}" onclick="noteList('${SS.meta.subj}')">공부하기로 돌아가기</button></div>`;else if(NEWS(SS.meta.subj)&&!SS.meta.wp)h+=`<div class="row"><button class="b g" onclick="socPage('${SS.meta.subj}')">단원 선택으로</button></div>`;
  show(h);animBars()}
 function ovr2(id){SS.resp[id].ok=true;if(SS.meta&&SS.meta.mode=='wrong'){R._fx=R._fx||{};R._fx[id]=1;save()}else if(recOK(id)){R[id]={ok:1};save()}result()}
 function retryWrong(){const wr=(SS.graded||[]).filter(q=>SS.resp[q.id]&&!SS.resp[q.id].ok);startRun(SS.meta.subj,[{label:'틀린 문제 다시 풀기',qs:wr}],{title:SS.meta.title,mode:SS.meta.mode=='wrong'||wr.every(q=>R[q.id])?'wrong':undefined,practice:true,wp:SS.meta.wp,note:SS.meta.note})}
@@ -1008,6 +1022,29 @@ async function boot(){{const m=location.hash.match(/^#s=([A-Za-z0-9]{16,64})$/);
 
 if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(r=>r.update()).catch(()=>{}));
 </script>
+<script>
+// ---- 캡처·복사 방지 (웹에서 가능한 범위) ----
+(()=>{const ed=t=>t&&t.closest&&t.closest('input,textarea,[contenteditable]');
+ const m=document.createElement('div');m.className='capm';m.textContent='화면 보호 중이에요. 다시 누르면 돌아와요.';
+ const on=()=>{if(!document.body.contains(m))document.body.appendChild(m);document.body.classList.add('cap')},off=()=>document.body.classList.remove('cap');
+ let t=0;const flash=ms=>{on();clearTimeout(t);t=setTimeout(()=>{if(document.hasFocus())off()},ms)};
+ const wipe=()=>{try{navigator.clipboard&&navigator.clipboard.writeText('')}catch(e){}};
+ window.addEventListener('blur',on);window.addEventListener('focus',()=>{clearTimeout(t);t=setTimeout(off,250)});
+ document.addEventListener('visibilitychange',()=>{if(document.hidden)on()});
+ m.addEventListener('click',()=>{if(document.hasFocus())off()});
+ document.addEventListener('keydown',e=>{const k=e.key||'';
+  if(k=='PrintScreen'||k=='Snapshot'){wipe();flash(1500);return}
+  if(e.metaKey&&e.shiftKey){flash(2500);return}
+  if((e.ctrlKey||e.metaKey)&&/^[psu]$/i.test(k)){e.preventDefault();return}
+  if((e.ctrlKey||e.metaKey)&&/^[cx]$/i.test(k)&&!ed(e.target)){e.preventDefault()}},true);
+ document.addEventListener('keyup',e=>{if(e.key=='PrintScreen'){wipe();flash(1500)}},true);
+ document.addEventListener('contextmenu',e=>{if(!ed(e.target))e.preventDefault()},true);
+ ['copy','cut'].forEach(v=>document.addEventListener(v,e=>{if(!ed(e.target))e.preventDefault()},true));
+ document.addEventListener('dragstart',e=>{if(e.target&&e.target.tagName=='IMG')e.preventDefault()},true);
+ window.addEventListener('beforeprint',on);window.addEventListener('afterprint',off);})();
+</script>
 <!-- 과목별 필기·문제 데이터: 여기 추가하고 마지막에 boot() -->
 <script src="data/pol1.js?v=1"></script>
+<script src="data/pol2.js?v=1"></script>
+<script src="data/pol3.js?v=1"></script>
 <script>boot()</script></body></html>
