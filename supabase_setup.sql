@@ -489,3 +489,23 @@ begin
 end $$;
 
 select cron.schedule('mock-open-notice', '30 22 22 11 *', $$select public.mock_open_notice()$$);
+-- ===== 공지 대상 선택 (2026-11-04 추가) =====
+-- p_to: 'all' 전체 / 'staff' 관리자(본인 + 보조 관리자) / 'some' 선택한 사람(p_nicks)
+create or replace function public.admin_notice_to(p_key text, p_title text, p_body text, p_to text, p_nicks text[] default null) returns int
+language plpgsql security definer set search_path = public as $$
+declare n int;
+begin
+  if not public.admin_ok(p_key) or char_length(btrim(coalesce(p_title, ''))) = 0 then return -1; end if;
+  insert into public.messages(to_nick, title, body, meta)
+    select p.nick, left(btrim(p_title), 120), left(coalesce(p_body, ''), 4000),
+           jsonb_build_object('kind', 'notice', 'to', p_to)
+    from public.players p
+    where case p_to
+      when 'all' then true
+      when 'staff' then p.nick = '풍산동신라면' or p.nick in (select nick from public.sub_keys where nick is not null)
+      when 'some' then p.nick = any(coalesce(p_nicks, '{}'::text[]))
+      else false end;
+  get diagnostics n = row_count;
+  return n;
+end $$;
+grant execute on function public.admin_notice_to(text, text, text, text, text[]) to anon, authenticated;

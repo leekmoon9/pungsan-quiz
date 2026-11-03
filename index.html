@@ -400,6 +400,16 @@ body.cap .capm{display:flex}
 .qfg{display:flex;justify-content:center;margin:8px 0}.qgr{width:100%;max-width:300px;height:auto}
 .qtw{overflow-x:auto;margin:10px 0}.qtb{border-collapse:collapse;width:100%;font-size:.92em;font-weight:500;text-align:center}.qtb th,.qtb td{border:1.2px solid var(--bd);padding:6px 4px;white-space:nowrap}.qtb{font-size:.86em!important}.qtb th:first-child,.qtb td:first-child{white-space:normal;min-width:4.5em}.qtb td,.qtb th{white-space:normal}.qtb th,.qtb td{overflow-wrap:normal!important;word-break:keep-all}.qtb th{background:var(--card);font-weight:700}
 .qpt{color:var(--no);font-weight:700}.mkt{font-size:13px;color:var(--mut);margin:-2px 0 8px;font-variant-numeric:tabular-nums}
+.qk.q1{grid-template-columns:1fr}
+.ntg{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;padding:4px;margin:12px 0 4px;border-radius:12px;background:color-mix(in srgb,var(--ac) 12%,var(--card));border:1.5px solid color-mix(in srgb,var(--ac) 30%,var(--ln))}
+.ntg button{padding:10px 4px;border:none;border-radius:9px;background:transparent;color:var(--tx);font:inherit;font-size:15px;font-weight:700;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.ntg button.on{background:var(--card);box-shadow:0 1px 6px rgba(90,70,40,.15);color:var(--ac2,var(--tx))}
+.ntm{font-size:14px;color:var(--mu,#7a7366);margin:8px 4px 10px}
+.ntp input{width:100%;box-sizing:border-box;background:#fff;border:1.5px solid #e6dfd0;border-radius:14px;padding:11px 16px;font:inherit;font-size:15px;color:var(--tx);-webkit-appearance:none;appearance:none}.ntp input:focus{outline:none;border-color:#8fb8ec}#ntt{text-align:left}
+.ntl{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px;max-height:190px;overflow:auto}
+.ntl button{padding:7px 12px;border-radius:999px;border:1.5px solid var(--ln);background:var(--card);color:var(--tx);font:inherit;font-size:14px;font-weight:600;cursor:pointer;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ntl button.on{background:color-mix(in srgb,var(--ac) 30%,var(--card));border-color:color-mix(in srgb,var(--ac) 70%,var(--ln))}
+.ntl button.on::before{content:'✓ '}
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -636,10 +646,25 @@ function fbCopy(){const L=FB.filter(x=>x.st!='done').slice().sort((a,b)=>a.t-b.t
  const ok=()=>soonMsg('복사했어요. 클로드 채팅창에 붙여 넣어 주세요.');
  try{navigator.clipboard.writeText(t).then(ok,()=>fbCopyShow(t))}catch(e){fbCopyShow(t)}}
 function fbCopyShow(t){show(`<h2>피드백 복사</h2><p class="tag">아래 내용을 길게 눌러 모두 선택한 뒤 복사해 주세요.</p><div class="card"><textarea readonly style="min-height:50vh">${esc(t)}</textarea></div>`)}
-function noticeForm(){show(`<h2>공지 보내기</h2><p class="tag">모든 사용자의 메시지함으로 보내고, 알림을 켠 사람에게는 폰 알림도 가요.</p><div class="card"><input type="text" id="ntt" maxlength="60" placeholder="제목"><textarea id="ntb" maxlength="2000" placeholder="내용" style="margin-top:8px"></textarea></div><div class="row"><button class="b" onclick="noticeSend()">보내기</button></div>`)}
+let NTO='all',NTS=new Set();
+function noticeForm(pre){if(pre){NTO='some';NTS=new Set([pre])}else{NTO='all';NTS=new Set()}
+ show(`<h2>공지 보내기</h2><div class="ntg" role="tablist">${[['all','전체'],['staff','관리자'],['some','개인']].map(([k,l])=>`<button data-k="${k}" onclick="ntTo('${k}')">${l}</button>`).join('')}</div><div id="ntw"></div><div class="card"><input type="text" id="ntt" maxlength="60" placeholder="제목"><textarea id="ntb" maxlength="2000" placeholder="내용" style="margin-top:8px"></textarea></div><div class="row"><button class="b" id="nts" onclick="noticeSend()">보내기</button></div>`);ntTo(NTO)}
+function ntTo(k){NTO=k;document.querySelectorAll('.ntg button').forEach(b=>b.classList.toggle('on',b.dataset.k==k));const w=document.getElementById('ntw');
+ if(k=='all')w.innerHTML=`<p class="ntm">참여자 <b>${ADM.length}명</b> 모두에게 보내요.</p>`;
+ else if(k=='staff')w.innerHTML=`<p class="ntm"><b>나와 보조 관리자</b>에게만 보내요.</p>`;
+ else{w.innerHTML=`<div class="card ntp"><input type="search" id="ntq" placeholder="닉네임 검색" oninput="ntList()"><div class="ntl" id="ntl"></div></div><p class="ntm" id="ntn"></p>`;ntList()}
+ ntBtn()}
+function ntList(){const q=(document.getElementById('ntq')||{}).value||'',L=ADM.map(r=>r.nick).filter(n=>n.includes(q.trim())).sort((a,b)=>NTS.has(b)-NTS.has(a)||a.localeCompare(b));
+ document.getElementById('ntl').innerHTML=L.length?L.map(n=>`<button class="${NTS.has(n)?'on':''}" onclick="ntPick(decodeURIComponent('${encodeURIComponent(n)}'))">${esc(n)}</button>`).join(''):'<p class="mut" style="font-size:14px;margin:6px 2px">찾는 사람이 없어요.</p>';ntBtn()}
+function ntPick(n){NTS.has(n)?NTS.delete(n):NTS.add(n);ntList()}
+function ntBtn(){const b=document.getElementById('nts'),m=document.getElementById('ntn');if(!b)return;
+ if(m)m.innerHTML=NTS.size?`<b>${NTS.size}명</b> 선택했어요.`:'받을 사람을 눌러서 골라 주세요.';b.disabled=NTO=='some'&&!NTS.size;b.textContent=NTO=='some'&&NTS.size?`${NTS.size}명에게 보내기`:NTO=='staff'?'관리자에게 보내기':'전체에게 보내기'}
 async function noticeSend(){const t=document.getElementById('ntt').value.trim(),b=document.getElementById('ntb').value.trim();if(!t)return soonMsg('제목을 써 주세요.');
- if(!(await askBox('공지를 보낼까요?',`<b>${esc(t)}</b><br>모든 사용자에게 보내져요.`,'보내기')))return;
- try{const {data,error}=await DB.rpc('admin_notice',{p_key:AK(),p_title:t,p_body:b});if(error||data<0)throw 0;soonMsg(`${data}명에게 보냈어요.`);admin()}catch(e){soonMsg('보내지 못했어요. 서버 설정을 확인해 주세요.')}}
+ const who=NTO=='all'?'모든 사용자에게':NTO=='staff'?'관리자에게만':(NTS.size==1?`<b>${esc([...NTS][0])}</b> 님에게`:`선택한 ${NTS.size}명에게`);
+ if(!(await askBox('공지를 보낼까요?',`<b>${esc(t)}</b><br>${who} 보내져요.`,'보내기')))return;
+ try{let r=await DB.rpc('admin_notice_to',{p_key:AK(),p_title:t,p_body:b,p_to:NTO,p_nicks:NTO=='some'?[...NTS]:null});
+  if(r.error&&NTO=='all')r=await DB.rpc('admin_notice',{p_key:AK(),p_title:t,p_body:b});
+  if(r.error||r.data<0)throw 0;soonMsg(`${r.data}명에게 보냈어요.`);admin()}catch(e){soonMsg('보내지 못했어요. 서버 설정을 확인해 주세요.')}}
 function wrongAna(){let h='';
  // ---- 오답 분석 ----
  const Q=allQ(),tg={};Q.forEach(q=>ADM.forEach(r=>{const x=(r.R||{})[q.id];if(x){const t=tg[q.g]=tg[q.g]||{n:0,w:0};t.n++;if(!x.ok)t.w++}}));
@@ -655,7 +680,7 @@ async function subAdmin(force){if(!(await admLoad(force)))return show('<h2>관�
  h+=wrongAna();show(h);animBars()}
 async function admin(force){if(SUBMODE)return subAdmin(force);if(!(await admLoad(force)))return show('<h2>관리자</h2><p>불러오지 못했어요.</p>');
  let h=`<h2>관리자</h2><p class="tag">참여자 ${ADM.length}명 · 피드백 ${FB.length}개 · 나만 볼 수 있는 화면이에요.</p>`;
- {const pend=FB.filter(x=>x.st!='done').length;h+=`<div class="qk"><button onclick="fbCopy()">클로드에게 보낼 피드백 복사${pend?` (${pend})`:''}</button><button onclick="noticeForm()">공지 보내기</button></div>`}
+ const pend=FB.filter(x=>x.st!='done').length;h+=`<div class="qk q1"><button onclick="noticeForm()">공지 보내기</button></div>`;
  // ---- 의견 보기 ----
  const now=Date.now(),rec=FB.filter(x=>now-x.t<14*864e5),base=rec.length?rec:FB,cnt={};FBT.forEach(t=>cnt[t[0]]=0);base.forEach(x=>cnt[x.k]++);
  const urg=cnt.bug+cnt.qerr,imp=cnt.ui+cnt.req;
@@ -665,7 +690,7 @@ async function admin(force){if(SUBMODE)return subAdmin(force);if(!(await admLoad
   <div class="lgd">${FBT.filter(t=>cnt[t[0]]).map(t=>`<span><i style="background:${t[2]}"></i>${t[1]} ${cnt[t[0]]}</span>`).join('')}</div></div>`;
  const top=FB.filter(x=>FT(x.k)[3]>=2).sort((a,b)=>FT(b.k)[3]-FT(a.k)[3]||b.t-a.t).slice(0,3);
  h+=`<div class="sbt">가장 시급한 것</div>`+(top.length?top.map(fbCard).join(''):'<div class="card mut">지금 급하게 고칠 의견은 없어요.</div>');
- h+=`<div class="qk"><button onclick="fbTypes()">유형별 보기</button><button onclick="fbPeople()">개인별 보기</button></div>`;
+ h+=`<div class="qk"><button onclick="fbTypes()">유형별 보기</button><button onclick="fbPeople()">개인별 보기</button></div><div class="qk q1"><button onclick="fbCopy()">클로드에게 보낼 피드백 복사${pend?` (${pend})`:''}</button></div>`;
  // ---- 개인별 통계 ----
  h+=`<h3 class="sec">개인별 통계</h3>`+(ADM.length?`<div class="ppl">${ADM.map(r=>`<button onclick="adminOne(decodeURIComponent('${encodeURIComponent(r.nick)}'))">${esc(r.nick)}</button>`).join('')}</div>`:'<div class="card mut">아직 참여한 사람이 없어요.</div>');
  h+=wrongAna();
@@ -684,7 +709,7 @@ async function fbPeople(){if(!(await admLoad()))return admin();const g={};FB.for
 async function fbPerson(n){if(!(await admLoad()))return admin();const L=FB.filter(x=>x.nick==n);
  show(`<h2>${esc(n)}</h2><p class="tag">의견 ${L.length}개 · 최신순</p>`+L.map(fbCard).join('')+``)}
 async function adminOne(n){if(!(await admLoad()))return admin();const r=ADM.find(x=>x.nick==n);if(!r)return admin();const X=r.R||{},TT=X._t||{},TD=Object.keys(TT).filter(k=>TT[k]>=1),tot=TD.reduce((a,k)=>a+TT[k],0);
- let h=`<h2>${esc(r.nick)}</h2><p class="tag">최근 활동 ${fd(r.t)}</p>`;
+ let h=`<h2>${esc(r.nick)}</h2><p class="tag">최근 활동 ${fd(r.t)}</p>${SUBMODE?'':`<div class="qk q1" style="margin-bottom:12px"><button onclick="noticeForm(decodeURIComponent('${encodeURIComponent(r.nick)}'))">${esc(r.nick)} 님에게 공지 보내기</button></div>`}`;
  h+=`<div class="pg2"><div class="card st2"><span>총 공부 시간</span><b>${fmtT(tot)}</b><small>오늘 ${fmtT(TT[dkey()]||0)}</small></div><div class="card st2"><span>공부한 날</span><b>${TD.length}일</b><small>${TD.length?'마지막 '+TD.sort().slice(-1)[0].slice(5).replace('-','/'):'기록 없음'}</small></div></div>`;
  let strip='';for(let i=13;i>=0;i--){const d=new Date(Date.now()-i*864e5),k=dkey(d),v=TT[k]||0,a=v>=1?Math.min(1,.25+v/3600):0;strip+=`<div class="sd2" title="${k}"><i style="background:${v>=1?`rgba(91,127,168,${a})`:'var(--bd)'}"></i><small>${d.getDate()}</small></div>`}
  h+=`<div class="card"><div class="mut" style="font-size:13px;margin-bottom:6px">최근 2주 공부</div><div class="strip">${strip}</div></div>`;
