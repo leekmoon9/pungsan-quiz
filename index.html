@@ -457,7 +457,7 @@ const ADM_NICK='풍산동신라면',ADM_RV='r1';let ADMINMODE=false,SUBMODE=fals
 async function subLoad(){if(!DB)return 'off';try{const {data,error}=await DB.rpc('sub_me',{p_key:SK()});if(error)return 'off';
   if(!data){ls('sk',null);ls('subnick',null);ls('last',null);SUBMODE=false;NICK='';home();soonMsg('보조 관리자 링크가 맞지 않아요.');return 'bad'}
   if(data.need_nick)return 'nick';
-  NICK=data.nick;ls('subnick',NICK);ls('last',NICK);const srv=okDV(data.data||{});R=(R._dv===DV)?mergeR(srv,R):srv;R._dv=DV;ls('rec:'+NICK,JSON.stringify(R));sync();return 'ok'}catch(e){return 'off'}}
+  NICK=data.nick;ls('subnick',NICK);ls('last',NICK);const srv=okDV(data.data||{});R=(R._dv===DV)?mrg(srv,R):srv;R._dv=DV;ls('rec:'+NICK,JSON.stringify(R));sync();return 'ok'}catch(e){return 'off'}}
 function subNickPage(){show(`<div class="fbw"><h2>보조 관리자</h2><p class="tag fbd">처음 한 번만 닉네임을 정하면<br>다음부터는 바로 들어와요.</p><div class="card" style="max-width:340px;margin:10px auto"><input type="text" id="snk" maxlength="12" placeholder="닉네임 (최대 12자)" style="text-align:center" oninput="document.getElementById('sgo').disabled=!this.value.trim()"></div><div class="row" style="max-width:340px;margin:0 auto"><button class="b" id="sgo" disabled onclick="subSetNick()">시작하기</button></div><p class="mut" id="sst" style="text-align:center;min-height:20px"></p></div>`)}
 async function subSetNick(){const v=document.getElementById('snk').value.trim(),b=document.getElementById('sgo'),st=document.getElementById('sst');if(!v)return;b.disabled=true;b.textContent='확인 중…';
  try{const {data,error}=await DB.rpc('sub_setnick',{p_key:SK(),p_nick:v});if(error)throw 0;
@@ -467,7 +467,7 @@ async function subSetNick(){const v=document.getElementById('snk').value.trim(),
 async function subBoot(FRESH){SUBMODE=true;PIN='';NICK=ls('subnick')||'';
  if(NICK){try{R=okDV(JSON.parse(ls('rec:'+NICK)))}catch(e){R={}}if(FRESH&&!/^inbox/.test(curR()))home();else goR(curR());subLoad();return}
  const r=await subLoad();if(r=='nick')return subNickPage();if(r=='ok')return home();if(r=='off'){show('<div class="fbw"><h2>보조 관리자</h2><p class="tag fbd">서버에 연결되지 않았어요.<br>인터넷을 확인하고 다시 열어 주세요.</p></div>')}}
-async function adminLoad(){if(!DB)return;try{const {data,error}=await DB.rpc('admin_me',{p_key:AK()});if(error)return;if(!data){ls('ak',null);OWNER=false;ADMINMODE=false;NICK='';ls('last',null);home();soonMsg('관리자 링크가 맞지 않아요.');return}const srv=okDV(data.data);R=(R._dv===DV)?mergeR(srv,R):srv;R._dv=DV;ls('rec:'+NICK,JSON.stringify(R));sync()}catch(e){};sendReplies()}
+async function adminLoad(){if(!DB)return;try{const {data,error}=await DB.rpc('admin_me',{p_key:AK()});if(error)return;if(!data){ls('ak',null);OWNER=false;ADMINMODE=false;NICK='';ls('last',null);home();soonMsg('관리자 링크가 맞지 않아요.');return}const srv=okDV(data.data);R=(R._dv===DV)?mrg(srv,R):srv;R._dv=DV;ls('rec:'+NICK,JSON.stringify(R));sync()}catch(e){};sendReplies()}
 function adminOn(){ADMINMODE=true;NICK=ADM_NICK;PIN='';ls('last',ADM_NICK);ls('pin',null);try{R=JSON.parse(ls('rec:'+NICK))||{}}catch(e){R={}}if(R._dv!==DV)R={}}
 async function enter(){if(SUBMODE){const go=document.getElementById('go');if(go){go.disabled=true;go.textContent='확인 중…'}await subLoad();REPL=true;return subjects()}if(ADMINMODE){const go=document.getElementById('go');if(go){go.disabled=true;go.textContent='확인 중…'}await adminLoad();REPL=true;return subjects()}const lk=lastNick(),el=document.getElementById('nk'),pe=document.getElementById('pn');
  const v=(lk||(el?el.value:'')).trim(),p=lk?ls('pin'):(pe?pe.value.trim():'');if(!v)return;
@@ -480,7 +480,7 @@ async function enter(){if(SUBMODE){const go=document.getElementById('go');if(go)
   if(lk&&st=='wrong'){ls('last',null);ls('pin',null);home()}
   soonMsg(st=='locked'?'비밀번호를 여러 번 틀렸어요. 10분 뒤에 다시 해 주세요.':st=='wrong'?'비밀번호가 틀렸어요. 처음이면 다른 닉네임을 써 주세요.':'닉네임이나 비밀번호를 확인해 주세요.');return}
  NICK=v;PIN=p;ls('last',v);ls('pin',p);
- R=mergeR(okDV(srv),loc);R._dv=DV;ls('rec:'+NICK,JSON.stringify(R));
+ R=mrg(okDV(srv),loc);R._dv=DV;ls('rec:'+NICK,JSON.stringify(R));
  if(st=='offline')soonMsg('서버에 연결되지 않아 이 기기에만 저장돼요.');else if(Object.keys(loc).length)sync();
  if(st=='new')soonMsg('새 닉네임으로 시작해요!');
  await chkAdmin();REPL=true;subjects()}
@@ -1007,6 +1007,7 @@ const fd=t=>new Date(t).toLocaleString('ko-KR',{month:'numeric',day:'numeric',ho
 
 // ---------- 공부 시간 ----------
 const dkey=(d=new Date())=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+function mrg(srv,loc){if(srv&&srv._force){const o=Object.assign({},srv);delete o._force;setTimeout(()=>{try{sync()}catch(e){}},800);return o}return mergeR(srv,loc)}
 function mergeR(a,b){const o=Object.assign({},a,b);o._fx=Object.assign({},a._fx||{},b._fx||{});const t={},A=a._t||{},B=b._t||{};for(const k in A)t[k]=A[k];for(const k in B)t[k]=Math.max(t[k]||0,B[k]);o._t=t;return o}
 function fmtT(sec,short){sec=Math.round(sec||0);if(sec<60)return sec>0?'1분 미만':'0분';const h=Math.floor(sec/3600),m=Math.round(sec%3600/60);return h?(short?h+'시간'+(m?'<br>'+m+'분':''):h+'시간'+(m?' '+m+'분':'')):m+'분'}
 let QID=null,QS0=0;
@@ -1158,7 +1159,7 @@ async function boot(){{const m=location.hash.match(/^#s=([A-Za-z0-9]{16,64})$/);
  NICK=lk;PIN=pn;try{R=okDV(JSON.parse(ls('rec:'+lk)))}catch(e){R={}}
  if(FRESH&&!/^inbox/.test(curR()))home();else goR(curR());
  if(DB){try{const {data,error}=await DB.rpc('player_login',{p_nick:lk,p_pin:pn});if(!error&&data){
-  if(data.status=='ok'||data.status=='new'){const loc=R;R=mergeR(okDV(data.data),loc);R._dv=DV;ls('rec:'+NICK,JSON.stringify(R));if(Object.keys(loc).length)sync()}
+  if(data.status=='ok'||data.status=='new'){const loc=R;R=mrg(okDV(data.data),loc);R._dv=DV;ls('rec:'+NICK,JSON.stringify(R));if(Object.keys(loc).length)sync()}
   else if(data.status=='wrong'){ls('last',null);ls('pin',null);NICK='';PIN='';REPL=true;home();soonMsg('비밀번호가 바뀌어 다시 입력해야 해요.')}}}catch(e){}}}
 
 if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(r=>r.update()).catch(()=>{}));
