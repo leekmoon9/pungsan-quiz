@@ -186,7 +186,7 @@ body.hasbk .fbw h2:first-child{padding-left:0}
 .lcb em{font-style:normal;font-size:12.5px;font-weight:700;margin-top:4px;color:color-mix(in srgb,var(--uc) 55%,#3a3226)}
 .nlg{margin:14px 0 0}.nlh{font-weight:800;font-size:15px;margin:0 2px 6px;padding-left:8px;border-left:4px solid var(--uc)}
 .nlb{display:flex;align-items:center;gap:8px;width:100%;margin:0 0 6px;padding:13px 12px 13px 14px;border:none;border-radius:12px;background:var(--card);box-shadow:0 1px 6px rgba(90,70,40,.08);color:var(--tx);font:inherit;font-weight:600;text-align:left;cursor:pointer}
-.nlb>span:first-child{flex:1}.nlb .mut{font-weight:400;font-size:13px}.nlb.nlx{opacity:.6}
+.nlb>span:first-child{flex:1}.nlb:disabled,.tbb:disabled{cursor:default}.nlb .mut{font-weight:400;font-size:13px}.nlb.nlx{opacity:.6}
 .nth small{display:block;color:var(--mut);font-size:13px;margin-bottom:2px}.nth h2{margin-top:0}
 .tbb{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin:10px 0 0;padding:12px;border:1.5px solid #cdbfa5;border-radius:12px;background:var(--card);color:var(--tx);font:inherit;font-weight:700;cursor:pointer}
 .tbb.off{opacity:.55}.tbi{width:20px;height:20px}
@@ -638,6 +638,7 @@ const ICN_PEN='<svg class="lci" viewBox="0 0 48 48" aria-hidden="true"><rect x="
 const ICN_BOOK='<svg class="tbi" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5.5C5.5 4.3 8.6 4.3 12 6c3.4-1.7 6.5-1.7 9-.5V19c-2.5-1.2-5.6-1.2-9 .5-3.4-1.7-6.5-1.7-9-.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 6v13.5" stroke="currentColor" stroke-width="1.8"/></svg>';
 const sCol=n=>SC[SUBJ.flat().find(x=>x[0]==n)[1]];
 function midSegs(n,u,k){const M=CUR[n][u].m[k],g=u+'-'+k;return [[M.q.filter(q=>q.lv!='x'),'기본 개념'],[M.q.filter(q=>q.lv=='x'),'실전 문제']].filter(a=>a[0].length).map(([qs,l])=>({label:M.n+' · '+l,qs,grp:g}))}
+function nextNote(n,u,k){let x=[u,k];while((x=nextMid(n,x[0],x[1])))if(noteOf(n,x[0],x[1])||OWNER)return x;return null}
 function nextMid(n,u,k){if(k+1<CUR[n][u].m.length)return [u,k+1];if(u+1<CUR[n].length)return [u+1,0];return null}
 function learnHome(n){const col=sCol(n),nm=n.split('|').join(' '),mids=[].concat(...CUR[n].map((U,u)=>U.m.map((M,k)=>[u,k]))),nn=mids.filter(([u,k])=>noteOf(n,u,k)).length,qs=socQ(n);
  let h=`<div class="shd"><h2 style="--hlc:${col}">${nm}</h2><p class="tag"><b>${esc(NICK)}</b> 님</p>${COVER[n]?`<img class="cvs" src="${COVER[n]}" alt="">`:''}</div>`;
@@ -646,12 +647,12 @@ function learnHome(n){const col=sCol(n),nm=n.split('|').join(' '),mids=[].concat
  show(h)}
 function noteList(n){if(!NEWS(n))return subj(n);const col=sCol(n),nm=n.split('|').join(' ');
  let h=`<div class="shd"><h2 style="--hlc:${col}">공부하기</h2><p class="tag">${esc(nm)}</p></div>`;
- CUR[n].forEach((U,u)=>{h+=`<div class="nlg" style="--uc:${col}"><div class="nlh">${esc(U.n)}</div>${U.m.map((M,k)=>{const o=noteOf(n,u,k);return `<button class="nlb${o?'':' nlx'}" onclick="noteView('${n}',${u},${k})"><span>${esc(M.n)}</span><span class="mut">${o?'필기 보기':'준비 중'}</span><span class="chev">›</span></button>`}).join('')}</div>`});
+ CUR[n].forEach((U,u)=>{h+=`<div class="nlg" style="--uc:${col}"><div class="nlh">${esc(U.n)}</div>${U.m.map((M,k)=>{const o=noteOf(n,u,k);const ok=o||OWNER;return `<button class="nlb${o?'':' nlx'}"${ok?` onclick="noteView('${n}',${u},${k})"`:' disabled'}><span>${esc(M.n)}</span><span class="mut">${o?'필기 보기':'준비 중'}</span>${ok?'<span class="chev">›</span>':''}</button>`}).join('')}</div>`});
  show(h)}
 function noteView(n,u,k){u=+u;k=+k;const U=CUR[n]&&CUR[n][u],M=U&&U.m[k];if(!M||!NEWS(n))return subjects();
- const col=sCol(n),nm=n.split('|').join(' '),o=noteOf(n,u,k)||(OWNER?NOTE_DEMO:null),nx=nextMid(n,u,k),pg=o&&o.pg&&o.pg.length;
+ const col=sCol(n),nm=n.split('|').join(' '),o=noteOf(n,u,k)||(OWNER?NOTE_DEMO:null);if(!o)return noteList(n);const nx=nextNote(n,u,k),pg=o&&o.pg&&o.pg.length;
  let h=`<div class="nth"><h2 style="--hlc:${col}">${esc(M.n)}</h2><p class="tag">${esc(nm)} · ${esc(U.n)}</p></div>`;
- h+=`<button class="tbb${pg?'':' off'}" onclick="tbOpen('${n}',${u},${k})">${ICN_BOOK}<span>교과서 원문 보기</span></button>`;
+ h+=`<button class="tbb${pg?'':' off'}"${pg?` onclick="tbOpen('${n}',${u},${k})"`:' disabled'}>${ICN_BOOK}<span>교과서 원문 보기</span></button>`;
  if(o&&o.demo)h+=`<div class="prn">디자인 미리보기예요. 관리자에게만 보이고, 교과서를 받으면 실제 필기로 바뀌어요.</div>`;
  h+=o?`<article class="nt" style="--nc:${col}">${o.b.map(ntBlock).join('')}</article>`:`<div class="card ntx">${ICN_NOTE}<p>이 단원 필기는 준비 중이에요.<br>곧 채워질 예정이에요.</p></div>`;
  h+=`<div class="ntf"><button class="b ntq" onclick="socGo('${n}',${u},${k},{note:1})">문제 풀기</button>${nx?`<button class="ntn" onclick="noteView('${n}',${nx[0]},${nx[1]})">다음 단원 학습하기<span>→</span></button>`:''}</div>`;
