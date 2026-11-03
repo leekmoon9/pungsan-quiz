@@ -387,7 +387,8 @@ body.cap .capm{display:flex}
 .hd h2{margin-bottom:0}.hd2{margin-top:-8px!important}
 .hd2.ha{margin-top:8px!important}
 .mkrow.mkwr{border-left:6px solid #e79a90;background:color-mix(in srgb,#e79a90 10%,var(--card))}.mkrow.mkwr>b{width:auto;min-width:34px}.mkrow.mkwr .mkst{color:var(--tx);font-weight:700}.mkrow.mkwr.lk{opacity:1;cursor:default}.mkrow.mkwr.lk .mkst{color:var(--mut);font-weight:400}.mkrow .wnc{margin-left:auto}
-.ntb th{white-space:normal!important;word-break:keep-all}.ntb td{word-break:keep-all;overflow-wrap:anywhere}
+.ntb th{white-space:normal!important;word-break:keep-all}.ntb td{word-break:keep-all;overflow-wrap:break-word}
+.ntb th,.ntb td{padding:7px 6px}
 .sumgo.sumx{cursor:default}.sumgo.sumx b{color:var(--mut)}
 .qbox{background:#fff;box-shadow:inset 0 0 0 1.5px var(--bd);border-radius:14px;padding:14px 15px;text-align:left;white-space:normal;line-height:1.7;word-break:keep-all;overflow-wrap:anywhere}
 .qz .q:not(.ql) .qbox{text-align:center}.qz .q:not(.ql) .qbox .qli{justify-content:center}
@@ -974,11 +975,11 @@ function tbH(t){return `<div class="qtw"><table class="qtb">${t.h?`<tr>${t.h.map
 function GR(o){const W=250,H=196,X0=34,Y0=168,sx=x=>X0+x*19.5,sy=y=>Y0-y*15;let g='';
  g+=`<defs><marker id="ga" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#5b7fa8"/></marker><marker id="gx" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#2a2620"/></marker></defs>`;
  g+=`<path d="M${X0} ${Y0}H${W-10}M${X0} ${Y0}V10" stroke="#2a2620" stroke-width="1.6" fill="none" marker-end="url(#gx)"/><path d="M${X0} ${Y0}V10" stroke="#2a2620" stroke-width="1.6" marker-end="url(#gx)"/>`;
- g+=`<text x="${W-8}" y="${Y0+15}" text-anchor="end">${esc(o.x||'수량')}</text><text x="${X0-6}" y="16" text-anchor="end">${esc(o.y||'가격')}</text><text x="${X0-6}" y="${Y0+14}" text-anchor="end">0</text>`;
+ g+=`<text x="${W-8}" y="${Y0+15}" text-anchor="end">${esc(o.x||'수량')}</text><text x="${X0+8}" y="13">${esc(o.y||'가격')}</text><text x="${X0-6}" y="${Y0+14}" text-anchor="end">0</text>`;
  (o.pt||[]).forEach(p=>{if(p.g)g+=`<path d="M${X0} ${sy(p.y)}H${sx(p.x)}V${Y0}" stroke="#9a8f7c" stroke-width="1.1" stroke-dasharray="3 3" fill="none"/>`});
- (o.l||[]).forEach(l=>{const [a,b,c,d]=l.p;g+=`<path d="M${sx(a)} ${sy(b)}L${sx(c)} ${sy(d)}" stroke="${l.c||'#2a2620'}" stroke-width="2.2" ${l.d?'stroke-dasharray="6 4"':''} fill="none"/>`;if(l.t)g+=`<text x="${sx(c)+4}" y="${sy(d)+(d>b?-2:5)}" font-weight="700">${esc(l.t)}</text>`});
+ (o.l||[]).forEach(l=>{const [a,b,c,d]=l.p;g+=`<path d="M${sx(a)} ${sy(b)}L${sx(c)} ${sy(d)}" stroke="${l.c||'#2a2620'}" stroke-width="2.2" ${l.d?'stroke-dasharray="6 4"':''} fill="none"/>`;if(l.t){const tw=[...l.t].reduce((w,ch)=>w+(/[가-힣]/.test(ch)?11:6.8),0);g+=sx(c)+4+tw>W?`<text x="${Math.min(W-tw/2-2,(sx(a)+sx(c))/2)}" y="${Math.min(sy(b),sy(d))-6}" text-anchor="middle" font-weight="700">${esc(l.t)}</text>`:`<text x="${sx(c)+4}" y="${sy(d)+(d>b?-2:5)}" font-weight="700">${esc(l.t)}</text>`}});
  (o.ar||[]).forEach(([a,b,c,d])=>{g+=`<path d="M${sx(a)} ${sy(b)}L${sx(c)} ${sy(d)}" stroke="#5b7fa8" stroke-width="2" marker-end="url(#ga)"/>`});
- (o.pt||[]).forEach(p=>{g+=`<circle cx="${sx(p.x)}" cy="${sy(p.y)}" r="3.6" fill="#2a2620"/>`;if(p.t)g+=`<text x="${sx(p.x)+(p.dx||6)}" y="${sy(p.y)+(p.dy||-6)}" font-weight="700">${esc(p.t)}</text>`});
+ (o.pt||[]).forEach(p=>{if(!p.n)g+=`<circle cx="${sx(p.x)}" cy="${sy(p.y)}" r="3.6" fill="#2a2620"/>`;if(p.t)g+=`<text x="${sx(p.x)+(p.dx||6)}" y="${sy(p.y)+(p.dy||-6)}" font-weight="700">${esc(p.t)}</text>`});
  (o.xt||[]).forEach(([x,t])=>{g+=`<text x="${sx(x)}" y="${Y0+15}" text-anchor="middle">${esc(t)}</text>`});
  (o.yt||[]).forEach(([y,t])=>{g+=`<text x="${X0-5}" y="${sy(y)+4}" text-anchor="end">${esc(t)}</text>`});
  (o.tx||[]).forEach(([x,y,t])=>{g+=`<text x="${sx(x)}" y="${sy(y)}" text-anchor="middle">${esc(t)}</text>`});
@@ -1238,4 +1239,5 @@ if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.ser
 <script src="data/polm.js?v=2"></script>
 <script src="data/polrw.js?v=1"></script>
 <script src="data/eco.js?v=2"></script>
+<script src="data/chem.js?v=1"></script>
 <script>mkReform();boot()</script></body></html>
