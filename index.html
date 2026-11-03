@@ -5,7 +5,7 @@
 <style>
 :root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#f3ede1;--card:#fbf8f1;--tx:#2a2620;--mut:#7a7264;--ac:#5b7fa8;--ok:#2e7d4f;--no:#b3392f;--bd:#e0d8c7;color-scheme:light}
 html{scroll-padding-top:env(safe-area-inset-top,0px)}
-body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.6 "Pretendard Variable",Pretendard,-apple-system,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif}
+body{margin:0;background:var(--bg);background-image:linear-gradient(rgba(122,106,80,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(122,106,80,.07) 1px,transparent 1px);background-size:24px 24px;background-position:-1px -1px;color:var(--tx);font:16px/1.6 "Pretendard Variable",Pretendard,-apple-system,"Apple SD Gothic Neo","Noto Sans KR","Malgun Gothic",sans-serif}
 main{max-width:640px;margin:0 auto;padding:16px}
 h1{font-size:26px;line-height:1.3;margin:0 0 6px}h2{margin:0 0 6px}h3{margin:18px 0 8px;font-size:16px}
 .hero{position:relative;overflow:hidden;height:calc(100vh - 42px);height:calc(100svh - 42px);min-height:520px;display:grid;grid-template-rows:1fr auto 1fr;align-items:center;text-align:center;padding:0}
@@ -115,9 +115,15 @@ body:has(.hero) #rf{display:none}
 #app .qz .opt{justify-content:center;text-align:center;align-items:center}
 .qz input[type=text]{text-align:center}.qz textarea{text-align:left}
 .qz .row{justify-content:center}
-body.hasbk main h2:first-child{padding-left:50px}
+body.hasbk #app>h2:first-child,body.hasbk #app>.shd>h2,body.hasbk #app>.fbw>h2:first-child{margin-left:46px}
+body.hasbk #app>.fbw>h2:first-child{margin-left:0}
 body.hasbk #app>.card:first-child{margin-top:54px}
 body.hasbk .fbw h2:first-child{padding-left:0}
+#app h2{display:inline-block;padding:0 5px;margin-left:-5px;background:linear-gradient(transparent 62%,var(--hlc,#f9df99) 62%,var(--hlc,#f9df99) 92%,transparent 92%);-webkit-box-decoration-break:clone;box-decoration-break:clone}
+#app h2+p,#app h2+.tag{margin-top:2px}
+.fbw h2{align-self:center}
+.shd{position:relative;padding-right:76px;min-height:114px}
+.cvs{position:absolute;right:4px;top:42px;width:50px;border-radius:6px;transform:rotate(7deg);box-shadow:0 4px 12px rgba(60,45,25,.28);pointer-events:none}
 h3.sec{font-size:19px;font-weight:600;margin:20px 0 8px}
 .fbw{min-height:calc(100vh - 60px);min-height:calc(100svh - 60px);display:flex;flex-direction:column;justify-content:center;text-align:center}
 .fbw .tag{max-width:420px;margin:0 auto 6px}
@@ -359,7 +365,7 @@ const socQ=n=>[].concat(...CUR[n].map((_,u)=>bigQ(n,u)));
 const pct=qs=>qs.length?Math.round(st(qs).c/qs.length*100):0;
 let OPEN=-1;
 function socPage(n){const c=SUBJ.flat().find(x=>x[0]==n)[1],col=SC[c],nm=n.split('|').join(' ');
- const [K1,K2]=kd(n);let h=`<h2>${nm}</h2><p class="tag"><b>${esc(NICK)}</b> 님 · ${K1}을 누르면 ${K2}${K2=='유형'?'이':'이'} 펼쳐져요</p>`;
+ const [K1,K2]=kd(n);let h=`<div class="shd"><h2 style="--hlc:${col}">${nm}</h2><p class="tag"><b>${esc(NICK)}</b> 님 · ${K1}을 누르면 ${K2}${K2=='유형'?'이':'이'} 펼쳐져요</p>${COVER[n]?`<img class="cvs" src="${COVER[n]}" alt="">`:''}</div>`;
  {const wq=socQ(n).filter(q=>R[q.id]&&!R[q.id].ok),uq=wq.filter(isUnf);h+=`<button class="wnb" onclick="wrongPage('${n}')"><span><b>오답노트</b><small>${wq.length?(uq.length?`남은 오답 ${uq.length}문제`:'오답을 모두 고쳤어요'):'아직 틀린 문제가 없어요'}</small></span>${uq.length?`<span class="wnc">${uq.length}</span>`:''}<span class="chev">›</span></button>`}
  if(!CUR[n].length)h+=`<div class="card mut" style="text-align:center;padding:26px 16px">아직 ${K1}이 준비 중이에요.<br>곧 추가할게요!</div>`;
  CUR[n].forEach((U,u)=>{const a=pct(bigQ(n,u));
@@ -381,7 +387,7 @@ function startWrong(n,segs,extra){const ws=segs.map(x=>({label:x.label,qs:x.qs.f
  startRun(n,ws,Object.assign({title:n.split('|').join(' ')+' 오답노트',mode:'wrong',practice:true},extra||{}))}
 function wrongPage(n){const nm=n.split('|').join(' '),c=SUBJ.flat().find(x=>x[0]==n)[1],col=SC[c];
  const all=socQ(n),wr=all.filter(q=>R[q.id]&&!R[q.id].ok),un=wr.filter(isUnf);
- let h=`<h2>오답노트</h2><p class="tag">${esc(nm)} · 틀린 문제를 다시 풀어서 고쳐요. 여기서 푼 결과는 진행 상황에 반영되지 않아요.</p>`;
+ let h=`<div class="shd"><h2 style="--hlc:#f3b8b1">오답노트</h2><p class="tag">${esc(nm)} · 틀린 문제를 다시 풀어서 고쳐요. 여기서 푼 결과는 진행 상황에 반영되지 않아요.</p>${COVER[n]?`<img class="cvs" src="${COVER[n]}" alt="">`:''}</div>`;
  h+=`<div class="pg2"><div class="card st2"><span>남은 오답</span><b class="${un.length?'no-t':''}">${un.length}문제</b></div><div class="card st2"><span>고친 오답</span><b class="ok-t">${wr.length-un.length}문제</b></div></div>`;
  if(!wr.length)h+=`<div class="card mut" style="text-align:center;padding:24px">아직 틀린 문제가 없어요.</div>`;
  else if(!un.length)h+=`<div class="card" style="text-align:center;padding:20px">오답을 모두 고쳤어요! 🎉</div>`;
