@@ -444,11 +444,11 @@ async function pushSub(){if(!canPush()||Notification.permission!=='granted'||!DB
  try{const reg=await navigator.serviceWorker.ready;let sb=await reg.pushManager.getSubscription();if(!sb)sb=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:b64u(VAPID)});
   const {data,error}=await DB.rpc('push_subscribe',Object.assign(whoP(),{p_sub:sb.toJSON()}));return !error&&data===true}catch(e){return false}}
 let PUSHED=false;
-function notiPrompt(){if(!isApp()||!canPush()||Notification.permission!=='default'||ls('np')||document.getElementById('inst')||document.querySelector('.mdw'))return;
+function notiPrompt(){if(!isApp()||!canPush()||Notification.permission!=='default'||ls('np2')||document.getElementById('inst')||document.querySelector('.mdw'))return;
  instBox(`<div class="nti">${BELL}</div><h3>알림을 허용해 주세요</h3><p>피드백 답장과 공지를 폰 알림으로 받을 수 있어요.</p><button class="b inb" onclick="notiAsk()">알림 허용하기</button><button class="inw" onclick="notiLater()">나중에 할게요</button>`)}
-async function notiAsk(){ls('np','1');closeInst();let r='default';try{r=await Notification.requestPermission()}catch(e){}
+async function notiAsk(){ls('np2','1');closeInst();let r='default';try{r=await Notification.requestPermission()}catch(e){}
  if(r==='granted'){const ok=await pushSub();soonMsg(ok?'알림이 켜졌어요.':'알림은 허용됐어요. 등록은 다음에 열 때 다시 시도할게요.')}else notiWarn();if(CURR=='profile')profile()}
-function notiLater(){ls('np','1');closeInst();notiWarn()}
+function notiLater(){ls('np2','1');closeInst();notiWarn()}
 function notiWarn(){askBox('알림이 꺼져 있어요','알림을 허용하지 않으면 일부 공지가 전송되지 않아요.<small class="mdn">나중에 프로필에서 다시 켤 수 있어요.</small>','확인')}
 function notiState(){if(!canPush())return isApp()?'불가':'앱 전용';return {granted:'켜짐',denied:'차단됨',default:'꺼짐'}[Notification.permission]||'꺼짐'}
 async function notiFromProfile(){if(!isApp()){setTimeout(lockMsg,50);return}if(!canPush())return soonMsg('이 폰에서는 알림을 쓸 수 없어요. 운영체제를 최신으로 업데이트해 주세요.');
