@@ -336,7 +336,7 @@ try{DB=window.supabase.createClient(SB_URL,SB_KEY)}catch(e){DB=null}
 const AK=()=>ls('ak');
 async function chkAdmin(){OWNER=!!AK()}
 const ls=(k,v)=>{try{if(v===undefined)return localStorage.getItem(KEY+k)||'';if(v===null)localStorage.removeItem(KEY+k);else localStorage.setItem(KEY+k,v)}catch(e){return''}};
-const DV='v2';const okDV=d=>(d&&d._dv===DV)?d:{};
+const DV='v3';const okDV=d=>(d&&d._dv===DV)?d:{};
 function save(){R._dv=DV;ls('rec:'+NICK,JSON.stringify(R));clearTimeout(tm);tm=setTimeout(sync,700)}
 async function sync(){if(ADMINMODE){if(DB)try{await DB.rpc('admin_save',{p_key:AK(),p_data:R})}catch(e){}return}if(!DB||!NICK||!PIN)return;try{const {data,error}=await DB.rpc('player_save',{p_nick:NICK,p_pin:PIN,p_data:R});if(error||data!==true)throw 0}catch(e){}}
 const lastNick=()=>ls('last');
