@@ -44,7 +44,7 @@ img.st{border:none;border-radius:7px;box-shadow:0 3px 9px rgba(0,0,0,.3);height:
 .mb{display:flex;justify-content:space-between;align-items:center;width:100%;margin:6px 0 0;padding:12px 14px;border:none;border-radius:10px;background:var(--card);color:var(--tx);font:inherit;font-weight:600;text-align:left;cursor:pointer;opacity:0;transform:translateY(-6px);transition:opacity .3s ease,transform .3s ease}
 .ub.op .mb{opacity:1;transform:none}
 .ub.op .mb:nth-child(2){transition-delay:.06s}.ub.op .mb:nth-child(3){transition-delay:.12s}.ub.op .mb:nth-child(4){transition-delay:.18s}
-.mb .mut{font-weight:400;font-size:13px}
+.mb .mut{font-weight:400;font-size:13px;white-space:nowrap;flex:none;margin-left:8px}
 .ub.ua{margin-top:18px;background:var(--card);background:color-mix(in srgb,var(--uc) 22%,var(--bg))}
 .ub.ua .ut>b{font-size:18px}
 .qk{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0 2px}
@@ -112,7 +112,7 @@ body:has(.hero) #rf,body:has(.qz) #rf,body.onpf #rf{display:none}
 .qback svg{width:20px;height:20px}
 #bk[hidden],[hidden]{display:none!important}
 .qz{text-align:center;padding-top:2px}.qz>.tag{margin:0 50px}.qz .qpr{justify-content:center;margin-left:50px;margin-right:50px}
-.qz .q{text-align:center}.qz .card>.tag{text-align:center}
+.qz .q{text-align:center}.qz .q.ql{text-align:left;font-weight:500;line-height:1.7;word-break:keep-all}.qz .card>.tag{text-align:center}
 #app .qz .opt{justify-content:flex-start;text-align:left;align-items:center}
 #app .qz .opt.ox{justify-content:center;text-align:center}
 .qz .opt,.qz .q,.fb,.fbt{word-break:keep-all;overflow-wrap:anywhere}
@@ -188,13 +188,14 @@ body.hasbk .fbw h2:first-child{padding-left:0}
 .nlb{display:flex;align-items:center;gap:8px;width:100%;margin:0 0 6px;padding:13px 12px 13px 14px;border:none;border-radius:12px;background:var(--card);box-shadow:0 1px 6px rgba(90,70,40,.08);color:var(--tx);font:inherit;font-weight:600;text-align:left;cursor:pointer}
 .nlb>span:first-child{flex:1}.nlb:disabled,.tbb:disabled{cursor:default}.nlb .mut{font-weight:400;font-size:13px}.nlb.nlx{opacity:.6}
 .nth small{display:block;color:var(--mut);font-size:13px;margin-bottom:2px}.nth h2{margin-top:0}
+#app .nth h2{font-size:23px;line-height:1.3;margin-right:48px;word-break:keep-all}@media (min-width:760px){#app .nth h2{margin-right:0}}
 .tbb{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin:10px 0 0;padding:12px;border:1.5px solid #cdbfa5;border-radius:12px;background:var(--card);color:var(--tx);font:inherit;font-weight:700;cursor:pointer}
 .tbb.off{opacity:.55}.tbi{width:20px;height:20px}
 .nt{position:relative;margin:14px 0;padding:20px 16px 22px 34px;border-radius:6px 16px 16px 6px;background-color:#fffdf8;box-shadow:0 4px 18px rgba(90,70,40,.14);font-size:15px;line-height:1.75;color:#2f2a22;word-break:keep-all;overflow-wrap:anywhere;
  background-image:linear-gradient(to right,transparent 22px,#f1b7ae 22px,#f1b7ae 23.5px,transparent 23.5px),repeating-linear-gradient(to bottom,transparent 0,transparent 27px,#e7eef6 27px,#e7eef6 28px)}
 .nt::before{content:'';position:absolute;left:6px;top:16px;bottom:16px;width:10px;background:radial-gradient(circle at 5px 5px,#e9e0cf 3.6px,transparent 4.2px) 0 0/10px 34px}
 .nt>*:first-child{margin-top:0}
-.nh{font-family:'Gaegu',var(--fn,inherit);font-weight:700;font-size:23px;margin:18px 0 8px;line-height:1.3}
+.nh{font-family:'Jua',sans-serif;font-weight:400;font-size:21px;margin:18px 0 8px;line-height:1.3}
 .nh span{background:linear-gradient(transparent 58%,color-mix(in srgb,var(--nc) 60%,transparent) 58%,color-mix(in srgb,var(--nc) 60%,transparent) 92%,transparent 92%);padding:0 3px}
 .nh2{font-weight:800;font-size:16px;margin:14px 0 4px;color:color-mix(in srgb,var(--nc) 45%,#2f2a22)}.nh2::before{content:'▸ ';color:var(--nc)}
 .nt p{margin:6px 0}.nt ul{margin:6px 0;padding-left:20px}.nt li{margin:3px 0}.nt li::marker{content:'✓  ';color:color-mix(in srgb,var(--nc) 70%,#2f2a22);font-weight:800}
@@ -202,25 +203,30 @@ body.hasbk .fbw h2:first-child{padding-left:0}
 .nt u{text-decoration:underline wavy #4a7fc1;text-decoration-thickness:1.5px;text-underline-offset:4px}
 .nkey{position:relative;margin:16px 4px 14px;padding:18px 14px 12px;background:#fff3a8;box-shadow:2px 4px 10px rgba(110,90,30,.18);transform:rotate(-.7deg);border-radius:2px 2px 10px 2px}
 .nkey::before{content:'';position:absolute;top:-9px;left:50%;width:64px;height:18px;transform:translateX(-50%) rotate(2deg);background:color-mix(in srgb,var(--nc) 45%,rgba(255,255,255,.5));opacity:.85}
-.nkey>span{font-family:'Gaegu';font-weight:700;font-size:19px;display:block;line-height:1.2;margin-bottom:2px}.nkey p{margin:0}
+.nkey>span{font-family:'Jua',sans-serif;font-weight:400;font-size:17px;display:block;line-height:1.2;margin-bottom:2px}.nkey p{margin:0}
 .ndef{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;margin:10px 0}.ndef b{padding:1px 10px;border-radius:999px;background:color-mix(in srgb,var(--nc) 30%,#fff);font-size:14.5px}
 .nvs{display:grid;grid-template-columns:1fr auto 1fr;align-items:stretch;gap:8px;margin:12px 0}
-.nvs>div{padding:10px 12px;border:1.5px solid color-mix(in srgb,var(--nc) 60%,#cdbfa5);border-radius:12px;background:#fff}.nvs>div b{display:block;font-family:'Gaegu';font-size:19px;line-height:1.2;margin-bottom:2px}
-.nvs>div p{margin:0;font-size:14px;line-height:1.6}.nvs>i{align-self:center;font-family:'Gaegu';font-weight:700;font-style:normal;font-size:18px;color:#d4443a}
+.nvs>div{padding:10px 12px;border:1.5px solid color-mix(in srgb,var(--nc) 60%,#cdbfa5);border-radius:12px;background:#fff}.nvs>div>b{display:block;font-family:'Jua',sans-serif;font-weight:400;font-size:17px;line-height:1.25;margin-bottom:4px}
+.nvs>div p{margin:0;font-size:14px;line-height:1.6}.nvs>i{align-self:center;font-family:'Jua',sans-serif;font-weight:400;font-style:normal;font-size:18px;color:#d4443a}
 .nfl{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:12px 0}.nfl span{padding:4px 12px;border:1.5px dashed color-mix(in srgb,var(--nc) 70%,#8a7a60);border-radius:999px;background:#fff;font-size:14px;font-weight:600}.nfl i{font-style:normal;color:color-mix(in srgb,var(--nc) 70%,#6e5236);font-weight:800}
 .ntw{overflow-x:auto;margin:12px 0}.ntb{width:100%;border-collapse:collapse;font-size:13.5px;line-height:1.5;background:#fff}
 .ntb th,.ntb td{border:1.3px solid #d5c9b2;padding:7px 8px;vertical-align:top;text-align:left}.ntb tr:first-child th{background:color-mix(in srgb,var(--nc) 32%,#fff);text-align:center}.ntb th{background:color-mix(in srgb,var(--nc) 12%,#fff);white-space:nowrap}
-.ntip{margin:16px 0 4px;padding:12px 14px;border:2px dashed #e07a6f;border-radius:14px;background:#fff7f5}.ntip>span{font-family:'Gaegu';font-weight:700;font-size:19px;color:#d4443a;display:block;line-height:1.2;margin-bottom:2px}.ntip p{margin:0}
+.ntip{margin:16px 0 4px;padding:12px 14px;border:2px dashed #e07a6f;border-radius:14px;background:#fff7f5}.ntip>span{font-family:'Jua',sans-serif;font-weight:400;font-size:17px;color:#d4443a;display:block;line-height:1.2;margin-bottom:2px}.ntip p{margin:0}
 .nim{margin:12px 0}.nim img{width:100%;border-radius:8px}.nim figcaption{font-size:12.5px;color:var(--mut);text-align:center}
 .ntx{text-align:center;padding:28px 16px}.ntx .lci{opacity:.7}.ntx p{color:var(--mut);margin:8px 0 0}
 .ntf{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:18px 0 8px}.b.ntq{flex:0 0 auto;width:auto;padding-left:26px;padding-right:26px}
 .ntn{margin-left:auto;display:flex;align-items:center;gap:6px;border:none;background:none;color:var(--tx);font:inherit;font-weight:700;font-size:15px;padding:10px 2px;cursor:pointer}.ntn span{font-size:19px;transition:transform .2s}.ntn:active span{transform:translateX(4px)}
-.tbv{position:fixed;inset:0;z-index:90;background:rgba(30,26,20,.94);display:flex;flex-direction:column;animation:fd .2s ease}
+.tbv{position:fixed;inset:0;z-index:90;background:#1e1a14;display:flex;flex-direction:column;animation:fd .2s ease;padding-left:env(safe-area-inset-left,0px);padding-right:env(safe-area-inset-right,0px)}
 @keyframes fd{from{opacity:0}to{opacity:1}}
-.tbh{display:flex;align-items:center;gap:10px;padding:calc(12px + env(safe-area-inset-top,0px)) 14px 10px;color:#fff}.tbh .mut{color:#cfc6b6}
+.tbh{flex:none;display:flex;align-items:center;gap:10px;width:100%;max-width:900px;margin:0 auto;box-sizing:border-box;padding:calc(12px + env(safe-area-inset-top,0px)) 14px 10px;color:#fff}.tbh b{font-size:16px}.tbc{color:#cfc6b6;font-size:13px}.tbh .mut{color:#cfc6b6}
 .tbz{margin-left:auto;border:1px solid rgba(255,255,255,.4);background:none;color:#fff;border-radius:999px;padding:6px 12px;font:inherit;font-size:13px}
 .tbx{border:none;background:rgba(255,255,255,.14);color:#fff;width:36px;height:36px;border-radius:50%;font-size:16px}
-.tbs{flex:1;overflow:auto;padding:0 10px calc(20px + env(safe-area-inset-bottom,0px));-webkit-overflow-scrolling:touch}.tbs img{display:block;width:100%;margin:0 auto 10px;border-radius:4px;background:#fff}
+.tbw{flex:none;display:flex;gap:10px;align-items:flex-start;width:calc(100% - 28px);max-width:872px;margin:0 auto 10px;box-sizing:border-box;padding:10px 13px;border-radius:12px;background:#3b2c15;border:1.5px solid #d6a23f;color:#f8e5b8}
+.tbw svg{flex:none;width:19px;height:19px;margin-top:2px;color:#f6c453}.tbw p{margin:0;font-size:13.5px;line-height:1.6;text-align:justify;word-break:keep-all}.tbw b{color:#fff3d6}
+.tbs{flex:1;overflow:auto;padding:2px 14px calc(20px + env(safe-area-inset-bottom,0px));-webkit-overflow-scrolling:touch}.tbs figure{margin:0 auto 12px;max-width:820px}
+.tbs img{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+@media (min-width:900px){.tbv.zm .tbs figure{max-width:1400px}.tbv.zm .tbs img{width:100%!important}}
+@media (orientation:landscape) and (max-height:520px){.tbh{padding-top:calc(6px + env(safe-area-inset-top,0px));padding-bottom:6px}.tbw{margin-bottom:6px;padding:7px 12px}.tbw p{font-size:12.5px;line-height:1.5}.tbs figure{max-width:640px}}.tbs img{display:block;width:100%;margin:0 auto;border-radius:4px;background:#fff}
 .tbv.zm .tbs img{width:190%;max-width:none}
 /* 넓은 화면: 뒤로·프로필 버튼을 화면 끝이 아니라 본문 바로 옆에 */
 @media (min-width:760px){.qback{left:max(14px,calc(50% - 320px - 54px))}#rf{right:max(14px,calc(50% - 320px - 54px))}}
@@ -714,8 +720,12 @@ function noteView(n,u,k){u=+u;k=+k;const U=CUR[n]&&CUR[n][u],M=U&&U.m[k];if(!M||
  h+=o?`<article class="nt" style="--nc:${col}">${o.b.map(ntBlock).join('')}</article>`:`<div class="card ntx">${ICN_NOTE}<p>이 단원 필기는 준비 중이에요.<br>곧 채워질 예정이에요.</p></div>`;
  h+=`<div class="ntf"><button class="b ntq" onclick="socGo('${n}',${u},${k},{note:1})">문제 풀기</button>${nx?`<button class="ntn" onclick="noteView('${n}',${nx[0]},${nx[1]})">다음 단원 학습하기<span>→</span></button>`:''}</div>`;
  show(h,'nt|'+n+'|'+u+'|'+k)}
+const WARN='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 21h20L12 3z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 10v5M12 17.6v.4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>';
 function tbOpen(n,u,k){const o=noteOf(n,u,k);if(!o||!o.pg||!o.pg.length)return soonMsg('교과서 원문은 아직 준비 중이에요.');
- const w=document.createElement('div');w.className='tbv';w.innerHTML=`<div class="tbh"><b>교과서 원문</b><span class="mut">${o.pg.length}쪽</span><button class="tbz" onclick="const v=this.closest('.tbv');v.classList.toggle('zm');this.textContent=v.classList.contains('zm')?'원래대로':'크게 보기'">크게 보기</button><button class="tbx" aria-label="닫기" onclick="this.closest('.tbv').remove()">✕</button></div><div class="tbs">${o.pg.map(x=>`<img src="${esc(x)}" alt="교과서 원문" loading="lazy">`).join('')}</div>`;document.body.appendChild(w)}
+ const w=document.createElement('div');w.className='tbv';w.oncontextmenu=e=>{e.preventDefault()};
+ w.innerHTML=`<div class="tbh"><b>교과서 원문</b><span class="tbc">${o.pg.length}쪽</span><button class="tbz" onclick="const v=this.closest('.tbv');v.classList.toggle('zm');this.textContent=v.classList.contains('zm')?'원래대로':'크게 보기'">크게 보기</button><button class="tbx" aria-label="닫기" onclick="this.closest('.tbv').remove()">✕</button></div>
+ <div class="tbw" role="note">${WARN}<p><b>학습용으로만 보여 드리는 교과서 원문이에요.</b> 이 화면을 캡처하거나 복제해서 무단으로 배포하면 저작권법에 따라 처벌받을 수 있어요.</p></div>
+ <div class="tbs">${o.pg.map((x,i)=>`<figure><img src="${esc(x)}" alt="교과서 원문 ${i+1}쪽" loading="lazy" draggable="false"></figure>`).join('')}</div>`;document.body.appendChild(w)}
 
 // ---- 오답노트 · 취약 유형 ----
 const WEAK=0.4;
@@ -797,7 +807,7 @@ function soon(){const o=document.getElementById('toast');if(o)o.remove();const t
 function hstr(t){let h=1779033703^t.length;for(let i=0;i<t.length;i++){h=Math.imul(h^t.charCodeAt(i),3432918353);h=h<<13|h>>>19}return ()=>{h=Math.imul(h^h>>>16,2246822507);h=Math.imul(h^h>>>13,3266489909);return ((h^=h>>>16)>>>0)/4294967296}}
 function mkPerm(qs){const out={},mc=qs.filter(q=>q.t=='mc');if(!mc.length)return out;const rnd=hstr((NICK||'?')+'|'+mc.map(q=>q.id).join(','));
  const sh=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(rnd()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};const bags={};let prev=-1;
- mc.forEach(q=>{const n=q.o.length;let b=bags[n];if(!b||!b.length)b=bags[n]=sh([...Array(n).keys()]);let k=0;if(b[0]===prev&&b.length>1)k=1+Math.floor(rnd()*(b.length-1));const pos=b.splice(k,1)[0];prev=pos;
+ mc.forEach(q=>{const n=q.o.length;if(q.o.every(x=>/^[ㄱ-ㅎ](, [ㄱ-ㅎ])*$/.test(x))){out[q.id]=[...Array(n).keys()];return}let b=bags[n];if(!b||!b.length)b=bags[n]=sh([...Array(n).keys()]);let k=0;if(b[0]===prev&&b.length>1)k=1+Math.floor(rnd()*(b.length-1));const pos=b.splice(k,1)[0];prev=pos;
   const rest=sh([...Array(n).keys()].filter(x=>x!==q.a));rest.splice(pos,0,q.a);out[q.id]=rest});return out}
 const CIRC='①②③④⑤⑥⑦⑧';
 const pmOf=q=>(SS&&SS.perm&&SS.perm[q.id])||q.o.map((_,i)=>i);
@@ -810,7 +820,7 @@ function goBack(){if(SS&&SS.meta&&SS.meta.note)return noteView(...SS.meta.note);
 const qtx=t=>esc(t).replace(/\[빈칸\]/g,'<span class="blk"></span>');
 function quiz(){const q=SS.qs[SS.i],N=SS.qs.length,seg=SS.segs[SS.si],r=SS.resp[q.id]||{};QID=q.id;if(!QS0)QS0=Date.now();
  const tn={mc:'객관식',ox:'O/X',sh:'빈칸 채우기',es:'서술형'}[q.t];
- let h=`<div class="qz"><div class="tag">${SS.meta&&SS.meta.mode=='wrong'?'<span class="prc" style="background:#f3c9c4;color:#7a2e26">오답노트</span> ':SS.meta&&SS.meta.practice?'<span class="prc">다시 풀기</span> ':''}${esc(ttl())} · ${esc(seg.label)}${SS.segs.length>1?` <span class="sgn">${SS.si+1}/${SS.segs.length}</span>`:''}</div><div class="qpr"><b>${SS.i+1}</b><span>/ ${N}</span><div class="bar"><i style="width:${(SS.i+1)/N*100}%"></i></div></div><div class="card"><div class="tag" style="margin-bottom:2px">${tn}</div><div class="q">${qtx(q.q)}</div>`;
+ let h=`<div class="qz"><div class="tag">${SS.meta&&SS.meta.mode=='wrong'?'<span class="prc" style="background:#f3c9c4;color:#7a2e26">오답노트</span> ':SS.meta&&SS.meta.practice?'<span class="prc">다시 풀기</span> ':''}${esc(ttl())} · ${esc(seg.label)}${SS.segs.length>1?` <span class="sgn">${SS.si+1}/${SS.segs.length}</span>`:''}</div><div class="qpr"><b>${SS.i+1}</b><span>/ ${N}</span><div class="bar"><i style="width:${(SS.i+1)/N*100}%"></i></div></div><div class="card"><div class="tag" style="margin-bottom:2px">${tn}</div><div class="q${q.q.length>70||q.q.includes('\n')?' ql':''}">${qtx(q.q)}</div>`;
  if(q.t=='mc')pmOf(q).forEach((k,pos)=>{h+=`<button class="opt${r.v===k?' sel':''}" onclick="pk(${k})"><span class="on">${pos+1}</span>${esc(q.o[k])}</button>`});
  else if(q.t=='ox')h+=`<div class="oxr">${[true,false].map(k=>`<button class="opt ox${r.v===k?' sel':''}" onclick="pk(${k})">${k?'O':'X'}</button>`).join('')}</div>`;
  else if(q.t=='sh')h+=`<input type="text" id="in" placeholder="빈칸에 들어갈 말" value="${esc(r.v||'')}" autocomplete="off" onkeydown="if(event.key=='Enter'){event.preventDefault();${SS.i<N-1?'nav(1)':'submitSeg()'}}">`;
@@ -996,6 +1006,8 @@ async function boot(){{const m=location.hash.match(/^#s=([A-Za-z0-9]{16,64})$/);
   if(data.status=='ok'||data.status=='new'){const loc=R;R=mergeR(okDV(data.data),loc);R._dv=DV;ls('rec:'+NICK,JSON.stringify(R));if(Object.keys(loc).length)sync()}
   else if(data.status=='wrong'){ls('last',null);ls('pin',null);NICK='';PIN='';REPL=true;home();soonMsg('비밀번호가 바뀌어 다시 입력해야 해요.')}}}catch(e){}}}
 
-boot();
 if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(r=>r.update()).catch(()=>{}));
-</script></body></html>
+</script>
+<!-- 과목별 필기·문제 데이터: 여기 추가하고 마지막에 boot() -->
+<script src="data/pol1.js?v=1"></script>
+<script>boot()</script></body></html>
