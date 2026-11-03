@@ -259,6 +259,16 @@ body{word-spacing:-.06em}
 .ub .mb{background:color-mix(in srgb,var(--uc) 13%,#fffdf8);border:1.5px solid color-mix(in srgb,var(--uc) 40%,var(--ln));border-radius:10px;padding:13px 14px;margin:8px 0 0;box-shadow:0 2px 0 rgba(120,100,70,.08)}
 .ub .mb:active{transform:scale(.98)}
 .ub .mb .mut{color:#5f5749}
+.gds{margin:14px 0;padding:16px 16px 14px;background:var(--card);border:1.5px solid var(--ln);border-radius:14px;box-shadow:0 2px 0 rgba(120,100,70,.10)}
+.gdh{display:flex;align-items:center;gap:10px;margin-bottom:6px}.gdh h3{margin:0;font-size:19px}
+.gdn{flex:none;width:30px;height:30px;border-radius:50%;background:#f9df99;color:#3a3226;font-family:'Jua',sans-serif;font-size:17px;display:flex;align-items:center;justify-content:center}
+.gdb p{margin:4px 0;line-height:1.65}.gdb ul{margin:6px 0;padding-left:20px;line-height:1.7}.gdw{color:#a3392f;font-weight:700;font-size:14px}.gdok{color:var(--ok);font-weight:700}
+.b.gdbt{margin-top:8px}
+.gdi{margin-top:10px;display:flex;justify-content:center}.gdi img{display:block;width:100%;max-width:300px;border-radius:12px;border:1.5px solid var(--ln);box-shadow:0 3px 10px rgba(90,70,40,.12)}
+.gdi.two{gap:8px}.gdi.two img{width:calc(50% - 4px)}
+#app .b.gdb2{color:#2a2620}
+.admw:has(.rsb) .b.admb{padding:8px 10px;font-size:14px}
+#app .hd h2{white-space:nowrap}.hd2{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:-2px}.hd2 .tag{margin:0}.hd2:has(.adm2){margin-top:8px}.adm2{display:flex;gap:6px}.adm2 .b.admb{margin-top:0!important}
 .card.bk.bkx{cursor:default;background:color-mix(in srgb,var(--card) 70%,var(--bg))}.card.bk.bkx .tp,.card.bk.bkx .al,.card.bk.bkx .bar{opacity:.55}
 .bkb{position:absolute;top:8px;right:8px;z-index:2;padding:2px 8px;border-radius:999px;background:#fff;border:1.5px solid var(--ln);font-size:11.5px;font-weight:800;color:#6b6252}
 .wnb{box-shadow:0 2px 0 rgba(120,100,70,.10)!important;border:1.5px solid var(--ln)!important;border-left:7px solid #e9978f!important;border-radius:10px!important;background:var(--card)!important}.wnb::before{display:none!important}.wnb{padding-left:16px!important}
@@ -464,7 +474,7 @@ function animBars(){setTimeout(()=>document.querySelectorAll('[data-w]').forEach
 const SUBJ=[[['독서와|작문','b',1],['영어','r'],['중국어|회화','t'],['일본어|회화','j']],[['미적분','y'],['기하','y']],[['정치','g'],['경제','g'],['동아시아|역사기행','g'],['현대사회와|윤리','g'],['한국지리|탐구','g']],[['세포와|물질대사','p'],['물질과|에너지','p'],['역학과|에너지','p'],['행성우주|과학','p']]];
 const SECN=['언어 영역','수리 영역','사회 영역','과학 영역'];
 const SC={y:'#f2cf6b',b:'#8fb8ec',r:'#ee9a9a',t:'#93d3d8',j:'#c9b6ec',g:'#9bd3ae',p:'#f1a9c8'};
-function subjects(){let h=`<div class="hd" style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px"><div><h2>학습하기</h2></div><span class="admw">${OWNER&&DB?'<button class="b g s admb rsb" onclick="myReset()">초기화</button><button class="b g s admb" onclick="admin()">관리자</button>':SUBMODE&&DB?'<button class="b g s admb" onclick="admin()">관리자</button>':''}${mailBtn()}<button class="pfb" aria-label="내 프로필" onclick="profile()">${PSVG}</button></span></div><p class="tag" style="margin-top:-2px"><b>${esc(NICK)}</b> 님</p><div class="qk">${isApp()?'<button onclick="allStats()">전체 통계</button>':`<button class="lkd" onclick="lockMsg()">${LOCK}전체 통계</button>`}<button onclick="fbForm(1)">피드백</button></div>`;
+function subjects(){let h=`<div class="hd" style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px"><div><h2>학습하기</h2></div><span class="admw"><button class="b g s admb gdb2" onclick="guide()">사용법</button>${mailBtn()}<button class="pfb" aria-label="내 프로필" onclick="profile()">${PSVG}</button></span></div><div class="hd2"><p class="tag"><b>${esc(NICK)}</b> 님</p>${OWNER&&DB?'<span class="adm2"><button class="b g s admb rsb" onclick="myReset()">초기화</button><button class="b g s admb" onclick="admin()">관리자</button></span>':SUBMODE&&DB?'<span class="adm2"><button class="b g s admb" onclick="admin()">관리자</button></span>':''}</div><div class="qk">${isApp()?'<button onclick="allStats()">전체 통계</button>':`<button class="lkd" onclick="lockMsg()">${LOCK}전체 통계</button>`}<button onclick="fbForm(1)">피드백</button></div>`;
  SUBJ.forEach((row,ri)=>{h+=`<h3 class="sec">${SECN[ri]}</h3><div class="sg c2">`;row.forEach(([n,c,o])=>{if(COVER[n]){h+=bk(n,c,o);return}h+=`<div class="card pc" style="margin:0;padding:0;overflow:hidden;text-align:center;background:var(--bg);aspect-ratio:6/5;display:flex;flex-direction:column" onclick="subj('${n}')"><div style="position:absolute;top:0;left:0;right:0;pointer-events:none;height:34px;background:linear-gradient(to bottom,${SC[c]} 0,${SC[c]} 18%,transparent 100%)"></div><div style="flex:1;display:flex;align-items:center;justify-content:center;padding:4px;line-height:1.3;font-weight:600;white-space:nowrap" class="sl">${n.split('|').join('<br>')}</div></div>`});h+='</div>'});
  show(h);animBars();mailBadge();afterHome()}
 let FBF=0;
@@ -530,6 +540,19 @@ async function sendReplies(){if(!ADMINMODE||!DB||!AK())return;let L=[];try{const
  let done={};try{done=JSON.parse(ls('rps'))||{}}catch(e){}let n=0;
  for(const x of L){if(!x||!x.rid||done[x.rid])continue;try{const {data,error}=await DB.rpc('admin_reply',{p_key:AK(),p_rid:x.rid,p_fid:x.fid,p_changes:x.changes||'',p_howto:x.howto||''});if(error)continue;if(['sent','dup','anon','nofb'].includes(data)){done[x.rid]=1;if(data=='sent')n++}}catch(e){}}
  ls('rps',JSON.stringify(done));if(n){admLoad.ok=false;soonMsg(`피드백 답장 ${n}개를 보냈어요.`)}}
+
+// ================= 사용법 =================
+function guide(){const S=(n,t,body,img)=>`<section class="gds"><div class="gdh"><span class="gdn">${n}</span><h3>${t}</h3></div><div class="gdb">${body}</div>${img?`<div class="gdi${Array.isArray(img)?' two':''}">${[].concat(img).map(x=>`<img src="guide/${x}.jpg" alt="" loading="lazy">`).join('')}</div>`:''}</section>`;
+ let h=`<h2>사용법</h2><p class="tag">이것만 알면 충분해요.</p>`;
+ h+=S(1,'닉네임으로 시작하기','<p>닉네임과 <b>숫자 4자리 비밀번호</b>를 정해요. 다른 폰에서도 같은 닉네임·비밀번호로 들어오면 기록이 이어져요.</p><p class="gdw">비밀번호를 잊으면 기록을 찾을 수 없어요.</p>','1_start');
+ h+=S(2,'앱으로 설치하기',`<p>홈 화면에 추가하면 앱처럼 쓸 수 있어요. <b>전체 통계, 공부 달력, 폰 알림</b>은 앱에서만 돼요.</p><ul><li>아이폰: 사파리 <b>공유</b> → <b>홈 화면에 추가</b></li><li>안드로이드: 크롬 메뉴 <b>⋮</b> → <b>앱 설치</b></li></ul>${isApp()?'<p class="gdok">지금 앱으로 쓰고 있어요 👍</p>':'<button class="b gdbt" onclick="installApp()">앱으로 설치하기</button>'}`);
+ h+=S(3,'과목 고르기','<p>학습하기 화면에서 과목을 눌러요. <b>준비 중</b> 표시가 붙은 과목은 아직 열리지 않았어요.</p>','2_home');
+ h+=S(4,'공부하기 · 문제 풀기','<p><b>공부하기</b>는 교과서 핵심을 정리한 필기, <b>문제 풀기</b>는 단원별 문제예요. 필기 맨 아래 버튼으로 그 단원 문제를 바로 풀 수 있어요.</p>','3_learn');
+ h+=S(5,'문제 풀고 해설 보기','<p>단원을 누르면 유형이 펼쳐져요. 다 풀고 <b>제출</b>하면 정답과 해설이 나와요. <b>처음 푼 결과만</b> 진행도와 통계에 들어가요.</p>',['4_units','5_quiz']);
+ h+=S(6,'오답노트','<p>틀린 문제는 과목 맨 위 <b>오답노트</b>에서 다시 풀어요. <b>취약</b> 표시가 붙은 유형은 오답부터 고치는 게 좋아요.</p>');
+ h+=S(7,'피드백 · 메시지함','<p>틀린 문제나 불편한 점은 <b>피드백</b>으로 보내 주세요. 고쳐지면 오른쪽 위 <b>편지봉투</b>로 답장이 와요.</p>','6_inbox');
+ h+=S(8,'프로필','<p>오른쪽 위 <b>사람 아이콘</b>에서 닉네임·비밀번호를 바꾸고 폰 알림을 켤 수 있어요.</p>','7_profile');
+ h+=`<div class="row"><button class="b" onclick="subjects()">학습하러 가기</button></div>`;show(h)}
 
 // ================= 관리자 =================
 let FB=[];
@@ -940,7 +963,7 @@ function setR(r){CURR=r;updBk();const t=r?'#/'+encR(r):location.pathname+locatio
 function parentOf(r){const [k,...rest]=r.split('/'),v=rest.join('/');
  if(!r)return null;if(k=='subjects')return null;
  if(k=='prob'||k=='notes')return 'subj/'+v;if(k=='note'){const ps=v.split('/');ps.pop();ps.pop();return 'notes/'+ps.join('/')}
- if(k=='inbox')return v?'inbox':'subjects';
+ if(k=='inbox')return v?'inbox':'subjects';if(k=='guide')return 'subjects';
  if(k=='menu')return 'pick';if(k=='pick'||k=='subj'||k=='stats'||k=='profile'&&!v||k=='admin'&&!v)return 'subjects';
  if(k=='cal')return 'stats';if(k=='profile')return 'profile';if(k=='admin'){if(/^t\/./.test(v))return 'admin/t';if(/^p\/./.test(v))return 'admin/p';return 'admin'}if(k=='fb')return v=='1'?'subjects':'';
  if(k=='wrong')return (NEWS(v)?'prob/':'subj/')+v;if(k=='quiz'||k=='result'){if(SS&&SS.meta&&SS.meta.note)return 'note/'+SS.meta.note.join('/');if(SS&&SS.meta&&SS.meta.wp)return 'wrong/'+SS.meta.subj;if(SS&&SS.meta&&SS.meta.subj)return (NEWS(SS.meta.subj)?'prob/':'subj/')+SS.meta.subj;if(SS&&SS.pid&&!SS.meta)return 'menu/'+SS.pid;return 'subjects'}
@@ -964,6 +987,7 @@ function go2(r){
  if(k=='notes'&&v&&NEWS(v))return noteList(v);
  if(k=='note'){const ps=v.split('/'),kk=ps.pop(),uu=ps.pop(),nn=ps.join('/');if(NEWS(nn))return noteView(nn,+uu,+kk)}
  if(k=='inbox')return v?msgOpen(+v):inbox();
+ if(k=='guide')return guide();
  if(k=='admin'&&v=='n'&&OWNER)return noticeForm();
  if(k=='stats')return allStats();
  if(k=='wrong'&&v&&CUR[v])return wrongPage(v);
@@ -977,7 +1001,7 @@ function goR(r){ROUTING=true;try{go2(r)}finally{ROUTING=false}updBk()}
 window.addEventListener('popstate',()=>{GUARD=false;if(CURR=='quiz'&&SS&&document.querySelector('.qpr')){try{history.pushState({g:1},'',location.href);GUARD=true}catch(e){}exitQuiz();return}if(location.hash=='#admin')return;const par=parentOf(CURR);if(par===null||(!NICK&&par!=='')){history.back();return}goR(par)});
 const H=(f,mk)=>function(...a){setR(mk(...a));return f.apply(this,a)};
 home=H(home,()=>'');subjects=H(subjects,()=>'subjects');pick=H(pick,()=>'pick');menu=H(menu,id=>'menu/'+id);
-subj=H(subj,n=>'subj/'+n);socPage=H(socPage,n=>NEWS(n)?'prob/'+n:'subj/'+n);noteList=H(noteList,n=>'notes/'+n);noteView=H(noteView,(n,u,k)=>'note/'+n+'/'+u+'/'+k);inbox=H(inbox,()=>'inbox');msgOpen=H(msgOpen,id=>'inbox/'+id);noticeForm=H(noticeForm,()=>'admin/n');allStats=H(allStats,()=>'stats');fbForm=H(fbForm,f=>'fb/'+(f||0));
+subj=H(subj,n=>'subj/'+n);socPage=H(socPage,n=>NEWS(n)?'prob/'+n:'subj/'+n);noteList=H(noteList,n=>'notes/'+n);noteView=H(noteView,(n,u,k)=>'note/'+n+'/'+u+'/'+k);inbox=H(inbox,()=>'inbox');guide=H(guide,()=>'guide');msgOpen=H(msgOpen,id=>'inbox/'+id);noticeForm=H(noticeForm,()=>'admin/n');allStats=H(allStats,()=>'stats');fbForm=H(fbForm,f=>'fb/'+(f||0));
 admin=H(admin,()=>'admin');adminOne=H(adminOne,n=>'admin/u/'+n);fbTypes=H(fbTypes,()=>'admin/t');fbType=H(fbType,k=>'admin/t/'+k);fbPeople=H(fbPeople,()=>'admin/p');fbPerson=H(fbPerson,n=>'admin/p/'+n);
 wrongPage=H(wrongPage,n=>'wrong/'+n);profile=H(profile,()=>'profile');cal=H(cal,()=>'cal');pfNick=H(pfNick,()=>'profile/nick');pfPin=H(pfPin,()=>'profile/pin');
 quiz=(f=>function(){setR('quiz');const x=f.apply(this,arguments);saveSS();return x})(quiz);
