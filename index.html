@@ -371,6 +371,10 @@ body.cap .capm{display:flex}
 .svm{display:flex;align-items:baseline;gap:8px;margin:10px 0 2px;padding:9px 12px;border-radius:10px;background:color-mix(in srgb,var(--uc) 14%,var(--card))}.svm span{font-size:13px;color:var(--mut)}.svm b{font-size:16px}.svm small{margin-left:auto;font-size:13px;font-weight:700}
 .card.bk.cpl{background:color-mix(in oklch,color-mix(in oklch,var(--sc) 90%,#000) 40%,var(--bg))!important}
 .cplb{font-weight:800;color:color-mix(in srgb,var(--sc) 55%,#2a2a2a)}
+.mklk{position:relative}.mklk>button{pointer-events:none;filter:blur(2.5px)}
+.mkov{position:absolute;inset:-2px;border-radius:16px;background:rgba(24,19,14,.56);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;padding:16px;text-align:center;color:#fff;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.mklc{width:64px;height:64px;border-radius:50%;background:rgba(255,253,247,.94);display:flex;align-items:center;justify-content:center;margin-bottom:6px;box-shadow:0 4px 14px rgba(0,0,0,.25)}.mklc svg{width:34px;height:34px;color:#16120e}
+.mkov b{font-size:18px}.mkov small{font-size:13.5px;opacity:.92;word-break:keep-all}.mkov em{font-style:normal;font-size:12.5px;font-weight:700;margin-top:4px;padding:3px 10px;border-radius:999px;background:rgba(255,255,255,.18)}
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -760,8 +764,8 @@ function mkLeft(n){const qs=socQ(n);return {un:qs.filter(q=>!R[q.id]).length,wr:
 const mkRate=n=>{const a=mkAns(n);return a.length?Math.round(a.filter(q=>R[q.id].ok).length/a.length*100):null};
 const sDone=n=>!!MOCK[n]&&mkCnt(n)>=MKN;
 function mockCard(n,col){const op=mkOpen(n),c=mkCnt(n),dots=MOCK[n].map((_,r)=>`<i class="${mkDone(n,r)?'on':''}"></i>`).join('');
- if(!op){const l=mkLeft(n);return `<div class="mkw" style="--uc:${col}"><button class="lcb mkc mkl" onclick="mockGo('${n}')">${LOCK.replace('lki','lci mki')}<span><b>모의고사</b><small>모든 문제를 풀고 오답까지 끝내면 열려요</small><em>${l.un?`남은 문제 ${l.un}개`:''}${l.un&&l.wr?' · ':''}${l.wr?`남은 오답 ${l.wr}개`:''}</em></span></button></div>`}
- return `<div class="mkw" style="--uc:${col}"><button class="lcb mkc" onclick="mockGo('${n}')">${ICN_EXAM}<span><b>${c>=MKN?'모의고사 완료':'모의고사 풀기'}</b><span class="mkd">${dots}</span><em>${c}/${MKN} 완료${c<MKN?` · 다음은 ${c+1}회 (${mkR(n,c).length}문제)`:''}</em></span></button><button class="mks" onclick="mockPage('${n}')"><span><b>모의고사 통계</b><small>${c?`정답률 ${mkRate(n)}% · 취약 유형 · 시험 직전 체크`:'회차별 점수와 취약 유형을 볼 수 있어요'}</small></span><span class="chev">›</span></button></div>`}
+ const l=op?null:mkLeft(n);
+ return `<div class="mkw${op?'':' mklk'}" style="--uc:${col}"><button class="lcb mkc" onclick="mockGo('${n}')"${op?'':' tabindex="-1"'}>${ICN_EXAM}<span><b>${c>=MKN?'모의고사 완료':'모의고사 풀기'}</b><span class="mkd">${dots}</span><em>${c}/${MKN} 완료${c<MKN?` · 다음은 ${c+1}회 (${mkR(n,c).length}문제)`:''}</em></span></button><button class="mks" onclick="mockPage('${n}')"><span><b>모의고사 통계</b><small>${c?`정답률 ${mkRate(n)}% · 취약 유형 · 시험 직전 체크`:'회차별 점수와 취약 유형을 볼 수 있어요'}</small></span><span class="chev">›</span></button>${op?'':`<div class="mkov" onclick="mockGo('${n}')"><span class="mklc">${LOCK.replace('lki','')}</span><b>잠겨 있어요</b><small>모든 문제를 풀고 오답까지 끝내면 열려요</small>${l.un||l.wr?`<em>${l.un?`남은 문제 ${l.un}개`:''}${l.un&&l.wr?' · ':''}${l.wr?`남은 오답 ${l.wr}개`:''}</em>`:''}</div>`}</div>`}
 function mockGo(n,r){if(!mkOpen(n)){const l=mkLeft(n);askBox('아직 잠겨 있어요',`모든 문제를 풀고 오답까지 끝내면 모의고사가 열려요.<small class="mdn">${l.un?`안 푼 문제 ${l.un}개`:''}${l.un&&l.wr?', ':''}${l.wr?`남은 오답 ${l.wr}개`:''}가 남았어요.</small>`,'문제 풀러 가기').then(ok=>{if(ok)socPage(n)});return}
  if(r===undefined){r=MOCK[n].findIndex((_,i)=>!mkDone(n,i));if(r<0)return mockPage(n)}
  const nm=n.split('|').join(' '),qs=mkR(n,r),seg=[{label:`모의고사 ${r+1}회`,qs}],m={title:nm+' 모의고사',mock:r+1,kind:'모의고사',mp:1,back:"mockPage('"+n+"')"};
