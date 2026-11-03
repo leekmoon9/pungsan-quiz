@@ -130,6 +130,14 @@ body.hasbk .fbw h2:first-child{padding-left:0}
 .b.admb{width:auto;flex:none;min-height:0!important;padding:8px 16px;margin-top:4px;background:var(--card);border:none;font-weight:700;box-shadow:0 3px 10px rgba(90,70,40,.18)}
 .fbd{font-size:14px;line-height:1.75;word-break:keep-all;margin:6px auto 10px!important}.fbd span{display:inline-block;margin-top:4px;padding:1px 10px;border-radius:999px;background:var(--bd);font-size:12.5px}
 .admw{display:flex;gap:6px;flex:none}.b.rsb{color:#a3392f}
+.lki{width:15px;height:15px;color:#2a2620;flex:none;vertical-align:-2px}
+.qk .lkd{display:flex;align-items:center;justify-content:center;gap:6px;background:color-mix(in srgb,#2a2620 8%,var(--card))!important;color:#6f685c}
+.mdc h3 .lki{width:17px;height:17px;vertical-align:-2px;margin-right:2px}
+.inc{padding:24px 20px 14px}.inic{width:64px;height:64px;border-radius:16px;box-shadow:0 4px 14px rgba(60,45,25,.22);margin:0 auto 12px;display:block}
+.inc h3{font-size:19px}.inc p{margin-bottom:18px}
+.b.inb{width:100%;min-height:50px;font-size:16px;border-radius:14px}
+.inw{display:block;margin:12px auto 4px;background:none;border:none;color:var(--mut);font:inherit;font-size:14px;text-decoration:underline;text-underline-offset:3px;cursor:pointer;padding:6px 10px}
+.ins{text-align:left;margin:4px 0 18px;padding-left:22px;line-height:1.7;font-size:14.5px}.ins li{margin:4px 0}
 h3.sec{font-size:19px;font-weight:600;margin:20px 0 8px}
 .fbw{min-height:calc(100vh - 60px);min-height:calc(100svh - 60px);display:flex;flex-direction:column;justify-content:center;text-align:center}
 .fbw .tag{max-width:420px;margin:0 auto 6px}
@@ -276,7 +284,7 @@ function stkSide(){const col={};SUBJ.flat().forEach(([n,c])=>col[n]=c);const N=S
    it.forEach(([t,n,x])=>{const rot=((k*29+seed*11)%21)-10,top=3+r*rh+(t=='p'?rh*0.32:0)+jy,d=`left:${x}%;top:${top}%;--r:${rot}deg;animation-delay:${k*30}ms`;k++;
     h+=t=='c'?`<img class="st" src="${COVER[n]}" alt="" style="${d};width:60px">`:`<span class="st pl" style="${d};--pc:${SC[col[n]]};font-size:14px">${n.split('|').join(' ')}</span>`})}return h};
  return `<div class="sd sdl">${mk(ev,od,0)}</div><div class="sd sdr">${mk(od,ev,1)}</div>`}
-function home(){const lk=lastNick(),cu=document.getElementById('nk'),nv=cu?cu.value:'';show(`<div class="hero"><div class="sa">${stk(0)}</div><div class="hc"><h1><span>풍산고 기말 시험 대비</span></h1>${lk?`<p style="font-size:17px;margin:6px 0 0;color:#2a2620"><b>${esc(lk)}</b>님 환영합니다.</p>`:'<p class="tag">닉네임을 입력하고 시작하세요</p>'}<div class="row" style="justify-content:center;margin-top:20px;flex-direction:column;align-items:center;gap:10px">${lk?'':`<input type="text" id="nk" maxlength="12" placeholder="닉네임 (최대 12자)" value="${esc(nv)}" style="max-width:260px;text-align:center" oninput="ckGo()"><input type="text" class="pw" autocomplete="off" id="pn" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호 숫자 4자리" style="max-width:260px;text-align:center;letter-spacing:4px" oninput="this.value=this.value.replace(/\D/g,'');ckGo()" onkeydown="if(event.key=='Enter'&&!document.getElementById('go').disabled)enter()"><div class="mut" style="font-size:12px;margin-top:-6px;max-width:260px;line-height:1.5">처음 쓰는 닉네임이면 새로 만들어져요.<br>다른 기기에서도 같은 닉네임·비밀번호로<br>이어서 풀 수 있어요.</div>`}<button class="b" id="go" style="max-width:260px" ${lk?'':'disabled'} onclick="enter()">시작하기</button></div></div><div class="sa">${stk(1)}</div></div>`);const sd=document.createElement('div');sd.id='sides';sd.innerHTML=stkSide();document.body.appendChild(sd);requestAnimationFrame(fitSt)}
+function home(){const lk=lastNick(),cu=document.getElementById('nk'),nv=cu?cu.value:'';show(`<div class="hero"><div class="sa">${stk(0)}</div><div class="hc"><h1><span>풍산고 기말 시험 대비</span></h1>${lk?`<p style="font-size:17px;margin:6px 0 0;color:#2a2620"><b>${esc(lk)}</b>님 환영합니다.</p>`:'<p class="tag">닉네임을 입력하고 시작하세요</p>'}<div class="row" style="justify-content:center;margin-top:20px;flex-direction:column;align-items:center;gap:10px">${lk?'':`<input type="text" id="nk" maxlength="12" placeholder="닉네임 (최대 12자)" value="${esc(nv)}" style="max-width:260px;text-align:center" oninput="ckGo()"><input type="text" class="pw" autocomplete="off" id="pn" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호 숫자 4자리" style="max-width:260px;text-align:center;letter-spacing:4px" oninput="this.value=this.value.replace(/\D/g,'');ckGo()" onkeydown="if(event.key=='Enter'&&!document.getElementById('go').disabled)enter()"><div class="mut" style="font-size:12px;margin-top:-6px;max-width:260px;line-height:1.5">처음 쓰는 닉네임이면 새로 만들어져요.<br>다른 기기에서도 같은 닉네임·비밀번호로<br>이어서 풀 수 있어요.</div>`}<button class="b" id="go" style="max-width:260px" ${lk?'':'disabled'} onclick="enter()">시작하기</button></div></div><div class="sa">${stk(1)}</div></div>`);setTimeout(()=>{if(document.querySelector('.hero'))instPrompt()},450);const sd=document.createElement('div');sd.id='sides';sd.innerHTML=stkSide();document.body.appendChild(sd);requestAnimationFrame(fitSt)}
 function fitSt(){document.querySelectorAll('.sa').forEach(a=>{const h=a.getBoundingClientRect().height;a.classList.toggle('lo',h<135);a.classList.toggle('no',h<64)})}
 window.addEventListener('resize',()=>{if(document.querySelector('.hero'))fitSt()});
 
@@ -288,7 +296,7 @@ function animBars(){setTimeout(()=>document.querySelectorAll('[data-w]').forEach
 const SUBJ=[[['독서와|작문','b',1],['영어','r'],['중국어|회화','t'],['일본어|회화','j']],[['정치','g'],['경제','g'],['동아시아|역사기행','g'],['현대사회와|윤리','g'],['한국지리|탐구','g']],[['세포와|물질대사','p'],['물질과|에너지','p'],['역학과|에너지','p'],['행성우주|과학','p']]];
 const SECN=['언어 영역','사회 영역','과학 영역'];
 const SC={b:'#8fb8ec',r:'#ee9a9a',t:'#93d3d8',j:'#c9b6ec',g:'#9bd3ae',p:'#f1a9c8'};
-function subjects(){let h=`<div class="hd" style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px"><div><h2>과목 선택</h2><p class="tag"><b>${esc(NICK)}</b> 님 <a class="pfl" onclick="profile()">프로필 보기</a></p></div>${OWNER&&DB?'<span class="admw"><button class="b g s admb rsb" onclick="myReset()">초기화</button><button class="b g s admb" onclick="admin()">관리자</button></span>':''}</div><div class="qk"><button onclick="allStats()">전체 통계</button><button onclick="fbForm(1)">의견 남기기</button></div>`;
+function subjects(){let h=`<div class="hd" style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px"><div><h2>과목 선택</h2><p class="tag"><b>${esc(NICK)}</b> 님 <a class="pfl" onclick="profile()">프로필 보기</a></p></div>${OWNER&&DB?'<span class="admw"><button class="b g s admb rsb" onclick="myReset()">초기화</button><button class="b g s admb" onclick="admin()">관리자</button></span>':''}</div><div class="qk">${isApp()?'<button onclick="allStats()">전체 통계</button>':`<button class="lkd" onclick="lockMsg()">${LOCK}전체 통계</button>`}<button onclick="fbForm(1)">의견 남기기</button></div>`;
  SUBJ.forEach((row,ri)=>{h+=`<h3 class="sec">${SECN[ri]}</h3><div class="sg c2">`;row.forEach(([n,c,o])=>{if(COVER[n]){h+=bk(n,c,o);return}h+=`<div class="card pc" style="margin:0;padding:0;overflow:hidden;text-align:center;background:var(--bg);aspect-ratio:6/5;display:flex;flex-direction:column" onclick="subj('${n}')"><div style="position:absolute;top:0;left:0;right:0;pointer-events:none;height:34px;background:linear-gradient(to bottom,${SC[c]} 0,${SC[c]} 18%,transparent 100%)"></div><div style="flex:1;display:flex;align-items:center;justify-content:center;padding:4px;line-height:1.3;font-weight:600;white-space:nowrap" class="sl">${n.split('|').join('<br>')}</div></div>`});h+='</div>'});
  show(h);animBars()}
 let FBF=0;
@@ -394,6 +402,30 @@ function startWrong(n,segs,extra){const ws=segs.map(x=>({label:x.label,qs:x.qs.f
  startRun(n,ws,Object.assign({title:n.split('|').join(' ')+' 오답노트',mode:'wrong',practice:true},extra||{}))}
 async function myReset(){if(!OWNER)return;if(!(await askBox('내 기록을 초기화할까요?','풀이 기록, 오답노트, 공부 시간이 모두 지워집니다.','초기화')))return;
  R={_dv:DV,_t:{},_fx:{}};ls('rec:'+NICK,JSON.stringify(R));try{sessionStorage.removeItem(KEY+'ss')}catch(e){}await sync();soonMsg('초기화했어요.');subjects()}
+
+// ---- 앱 설치 유도 ----
+let DP=null;
+const isApp=()=>{try{return matchMedia('(display-mode: standalone)').matches||matchMedia('(display-mode: fullscreen)').matches||navigator.standalone===true}catch(e){return false}};
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();DP=e});
+window.addEventListener('appinstalled',()=>{DP=null;closeInst();soonMsg('앱이 설치됐어요! 홈 화면의 풍산 문제를 열어 주세요.')});
+const UA=navigator.userAgent||'',isIOS=/iPhone|iPad|iPod/i.test(UA)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1),isAnd=/Android/i.test(UA),isKakao=/KAKAOTALK/i.test(UA),isInApp=/KAKAOTALK|Instagram|FBAN|FBAV|NAVER\(|Line\/|everytimeApp|DaumApps/i.test(UA);
+const LOCK='<svg class="lki" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a5 5 0 0 0-5 5v3H6.5A1.5 1.5 0 0 0 5 11.5v9A1.5 1.5 0 0 0 6.5 22h11a1.5 1.5 0 0 0 1.5-1.5v-9a1.5 1.5 0 0 0-1.5-1.5H17V7a5 5 0 0 0-5-5zm-3 8V7a3 3 0 0 1 6 0v3H9z" fill="currentColor"/></svg>';
+function closeInst(){const w=document.getElementById('inst');if(w)w.remove()}
+function instBox(inner){closeInst();const w=document.createElement('div');w.id='inst';w.className='mdw';w.innerHTML=`<div class="mdc inc">${inner}</div>`;w.onclick=e=>{if(e.target===w)closeInst()};document.body.appendChild(w)}
+function instPrompt(force){if(isApp())return;if(!force){try{if(sessionStorage.getItem(KEY+'webok'))return}catch(e){}}
+ instBox(`<img class="inic" src="logo-192.png" alt=""><h3>앱으로 다운받으시겠습니까?</h3><p>웹으로만 볼 시 제한사항이 적용될 수 있습니다.</p><button class="b inb" onclick="installApp()">앱으로 다운받기</button><button class="inw" onclick="webOK()">웹으로 볼래요</button>`)}
+function webOK(){try{sessionStorage.setItem(KEY+'webok','1')}catch(e){}closeInst()}
+async function installApp(){if(isApp())return closeInst();
+ if(DP){const d=DP;DP=null;try{d.prompt();const r=await d.userChoice;if(r&&r.outcome==='accepted'){closeInst();return}}catch(e){}return}
+ const url=location.origin+location.pathname;
+ if(isInApp&&isKakao){location.href='kakaotalk://web/openExternal?url='+encodeURIComponent(url);return}
+ if(isInApp&&isAnd){location.href='intent://'+url.replace(/^https?:\/\//,'')+'#Intent;scheme=https;package=com.android.chrome;end';return}
+ const steps=isInApp?['오른쪽 위(또는 아래) 메뉴를 눌러요.','<b>다른 브라우저로 열기</b>를 눌러요.','열린 브라우저에서 다시 <b>앱으로 다운받기</b>를 눌러요.']
+  :isIOS?['화면 아래(또는 위)의 <b>공유 버튼</b>을 눌러요.','<b>홈 화면에 추가</b>를 눌러요.','오른쪽 위 <b>추가</b>를 누르면 끝이에요.']
+  :['주소창 오른쪽의 <b>설치 아이콘</b>이나 메뉴(⋮)를 눌러요.','<b>앱 설치</b> 또는 <b>홈 화면에 추가</b>를 눌러요.','이미 설치했다면 홈 화면의 <b>풍산 문제</b> 앱으로 열어 주세요.'];
+ instBox(`<img class="inic" src="logo-192.png" alt=""><h3>${isIOS&&!isInApp?'홈 화면에 추가해 주세요':'이렇게 설치해 주세요'}</h3><ol class="ins">${steps.map(x=>`<li>${x}</li>`).join('')}</ol><button class="b inb" onclick="closeInst()">확인</button>`)}
+function lockMsg(){askBox(`${LOCK} 앱 전용 기능이에요`,'앱으로 다운받으면 전체 통계가 활성화됩니다.','앱으로 다운받기').then(ok=>{if(ok)installApp()})}
+
 function wrongPage(n){const nm=n.split('|').join(' '),c=SUBJ.flat().find(x=>x[0]==n)[1],col=SC[c];
  const all=socQ(n),wr=all.filter(q=>R[q.id]&&!R[q.id].ok),un=wr.filter(isUnf);
  let h=`<div class="shd"><h2 style="--hlc:#f3b8b1">오답노트</h2><p class="tag">${esc(nm)} · 틀린 문제를 다시 풀어서 고쳐요. 여기서 푼 결과는 진행 상황에 반영되지 않아요.</p>${COVER[n]?`<img class="cvs" src="${COVER[n]}" alt="">`:''}</div>`;
@@ -419,7 +451,7 @@ function subj(n){if(isSoc(n))return socPage(n);const c=SUBJ.flat().find(x=>x[0]=
  for(let u=1;u<=4;u++){const s=st(UNITQ[n+u]||[]),a=s.t?Math.round(s.c/s.t*100):0;
   h+=`<div class="card pc" style="margin:0;padding:0;overflow:hidden;text-align:center;background:var(--bg);aspect-ratio:6/5;display:flex;flex-direction:column;border:1.5px solid ${SC[c]}" onclick="soon()"><div style="position:absolute;top:0;left:0;right:0;pointer-events:none;height:34px;background:linear-gradient(to bottom,${SC[c]} 0,${SC[c]} 18%,transparent 100%)"></div><div style="flex:1;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:18px">${u}단원</div><div class="mut" style="padding:0 0 10px">성취율 ${a}%</div></div>`}
  h+=`</div>`;show(h)}
-function allStats(){const qs=[].concat(...PASS.map(p=>p.Q)),s=st(qs);
+function allStats(){if(!isApp()){setTimeout(lockMsg,50);return subjects()}const qs=[].concat(...PASS.map(p=>p.Q)),s=st(qs);
  let h=`<h2>전체 통계</h2><p class="tag"><b>${esc(NICK)}</b> 님</p><div class="card"><div class="tag">전체 정답률</div><div class="big">${s.r==null?'-':s.r+'%'}</div><div class="mut">${s.n}문제 풀이 · ${s.c}문제 정답</div></div><h3>과목별 성취율</h3>`;
  SUBJ.flat().forEach(([n,c,o])=>{const a=ach(n,o);
   h+=`<div class="card" style="padding:10px 14px"><div style="display:flex;justify-content:space-between"><span><span style="display:inline-block;width:10px;height:10px;border-radius:3px;background:${SC[c]};margin-right:8px"></span>${n.split('|').join(' ')}</span><b>${a}%</b></div><div class="bar"><i style="width:${a}%;background:${SC[c]}"></i></div></div>`});
