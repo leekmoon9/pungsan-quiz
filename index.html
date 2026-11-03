@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko"><head><meta charset="utf-8"><meta name="color-scheme" content="light"><link rel="manifest" href="manifest.webmanifest?v=3"><meta name="theme-color" content="#f3ede1"><link rel="apple-touch-icon" href="logo-180.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="풍산 문제">
+<html lang="ko"><head><meta charset="utf-8"><meta name="color-scheme" content="light"><link rel="manifest" href="manifest.webmanifest?v=4"><meta name="theme-color" content="#f3ede1"><link rel="apple-touch-icon" href="logo-180.png"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="풍산 학습">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>풍산고 기말 시험 대비</title>
 <style>
@@ -529,7 +529,7 @@ function notiLater(){ls('np2','1');closeInst();notiWarn()}
 function notiWarn(){askBox('알림이 꺼져 있어요','알림을 허용하지 않으면 일부 공지가 전송되지 않아요.<small class="mdn">나중에 프로필에서 다시 켤 수 있어요.</small>','확인')}
 function notiState(){if(!canPush())return isApp()?'불가':'앱 전용';return {granted:'켜짐',denied:'차단됨',default:'꺼짐'}[Notification.permission]||'꺼짐'}
 async function notiFromProfile(){if(!isApp()){setTimeout(lockMsg,50);return}if(!canPush())return soonMsg('이 폰에서는 알림을 쓸 수 없어요. 운영체제를 최신으로 업데이트해 주세요.');
- if(Notification.permission==='denied')return askBox('알림이 차단돼 있어요','휴대폰 설정에서 풍산 문제 앱의 알림을 허용해 주세요.','확인');
+ if(Notification.permission==='denied')return askBox('알림이 차단돼 있어요','휴대폰 설정에서 풍산 학습 앱의 알림을 허용해 주세요.','확인');
  if(Notification.permission==='granted'){const ok=await pushSub();return soonMsg(ok?'알림이 켜져 있어요.':'등록하지 못했어요. 잠시 후 다시 시도해 주세요.')}
  return notiAsk()}
 function afterHome(){if(!PUSHED&&canPush()&&Notification.permission==='granted'){PUSHED=true;pushSub()}
@@ -574,7 +574,7 @@ const chip=k=>{const t=FT(k);return `<span class="chp" style="background:${t[2]}
 const fbCard=x=>`<div class="card fbc${x.st=='done'?' fdn':''}"><div class="fbh">${chip(x.k)}<b>${esc(x.nick)}</b>${x.id?`<span class="fid">#${x.id}</span>`:''}${x.st=='done'?'<span class="chp" style="background:#9bd3ae">답장 완료</span>':''}<span class="mut">${fd(x.t)}</span></div><div class="fbt">${esc(x.text||'')}</div></div>`;
 
 function fbCopy(){const L=FB.filter(x=>x.st!='done').slice().sort((a,b)=>a.t-b.t);if(!L.length)return soonMsg('답장하지 않은 피드백이 없어요.');
- const t=`[풍산 문제 피드백] 답장 전 ${L.length}개\n\n`+L.map(x=>`#${x.id} · ${x.nick} · ${fd(x.t)} · ${FT(x.k)[1]}\n${x.text}`).join('\n\n')+`\n\n위 피드백을 보고 수정할 내용을 적어 줄게.`;
+ const t=`[풍산 학습 피드백] 답장 전 ${L.length}개\n\n`+L.map(x=>`#${x.id} · ${x.nick} · ${fd(x.t)} · ${FT(x.k)[1]}\n${x.text}`).join('\n\n')+`\n\n위 피드백을 보고 수정할 내용을 적어 줄게.`;
  const ok=()=>soonMsg('복사했어요. 클로드 채팅창에 붙여 넣어 주세요.');
  try{navigator.clipboard.writeText(t).then(ok,()=>fbCopyShow(t))}catch(e){fbCopyShow(t)}}
 function fbCopyShow(t){show(`<h2>피드백 복사</h2><p class="tag">아래 내용을 길게 눌러 모두 선택한 뒤 복사해 주세요.</p><div class="card"><textarea readonly style="min-height:50vh">${esc(t)}</textarea></div>`)}
@@ -734,7 +734,7 @@ async function myReset(){if(!OWNER)return;if(!(await askBox('내 기록을 초�
 let DP=null;
 const isApp=()=>{try{return matchMedia('(display-mode: standalone)').matches||matchMedia('(display-mode: fullscreen)').matches||navigator.standalone===true}catch(e){return false}};
 window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();DP=e});
-window.addEventListener('appinstalled',()=>{DP=null;closeInst();soonMsg('앱이 설치됐어요! 홈 화면의 풍산 문제를 열어 주세요.')});
+window.addEventListener('appinstalled',()=>{DP=null;closeInst();soonMsg('앱이 설치됐어요! 홈 화면의 풍산 학습를 열어 주세요.')});
 const UA=navigator.userAgent||'',isIOS=/iPhone|iPad|iPod/i.test(UA)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1),isAnd=/Android/i.test(UA),isKakao=/KAKAOTALK/i.test(UA),isInApp=/KAKAOTALK|Instagram|FBAN|FBAV|NAVER\(|Line\/|everytimeApp|DaumApps/i.test(UA);
 const LOCK='<svg class="lki" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a5 5 0 0 0-5 5v3H6.5A1.5 1.5 0 0 0 5 11.5v9A1.5 1.5 0 0 0 6.5 22h11a1.5 1.5 0 0 0 1.5-1.5v-9a1.5 1.5 0 0 0-1.5-1.5H17V7a5 5 0 0 0-5-5zm-3 8V7a3 3 0 0 1 6 0v3H9z" fill="currentColor"/></svg>';
 function closeInst(){const w=document.getElementById('inst');if(w)w.remove()}
@@ -749,7 +749,7 @@ async function installApp(){if(isApp())return closeInst();
  if(isInApp&&isAnd){location.href='intent://'+url.replace(/^https?:\/\//,'')+'#Intent;scheme=https;package=com.android.chrome;end';return}
  const steps=isInApp?['오른쪽 위(또는 아래) 메뉴를 눌러요.','<b>다른 브라우저로 열기</b>를 눌러요.','열린 브라우저에서 다시 <b>앱으로 다운받기</b>를 눌러요.']
   :isIOS?['화면 아래(또는 위)의 <b>공유 버튼</b>을 눌러요.','<b>홈 화면에 추가</b>를 눌러요.','오른쪽 위 <b>추가</b>를 누르면 끝이에요.']
-  :['주소창 오른쪽의 <b>설치 아이콘</b>이나 메뉴(⋮)를 눌러요.','<b>앱 설치</b> 또는 <b>홈 화면에 추가</b>를 눌러요.','이미 설치했다면 홈 화면의 <b>풍산 문제</b> 앱으로 열어 주세요.'];
+  :['주소창 오른쪽의 <b>설치 아이콘</b>이나 메뉴(⋮)를 눌러요.','<b>앱 설치</b> 또는 <b>홈 화면에 추가</b>를 눌러요.','이미 설치했다면 홈 화면의 <b>풍산 학습</b> 앱으로 열어 주세요.'];
  instBox(`<img class="inic" src="logo-192.png" alt=""><h3>${isIOS&&!isInApp?'홈 화면에 추가해 주세요':'이렇게 설치해 주세요'}</h3><ol class="ins">${steps.map(x=>`<li>${x}</li>`).join('')}</ol><button class="b inb" onclick="closeInst()">확인</button>`)}
 function lockMsg(){askBox(`${LOCK} 앱 전용 기능이에요`,'앱으로 다운받으면 전체 통계가 활성화됩니다.','앱으로 다운받기').then(ok=>{if(ok)installApp()})}
 
