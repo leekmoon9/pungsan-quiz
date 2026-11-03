@@ -314,6 +314,7 @@ label.ck{display:block;padding:6px 0}
 .mut{color:var(--mut);font-size:14px}
 .wk{border-left:4px solid var(--no);padding-left:10px;margin:10px 0}
 .toast{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:50;padding:16px 26px;border-radius:14px;background:var(--card);background:color-mix(in srgb,var(--card) 82%,transparent);border:1px solid var(--bd);color:var(--tx);font:inherit;font-weight:600;white-space:nowrap;pointer-events:none;opacity:0;animation:tst 1.8s ease-in-out}
+.toast.tl{display:flex;align-items:center;gap:9px;padding:18px 26px;background:#2a2620;border:none;color:#fff;font-size:17px;font-weight:800;box-shadow:0 10px 30px rgba(40,30,15,.35);animation-duration:2.2s}.toast.tl .lki{width:19px;height:19px;color:#f9df99}
 @keyframes tst{0%{opacity:0}20%{opacity:1}70%{opacity:1}100%{opacity:0}}
 button,.pc,.nav span{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
 .in{animation:pg .3s ease both}@keyframes pg{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
@@ -751,7 +752,7 @@ function svBody(n,col){const qs=CUR[n]?socQ(n):[];if(!qs.length)return `<div cla
  return h}
 function svTog(ix){document.querySelectorAll('.svt').forEach(b=>{const on=b.id=='svt'+ix&&b.getAttribute('aria-expanded')!='true';b.setAttribute('aria-expanded',on);b.classList.toggle('on',on);document.getElementById('svp'+b.id.slice(3)).classList.toggle('on',on)})}
 
-function soon(){const o=document.getElementById('toast');if(o)o.remove();const t=document.createElement('div');t.id='toast';t.className='toast';t.textContent='아직 개설 전입니다.';document.body.appendChild(t);setTimeout(()=>t.remove(),1850)}
+function soon(){const o=document.getElementById('toast');if(o)o.remove();const t=document.createElement('div');t.id='toast';t.className='toast tl';t.innerHTML=LOCK+'<span>아직 개설 전입니다.</span>';document.body.appendChild(t);setTimeout(()=>t.remove(),2250)}
 function pick(){return subj('독서와|작문');let h=`<h2>지문 선택</h2><p class="tag"><b>${esc(NICK)}</b> 님 · 풀이 기록이 저장돼요.</p>`;
  PASS.forEach(p=>{const s=st(p.Q);h+=`<div class="card pc" onclick="menu('${p.id}')"><b>${p.name}</b><div class="bar"><i style="width:${s.n/s.t*100}%"></i></div><div class="mut">${stTxt(s)}</div></div>`});
  h+=``;show(h)}
