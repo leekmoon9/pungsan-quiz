@@ -383,6 +383,8 @@ body.cap .capm{display:flex}
 .sumst{display:grid;grid-template-columns:repeat(3,1fr)}.sumst>div{padding:10px 6px;text-align:center;border-left:1px solid var(--ln)}.sumst>div:first-child{border-left:none}.sumst b{display:block;font-size:17px}.sumst small{font-size:12px;color:var(--mut)}
 .shd{min-height:0!important;padding-right:0!important}.shd .cvs{top:-2px!important;right:60px!important;width:40px!important}
 @media (max-width:759px){body.hasbk #app>.shd>.tag,body.hasbk #app>.nth>.tag{margin-left:51px}}
+.shd{min-height:66px!important;padding-right:110px}.shd .cvs{top:-2px;right:60px;width:40px}
+.hd h2{margin-bottom:0}.hd2{margin-top:-8px!important}
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -687,7 +689,7 @@ const socQ=n=>[].concat(...CUR[n].map((_,u)=>bigQ(n,u)));
 const pct=qs=>qs.length?Math.round(st(qs).c/qs.length*100):0;
 let OPEN=-1;
 function socPage(n){const c=SUBJ.flat().find(x=>x[0]==n)[1],col=SC[c],nm=n.split('|').join(' ');
- const [K1,K2]=kd(n);let h=`<div class="shd"><h2 style="--hlc:${col}">${nm}</h2><p class="tag">${NEWS(n)?'문제 풀기':`<b>${esc(NICK)}</b> 님`}</p>${COVER[n]?`<img class="cvs" src="${COVER[n]}" alt="">`:''}</div>`;
+ const [K1,K2]=kd(n);let h=`<div class="shd"><h2 style="--hlc:${col}">${nm}</h2>${NEWS(n)?'<p class="tag">문제 풀기</p>':''}${COVER[n]?`<img class="cvs" src="${COVER[n]}" alt="">`:''}</div>`;
  {const wq=socQ(n).filter(q=>R[q.id]&&!R[q.id].ok),uq=wq.filter(isUnf);h+=`<button class="wnb" onclick="wrongPage('${n}')"><span><b>오답노트</b><small>${wq.length?(uq.length?`남은 오답 ${uq.length}문제`:'오답을 모두 고쳤어요'):'아직 틀린 문제가 없어요'}</small></span>${uq.length?`<span class="wnc">${uq.length}</span>`:''}<span class="chev">›</span></button>`}
  if(!CUR[n].length)h+=`<div class="card mut" style="text-align:center;padding:26px 16px">아직 ${K1}이 준비 중이에요.<br>곧 추가할게요!</div>`;
  CUR[n].forEach((U,u)=>{const a=pct(bigQ(n,u));
@@ -742,7 +744,7 @@ function lhSum(n,col,mids,qs){const nv=(R._nv&&R._nv[n])||{},has=mids.filter(([u
  if(!go&&!qs.length)return '';const M=go&&CUR[n][go[0]].m[go[1]];
  return `<div class="sumc" style="--uc:${col}">${go?`<button class="sumgo" onclick="noteView('${n}',${go[0]},${go[1]})"><span><small>${ln?'이어서 공부하기':'처음부터 공부하기'}</small><b>${esc(M.n)}</b></span><span class="chev">›</span></button>`:''}<div class="sumst"><div><b>${seen}/${has.length}</b><small>필기</small></div><div><b>${pct(qs)}%</b><small>문제</small></div><div><b>${mkCnt(n)}/${MKN}</b><small>모의고사</small></div></div></div>`}
 function learnHome(n){const col=sCol(n),nm=n.split('|').join(' '),mids=[].concat(...CUR[n].map((U,u)=>U.m.map((M,k)=>[u,k]))),nn=mids.filter(([u,k])=>noteOf(n,u,k)).length,qs=socQ(n);
- let h=`<div class="shd"><h2 style="--hlc:${col}">${nm}</h2><p class="tag"><b>${esc(NICK)}</b> 님</p>${COVER[n]?`<img class="cvs" src="${COVER[n]}" alt="">`:''}</div>`;
+ let h=`<div class="shd"><h2 style="--hlc:${col}">${nm}</h2>${COVER[n]?`<img class="cvs" src="${COVER[n]}" alt="">`:''}</div>`;
  h+=lhSum(n,col,mids,qs);
  h+=`<div class="lch two" style="--uc:${col}"><button class="lcb" onclick="noteList('${n}')">${ICN_NOTE}<span><b>공부하기</b></span><span class="chev">›</span></button>`;
  h+=`<button class="lcb${qDone(n)?' cpl':''}" onclick="socPage('${n}')">${ICN_PEN}<span><b>문제 풀기</b>${qs.length?`<em>${qDone(n)?'✓ 모두 완료 · ':`진행도 ${pct(qs)}% · `}${qs.length}문제</em>`:''}</span><span class="chev">›</span></button></div>`;
@@ -876,7 +878,7 @@ function socGo(n,u,k,opt){const segs=[];const nm=n.split('|').join(' ');opt=opt|
 function subj(n){if(!hasC(n)&&!STAFF()&&CUR[n]){soon();return subjects()}if(NEWS(n))return learnHome(n);if(isSoc(n))return socPage(n);return subjects()}
 function allStats(){if(!isApp()){setTimeout(lockMsg,50);return subjects()}const qs=[].concat(...PASS.map(p=>p.Q)),s=st(qs);
  const t=R._t||{},days=Object.keys(t).filter(k=>t[k]>=1),tot=days.reduce((a,k)=>a+t[k],0),td=t[dkey()]||0;
- let h=`<h2>전체 통계</h2><p class="tag"><b>${esc(NICK)}</b> 님</p><div class="pg2"><div class="card st2"><span>총 공부 시간</span><b>${fmtT(tot)}</b><small>오늘 ${fmtT(td)}</small></div><div class="card st2 pc" onclick="cal()"><span>공부한 날</span><b>${days.length}일</b><small class="lku">달력으로 보기 ›</small></div></div><div class="card"><div class="tag">전체 정답률</div><div class="big">${s.r==null?'-':s.r+'%'}</div><div class="mut">${s.n}문제 풀이 · ${s.c}문제 정답</div></div><h3>과목별 보기</h3><div class="svg">`;
+ let h=`<h2>전체 통계</h2><div class="pg2"><div class="card st2"><span>총 공부 시간</span><b>${fmtT(tot)}</b><small>오늘 ${fmtT(td)}</small></div><div class="card st2 pc" onclick="cal()"><span>공부한 날</span><b>${days.length}일</b><small class="lku">달력으로 보기 ›</small></div></div><div class="card"><div class="tag">전체 정답률</div><div class="big">${s.r==null?'-':s.r+'%'}</div><div class="mut">${s.n}문제 풀이 · ${s.c}문제 정답</div></div><h3>과목별 보기</h3><div class="svg">`;
  const L=SUBJ.flat();L.forEach(([n,c,o],ix)=>{const a=ach(n,o),col=SC[c];
   h+=`<button class="svt" id="svt${ix}" style="--sc:${col}" onclick="svTog(${ix})" aria-expanded="false"><span class="svn">${esc(n.split('|').join(' '))}</span><span class="svr"><b>${a}%</b><span class="chev">›</span></span><span class="bar"><i style="width:${a}%;background:${col}"></i></span></button>`;
   if(ix%2==1||ix==L.length-1)for(let k=ix-(ix%2);k<=ix;k++)h+=`<div class="svp" id="svp${k}"><div class="svi">${svBody(L[k][0],SC[L[k][1]])}</div></div>`});
