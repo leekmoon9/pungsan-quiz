@@ -923,7 +923,7 @@ const exT=q=>esc(q.e||'').replace(/⟦(\d)⟧/g,(_,d)=>CIRC[q.t=='mc'?posOf(q,+d
 
 function startRun(n,segs,meta){OPEN=-1;SS={pid:'run',cat:'all',meta:Object.assign({subj:n,back:"socPage('"+n+"')",backLabel:kd(n)[1]+' 선택으로',kind:kd(n)[1]},meta||{}),segs,si:0,qs:segs[0].qs,i:0,resp:{},graded:[]};SS.base={};Object.keys(R).forEach(k=>{if(k[0]!='_')SS.base[k]=1});SS.perm={};segs.forEach(x=>Object.assign(SS.perm,mkPerm(x.qs)));draft=null;QS0=Date.now();quiz()}
 const ttl=()=>SS.meta?SS.meta.title:P(SS.pid).name;
-function goBack(){if(STK.length){const t=STK.pop();svStk();return goR(t)}if(SS&&SS.meta&&SS.meta.mp)return mockPage(SS.meta.subj);if(SS&&SS.meta&&SS.meta.note)return noteView(...SS.meta.note);if(SS&&SS.meta&&SS.meta.nl)return noteList(SS.meta.subj);if(SS&&SS.meta&&SS.meta.wp)return wrongPage(SS.meta.subj);if(SS&&SS.meta&&SS.meta.subj)return NEWS(SS.meta.subj)?socPage(SS.meta.subj):subj(SS.meta.subj);subjects()}
+function goBack(){if(HI>1){LEAVE=1;history.back();return}if(SS&&SS.meta&&SS.meta.mp)return mockPage(SS.meta.subj);if(SS&&SS.meta&&SS.meta.note)return noteView(...SS.meta.note);if(SS&&SS.meta&&SS.meta.nl)return noteList(SS.meta.subj);if(SS&&SS.meta&&SS.meta.wp)return wrongPage(SS.meta.subj);if(SS&&SS.meta&&SS.meta.subj)return NEWS(SS.meta.subj)?socPage(SS.meta.subj):subj(SS.meta.subj);subjects()}
 const qbl=t=>esc(t).replace(/\[빈칸\]/g,'<span class="blk"></span>').replace(/&lt;(보기|자료|표|그림)&gt;/g,'<span style="white-space:nowrap">&lt;$1&gt;</span>');
 function qln(b){return b.split('\n').map(l=>{const m=l.match(/^((?:[ㄱㄴㄷㄹㅁ]\.)|(?:\([가-하A-Z0-9]\))|(?:[•])|(?:사례 ?\d+:))\s*(.*)$/);return m?`<div class="qli"><b>${esc(m[1])}</b><span>${qbl(m[2])}</span></div>`:`<div>${qbl(l)}</div>`}).join('')}
 function tbH(t){return `<div class="qtw"><table class="qtb">${t.h?`<tr>${t.h.map(x=>`<th>${qbl(x)}</th>`).join('')}</tr>`:''}${t.r.map(r=>`<tr>${r.map((x,i)=>i==0&&t.h?`<th>${qbl(x)}</th>`:`<td>${qbl(x)}</td>`).join('')}</tr>`).join('')}</table></div>`}
@@ -1071,19 +1071,26 @@ let CURR='',GUARD=false;
 function updBk(){let b=document.getElementById('bk');if(!b){b=document.createElement('button');b.id='bk';b.className='qback';b.setAttribute('aria-label','뒤로');
   b.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>';b.onclick=goUp;document.body.appendChild(b)}
  const show=CURR=='quiz'||(CURR!==''&&parentOf(CURR)!==null);b.hidden=!show;document.body.classList.toggle('hasbk',show);document.body.classList.toggle('onpf',/^profile/.test(CURR))}
-let STK=(()=>{try{return JSON.parse(sessionStorage.getItem('pq_stk'))||[]}catch(e){return []}})(),NAVT=0,EXQ=false;
-const svStk=()=>{try{sessionStorage.setItem('pq_stk',JSON.stringify(STK.slice(-40)))}catch(e){}};
-function rePush(){if(GUARD)return;try{history.pushState({g:1},'',location.href);GUARD=true}catch(e){}}
+// ---- 뒤로가기: 실제 브라우저 기록을 경로 스택으로 사용 (사용자 동작 없이 pushState 하지 않음) ----
+let HST=(()=>{try{return JSON.parse(sessionStorage.getItem('pq_hst'))||[]}catch(e){return []}})(),HI=-1,IGN=0,LEAVE=0,NAVT=0,EXQ=false;
+{const s=history.state;if(s&&typeof s.i=='number'&&HST[s.i]!==undefined)HI=s.i;else HST=[]}
+const svH=()=>{try{sessionStorage.setItem('pq_hst',JSON.stringify(HST))}catch(e){}};
+const curU=r=>r?'#/'+encR(r):location.pathname+location.search;
+const actOK=()=>!(navigator.userActivation&&!navigator.userActivation.isActive);
+function armH(){if(HST[0]==='__x')return;try{history.replaceState({r:'__x',i:0},'',location.pathname+location.search);HST=['__x',CURR];HI=1;history.pushState({r:CURR,i:1},'',curU(CURR));svH()}catch(e){}}
+document.addEventListener('pointerdown',()=>{if(NICK)armH()},true);document.addEventListener('keydown',()=>{if(NICK)armH()},true);
 async function askExit(){if(EXQ)return;EXQ=true;const ok=await askBox('앱을 종료할까요?','','종료');EXQ=false;
- if(ok){try{window.close()}catch(e){}setTimeout(()=>soonMsg('뒤로 가기를 한 번 더 누르면 종료돼요.'),300)}else rePush()}
-function navBack(pop){if(CURR=='quiz'&&SS&&document.querySelector('.qz,.qpr')){if(pop)rePush();return exitQuiz()}
- let t=STK.pop();svStk();if(t===undefined){const par=parentOf(CURR);if(par===null){if(pop&&NICK)return askExit();if(pop)history.back();return}t=par}
- goR(t)}
-function goUp(){navBack(false)}
-function setR(r){if(!ROUTING&&r!==CURR){if(!NAVT){NAVT=1;setTimeout(()=>NAVT=0);if(CURR&&CURR!='quiz'&&CURR!='result'&&STK[STK.length-1]!==CURR)STK.push(CURR)}}
- {const i=STK.indexOf(r);if(i>=0)STK.length=i;if(r=='subjects'||r=='')STK.length=0;svStk()}
- CURR=r;updBk();const t=r?'#/'+encR(r):location.pathname+location.search;
- try{history.replaceState(history.state,'',t);if(!GUARD){history.pushState({g:1},'',t);GUARD=true}}catch(e){}}
+ if(ok){try{window.close()}catch(e){}setTimeout(()=>soonMsg('뒤로 가기를 한 번 더 누르면 종료돼요.'),300)}else{IGN++;window._igt=setTimeout(()=>IGN=0,700);history.forward()}}
+function goUp(){if(CURR=='quiz'&&SS&&document.querySelector('.qz,.qpr'))return exitQuiz();
+ if(HI>1){history.back();return}const par=parentOf(CURR);if(par===null)return;goR(par)}
+function setR(r){const prev=CURR;CURR=r;updBk();const t=curU(r);
+ try{if(ROUTING||r===prev||HI<0||NAVT){if(HI>=0)HST[HI]=r;history.replaceState({r,i:HI},'',t)}
+  else{NAVT=1;setTimeout(()=>NAVT=0);
+   const j=HI>1?HST.lastIndexOf(r,HI-1):-1;
+   if(j>=1){const d=j-HI;HST.length=j+1;HI=j;IGN++;window._igt=setTimeout(()=>IGN=0,700);history.go(d)}
+   else if(prev==''||prev=='quiz'||prev=='result'||!actOK()){HST[HI]=r;history.replaceState({r,i:HI},'',t)}
+   else{HI++;HST.length=HI;HST[HI]=r;history.pushState({r,i:HI},'',t)}}
+  svH()}catch(e){}}
 function parentOf(r){const [k,...rest]=r.split('/'),v=rest.join('/');
  if(!r)return null;if(k=='subjects')return null;
  if(k=='prob'||k=='notes')return 'subj/'+v;if(k=='note'){const ps=v.split('/');ps.pop();ps.pop();return 'notes/'+ps.join('/')}
@@ -1123,10 +1130,13 @@ function go2(r){
  if((k=='quiz'||k=='result')&&(SS||loadSS()))return k=='quiz'?quiz():result();
  return subjects()}
 function goR(r){ROUTING=true;try{go2(r)}finally{ROUTING=false}updBk()}
-window.addEventListener('popstate',()=>{GUARD=false;if(location.hash=='#admin')return;
- const md=document.querySelector('.mdw');if(md){rePush();const c=md.querySelector('[data-v="0"]');if(c)c.click();else md.remove();return}
- const tv=document.querySelector('.tbv');if(tv){rePush();tv.remove();return}
- if(!NICK){history.back();return}navBack(true)});
+window.addEventListener('popstate',e=>{if(location.hash=='#admin')return;const s=e.state;
+ if(IGN){IGN--;if(s&&typeof s.i=='number')HI=s.i;return}clearTimeout(window._igt);if(!s||typeof s.i!='number')return;
+ if(LEAVE){LEAVE=0;HI=s.i;goR(s.r);return}
+ const md=document.querySelector('.mdw');if(md){IGN++;window._igt=setTimeout(()=>IGN=0,700);history.forward();const c=md.querySelector('[data-v="0"]');if(c)c.click();else md.remove();return}
+ const tv=document.querySelector('.tbv');if(tv){IGN++;window._igt=setTimeout(()=>IGN=0,700);history.forward();tv.remove();return}
+ if(CURR=='quiz'&&SS&&document.querySelector('.qz,.qpr')){IGN++;window._igt=setTimeout(()=>IGN=0,700);history.forward();exitQuiz();return}
+ HI=s.i;if(s.r==='__x'){askExit();return}if(!NICK){history.back();return}goR(s.r)});
 const H=(f,mk)=>function(...a){setR(mk(...a));return f.apply(this,a)};
 home=H(home,()=>'');subjects=H(subjects,()=>'subjects');
 subj=H(subj,n=>'subj/'+n);socPage=H(socPage,n=>NEWS(n)?'prob/'+n:'subj/'+n);noteList=H(noteList,n=>'notes/'+n);noteView=H(noteView,(n,u,k)=>'note/'+n+'/'+u+'/'+k);inbox=H(inbox,()=>'inbox');guide=H(guide,()=>'guide');msgOpen=H(msgOpen,id=>'inbox/'+id);noticeForm=H(noticeForm,()=>'admin/n');allStats=H(allStats,()=>'stats');fbForm=H(fbForm,f=>'fb/'+(f||0));
