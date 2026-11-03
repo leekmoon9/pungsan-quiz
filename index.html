@@ -381,6 +381,8 @@ body.cap .capm{display:flex}
 .mkc{flex-direction:row!important;justify-content:flex-start!important;text-align:left!important;padding:14px 16px!important;gap:14px!important}.mkc>span:nth-child(2){align-items:flex-start!important}.mkc .lci{width:44px;height:44px}
 .sumc{margin:6px 0 12px;border:1.5px solid var(--ln);border-radius:14px;background:var(--card);overflow:hidden}.sumgo{display:flex;align-items:center;width:100%;padding:12px 16px;border:none;background:color-mix(in srgb,var(--uc) 22%,var(--card));font:inherit;color:var(--tx);text-align:left;cursor:pointer}.sumgo>span:first-child{flex:1;display:flex;flex-direction:column}.sumgo small{font-size:12px;color:var(--mut)}.sumgo b{font-size:16px}.sumgo .chev{display:block}
 .sumst{display:grid;grid-template-columns:repeat(3,1fr)}.sumst>div{padding:10px 6px;text-align:center;border-left:1px solid var(--ln)}.sumst>div:first-child{border-left:none}.sumst b{display:block;font-size:17px}.sumst small{font-size:12px;color:var(--mut)}
+.shd{min-height:0!important;padding-right:0!important}.shd .cvs{top:-2px!important;right:60px!important;width:40px!important}
+@media (max-width:759px){body.hasbk #app>.shd>.tag,body.hasbk #app>.nth>.tag{margin-left:51px}}
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -751,14 +753,17 @@ function noteList(n){if(!NEWS(n))return subj(n);const col=sCol(n),nm=n.split('|'
  CUR[n].forEach((U,u)=>{const dn=uDone(n,u);h+=`<div class="nlg${dn?' dn':''}" style="--uc:${col}"><div class="nlh">${esc(U.n)}${dn?DNB:''}</div>${U.m.map((M,k)=>{const o=noteOf(n,u,k);const ok=o||STAFF();return `<button class="nlb${o?'':' nlx'}"${ok?` onclick="noteView('${n}',${u},${k})"`:' disabled'}><span>${esc(M.n)}</span><span class="mut">${o?'필기 보기':'준비 중'}</span>${ok?'<span class="chev">›</span>':''}</button>`}).join('')}</div>`});
  show(h)}
 function noteView(n,u,k){u=+u;k=+k;const U=CUR[n]&&CUR[n][u],M=U&&U.m[k];if(!M||!NEWS(n))return subjects();
- if(noteOf(n,u,k)){R._ln=R._ln||{};R._ln[n]=[u,k];R._nv=R._nv||{};R._nv[n]=R._nv[n]||{};R._nv[n][u+'-'+k]=1;save()}
+ if(noteOf(n,u,k)){R._ln=R._ln||{};R._ln[n]=[u,k];save()}
  const col=sCol(n),nm=n.split('|').join(' '),o=noteOf(n,u,k)||(STAFF()?NOTE_DEMO:null);if(!o)return noteList(n);const nx=nextNote(n,u,k),pg=o&&o.pg&&o.pg.length;
  let h=`<div class="nth"><h2 style="--hlc:${col}">${esc(M.n)}</h2><p class="tag">${esc(nm)} · ${esc(U.n)}</p></div>`;
  if(pg)h+=`<button class="tbb" onclick="tbOpen('${n}',${u},${k})">${ICN_BOOK}<span>교과서 원문 보기</span></button>`;
  if(o&&o.demo)h+=`<div class="prn">디자인 미리보기예요. 관리자에게만 보이고, 교과서를 받으면 실제 필기로 바뀌어요.</div>`;
  h+=o?`<article class="nt" style="--nc:${col}">${o.b.map(ntBlock).join('')}</article>`:`<div class="card ntx">${ICN_NOTE}<p>이 단원 필기는 준비 중이에요.<br>곧 채워질 예정이에요.</p></div>`;
  h+=`<div class="ntf"><button class="b ntq" onclick="socGo('${n}',${u},${k},{note:1})">문제 풀기</button>${k==U.m.length-1&&!o.demo?`<button class="ntn" onclick="endUnit('${n}',${u})">${uLab(U,u)} 학습 끝내기<span>✓</span></button>`:nx?`<button class="ntn" onclick="noteView('${n}',${nx[0]},${nx[1]})">다음 단원 학습하기<span>→</span></button>`:''}</div>`;
- show(h,'nt|'+n+'|'+u+'|'+k)}
+ show(h,'nt|'+n+'|'+u+'|'+k);ntEnd(n,u,k)}
+// 필기를 끝까지 내려 봤을 때만 '본 필기'로 셈
+function ntEnd(n,u,k){if(!noteOf(n,u,k)||(R._nv&&R._nv[n]&&R._nv[n][u+'-'+k]))return;const f=document.querySelector('.ntf');if(!f||!('IntersectionObserver' in window))return;
+ const io=new IntersectionObserver(es=>{if(!es.some(e=>e.isIntersecting))return;io.disconnect();if(!document.body.contains(f))return;R._nv=R._nv||{};R._nv[n]=R._nv[n]||{};R._nv[n][u+'-'+k]=1;save()},{threshold:.6});setTimeout(()=>io.observe(f),400)}
 const uLab=(U,u)=>{const r=(U.n||'').split('.')[0].trim();return (/^[ⅠⅡⅢⅣⅤⅥⅦⅧⅨⅩ]+$/.test(r)?r:(u+1))+'단원'};
 const uDone=(n,u)=>{const qs=bigQ(n,u);return !!(R._nd&&R._nd[n+'|'+u])&&qs.length>0&&qs.every(q=>R[q.id])};
 const DNB='<span class="dnb"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>학습 완료</span>';
@@ -778,7 +783,7 @@ const mkRate=n=>{const a=mkAns(n);return a.length?Math.round(a.filter(q=>R[q.id]
 const sDone=n=>!!MOCK[n]&&mkCnt(n)>=MKN;
 function mockCard(n,col){const has=!!MOCK[n],op=has&&mkOpen(n),c=mkCnt(n),dots=Array.from({length:MKN},(_,r)=>`<i class="${has&&MOCK[n][r]&&mkDone(n,r)?'on':''}"></i>`).join('');
  const l=op?null:mkLeft(n);
- return `<div class="mkw${op?'':' mklk'}" style="--uc:${col}"><button class="lcb mkc" onclick="mockGo('${n}')"${op?'':' tabindex="-1"'}>${ICN_EXAM}<span><b>${c>=MKN?'모의고사 완료':'모의고사 풀기'}</b><span class="mkd">${dots}</span><em>${has&&op&&!qDone(n)&&mkEvent()&&!STAFF()?'특별 공개 · ':''}${c}/${MKN} 완료${has&&c<MKN?` · 다음은 ${c+1}회`:''}</em></span></button><button class="mks" onclick="mockPage('${n}')"><span><b>모의고사 통계</b></span><span class="chev">›</span></button>${op?'':`<div class="mkov" onclick="mockGo('${n}')"><span class="mklc">${LOCK.replace('lki','')}</span><b>문제 풀이 완료 시 잠금 해제</b></div>`}</div>`}
+ return `<div class="mkw${op?'':' mklk'}" style="--uc:${col}"><button class="lcb mkc" onclick="mockGo('${n}')"${op?'':' tabindex="-1"'}>${ICN_EXAM}<span><b>${c>=MKN?'모의고사 완료':'모의고사 풀기'}</b><span class="mkd">${dots}</span><em>${c}/${MKN} 완료${has&&c<MKN?` · 다음은 ${c+1}회`:''}</em></span></button><button class="mks" onclick="mockPage('${n}')"><span><b>모의고사 통계</b></span><span class="chev">›</span></button>${op?'':`<div class="mkov" onclick="mockGo('${n}')"><span class="mklc">${LOCK.replace('lki','')}</span><b>문제 풀이 완료 시 잠금 해제</b></div>`}</div>`}
 function mockGo(n,r){if(!MOCK[n]){soonMsg('이 과목 모의고사는 아직 준비 중이에요.');return}if(!mkOpen(n)){const l=mkLeft(n);askBox('아직 잠겨 있어요',`모든 문제를 풀고 오답까지 끝내면 모의고사가 열려요.<small class="mdn">${l.un?`안 푼 문제 ${l.un}개`:''}${l.un&&l.wr?', ':''}${l.wr?`남은 오답 ${l.wr}개`:''}가 남았어요.</small>`,'문제 풀러 가기').then(ok=>{if(ok)socPage(n)});return}
  if(r===undefined){r=MOCK[n].findIndex((_,i)=>!mkDone(n,i));if(r<0)return mockPage(n)}
  const nm=n.split('|').join(' '),qs=mkR(n,r),seg=[{label:`모의고사 ${r+1}회`,qs}],m={title:nm+' 모의고사',mock:r+1,kind:'모의고사',mp:1,back:"mockPage('"+n+"')"};
