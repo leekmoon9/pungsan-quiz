@@ -117,10 +117,10 @@ body:has(.hero) #rf{display:none}
 .qz .opt,.qz .q,.fb,.fbt{word-break:keep-all;overflow-wrap:anywhere}
 .qz input[type=text]{text-align:center}.qz textarea{text-align:left}
 .qz .row{justify-content:center}
-body.hasbk #app>h2:first-child,body.hasbk #app>.shd>h2,body.hasbk #app>.fbw>h2:first-child{margin-left:46px}
+body.hasbk #app>h2:first-child,body.hasbk #app>.shd>h2,body.hasbk #app>.nth>h2,body.hasbk #app>.fbw>h2:first-child{margin-left:46px}
 body.hasbk #app>.fbw>h2:first-child{margin-left:0}
 body.hasbk #app>.card:first-child{margin-top:54px}
-@media (min-width:760px){body.hasbk #app>h2:first-child,body.hasbk #app>.shd>h2{margin-left:-5px}body.hasbk #app>.card:first-child{margin-top:10px}.qz>.tag,.qz .qpr{margin-left:0!important;margin-right:0!important}.hd{padding-right:0!important}}
+@media (min-width:760px){body.hasbk #app>h2:first-child,body.hasbk #app>.shd>h2,body.hasbk #app>.nth>h2{margin-left:-5px}body.hasbk #app>.card:first-child{margin-top:10px}.qz>.tag,.qz .qpr{margin-left:0!important;margin-right:0!important}.hd{padding-right:0!important}}
 body.hasbk .fbw h2:first-child{padding-left:0}
 #app h2{display:inline-block;padding:0 5px;margin-left:-5px;background:linear-gradient(transparent 62%,var(--hlc,#f9df99) 62%,var(--hlc,#f9df99) 92%,transparent 92%);-webkit-box-decoration-break:clone;box-decoration-break:clone}
 #app h2+p,#app h2+.tag{margin-top:2px}
@@ -162,6 +162,65 @@ body.hasbk .fbw h2:first-child{padding-left:0}
 .svx{font-size:13.5px;text-align:center;padding:6px 0}
 @media(prefers-reduced-motion:reduce){.svp,.svi{transition:none}}
 #app p.mut,#app p.tag,.svk .mut,.fb,.mdc p,.prn{text-align:justify;text-justify:inter-character}
+.mlb{position:relative;flex:none;width:44px;height:40px;margin-top:4px;border:none;border-radius:12px;background:var(--card);box-shadow:0 3px 10px rgba(90,70,40,.18);display:flex;align-items:center;justify-content:center;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .15s}
+.mlb:active{transform:scale(.93)}.mli{width:30px;height:27px}
+.mlc{position:absolute;top:-5px;right:-5px;min-width:19px;height:19px;padding:0 5px;box-sizing:border-box;border-radius:999px;background:#e05a4f;color:#fff;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px var(--bg)}
+.mgc{display:flex;align-items:center;gap:10px;width:100%;margin:0 0 10px;padding:14px 12px 14px 14px;border:none;border-radius:14px;background:var(--card);box-shadow:0 2px 10px rgba(90,70,40,.1);color:var(--tx);font:inherit;text-align:left;cursor:pointer;transition:opacity .2s}
+.mgc.rd{opacity:.5}.mgd{flex:none;width:9px;height:9px;border-radius:50%;background:#e05a4f}.mgc.rd .mgd{background:transparent}
+.mgb{flex:1;min-width:0;display:flex;flex-direction:column;gap:1px}.mgb b{font-size:15.5px}.mgb small{font-size:12px;color:var(--mut)}
+.mgp{font-size:13.5px;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mgx{text-align:center;padding:26px 16px}.mgx .mli{width:54px;height:48px;opacity:.75}.mgx p{color:var(--mut);margin:8px 0 0}
+.mgv h2{margin:6px 0 14px;font-size:20px}.mgt{display:flex;align-items:center;gap:8px}.mgt small{color:var(--mut);margin-left:auto}
+.mgs{margin:0 0 14px}.mgs>span{display:block;font-size:12.5px;font-weight:800;color:var(--mut);margin-bottom:4px;letter-spacing:.2px}
+.mgs p{margin:0;line-height:1.65;text-align:justify}.mgs blockquote{margin:0;padding:10px 12px;border-left:4px solid #e0d2b8;background:color-mix(in srgb,#e0d2b8 22%,transparent);border-radius:0 10px 10px 0;line-height:1.6}
+#app .b.mgdel{color:#a3392f}
+#app .mgv h2{background:none;word-break:keep-all;margin-left:0;padding:0}
+.admw:has(.admb) .mlb{width:40px}.admw:has(.admb) .b.admb{padding:8px 12px}
+.nti svg{width:64px;height:64px;display:block;margin:0 auto 10px}
+.fid{font-size:12px;font-weight:800;color:var(--mut)}.fbc.fdn{opacity:.6}
+.lch{display:flex;flex-direction:column;gap:12px;margin-top:14px}
+.lcb{display:flex;align-items:center;gap:14px;width:100%;padding:18px 14px 18px 16px;border:none;border-radius:18px;background:var(--card);box-shadow:0 3px 14px rgba(90,70,40,.12);border-left:6px solid var(--uc);color:var(--tx);font:inherit;text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .15s}
+.lcb:active{transform:scale(.98)}.lci{width:52px;height:52px;flex:none}
+.lcb>span:nth-child(2){flex:1;display:flex;flex-direction:column;gap:2px}.lcb b{font-size:19px}.lcb small{font-size:13.5px;color:var(--mut);line-height:1.45;word-break:keep-all}
+.lcb em{font-style:normal;font-size:12.5px;font-weight:700;margin-top:4px;color:color-mix(in srgb,var(--uc) 55%,#3a3226)}
+.nlg{margin:14px 0 0}.nlh{font-weight:800;font-size:15px;margin:0 2px 6px;padding-left:8px;border-left:4px solid var(--uc)}
+.nlb{display:flex;align-items:center;gap:8px;width:100%;margin:0 0 6px;padding:13px 12px 13px 14px;border:none;border-radius:12px;background:var(--card);box-shadow:0 1px 6px rgba(90,70,40,.08);color:var(--tx);font:inherit;font-weight:600;text-align:left;cursor:pointer}
+.nlb>span:first-child{flex:1}.nlb .mut{font-weight:400;font-size:13px}.nlb.nlx{opacity:.6}
+.nth small{display:block;color:var(--mut);font-size:13px;margin-bottom:2px}.nth h2{margin-top:0}
+.tbb{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin:10px 0 0;padding:12px;border:1.5px solid #cdbfa5;border-radius:12px;background:var(--card);color:var(--tx);font:inherit;font-weight:700;cursor:pointer}
+.tbb.off{opacity:.55}.tbi{width:20px;height:20px}
+.nt{position:relative;margin:14px 0;padding:20px 16px 22px 34px;border-radius:6px 16px 16px 6px;background-color:#fffdf8;box-shadow:0 4px 18px rgba(90,70,40,.14);font-size:15px;line-height:1.75;color:#2f2a22;word-break:keep-all;overflow-wrap:anywhere;
+ background-image:linear-gradient(to right,transparent 22px,#f1b7ae 22px,#f1b7ae 23.5px,transparent 23.5px),repeating-linear-gradient(to bottom,transparent 0,transparent 27px,#e7eef6 27px,#e7eef6 28px)}
+.nt::before{content:'';position:absolute;left:6px;top:16px;bottom:16px;width:10px;background:radial-gradient(circle at 5px 5px,#e9e0cf 3.6px,transparent 4.2px) 0 0/10px 34px}
+.nt>*:first-child{margin-top:0}
+.nh{font-family:'Gaegu',var(--fn,inherit);font-weight:700;font-size:23px;margin:18px 0 8px;line-height:1.3}
+.nh span{background:linear-gradient(transparent 58%,color-mix(in srgb,var(--nc) 60%,transparent) 58%,color-mix(in srgb,var(--nc) 60%,transparent) 92%,transparent 92%);padding:0 3px}
+.nh2{font-weight:800;font-size:16px;margin:14px 0 4px;color:color-mix(in srgb,var(--nc) 45%,#2f2a22)}.nh2::before{content:'▸ ';color:var(--nc)}
+.nt p{margin:6px 0}.nt ul{margin:6px 0;padding-left:20px}.nt li{margin:3px 0}.nt li::marker{content:'✓  ';color:color-mix(in srgb,var(--nc) 70%,#2f2a22);font-weight:800}
+.nt mark{background:linear-gradient(transparent 50%,#ffe48a 50%);color:inherit;padding:0 1px}.ntr{color:#d4443a;font-weight:800}
+.nt u{text-decoration:underline wavy #4a7fc1;text-decoration-thickness:1.5px;text-underline-offset:4px}
+.nkey{position:relative;margin:16px 4px 14px;padding:18px 14px 12px;background:#fff3a8;box-shadow:2px 4px 10px rgba(110,90,30,.18);transform:rotate(-.7deg);border-radius:2px 2px 10px 2px}
+.nkey::before{content:'';position:absolute;top:-9px;left:50%;width:64px;height:18px;transform:translateX(-50%) rotate(2deg);background:color-mix(in srgb,var(--nc) 45%,rgba(255,255,255,.5));opacity:.85}
+.nkey>span{font-family:'Gaegu';font-weight:700;font-size:19px;display:block;line-height:1.2;margin-bottom:2px}.nkey p{margin:0}
+.ndef{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;margin:10px 0}.ndef b{padding:1px 10px;border-radius:999px;background:color-mix(in srgb,var(--nc) 30%,#fff);font-size:14.5px}
+.nvs{display:grid;grid-template-columns:1fr auto 1fr;align-items:stretch;gap:8px;margin:12px 0}
+.nvs>div{padding:10px 12px;border:1.5px solid color-mix(in srgb,var(--nc) 60%,#cdbfa5);border-radius:12px;background:#fff}.nvs>div b{display:block;font-family:'Gaegu';font-size:19px;line-height:1.2;margin-bottom:2px}
+.nvs>div p{margin:0;font-size:14px;line-height:1.6}.nvs>i{align-self:center;font-family:'Gaegu';font-weight:700;font-style:normal;font-size:18px;color:#d4443a}
+.nfl{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:12px 0}.nfl span{padding:4px 12px;border:1.5px dashed color-mix(in srgb,var(--nc) 70%,#8a7a60);border-radius:999px;background:#fff;font-size:14px;font-weight:600}.nfl i{font-style:normal;color:color-mix(in srgb,var(--nc) 70%,#6e5236);font-weight:800}
+.ntw{overflow-x:auto;margin:12px 0}.ntb{width:100%;border-collapse:collapse;font-size:13.5px;line-height:1.5;background:#fff}
+.ntb th,.ntb td{border:1.3px solid #d5c9b2;padding:7px 8px;vertical-align:top;text-align:left}.ntb tr:first-child th{background:color-mix(in srgb,var(--nc) 32%,#fff);text-align:center}.ntb th{background:color-mix(in srgb,var(--nc) 12%,#fff);white-space:nowrap}
+.ntip{margin:16px 0 4px;padding:12px 14px;border:2px dashed #e07a6f;border-radius:14px;background:#fff7f5}.ntip>span{font-family:'Gaegu';font-weight:700;font-size:19px;color:#d4443a;display:block;line-height:1.2;margin-bottom:2px}.ntip p{margin:0}
+.nim{margin:12px 0}.nim img{width:100%;border-radius:8px}.nim figcaption{font-size:12.5px;color:var(--mut);text-align:center}
+.ntx{text-align:center;padding:28px 16px}.ntx .lci{opacity:.7}.ntx p{color:var(--mut);margin:8px 0 0}
+.ntf{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:18px 0 8px}.b.ntq{flex:0 0 auto;width:auto;padding-left:26px;padding-right:26px}
+.ntn{margin-left:auto;display:flex;align-items:center;gap:6px;border:none;background:none;color:var(--tx);font:inherit;font-weight:700;font-size:15px;padding:10px 2px;cursor:pointer}.ntn span{font-size:19px;transition:transform .2s}.ntn:active span{transform:translateX(4px)}
+.tbv{position:fixed;inset:0;z-index:90;background:rgba(30,26,20,.94);display:flex;flex-direction:column;animation:fd .2s ease}
+@keyframes fd{from{opacity:0}to{opacity:1}}
+.tbh{display:flex;align-items:center;gap:10px;padding:calc(12px + env(safe-area-inset-top,0px)) 14px 10px;color:#fff}.tbh .mut{color:#cfc6b6}
+.tbz{margin-left:auto;border:1px solid rgba(255,255,255,.4);background:none;color:#fff;border-radius:999px;padding:6px 12px;font:inherit;font-size:13px}
+.tbx{border:none;background:rgba(255,255,255,.14);color:#fff;width:36px;height:36px;border-radius:50%;font-size:16px}
+.tbs{flex:1;overflow:auto;padding:0 10px calc(20px + env(safe-area-inset-bottom,0px));-webkit-overflow-scrolling:touch}.tbs img{display:block;width:100%;margin:0 auto 10px;border-radius:4px;background:#fff}
+.tbv.zm .tbs img{width:190%;max-width:none}
 h3.sec{font-size:19px;font-weight:600;margin:20px 0 8px}
 .fbw{min-height:calc(100vh - 60px);min-height:calc(100svh - 60px);display:flex;flex-direction:column;justify-content:center;text-align:center}
 .fbw .tag{max-width:420px;margin:0 auto 6px}
@@ -215,6 +274,7 @@ button,.pc,.nav span{-webkit-tap-highlight-color:transparent;touch-action:manipu
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&display=swap">
 </head><body><main id="app"></main>
 <script>
 const ETC=[{"t":"sh","q":"차량이 요금소의 첫 번째 게이트를 통과하면, 차량 단말기는 첫 번째 게이트에 설치된 [빈칸]과 통신한다.","a":["제1기지국","1기지국"],"m":"제1기지국","e":"첫 번째 게이트에 설치된 제1기지국과 통신이 일어난다."},{"t":"sh","q":"제1기지국은 차량 단말기에서 받은 요금 징수 관련 데이터를 [빈칸] 않도록 임시 저장소에 보관한다.","a":["잃어버리","잃지","분실"],"m":"잃어버리지","e":"데이터를 잃어버리지 않도록 임시 저장소에 보관하면서 거의 동시에 지역요금소 ETC 서버로 전송한다."},{"t":"mc","q":"전자요금징수시스템의 작동 과정을 순서대로 바르게 나열한 것은?","o":["차량 단말기→제1기지국→지역요금소 ETC 서버→도로공사 서버→지역요금소 ETC 서버→제2기지국→차량 단말기","차량 단말기→제2기지국→지역요금소 ETC 서버→도로공사 서버→제1기지국→차량 단말기","차량 단말기→제1기지국→도로공사 서버→지역요금소 ETC 서버→제2기지국→차량 단말기","제1기지국→차량 단말기→지역요금소 ETC 서버→제2기지국→도로공사 서버→차량 단말기"],"a":0,"e":"포스트잇 도식 그대로다. 요금 징수 관련 데이터는 제1기지국을 거쳐 올라가고, 징수할 요금에 관한 데이터는 제2기지국을 거쳐 내려온다."},{"t":"mc","q":"지역요금소 ETC 서버가 요금 징수 관련 데이터를 받은 뒤 하는 일로 알맞은 것은?","o":["데이터를 분석한 후 도로공사 서버로 전송해 징수할 요금 데이터를 찾도록 요청한다","데이터를 임시 저장소에 보관한다","차량 단말기에 요금을 직접 징수한다","안내표시기에 결과를 표시한다"],"a":0,"e":"분석 → 전송 → 요청. 임시 저장은 제1기지국의 역할이다."},{"t":"ox","q":"징수할 요금에 관한 데이터는 제1기지국을 경유하여 차량 단말기로 전송된다.","a":false,"e":"제2기지국을 경유한다. 제1기지국은 올라가는 데이터, 제2기지국은 내려오는 데이터 담당이다."},{"t":"sh","q":"징수할 요금에 관한 데이터가 [빈칸]에 수신되면, 그 단말기를 통해 요금이 징수된다.","a":["단말기"],"m":"차량 단말기","e":"데이터가 수신되면 차량 단말기를 통해 요금이 징수되고, 그 결과가 안내표시기로 운전자에게 안내된다."},{"t":"ox","q":"요금 징수 결과는 안내표시기를 통해 운전자에게 안내된다.","a":true,"e":"맞다. 과정의 마지막 단계다."},{"t":"sh","q":"차량 단말기와 기지국 간에는, 동일한 크기로 분할된 시간 단위를 데이터에 할당하는 [빈칸] 방식으로 데이터를 처리한다.","a":["시분할"],"m":"시분할","e":"동일한 크기로 분할된 시간 단위(타임 슬롯)를 데이터에 할당하여 처리하는 방식."},{"t":"sh","q":"타임 슬롯은 동일한 크기로 분할된 [빈칸]의 단위이다.","a":["시간"],"m":"시간","e":"타임 슬롯 자체가 시간의 단위이고, 그 집합체는 프레임이다."},{"t":"ox","q":"타임 슬롯은 차량이 진입해야만 만들어진다.","a":false,"e":"타임 슬롯은 차량이 진입하지 않아도 항상 만들어진다. 차량이 지나가면 그때 데이터에 할당된다."},{"t":"sh","q":"차량 한 대가 지나갈 때 데이터에 할당된 타임 슬롯들이 이루는 집합체를 [빈칸]이라고 한다.","a":["프레임"],"m":"프레임","e":"슬롯은 단위, 프레임은 집합체. 16번 ④ 함정이 여기서 나온다."},{"t":"mc","q":"타임 슬롯이 데이터에 할당될 때 기준이 되는 순서는?","o":["차량이 도착한 순서","규약으로 정해진 데이터 종류의 순서","데이터의 크기가 큰 순서","운전자가 설정한 순서"],"a":1,"e":"규약으로 정해진 데이터 종류의 순서에 따라 타임 슬롯이 할당된다."},{"t":"sh","q":"시분할 방식은 타임 슬롯 할당 방식과 프레임 구성 방식에 따라 동기식과 [빈칸]으로 나뉜다.","a":["비동기"],"m":"비동기식","e":"지문 3문단 마지막 문장."},{"t":"ox","q":"동기식 시분할 방식에서는 데이터가 전송되지 않으면 해당 타임 슬롯이 빈 채로 남는다.","a":true,"e":"종류별로 슬롯이 지정되어 있어 데이터가 없어도 다른 데이터가 쓸 수 없다."},{"t":"ox","q":"동기식 시분할 방식에서는 하나의 프레임에 포함된 타임 슬롯의 개수가 차량마다 다르다.","a":false,"e":"동기식은 모든 차량이 같고, 비동기식은 차량마다 다를 수 있다."},{"t":"ox","q":"비동기식 시분할 방식에서는 전송되는 데이터가 없으면 타임 슬롯을 비워 두고 다음 데이터를 기다린다.","a":false,"e":"비우지 않고 다음 순서에 해당하는 데이터에 타임 슬롯을 할당한다."},{"t":"sh","q":"비동기식은 타임 슬롯이 데이터 종류에 정해져 있지 않아서, 데이터의 종류를 확인할 수 있는 [빈칸]를 데이터마다 포함시킨다.","a":["주소"],"m":"주소 필드","e":"슬롯 위치로 종류를 알 수 없기 때문에 주소 필드가 필요하다."},{"t":"sh","q":"동기식 시분할 방식은 오류 가능성은 낮지만, 데이터에 할당되지 않은 타임 슬롯이 있어 타임 슬롯이 일부 [빈칸]된다.","a":["낭비"],"m":"낭비","e":"오류 가능성은 낮지만 데이터에 할당되지 않은 슬롯이 존재해 일부 낭비된다."},{"t":"sh","q":"비동기식 시분할 방식은 타임 슬롯이 낭비되지 않지만, 데이터 처리 과정에서 [빈칸] 발생 가능성이 상대적으로 높다.","a":["오류"],"m":"오류","e":"슬롯 낭비는 없지만 처리 과정에서 오류 발생 가능성이 높다."},{"t":"mc","q":"동기식과 비동기식을 비교한 것으로 옳은 것은?","o":["동기식: 정확성 높음, 효율성 낮음 / 비동기식: 정확성 낮음, 효율성 높음","동기식: 정확성 낮음, 효율성 높음 / 비동기식: 정확성 높음, 효율성 낮음","둘 다 정확성 높음, 효율성 같음","동기식이 정확성·효율성 모두 높음"],"a":0,"e":"필기 표 그대로. 동기식은 정확하지만 낭비, 비동기식은 효율적이지만 오류 가능성이 높다."},{"t":"ox","q":"최근 통신 기술의 발전과 교통 환경 변화로 새로운 장비가 도입되거나 통신 규약이 바뀌기도 한다.","a":true,"e":"마지막 문단. 시스템의 변화는 계속되고 있다."},{"t":"mc","q":"[기출 16] 윗글의 내용과 일치하지 않는 것은?","o":["전자요금징수시스템을 이용하면 요금 납부를 편리하게 할 수 있다.","차량 단말기와 기지국 간에는 데이터 전송이 무선으로 이루어진다.","시분할 방식에서 타임 슬롯은 차량이 진입하지 않아도 항상 만들어진다.","타임 슬롯은 동일한 크기로 분할된 시간의 단위들에 의해 구성된 집합체이다.","비동기식 시분할 방식은 전송되는 모든 데이터마다 주소 필드를 포함시켜 프레임이 구성된다."],"a":3,"e":"⟦4⟧ 집합체는 프레임이다. 타임 슬롯은 시간의 단위 하나다."},{"t":"mc","q":"[기출 17] [A]를 바탕으로 보기의 ㉮(차량 단말기), ㉯(제1기지국), ㉰(제2기지국), ㉱(지역요금소 ETC 서버), ㉲(도로공사 요금정산센터 서버)를 이해한 것으로 적절하지 않은 것은?","o":["㉮에서 ㉯로 요금 징수 관련 데이터가 전송된다.","㉯에서 ㉱로 요금 징수 관련 데이터가 전송된다.","㉰에서 ㉮로 징수할 요금에 관한 데이터가 전송된다.","㉱에서 ㉲로 요금 징수 관련 데이터가 전송되고, ㉱에서 ㉰로 징수할 요금에 관한 데이터가 전송된다.","㉲에서 ㉱로 징수할 요금에 관한 데이터가 전송되고, ㉲에서 ㉮로 요금 징수 관련 데이터가 전송된다."],"a":4,"e":"⟦5⟧ ㉲는 단말기로 직접 보내지 않는다. 징수할 요금 데이터는 ㉲→㉱→㉰→㉮ 순이다. (기호 라벨은 사진 기준 추정)"},{"t":"mc","q":"[기출 18] 보기: (Ⓐ)은 동기식이 상대적으로 높고 비동기식이 낮다. 데이터 처리 과정의 효율성은 동기식이 상대적으로 (Ⓑ), 비동기식이 (Ⓒ). Ⓐ~Ⓒ로 가장 적절한 것은?","o":["오류 발생 가능성 / 낮고 / 높다","오류 발생 가능성 / 높고 / 낮다","데이터 손실 가능성 / 높고 / 낮다","데이터 처리 과정의 정확성 / 낮고 / 높다","데이터 처리 과정의 정확성 / 높고 / 낮다"],"a":3,"e":"동기식이 높은 것은 정확성, 효율성은 동기식이 낮고 비동기식이 높다."},{"t":"mc","q":"[기출 19] 1번 차량(동기식)은 I-1 유, I-2 무, I-3 유, I-4 유. 2번 차량(비동기식)은 I-1 유, I-2 유, I-3 유, I-4 무. TS1부터 시작하고 두 차량 사이 슬롯은 없다. 적절하지 않은 반응은?","o":["TS2는 비워지는 슬롯으로, 1번 차량이 후불 카드를 사용하는 차량이 아니기 때문이겠군.","TS3과 TS7은 모두 차량 소유주와 카드 소지자가 일치하는지 확인할 수 있는 슬롯이겠군.","TS4에는 요금 감면 대상이라는 데이터가 있고, TS8에는 요금 감면 대상이 아니라는 데이터가 있겠군.","TS1로는 1번 차량의 정상 진입 여부를, TS7로는 2번 차량의 소유주·카드 소지자 일치 여부를 알 수 있겠군.","TS5에는 정상 진입 데이터가, TS6에는 후불 카드 사용 데이터가 담겨 있겠군."],"a":2,"e":"1번(동기식)은 TS1~4 고정 4개. 2번(비동기식)은 I-4가 없어 TS5~7 세 개뿐이다. 따라서 TS8은 2번 차량의 슬롯이 아니고, 요금 감면 대상이 아니라는 데이터도 전송되지 않는다."},{"t":"mc","q":"[응용 1] 하나의 차로를 1번(동기식), 2번(비동기식), 3번(비동기식) 차량이 간격 없이 순서대로 지나갔다. 데이터 유무는 아래와 같고 슬롯은 TS1부터 시작한다.\n1번: I-1 유, I-2 무, I-3 유, I-4 무\n2번: I-1 무, I-2 유, I-3 유, I-4 유\n3번: I-1 유, I-2 무, I-3 무, I-4 유\n적절하지 않은 것은?","o":["세 차량이 사용하는 타임 슬롯은 TS1~TS9로 모두 9개이다.","TS3에는 1번 차량의 I-3에 해당하는 데이터가 담긴다.","TS4는 1번 차량의 프레임에서 비어 있는 슬롯이다.","TS8에는 3번 차량의 I-1에 해당하는 데이터가 담긴다.","TS6에는 2번 차량의 I-2에 해당하는 데이터가 담긴다."],"a":4,"e":"1번(동기식)은 4개 고정이라 TS1~4(TS2, TS4가 빈 슬롯). 2번(비동기식)은 데이터가 있는 I-2, I-3, I-4만 차례로 TS5, 6, 7에 담긴다. 따라서 TS6은 I-3이다. 3번은 TS8(I-1), TS9(I-4)."},{"t":"mc","q":"[응용 2] 4종류의 데이터 중 2종류만 전송하는 차량 100대가 연속으로 지나갈 때, 두 방식을 비교한 것으로 가장 적절한 것은? (차량당 프레임 구성은 지문 기준, 방식별로 모든 차량이 동일하게 처리된다고 가정)","o":["동기식: 총 200슬롯, 낭비 0 / 비동기식: 총 200슬롯, 낭비 0","동기식: 총 400슬롯, 낭비 200 / 비동기식: 총 200슬롯, 낭비 0","동기식: 총 400슬롯, 낭비 0 / 비동기식: 총 400슬롯, 낭비 200","동기식: 총 400슬롯, 낭비 200 / 비동기식: 총 400슬롯, 낭비 100","동기식: 총 200슬롯, 낭비 200 / 비동기식: 총 100슬롯, 낭비 0"],"a":1,"e":"동기식은 차량마다 4슬롯 고정이라 100대면 400슬롯이고 그중 데이터가 없는 200슬롯이 낭비된다. 비동기식은 데이터가 있는 2종류에만 슬롯을 주므로 200슬롯이고 낭비가 없다. 대신 오류 가능성이 높다."},{"t":"mc","q":"[응용 3] 어떤 차량이 첫 번째 게이트를 정상 통과했으나 제2기지국이 고장 나 통신하지 못한다. 이때의 추론으로 가장 적절한 것은?","o":["제1기지국이 차량 단말기의 데이터를 받지 못한다.","도로공사 서버가 징수할 요금 데이터를 찾지 못한다.","요금 징수 관련 데이터는 ETC 서버까지 전송되지만, 징수할 요금 데이터가 단말기에 수신되지 못해 요금 징수와 결과 안내가 이루어지지 못한다.","요금은 정상 징수되지만 안내표시기 안내만 이루어지지 않는다.","제1기지국이 임시 저장소의 데이터를 삭제한다."],"a":2,"e":"제1기지국 단계와 정산센터 조회는 정상이다. 징수는 징수할 요금 데이터가 단말기에 수신되어야 이루어지고(제2기지국 경유), 안내는 그 후다."},{"t":"mc","q":"[응용 4] 데이터 종류가 I-1~I-4 네 가지일 때, 프레임에 대한 설명으로 가장 적절한 것은?","o":["동기식에서도 데이터가 없으면 프레임을 3개 슬롯으로 구성할 수 있다.","비동기식에서 프레임이 4개 슬롯이면 네 종류의 데이터가 모두 전송된 것이다.","비동기식 프레임은 모든 차량에서 항상 4개 슬롯이다.","동기식에서 I-2가 없으면 프레임은 3개 슬롯이 된다.","비동기식 프레임은 데이터 종류보다 많은 5개 슬롯이 될 수 있다."],"a":1,"e":"동기식은 항상 4개 고정이다(⟦1⟧, ⟦4⟧ 오답). 비동기식은 전송된 데이터 수만큼의 슬롯이므로 최대 4개이며(⟦3⟧, ⟦5⟧ 오답), 4개라면 모두 전송된 것이다."},{"t":"mc","q":"[응용 5] 요금소 운영 방식을 정하려는 상황에서 지문에 근거한 판단으로 가장 적절한 것은?","o":["오류 없는 처리가 최우선이면 비동기식을 택해야 한다. 슬롯이 낭비되지 않기 때문이다.","동기식은 모든 데이터에 주소 필드를 포함하므로 정확성이 높다.","효율성이 최우선이면 동기식을 택해야 하며, 이때 오류 가능성은 높아진다.","정확성을 중시하면 동기식을, 슬롯 낭비를 줄이려면 비동기식을 택할 수 있으나, 비동기식에서는 오류 가능성이 상대적으로 높은 점을 감수해야 한다.","두 방식은 정확성과 효율성이 동일해서 어느 쪽을 택해도 차이가 없다."],"a":3,"e":"동기식은 오류 가능성이 낮고(정확성 높음) 슬롯이 낭비되며, 비동기식은 슬롯 낭비가 없고(효율성 높음) 오류 가능성이 높다. 주소 필드는 비동기식의 특징이다."}];
@@ -264,7 +324,7 @@ function save(){R._dv=DV;ls('rec:'+NICK,JSON.stringify(R));clearTimeout(tm);tm=s
 async function sync(){if(ADMINMODE){if(DB)try{await DB.rpc('admin_save',{p_key:AK(),p_data:R})}catch(e){}return}if(!DB||!NICK||!PIN)return;try{const {data,error}=await DB.rpc('player_save',{p_nick:NICK,p_pin:PIN,p_data:R});if(error||data!==true)throw 0}catch(e){}}
 const lastNick=()=>ls('last');
 const ADM_NICK='풍산동신라면',ADM_RV='r1';let ADMINMODE=false;
-async function adminLoad(){if(!DB)return;try{const {data,error}=await DB.rpc('admin_me',{p_key:AK()});if(error)return;if(!data){ls('ak',null);OWNER=false;ADMINMODE=false;NICK='';ls('last',null);home();soonMsg('관리자 링크가 맞지 않아요.');return}const srv=okDV(data.data);R=(R._dv===DV)?mergeR(srv,R):srv;R._dv=DV;ls('rec:'+NICK,JSON.stringify(R));sync()}catch(e){}}
+async function adminLoad(){if(!DB)return;try{const {data,error}=await DB.rpc('admin_me',{p_key:AK()});if(error)return;if(!data){ls('ak',null);OWNER=false;ADMINMODE=false;NICK='';ls('last',null);home();soonMsg('관리자 링크가 맞지 않아요.');return}const srv=okDV(data.data);R=(R._dv===DV)?mergeR(srv,R):srv;R._dv=DV;ls('rec:'+NICK,JSON.stringify(R));sync()}catch(e){};sendReplies()}
 function adminOn(){ADMINMODE=true;NICK=ADM_NICK;PIN='';ls('last',ADM_NICK);ls('pin',null);try{R=JSON.parse(ls('rec:'+NICK))||{}}catch(e){R={}}if(R._dv!==DV)R={}}
 async function enter(){if(ADMINMODE){const go=document.getElementById('go');if(go){go.disabled=true;go.textContent='확인 중…'}await adminLoad();REPL=true;return subjects()}const lk=lastNick(),el=document.getElementById('nk'),pe=document.getElementById('pn');
  const v=(lk||(el?el.value:'')).trim(),p=lk?ls('pin'):(pe?pe.value.trim():'');if(!v)return;
@@ -287,7 +347,7 @@ const norm=s=>s.replace(/[\s.,·]/g,'').toLowerCase();
 const grade=(q,v)=>{const n=norm(v);return n&&q.a.some(k=>k.split('&').every(p=>n.includes(norm(p))))};
 function st(qs,X){X=X||R;const d=qs.filter(q=>X[q.id]),c=d.filter(q=>X[q.id].ok).length;return{n:d.length,c,t:qs.length,r:d.length?Math.round(c/d.length*100):null}}
 const stTxt=s=>s.n?`${s.n}/${s.t}문제 풀이 · 정답률 ${s.r}%`:`${s.t}문제 · 아직 풀지 않음`;
-let LK=null;const show=(h,k)=>{const nw=k===undefined||k!==LK;LK=k===undefined?null:k;{const sd=document.getElementById('sides');if(sd)sd.remove()}A.innerHTML=h;if(nw){window.scrollTo(0,0);A.classList.remove('in');void A.offsetWidth;A.classList.add('in')}};
+let LK=null;const show=(h,k)=>{const nw=k===undefined||k!==LK;LK=k===undefined?null:k;{const sd=document.getElementById('sides');if(sd)sd.remove()}document.querySelectorAll('.tbv').forEach(e=>e.remove());A.innerHTML=h;if(nw){window.scrollTo(0,0);A.classList.remove('in');void A.offsetWidth;A.classList.add('in')}};
 let SS=null,draft=null;
 function stk(side){const col={};SUBJ.flat().forEach(([n,c])=>col[n]=c);
  const T=[['c','독서와|작문',1,4,-9,44],['p','독서와|작문',18,14,5],['c','영어',50,2,8,42],['p','영어',66,16,-6],['e','⭐',88,4,15],
@@ -320,14 +380,72 @@ function animBars(){setTimeout(()=>document.querySelectorAll('[data-w]').forEach
 const SUBJ=[[['독서와|작문','b',1],['영어','r'],['중국어|회화','t'],['일본어|회화','j']],[['정치','g'],['경제','g'],['동아시아|역사기행','g'],['현대사회와|윤리','g'],['한국지리|탐구','g']],[['세포와|물질대사','p'],['물질과|에너지','p'],['역학과|에너지','p'],['행성우주|과학','p']]];
 const SECN=['언어 영역','사회 영역','과학 영역'];
 const SC={b:'#8fb8ec',r:'#ee9a9a',t:'#93d3d8',j:'#c9b6ec',g:'#9bd3ae',p:'#f1a9c8'};
-function subjects(){let h=`<div class="hd" style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px"><div><h2>과목 선택</h2><p class="tag"><b>${esc(NICK)}</b> 님 <a class="pfl" onclick="profile()">프로필 보기</a></p></div>${OWNER&&DB?'<span class="admw"><button class="b g s admb rsb" onclick="myReset()">초기화</button><button class="b g s admb" onclick="admin()">관리자</button></span>':''}</div><div class="qk">${isApp()?'<button onclick="allStats()">전체 통계</button>':`<button class="lkd" onclick="lockMsg()">${LOCK}전체 통계</button>`}<button onclick="fbForm(1)">의견 남기기</button></div>`;
+function subjects(){let h=`<div class="hd" style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px"><div><h2>학습하기</h2></div><span class="admw">${mailBtn()}${OWNER&&DB?'<button class="b g s admb rsb" onclick="myReset()">초기화</button><button class="b g s admb" onclick="admin()">관리자</button>':''}</span></div><p class="tag" style="margin-top:-2px"><b>${esc(NICK)}</b> 님 <a class="pfl" onclick="profile()">프로필 보기</a></p><div class="qk">${isApp()?'<button onclick="allStats()">전체 통계</button>':`<button class="lkd" onclick="lockMsg()">${LOCK}전체 통계</button>`}<button onclick="fbForm(1)">피드백</button></div>`;
  SUBJ.forEach((row,ri)=>{h+=`<h3 class="sec">${SECN[ri]}</h3><div class="sg c2">`;row.forEach(([n,c,o])=>{if(COVER[n]){h+=bk(n,c,o);return}h+=`<div class="card pc" style="margin:0;padding:0;overflow:hidden;text-align:center;background:var(--bg);aspect-ratio:6/5;display:flex;flex-direction:column" onclick="subj('${n}')"><div style="position:absolute;top:0;left:0;right:0;pointer-events:none;height:34px;background:linear-gradient(to bottom,${SC[c]} 0,${SC[c]} 18%,transparent 100%)"></div><div style="flex:1;display:flex;align-items:center;justify-content:center;padding:4px;line-height:1.3;font-weight:600;white-space:nowrap" class="sl">${n.split('|').join('<br>')}</div></div>`});h+='</div>'});
- show(h);animBars()}
+ show(h);animBars();mailBadge();afterHome()}
 let FBF=0;
-function fbForm(f){FBF=f;show(`<div class="fbw"><h2>의견 남기기</h2><p class="tag fbd">사이트에 대한 의견, 틀린 문제 제보,<br>바라는 점을 자유롭게 남겨 주세요.<br><span>관리자만 볼 수 있어요.</span></p><div class="card"><textarea id="fbt" maxlength="1000" placeholder="예) ETC 응용 2번 해설이 헷갈려요&#10;예) 영어도 빨리 열어 주세요" oninput="document.getElementById('fbs').disabled=!this.value.trim()"></textarea><div class="mut" style="margin-top:8px;text-align:center">관리자에게 보내집니다.</div></div>${DB&&CANW!==false?'':'<p class="no-t" style="font-size:14px">서버에 연결되지 않았어요. 아래 버튼으로 내용을 복사해서 관리자에게 직접 보내 주세요.</p>'}<div class="row"><button class="b" id="fbs" disabled onclick="fbSend()">${DB&&CANW!==false?'보내기':'내용 복사하기'}</button></div></div>`)}
+function fbForm(f){FBF=f;show(`<div class="fbw"><h2>피드백</h2><p class="tag fbd">사이트 오류, 틀린 문제, 바라는 점을<br>자유롭게 보내 주세요.<br><span>고쳐지면 메시지함으로 답장이 와요.</span></p><div class="card"><textarea id="fbt" maxlength="1000" placeholder="예) ETC 응용 2번 해설이 헷갈려요&#10;예) 영어도 빨리 열어 주세요" oninput="document.getElementById('fbs').disabled=!this.value.trim()"></textarea><div class="mut" style="margin-top:8px;text-align:center">관리자에게 보내집니다.</div></div>${DB&&CANW!==false?'':'<p class="no-t" style="font-size:14px">서버에 연결되지 않았어요. 아래 버튼으로 내용을 복사해서 관리자에게 직접 보내 주세요.</p>'}<div class="row"><button class="b" id="fbs" disabled onclick="fbSend()">${DB&&CANW!==false?'보내기':'내용 복사하기'}</button></div></div>`)}
 function soonMsg(m){const o=document.getElementById('toast');if(o)o.remove();const t=document.createElement('div');t.id='toast';t.className='toast';t.textContent=m;document.body.appendChild(t);setTimeout(()=>t.remove(),1850)}
 async function fbSend(){const t=document.getElementById('fbt').value.trim(),b=document.getElementById('fbs');if(!t)return;if(!DB||CANW===false){const ok=()=>soonMsg('복사했어요. 카톡으로 보내 주세요.');try{navigator.clipboard.writeText(t).then(ok,()=>{document.getElementById('fbt').select();soonMsg('길게 눌러서 복사해 주세요.')})}catch(e){document.getElementById('fbt').select();soonMsg('길게 눌러서 복사해 주세요.')}return}b.disabled=true;b.textContent='보내는 중…';
- try{const {error}=await DB.from('feedback').insert({nick:(NICK||lastNick()||'익명').slice(0,12),body:t});if(error)throw error;soonMsg('의견이 전달됐어요. 고마워요!');FBF?subjects():home()}catch(e){b.disabled=false;b.textContent='보내기';soonMsg('보내지 못했어요. 다시 시도해 주세요.')}}
+ try{const {error}=await DB.from('feedback').insert({nick:(NICK||lastNick()||'익명').slice(0,12),body:t});if(error)throw error;soonMsg('피드백이 전달됐어요. 고마워요!');FBF?subjects():home()}catch(e){b.disabled=false;b.textContent='보내기';soonMsg('보내지 못했어요. 다시 시도해 주세요.')}}
+
+// ================= 메시지함 · 폰 알림 =================
+const VAPID='BEhEZYHO8qnRmgu6SvZxzNoFhJRO0wWwewnNUIgckZ4Hry8KYsR6iovr2KvH0F9f4UKbKTaTEo8Lk-IU5RGi5rk';
+const whoP=()=>ADMINMODE?{p_nick:null,p_pin:null,p_key:AK()}:{p_nick:NICK,p_pin:PIN,p_key:null};
+let MSGS=null;
+async function msgLoad(){if(!DB||!NICK)return MSGS=MSGS||[];try{const {data,error}=await DB.rpc('msg_list',whoP());if(error)throw error;MSGS=data||[]}catch(e){MSGS=MSGS||[]}mailBadge();return MSGS}
+const unread=()=>(MSGS||[]).filter(m=>!m.read).length;
+function mailBadge(){const n=unread();document.querySelectorAll('.mlb .mlc').forEach(c=>{c.textContent=n>9?'9+':n;c.hidden=!n})}
+const MAIL='<svg class="mli" viewBox="0 0 34 30" aria-hidden="true"><rect x="2.5" y="4.5" width="29" height="21" rx="4" fill="#fdf3dd" stroke="#6e5236" stroke-width="1.9"/><path d="M3.6 24.2 13.4 15.6M30.4 24.2 20.6 15.6" stroke="#6e5236" stroke-width="1.5" stroke-linecap="round" opacity=".45"/><path d="M4 7.2 17 17.1 30 7.2" fill="#f6e2bd" stroke="#6e5236" stroke-width="1.9" stroke-linejoin="round" stroke-linecap="round"/><path d="M17 20.6c-.3-.2-3.2-2-3.2-4 0-1.1.8-1.9 1.8-1.9.6 0 1.1.3 1.4.8.3-.5.8-.8 1.4-.8 1 0 1.8.8 1.8 1.9 0 2-2.9 3.8-3.2 4z" fill="#e05a4f"/></svg>';
+const mailBtn=()=>`<button class="mlb" aria-label="메시지함" onclick="inbox()">${MAIL}<span class="mlc" hidden></span></button>`;
+const fdt=t=>{const d=new Date(t);return (d.getMonth()+1)+'/'+d.getDate()+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')};
+const nl=t=>esc(t||'').replace(/\n/g,'<br>');
+async function inbox(){const draw=()=>{if(CURR!='inbox')return;const L=MSGS||[],n=unread(),rd=L.filter(m=>m.read).length;
+  let h=`<h2>메시지함</h2><p class="tag">${L.length?(n?`읽지 않은 메시지 ${n}개`:'모든 메시지를 읽었어요'):'피드백 답장과 공지가 여기로 와요.'}</p>`;
+  if(MSGS===null)h+=`<div class="card mut" style="text-align:center;padding:24px">불러오는 중…</div>`;
+  else if(!L.length)h+=`<div class="card mgx">${MAIL}<p>아직 받은 메시지가 없어요.</p></div>`;
+  else h+=L.map(m=>`<button class="mgc${m.read?' rd':''}" onclick="msgOpen(${m.id})"><span class="mgd"></span><span class="mgb"><b>${esc(m.title)}</b><small>${fdt(m.created_at)}</small><span class="mgp">${esc(((m.meta&&m.meta.kind=='fb_reply')?m.meta.changes:m.body||'').replace(/\s+/g,' ').slice(0,60))}</span></span><span class="chev">›</span></button>`).join('');
+  if(rd)h+=`<div class="row"><button class="b g" onclick="msgDelRead()">읽은 메시지 모두 지우기 (${rd}개)</button></div>`;
+  show(h,'inbox')};
+ draw();if(DB&&NICK){await msgLoad();draw()}}
+async function msgOpen(id){if(!MSGS)await msgLoad();const m=(MSGS||[]).find(x=>x.id==id);if(!m){soonMsg('지워진 메시지예요.');return inbox()}
+ if(!m.read){m.read=true;mailBadge();if(DB)DB.rpc('msg_read',Object.assign(whoP(),{p_id:id})).then(()=>{},()=>{})}
+ const k=m.meta&&m.meta.kind;let b='';
+ if(k=='fb_reply')b=`<div class="mgs"><span>보내신 피드백</span><blockquote>${nl(m.meta.q)}</blockquote></div><div class="mgs"><span>수정한 내용</span><p>${nl(m.meta.changes)}</p></div>${m.meta.howto?`<div class="mgs"><span>확인하는 방법</span><p>${nl(m.meta.howto)}</p></div>`:''}`;
+ else if(k=='fb_new')b=`<div class="mgs"><span>보낸 사람</span><p><b>${esc(m.meta.from||'익명')}</b></p></div><div class="mgs"><span>내용</span><blockquote>${nl(m.meta.q)}</blockquote></div>${OWNER?`<button class="lk" onclick="admin(1)">관리자 화면에서 보기 ›</button>`:''}`;
+ else b=`<div class="mgs"><p>${nl(m.body)}</p></div>`;
+ show(`<div class="card mgv"><div class="mgt">${k=='notice'?'<span class="chp" style="background:#8fb8ec">공지</span>':k=='fb_reply'?'<span class="chp" style="background:#9bd3ae">피드백 답장</span>':k=='fb_new'?'<span class="chp" style="background:#f0a35e">새 피드백</span>':''}<small>${fdt(m.created_at)}</small></div><h2>${esc(m.title)}</h2>${b}</div><div class="row"><button class="b g mgdel" onclick="msgDel(${id})">메시지 삭제</button></div>`)}
+async function msgDel(id){if(!(await askBox('메시지를 지울까요?','지운 메시지는 다시 볼 수 없어요.','삭제')))return;
+ try{if(DB){const {data,error}=await DB.rpc('msg_delete',Object.assign(whoP(),{p_id:id}));if(error||data!==true)throw 0}MSGS=(MSGS||[]).filter(x=>x.id!=id);mailBadge();soonMsg('메시지를 지웠어요.');inbox()}catch(e){soonMsg('지우지 못했어요. 다시 시도해 주세요.')}}
+async function msgDelRead(){const L=(MSGS||[]).filter(m=>m.read);if(!L.length)return;if(!(await askBox('읽은 메시지를 모두 지울까요?',`${L.length}개를 지워요. 지운 메시지는 다시 볼 수 없어요.`,'삭제')))return;
+ let n=0;for(const m of L){try{const {data}=await DB.rpc('msg_delete',Object.assign(whoP(),{p_id:m.id}));if(data===true){n++;MSGS=MSGS.filter(x=>x.id!=m.id)}}catch(e){}}soonMsg(`${n}개를 지웠어요.`);inbox()}
+
+const canPush=()=>'serviceWorker' in navigator&&'PushManager' in window&&'Notification' in window;
+const BELL='<svg viewBox="0 0 48 48" aria-hidden="true"><path d="M24 6c-7 0-12 5.4-12 12.5v7.2L8.6 31.4c-.8 1.3.1 3 1.7 3h27.4c1.6 0 2.5-1.7 1.7-3L36 25.7v-7.2C36 11.4 31 6 24 6z" fill="#f9df99" stroke="#6e5236" stroke-width="2.4" stroke-linejoin="round"/><path d="M19 38.5a5 5 0 0 0 10 0" fill="none" stroke="#6e5236" stroke-width="2.4" stroke-linecap="round"/><circle cx="36" cy="11" r="5.5" fill="#e05a4f" stroke="#fff" stroke-width="2"/></svg>';
+function b64u(s){const p='='.repeat((4-s.length%4)%4),b=atob((s+p).replace(/-/g,'+').replace(/_/g,'/'));return Uint8Array.from(b,c=>c.charCodeAt(0))}
+async function pushSub(){if(!canPush()||Notification.permission!=='granted'||!DB||!NICK)return false;
+ try{const reg=await navigator.serviceWorker.ready;let sb=await reg.pushManager.getSubscription();if(!sb)sb=await reg.pushManager.subscribe({userVisibleOnly:true,applicationServerKey:b64u(VAPID)});
+  const {data,error}=await DB.rpc('push_subscribe',Object.assign(whoP(),{p_sub:sb.toJSON()}));return !error&&data===true}catch(e){return false}}
+let PUSHED=false;
+function notiPrompt(){if(!isApp()||!canPush()||Notification.permission!=='default'||ls('np')||document.getElementById('inst')||document.querySelector('.mdw'))return;
+ instBox(`<div class="nti">${BELL}</div><h3>알림을 허용해 주세요</h3><p>피드백 답장과 공지를 폰 알림으로 받을 수 있어요.</p><button class="b inb" onclick="notiAsk()">알림 허용하기</button><button class="inw" onclick="notiLater()">나중에 할게요</button>`)}
+async function notiAsk(){ls('np','1');closeInst();let r='default';try{r=await Notification.requestPermission()}catch(e){}
+ if(r==='granted'){const ok=await pushSub();soonMsg(ok?'알림이 켜졌어요.':'알림은 허용됐어요. 등록은 다음에 열 때 다시 시도할게요.')}else notiWarn();if(CURR=='profile')profile()}
+function notiLater(){ls('np','1');closeInst();notiWarn()}
+function notiWarn(){askBox('알림이 꺼져 있어요','알림을 허용하지 않으면 일부 공지가 전송되지 않아요.<small class="mdn">나중에 프로필에서 다시 켤 수 있어요.</small>','확인')}
+function notiState(){if(!canPush())return isApp()?'불가':'앱 전용';return {granted:'켜짐',denied:'차단됨',default:'꺼짐'}[Notification.permission]||'꺼짐'}
+async function notiFromProfile(){if(!isApp()){setTimeout(lockMsg,50);return}if(!canPush())return soonMsg('이 폰에서는 알림을 쓸 수 없어요. 운영체제를 최신으로 업데이트해 주세요.');
+ if(Notification.permission==='denied')return askBox('알림이 차단돼 있어요','휴대폰 설정에서 풍산 문제 앱의 알림을 허용해 주세요.','확인');
+ if(Notification.permission==='granted'){const ok=await pushSub();return soonMsg(ok?'알림이 켜져 있어요.':'등록하지 못했어요. 잠시 후 다시 시도해 주세요.')}
+ return notiAsk()}
+function afterHome(){if(!PUSHED&&canPush()&&Notification.permission==='granted'){PUSHED=true;pushSub()}
+ msgLoad();setTimeout(()=>{if(CURR=='subjects')notiPrompt()},700)}
+
+// ---- 피드백 답장: 클로드가 저장소의 replies.json 에 적어 두면 관리자 기기가 열릴 때 보냄 ----
+async function sendReplies(){if(!ADMINMODE||!DB||!AK())return;let L=[];try{const r=await fetch('replies.json',{cache:'no-store'});if(!r.ok)return;L=await r.json()}catch(e){return}
+ let done={};try{done=JSON.parse(ls('rps'))||{}}catch(e){}let n=0;
+ for(const x of L){if(!x||!x.rid||done[x.rid])continue;try{const {data,error}=await DB.rpc('admin_reply',{p_key:AK(),p_rid:x.rid,p_fid:x.fid,p_changes:x.changes||'',p_howto:x.howto||''});if(error)continue;if(['sent','dup','anon','nofb'].includes(data)){done[x.rid]=1;if(data=='sent')n++}}catch(e){}}
+ ls('rps',JSON.stringify(done));if(n){admLoad.ok=false;soonMsg(`피드백 답장 ${n}개를 보냈어요.`)}}
 
 // ================= 관리자 =================
 let FB=[];
@@ -343,16 +461,27 @@ const allQ=()=>{const m=new Map();[].concat(...PASS.map(p=>p.Q)).concat(...Objec
 function achX(n,X){const o=SUBJ.flat().find(x=>x[0]==n)[2];const qs=isSoc(n)?socQ(n):o?[].concat(...PASS.map(p=>p.Q)):[1,2,3,4].reduce((a,u)=>a.concat(UNITQ[n+u]||[]),[]);return qs.length?Math.round(st(qs,X).c/qs.length*100):0}
 async function admLoad(force){if(!force&&ADM.length+FB.length&&admLoad.ok)return true;
  try{const [a,b]=await Promise.all([DB.rpc('admin_players',{p_key:AK()}),DB.rpc('admin_feedback',{p_key:AK()})]);if(a.error||!a.data)throw 0;
-  ADM=a.data.map(x=>({nick:x.nick,R:okDV(x.data),t:Date.parse(x.updated_at)}));FB=(b.data||[]).map(x=>({nick:x.nick||'익명',text:x.body,t:Date.parse(x.created_at),k:fbCls(x.body)}));admLoad.ok=true;return true}catch(e){return false}}
+  ADM=a.data.map(x=>({nick:x.nick,R:okDV(x.data),t:Date.parse(x.updated_at)}));FB=(b.data||[]).map(x=>({id:x.id,st:x.status||'new',nick:x.nick||'익명',text:x.body,t:Date.parse(x.created_at),k:fbCls(x.body)}));admLoad.ok=true;return true}catch(e){return false}}
 const chip=k=>{const t=FT(k);return `<span class="chp" style="background:${t[2]}">${t[1]}</span>`};
-const fbCard=x=>`<div class="card fbc"><div class="fbh">${chip(x.k)}<b>${esc(x.nick)}</b><span class="mut">${fd(x.t)}</span></div><div class="fbt">${esc(x.text||'')}</div></div>`;
+const fbCard=x=>`<div class="card fbc${x.st=='done'?' fdn':''}"><div class="fbh">${chip(x.k)}<b>${esc(x.nick)}</b>${x.id?`<span class="fid">#${x.id}</span>`:''}${x.st=='done'?'<span class="chp" style="background:#9bd3ae">답장 완료</span>':''}<span class="mut">${fd(x.t)}</span></div><div class="fbt">${esc(x.text||'')}</div></div>`;
+
+function fbCopy(){const L=FB.filter(x=>x.st!='done').slice().sort((a,b)=>a.t-b.t);if(!L.length)return soonMsg('답장하지 않은 피드백이 없어요.');
+ const t=`[풍산 문제 피드백] 답장 전 ${L.length}개\n\n`+L.map(x=>`#${x.id} · ${x.nick} · ${fd(x.t)} · ${FT(x.k)[1]}\n${x.text}`).join('\n\n')+`\n\n위 피드백을 보고 수정할 내용을 적어 줄게.`;
+ const ok=()=>soonMsg('복사했어요. 클로드 채팅창에 붙여 넣어 주세요.');
+ try{navigator.clipboard.writeText(t).then(ok,()=>fbCopyShow(t))}catch(e){fbCopyShow(t)}}
+function fbCopyShow(t){show(`<h2>피드백 복사</h2><p class="tag">아래 내용을 길게 눌러 모두 선택한 뒤 복사해 주세요.</p><div class="card"><textarea readonly style="min-height:50vh">${esc(t)}</textarea></div>`)}
+function noticeForm(){show(`<h2>공지 보내기</h2><p class="tag">모든 사용자의 메시지함으로 보내고, 알림을 켠 사람에게는 폰 알림도 가요.</p><div class="card"><input type="text" id="ntt" maxlength="60" placeholder="제목"><textarea id="ntb" maxlength="2000" placeholder="내용" style="margin-top:8px"></textarea></div><div class="row"><button class="b" onclick="noticeSend()">보내기</button></div>`)}
+async function noticeSend(){const t=document.getElementById('ntt').value.trim(),b=document.getElementById('ntb').value.trim();if(!t)return soonMsg('제목을 써 주세요.');
+ if(!(await askBox('공지를 보낼까요?',`<b>${esc(t)}</b><br>모든 사용자에게 보내져요.`,'보내기')))return;
+ try{const {data,error}=await DB.rpc('admin_notice',{p_key:AK(),p_title:t,p_body:b});if(error||data<0)throw 0;soonMsg(`${data}명에게 보냈어요.`);admin()}catch(e){soonMsg('보내지 못했어요. 서버 설정을 확인해 주세요.')}}
 async function admin(force){if(!(await admLoad(force)))return show('<h2>관리자</h2><p>불러오지 못했어요.</p>');
- let h=`<h2>관리자</h2><p class="tag">참여자 ${ADM.length}명 · 의견 ${FB.length}개 · 나만 볼 수 있는 화면이에요.</p>`;
+ let h=`<h2>관리자</h2><p class="tag">참여자 ${ADM.length}명 · 피드백 ${FB.length}개 · 나만 볼 수 있는 화면이에요.</p>`;
+ {const pend=FB.filter(x=>x.st!='done').length;h+=`<div class="qk"><button onclick="fbCopy()">클로드에게 보낼 피드백 복사${pend?` (${pend})`:''}</button><button onclick="noticeForm()">공지 보내기</button></div>`}
  // ---- 의견 보기 ----
  const now=Date.now(),rec=FB.filter(x=>now-x.t<14*864e5),base=rec.length?rec:FB,cnt={};FBT.forEach(t=>cnt[t[0]]=0);base.forEach(x=>cnt[x.k]++);
  const urg=cnt.bug+cnt.qerr,imp=cnt.ui+cnt.req;
  const [sl,sc,sd]=!base.length?['의견 없음','#c9c2b3','아직 들어온 의견이 없어요.']:urg>=3?['수정 시급','#e05a4f',`오류 신고가 ${urg}건 있어요. 먼저 확인해 주세요.`]:urg>=1?['수정 의견 있음','#f0a35e',`오류 신고 ${urg}건을 확인해 보세요.`]:imp>=3?['개선 요청 많음','#e6b93f',`디자인·추가 요청이 ${imp}건 모였어요.`]:['양호','#5fb27c','큰 문제 없이 잘 쓰이고 있어요.'];
- h+=`<h3 class="sec">의견 보기</h3><div class="card"><div class="evh"><span class="evd" style="background:${sc}"></span><b style="color:${sc}">${sl}</b><span class="mut" style="margin-left:auto;font-size:13px">${rec.length?'최근 2주':'전체'} ${base.length}건</span></div><div class="mut" style="font-size:14px;margin:4px 0 10px">${sd}</div>
+ h+=`<h3 class="sec">피드백 보기</h3><div class="card"><div class="evh"><span class="evd" style="background:${sc}"></span><b style="color:${sc}">${sl}</b><span class="mut" style="margin-left:auto;font-size:13px">${rec.length?'최근 2주':'전체'} ${base.length}건</span></div><div class="mut" style="font-size:14px;margin:4px 0 10px">${sd}</div>
   <div class="seg">${base.length?FBT.filter(t=>cnt[t[0]]).map(t=>`<i style="flex:${cnt[t[0]]};background:${t[2]}"></i>`).join(''):'<i style="flex:1;background:var(--bd)"></i>'}</div>
   <div class="lgd">${FBT.filter(t=>cnt[t[0]]).map(t=>`<span><i style="background:${t[2]}"></i>${t[1]} ${cnt[t[0]]}</span>`).join('')}</div></div>`;
  const top=FB.filter(x=>FT(x.k)[3]>=2).sort((a,b)=>FT(b.k)[3]-FT(a.k)[3]||b.t-a.t).slice(0,3);
@@ -404,7 +533,7 @@ const socQ=n=>[].concat(...CUR[n].map((_,u)=>bigQ(n,u)));
 const pct=qs=>qs.length?Math.round(st(qs).c/qs.length*100):0;
 let OPEN=-1;
 function socPage(n){const c=SUBJ.flat().find(x=>x[0]==n)[1],col=SC[c],nm=n.split('|').join(' ');
- const [K1,K2]=kd(n);let h=`<div class="shd"><h2 style="--hlc:${col}">${nm}</h2><p class="tag"><b>${esc(NICK)}</b> 님 · ${K1}을 누르면 ${K2}${K2=='유형'?'이':'이'} 펼쳐져요</p>${COVER[n]?`<img class="cvs" src="${COVER[n]}" alt="">`:''}</div>`;
+ const [K1,K2]=kd(n);let h=`<div class="shd"><h2 style="--hlc:${col}">${nm}</h2><p class="tag">${NEWS(n)?'<b>문제 풀기</b>':`<b>${esc(NICK)}</b> 님`} · ${K1}을 누르면 ${K2}${K2=='유형'?'이':'이'} 펼쳐져요</p>${COVER[n]?`<img class="cvs" src="${COVER[n]}" alt="">`:''}</div>`;
  {const wq=socQ(n).filter(q=>R[q.id]&&!R[q.id].ok),uq=wq.filter(isUnf);h+=`<button class="wnb" onclick="wrongPage('${n}')"><span><b>오답노트</b><small>${wq.length?(uq.length?`남은 오답 ${uq.length}문제`:'오답을 모두 고쳤어요'):'아직 틀린 문제가 없어요'}</small></span>${uq.length?`<span class="wnc">${uq.length}</span>`:''}<span class="chev">›</span></button>`}
  if(!CUR[n].length)h+=`<div class="card mut" style="text-align:center;padding:26px 16px">아직 ${K1}이 준비 중이에요.<br>곧 추가할게요!</div>`;
  CUR[n].forEach((U,u)=>{const a=pct(bigQ(n,u));
@@ -415,6 +544,64 @@ function socPage(n){const c=SUBJ.flat().find(x=>x[0]==n)[1],col=SC[c],nm=n.split
  SOCCUR=n;show(h);animBars()}
 let SOCCUR='';
 function tgl(u){document.querySelectorAll('.ub').forEach((e,i)=>{if(i==u)e.classList.toggle('op');else e.classList.remove('op')});const e=document.getElementById('ub'+u);OPEN=e&&e.classList.contains('op')?u:-1}
+
+// ================= 학습하기: 공부하기(필기) / 문제 풀기 =================
+// 국어(독서와 작문)·영어는 그대로, 나머지 과목은 과목 → [공부하기 | 문제 풀기]
+const NEWS=n=>!!CUR[n]&&!KIND[n];
+// 필기: NOTE[과목]['대단원번호-중단원번호'(0부터)] = {pg:['tb/과목/쪽.jpg',...], b:[블록...]}
+// 블록: ['h',제목] ['h2',소제목] ['p',글] ['ul',[항목]] ['key',이름,글] ['def',용어,뜻] ['vs',[제목,글],[제목,글]] ['flow',[단계]] ['tbl',[머리],[[행]]] ['tip',글] ['img',주소,설명]
+// 글 안에서: ==형광펜== **빨간펜** __밑줄__
+// 문제: CUR[과목][대단원].m[중단원].q 에서 lv:'x' 는 실전 문제, 나머지는 기본 개념 문제
+const NOTE={};
+const noteOf=(n,u,k)=>(NOTE[n]||{})[u+'-'+k]||null;
+const NOTE_DEMO={demo:1,pg:[],b:[
+ ['h','1. 정치의 의미'],
+ ['vs',['좁은 의미','==국가 기관==이 정치권력을 획득·유지·행사하는 활동'],['넓은 의미','사회 집단 안에서 생기는 ==이해관계의 대립과 갈등==을 조정·해결하는 활동']],
+ ['ul',['학급 회의에서 체육대회 종목을 정하는 것 → **넓은 의미**의 정치','국회가 법률을 만드는 것 → **좁은 의미**·넓은 의미 모두 해당']],
+ ['tbl',['구분','좁은 의미','넓은 의미'],[['주체','국가 기관','모든 사회 집단'],['장점','국가만의 고유한 활동을 설명하기 쉬움','다원화된 현대 사회의 정치 현상 설명에 적합'],['한계','다양한 집단의 정치 현상을 설명하기 어려움','국가 정치의 특수성을 간과할 수 있음']]],
+ ['key','핵심 정리','정치는 결국 __갈등을 평화적으로 해결__하는 과정이에요.'],
+ ['flow',['갈등 발생','대화와 타협','합의','사회 통합']],
+ ['def','정치권력','국가 기관이 사회 구성원에게 행사하는 강제력'],
+ ['tip','좁은 의미와 넓은 의미를 구분하는 문제가 자주 나와요. 활동의 **주체가 국가 기관인지**부터 확인하세요.']]};
+const ntIn=t=>esc(t||'').replace(/==(.+?)==/g,'<mark>$1</mark>').replace(/\*\*(.+?)\*\*/g,'<b class="ntr">$1</b>').replace(/__(.+?)__/g,'<u>$1</u>').replace(/\n/g,'<br>');
+function ntBlock(b){const [t,...a]=b;
+ if(t=='h')return `<h3 class="nh"><span>${ntIn(a[0])}</span></h3>`;
+ if(t=='h2')return `<h4 class="nh2">${ntIn(a[0])}</h4>`;
+ if(t=='p')return `<p>${ntIn(a[0])}</p>`;
+ if(t=='ul')return `<ul>${a[0].map(x=>`<li>${ntIn(x)}</li>`).join('')}</ul>`;
+ if(t=='key')return `<div class="nkey"><span>${ntIn(a[0])}</span><p>${ntIn(a[1])}</p></div>`;
+ if(t=='def')return `<div class="ndef"><b>${ntIn(a[0])}</b><span>${ntIn(a[1])}</span></div>`;
+ if(t=='vs')return `<div class="nvs">${a.map(([h,x])=>`<div><b>${ntIn(h)}</b><p>${ntIn(x)}</p></div>`).join('<i>vs</i>')}</div>`;
+ if(t=='flow')return `<div class="nfl">${a[0].map(x=>`<span>${ntIn(x)}</span>`).join('<i>→</i>')}</div>`;
+ if(t=='tbl')return `<div class="ntw"><table class="ntb"><tr>${a[0].map(x=>`<th>${ntIn(x)}</th>`).join('')}</tr>${a[1].map(r=>`<tr>${r.map((x,i)=>i?`<td>${ntIn(x)}</td>`:`<th>${ntIn(x)}</th>`).join('')}</tr>`).join('')}</table></div>`;
+ if(t=='tip')return `<div class="ntip"><span>★ 시험 포인트</span><p>${ntIn(a[0])}</p></div>`;
+ if(t=='img')return `<figure class="nim"><img src="${esc(a[0])}" alt="" loading="lazy">${a[1]?`<figcaption>${ntIn(a[1])}</figcaption>`:''}</figure>`;
+ return ''}
+const ICN_NOTE='<svg class="lci" viewBox="0 0 48 48" aria-hidden="true"><rect x="10" y="5" width="30" height="38" rx="4" fill="#fffdf7" stroke="#6e5236" stroke-width="2.2"/><path d="M17 15h16M17 21h16M17 27h10" stroke="#9fb6d3" stroke-width="2.2" stroke-linecap="round"/><path d="M17 27h10" stroke="#f9df99" stroke-width="5" stroke-linecap="round" opacity=".8"/><path d="M6 12h6M6 20h6M6 28h6M6 36h6" stroke="#6e5236" stroke-width="2.2" stroke-linecap="round"/></svg>';
+const ICN_PEN='<svg class="lci" viewBox="0 0 48 48" aria-hidden="true"><rect x="7" y="9" width="26" height="32" rx="4" fill="#fffdf7" stroke="#6e5236" stroke-width="2.2"/><path d="M13 18l2.5 2.5L20 16M13 28l2.5 2.5L20 26" fill="none" stroke="#5fb27c" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/><path d="M24 18h4M24 28h4" stroke="#9fb6d3" stroke-width="2.2" stroke-linecap="round"/><path d="M41.5 13.5 30 35l-4.5 2.5.5-5 11.5-21.5a2.3 2.3 0 0 1 4 2.5z" fill="#f9df99" stroke="#6e5236" stroke-width="2.2" stroke-linejoin="round"/></svg>';
+const ICN_BOOK='<svg class="tbi" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5.5C5.5 4.3 8.6 4.3 12 6c3.4-1.7 6.5-1.7 9-.5V19c-2.5-1.2-5.6-1.2-9 .5-3.4-1.7-6.5-1.7-9-.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 6v13.5" stroke="currentColor" stroke-width="1.8"/></svg>';
+const sCol=n=>SC[SUBJ.flat().find(x=>x[0]==n)[1]];
+function midSegs(n,u,k){const M=CUR[n][u].m[k],g=u+'-'+k;return [[M.q.filter(q=>q.lv!='x'),'기본 개념'],[M.q.filter(q=>q.lv=='x'),'실전 문제']].filter(a=>a[0].length).map(([qs,l])=>({label:M.n+' · '+l,qs,grp:g}))}
+function nextMid(n,u,k){if(k+1<CUR[n][u].m.length)return [u,k+1];if(u+1<CUR[n].length)return [u+1,0];return null}
+function learnHome(n){const col=sCol(n),nm=n.split('|').join(' '),mids=[].concat(...CUR[n].map((U,u)=>U.m.map((M,k)=>[u,k]))),nn=mids.filter(([u,k])=>noteOf(n,u,k)).length,qs=socQ(n);
+ let h=`<div class="shd"><h2 style="--hlc:${col}">${nm}</h2><p class="tag"><b>${esc(NICK)}</b> 님 · 무엇을 할까요?</p>${COVER[n]?`<img class="cvs" src="${COVER[n]}" alt="">`:''}</div>`;
+ h+=`<div class="lch" style="--uc:${col}"><button class="lcb" onclick="noteList('${n}')">${ICN_NOTE}<span><b>공부하기</b><small>교과서 핵심을 정리한 필기로 개념을 익혀요</small><em>${nn?`필기 ${nn}/${mids.length}개`:'필기 준비 중'}</em></span><span class="chev">›</span></button>`;
+ h+=`<button class="lcb" onclick="socPage('${n}')">${ICN_PEN}<span><b>문제 풀기</b><small>단원마다 기본 개념 문제와 실전 문제를 풀어요</small><em>${qs.length?`성취율 ${pct(qs)}% · ${qs.length}문제`:'문제 준비 중'}</em></span><span class="chev">›</span></button></div>`;
+ show(h)}
+function noteList(n){if(!NEWS(n))return subj(n);const col=sCol(n),nm=n.split('|').join(' ');
+ let h=`<div class="shd"><h2 style="--hlc:${col}">공부하기</h2><p class="tag">${esc(nm)} · 중단원을 고르면 필기가 열려요</p></div>`;
+ CUR[n].forEach((U,u)=>{h+=`<div class="nlg" style="--uc:${col}"><div class="nlh">${esc(U.n)}</div>${U.m.map((M,k)=>{const o=noteOf(n,u,k);return `<button class="nlb${o?'':' nlx'}" onclick="noteView('${n}',${u},${k})"><span>${esc(M.n)}</span><span class="mut">${o?'필기 보기':'준비 중'}</span><span class="chev">›</span></button>`}).join('')}</div>`});
+ show(h)}
+function noteView(n,u,k){u=+u;k=+k;const U=CUR[n]&&CUR[n][u],M=U&&U.m[k];if(!M||!NEWS(n))return subjects();
+ const col=sCol(n),nm=n.split('|').join(' '),o=noteOf(n,u,k)||(OWNER?NOTE_DEMO:null),nx=nextMid(n,u,k),pg=o&&o.pg&&o.pg.length;
+ let h=`<div class="nth"><h2 style="--hlc:${col}">${esc(M.n)}</h2><p class="tag">${esc(nm)} · ${esc(U.n)}</p></div>`;
+ h+=`<button class="tbb${pg?'':' off'}" onclick="tbOpen('${n}',${u},${k})">${ICN_BOOK}<span>교과서 원문 보기</span></button>`;
+ if(o&&o.demo)h+=`<div class="prn">디자인 미리보기예요. 관리자에게만 보이고, 교과서를 받으면 실제 필기로 바뀌어요.</div>`;
+ h+=o?`<article class="nt" style="--nc:${col}">${o.b.map(ntBlock).join('')}</article>`:`<div class="card ntx">${ICN_NOTE}<p>이 단원 필기는 준비 중이에요.<br>곧 채워질 예정이에요.</p></div>`;
+ h+=`<div class="ntf"><button class="b ntq" onclick="socGo('${n}',${u},${k},{note:1})">문제 풀기</button>${nx?`<button class="ntn" onclick="noteView('${n}',${nx[0]},${nx[1]})">다음 단원 학습하기<span>→</span></button>`:''}</div>`;
+ show(h,'nt|'+n+'|'+u+'|'+k)}
+function tbOpen(n,u,k){const o=noteOf(n,u,k);if(!o||!o.pg||!o.pg.length)return soonMsg('교과서 원문은 아직 준비 중이에요.');
+ const w=document.createElement('div');w.className='tbv';w.innerHTML=`<div class="tbh"><b>교과서 원문</b><span class="mut">${o.pg.length}쪽</span><button class="tbz" onclick="const v=this.closest('.tbv');v.classList.toggle('zm');this.textContent=v.classList.contains('zm')?'원래대로':'크게 보기'">크게 보기</button><button class="tbx" aria-label="닫기" onclick="this.closest('.tbv').remove()">✕</button></div><div class="tbs">${o.pg.map(x=>`<img src="${esc(x)}" alt="교과서 원문" loading="lazy">`).join('')}</div>`;document.body.appendChild(w)}
 
 // ---- 오답노트 · 취약 유형 ----
 const WEAK=0.4;
@@ -461,16 +648,18 @@ function wrongPage(n){const nm=n.split('|').join(' '),c=SUBJ.flat().find(x=>x[0]
  if(un.length)h+=`<div class="row" style="margin-top:14px"><button class="b" onclick="startWrong('${n}',allSegs('${n}'),{wp:1})">오답 전체 풀기 (${un.length}문제)</button></div>`;
  h+=``;show(h)}
 
-function socGo(n,u,k){const segs=[];const nm=n.split('|').join(' ');
- CUR[n].forEach((U,ui)=>{if(u!==undefined&&ui!==u)return;U.m.forEach((M,ki)=>{if(k!==undefined&&ki<k)return;if(M.q.length)segs.push({label:(u===undefined||CUR[n].length>1&&KIND[n]?U.n+' · ':'')+M.n,qs:M.q})})});
- if(!segs.length){soonMsg('아직 문제가 준비 중이에요.');return}
- const tsg=k!==undefined?segs.slice(0,1):segs,all=[].concat(...tsg.map(x=>x.qs)),done=all.every(q=>R[q.id]);
+function socGo(n,u,k,opt){const segs=[];const nm=n.split('|').join(' ');opt=opt||{};
+ if(NEWS(n))CUR[n].forEach((U,ui)=>{if(u!==undefined&&(k===undefined||opt.note?ui!==u:ui<u))return;U.m.forEach((M,ki)=>{if(k!==undefined&&ui==u&&(opt.note?ki!==k:ki<k))return;segs.push(...midSegs(n,ui,ki))})});
+ else CUR[n].forEach((U,ui)=>{if(u!==undefined&&ui!==u)return;U.m.forEach((M,ki)=>{if(k!==undefined&&ki<k)return;if(M.q.length)segs.push({label:(u===undefined||CUR[n].length>1&&KIND[n]?U.n+' · ':'')+M.n,qs:M.q})})});
+ if(!segs.length){soonMsg(opt.note?'이 단원 문제는 아직 준비 중이에요.':'아직 문제가 준비 중이에요.');return}
+ const xm=opt.note?{note:[n,u,k]}:{};
+ const tsg=k!==undefined?(NEWS(n)?segs.filter(x=>x.grp==segs[0].grp):segs.slice(0,1)):segs,all=[].concat(...tsg.map(x=>x.qs)),done=all.every(q=>R[q.id]);
  const wseg=tsg.filter(x=>{const g=gInfo(x.qs);return g.weak&&g.u>0}),unN=[].concat(...wseg.map(x=>x.qs)).filter(isUnf).length;
- if(unN){askBox('취약한 유형이에요',`틀린 문제가 많아요. 먼저 오답부터 고쳐 보세요.<small class="mdn">오답 ${unN}문제를 다시 풀어요. 다 고치면 &lsquo;오답 완료&rsquo; 표시가 붙어요.</small>`,'오답 풀기').then(ok=>{if(ok)startWrong(n,wseg)});return}
- if(done){askBox('다시 푸시겠습니까?','2회차부터는 통계에 반영되지 않습니다.','다음').then(ok=>{if(ok)startRun(n,segs,{title:nm,practice:true})});return}
- startRun(n,segs,{title:nm})}
+ if(unN){askBox('취약한 유형이에요',`틀린 문제가 많아요. 먼저 오답부터 고쳐 보세요.<small class="mdn">오답 ${unN}문제를 다시 풀어요. 다 고치면 &lsquo;오답 완료&rsquo; 표시가 붙어요.</small>`,'오답 풀기').then(ok=>{if(ok)startWrong(n,wseg,xm)});return}
+ if(done){askBox('다시 푸시겠습니까?','2회차부터는 통계에 반영되지 않습니다.','다음').then(ok=>{if(ok)startRun(n,segs,Object.assign({title:nm,practice:true},xm))});return}
+ startRun(n,segs,Object.assign({title:nm},xm))}
 
-function subj(n){if(isSoc(n))return socPage(n);const c=SUBJ.flat().find(x=>x[0]==n)[1],nm=n.split('|').join(' ');
+function subj(n){if(NEWS(n))return learnHome(n);if(isSoc(n))return socPage(n);const c=SUBJ.flat().find(x=>x[0]==n)[1],nm=n.split('|').join(' ');
  let h=`<h2>${nm}</h2><p class="tag"><b>${esc(NICK)}</b> 님</p><div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;max-width:420px;margin:14px auto">`;
  for(let u=1;u<=4;u++){const s=st(UNITQ[n+u]||[]),a=s.t?Math.round(s.c/s.t*100):0;
   h+=`<div class="card pc" style="margin:0;padding:0;overflow:hidden;text-align:center;background:var(--bg);aspect-ratio:6/5;display:flex;flex-direction:column;border:1.5px solid ${SC[c]}" onclick="soon()"><div style="position:absolute;top:0;left:0;right:0;pointer-events:none;height:34px;background:linear-gradient(to bottom,${SC[c]} 0,${SC[c]} 18%,transparent 100%)"></div><div style="flex:1;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:18px">${u}단원</div><div class="mut" style="padding:0 0 10px">성취율 ${a}%</div></div>`}
@@ -516,7 +705,7 @@ const exT=q=>esc(q.e||'').replace(/⟦(\d)⟧/g,(_,d)=>CIRC[q.t=='mc'?posOf(q,+d
 function startRun(n,segs,meta){OPEN=-1;SS={pid:'run',cat:'all',meta:Object.assign({subj:n,back:"socPage('"+n+"')",backLabel:kd(n)[1]+' 선택으로',kind:kd(n)[1]},meta||{}),segs,si:0,qs:segs[0].qs,i:0,resp:{},graded:[]};SS.base={};Object.keys(R).forEach(k=>{if(k[0]!='_')SS.base[k]=1});SS.perm={};segs.forEach(x=>Object.assign(SS.perm,mkPerm(x.qs)));draft=null;QS0=Date.now();quiz()}
 function start(id,cat,qs,meta){const n=(meta&&meta.subj)||'독서와|작문';const p=P(id);qs=qs||(cat=='all'?p.Q:p.Q.filter(q=>q.cat==cat));startRun(n,[{label:(meta&&meta.cat)||'문제 풀기',qs}],meta)}
 const ttl=()=>SS.meta?SS.meta.title:P(SS.pid).name;
-function goBack(){if(SS&&SS.meta&&SS.meta.wp)return wrongPage(SS.meta.subj);if(SS&&SS.meta&&SS.meta.subj)return subj(SS.meta.subj);subjects()}
+function goBack(){if(SS&&SS.meta&&SS.meta.note)return noteView(...SS.meta.note);if(SS&&SS.meta&&SS.meta.wp)return wrongPage(SS.meta.subj);if(SS&&SS.meta&&SS.meta.subj)return NEWS(SS.meta.subj)?socPage(SS.meta.subj):subj(SS.meta.subj);subjects()}
 const qtx=t=>esc(t).replace(/\[빈칸\]/g,'<span class="blk"></span>');
 function quiz(){const q=SS.qs[SS.i],N=SS.qs.length,seg=SS.segs[SS.si],r=SS.resp[q.id]||{};QID=q.id;if(!QS0)QS0=Date.now();
  const tn={mc:'객관식',ox:'O/X',sh:'빈칸 채우기',es:'서술형'}[q.t];
@@ -545,8 +734,8 @@ function esCheck(es){let h=`<h2>서술형 채점</h2><p class="tag">모범 답�
 function esDone(){(SS.esq||[]).forEach(id=>{const q=findQ(id),r=SS.resp[id],c=r.chk.filter(Boolean).length;r.ok=c>=Math.ceil(q.pts.length*0.6);r.done=true});SS.esq=null;finishSeg()}
 const recOK=id=>!(SS.meta&&SS.meta.practice)&&!(SS.base&&SS.base[id]);
 async function finishSeg(){SS.qs.forEach(q=>{const r=SS.resp[q.id];if(!(r&&r.done))return;if(SS.meta&&SS.meta.mode=='wrong'){if(r.ok){R._fx=R._fx||{};R._fx[q.id]=1}}else if(recOK(q.id))R[q.id]={ok:r.ok?1:0}});save();SS.graded=SS.graded.concat(SS.qs);
- const nx=SS.segs[SS.si+1];
- if(nx&&(await askBox(`다음 ${SS.meta.kind}도 풀까요?`,`<b>${esc(nx.label)}</b><br>${nx.qs.length}문제를 이어서 풀 수 있어요.<br>취소하면 지금까지 푼 결과를 보여 드려요.`,'다음'))){SS.si++;SS.qs=nx.qs;SS.i=0;QS0=Date.now();return quiz()}
+ const nx=SS.segs[SS.si+1],cg=SS.segs[SS.si].grp;
+ if(nx&&(await askBox(nx.grp?(nx.grp==cg?'실전 문제도 풀까요?':'다음 단원도 풀까요?'):`다음 ${SS.meta.kind}도 풀까요?`,`<b>${esc(nx.label)}</b><br>${nx.qs.length}문제를 이어서 풀 수 있어요.<br>취소하면 지금까지 푼 결과를 보여 드려요.`,'다음'))){SS.si++;SS.qs=nx.qs;SS.i=0;QS0=Date.now();return quiz()}
  result()}
 function quitRun(){submitSeg()}
 let EXITING=false;
@@ -574,9 +763,11 @@ function result(){QS0=0;const rs=(SS.graded||[]).filter(q=>SS.resp[q.id]&&SS.res
   h+=`<div class="card"><div class="tag">${esc(q.g||'')}</div><div class="q" style="font-weight:500;margin:4px 0 10px">${qtx(q.q)}</div><div>내 답: <span class="no-t">${r.blank?'(안 풂)':esc(ans(q,r,0))}</span></div><div>정답: <span class="ok-t">${esc(ans(q,r,1))}</span></div>`;
   if(q.t=='es'){const miss=q.pts.filter((p,k)=>!(r.chk||[])[k]);h+=`<div class="fb no">빠진 요소:\n${miss.map(x=>'· '+esc(x)).join('\n')}</div>`}else h+=`<div class="fb ok">${exT(q)}</div>`;
   if(q.t=='sh'&&!r.blank)h+=`<button class="lk" style="margin-top:6px" onclick="ovr2('${q.id}')">내 답도 맞는 표현이에요 (정답 처리)</button>`;h+=`</div>`})}
- h+=wr.length?`<div class="row"><button class="b" onclick="retryWrong()">틀린 문제만 다시</button></div>`:'';show(h);animBars()}
+ h+=wr.length?`<div class="row"><button class="b" onclick="retryWrong()">틀린 문제만 다시</button></div>`:'';
+ if(SS.meta.note)h+=`<div class="row"><button class="b${wr.length?' g':''}" onclick="noteView(...SS.meta.note)">필기로 돌아가기</button></div>`;else if(NEWS(SS.meta.subj)&&!SS.meta.wp)h+=`<div class="row"><button class="b g" onclick="socPage('${SS.meta.subj}')">단원 선택으로</button></div>`;
+ show(h);animBars()}
 function ovr2(id){SS.resp[id].ok=true;if(SS.meta&&SS.meta.mode=='wrong'){R._fx=R._fx||{};R._fx[id]=1;save()}else if(recOK(id)){R[id]={ok:1};save()}result()}
-function retryWrong(){const wr=(SS.graded||[]).filter(q=>SS.resp[q.id]&&!SS.resp[q.id].ok);startRun(SS.meta.subj,[{label:'틀린 문제 다시 풀기',qs:wr}],{title:SS.meta.title,mode:SS.meta.mode=='wrong'||wr.every(q=>R[q.id])?'wrong':undefined,practice:true,wp:SS.meta.wp})}
+function retryWrong(){const wr=(SS.graded||[]).filter(q=>SS.resp[q.id]&&!SS.resp[q.id].ok);startRun(SS.meta.subj,[{label:'틀린 문제 다시 풀기',qs:wr}],{title:SS.meta.title,mode:SS.meta.mode=='wrong'||wr.every(q=>R[q.id])?'wrong':undefined,practice:true,wp:SS.meta.wp,note:SS.meta.note})}
 
 const fd=t=>new Date(t).toLocaleString('ko-KR',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'});
 
@@ -606,7 +797,7 @@ function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFO
 function profile(){if(ADMINMODE)PFOK=true;if(!PFOK)return pfGate();
  show(`<h2>내 프로필</h2><p class="tag">닉네임과 비밀번호를 확인하고 바꿀 수 있어요.</p>
  <div class="card pf"><div class="pr"><span>닉네임</span><b>${esc(NICK)}</b>${ADMINMODE?'<span class="mut" style="font-size:13px">관리자 고정</span>':'<button class="lk" onclick="pfNick()">변경하기</button>'}</div>
- ${ADMINMODE?'':`<div class="pr"><span>비밀번호</span><b id="pv">••••</b><button class="lk" onclick="const e=document.getElementById('pv');e.textContent=e.textContent=='••••'?PIN:'••••'">보기</button><button class="lk" onclick="pfPin()">변경하기</button></div>`}</div>
+ ${ADMINMODE?'':`<div class="pr"><span>비밀번호</span><b id="pv">••••</b><button class="lk" onclick="const e=document.getElementById('pv');e.textContent=e.textContent=='••••'?PIN:'••••'">보기</button><button class="lk" onclick="pfPin()">변경하기</button></div>`}<div class="pr"><span>폰 알림</span><b>${notiState()}</b>${notiState()=='켜짐'?'':'<button class="lk" onclick="notiFromProfile()">켜기</button>'}</div></div>
  `)}
 function calGo(d){const [y,mo]=CALM;let ny=y,nm=mo+d;if(nm<0){nm=11;ny--}if(nm>11){nm=0;ny++}cal([ny,nm],d)}
 function cal(m,dir){if(!isApp()){setTimeout(lockMsg,50);return subjects()}if(m)CALM=m;if(!CALM){const d=new Date();CALM=[d.getFullYear(),d.getMonth()]}const [y,mo]=CALM,t=R._t||{};
@@ -654,9 +845,11 @@ function setR(r){CURR=r;updBk();const t=r?'#/'+encR(r):location.pathname+locatio
  try{history.replaceState(history.state,'',t);if(!GUARD){history.pushState({g:1},'',t);GUARD=true}}catch(e){}}
 function parentOf(r){const [k,...rest]=r.split('/'),v=rest.join('/');
  if(!r)return null;if(k=='subjects')return null;
+ if(k=='prob'||k=='notes')return 'subj/'+v;if(k=='note'){const ps=v.split('/');ps.pop();ps.pop();return 'notes/'+ps.join('/')}
+ if(k=='inbox')return v?'inbox':'subjects';
  if(k=='menu')return 'pick';if(k=='pick'||k=='subj'||k=='stats'||k=='profile'&&!v||k=='admin'&&!v)return 'subjects';
  if(k=='cal')return 'stats';if(k=='profile')return 'profile';if(k=='admin'){if(/^t\/./.test(v))return 'admin/t';if(/^p\/./.test(v))return 'admin/p';return 'admin'}if(k=='fb')return v=='1'?'subjects':'';
- if(k=='wrong')return 'subj/'+v;if(k=='quiz'||k=='result'){if(SS&&SS.meta&&SS.meta.wp)return 'wrong/'+SS.meta.subj;if(SS&&SS.meta&&SS.meta.subj)return 'subj/'+SS.meta.subj;if(SS&&SS.pid&&!SS.meta)return 'menu/'+SS.pid;return 'subjects'}
+ if(k=='wrong')return (NEWS(v)?'prob/':'subj/')+v;if(k=='quiz'||k=='result'){if(SS&&SS.meta&&SS.meta.note)return 'note/'+SS.meta.note.join('/');if(SS&&SS.meta&&SS.meta.wp)return 'wrong/'+SS.meta.subj;if(SS&&SS.meta&&SS.meta.subj)return (NEWS(SS.meta.subj)?'prob/':'subj/')+SS.meta.subj;if(SS&&SS.pid&&!SS.meta)return 'menu/'+SS.pid;return 'subjects'}
  return 'subjects'}
 const curR=()=>{const h=location.hash||'';if(!h.startsWith('#/'))return '';try{return decodeURIComponent(h.slice(2))}catch(e){return ''}};
 function findQ(id){for(const p of PASS)for(const q of p.Q)if(q.id==id)return q;for(const n in CUR)for(const U of CUR[n])for(const M of U.m)for(const q of M.q)if(q.id==id)return q;return null}
@@ -672,6 +865,11 @@ function go2(r){
  if(k=='pick')return pick();
  if(k=='menu'&&v)return menu(v);
  if(k=='subj'&&v&&SUBJ.flat().some(x=>x[0]==v))return subj(v);
+ if(k=='prob'&&v&&CUR[v])return socPage(v);
+ if(k=='notes'&&v&&NEWS(v))return noteList(v);
+ if(k=='note'){const ps=v.split('/'),kk=ps.pop(),uu=ps.pop(),nn=ps.join('/');if(NEWS(nn))return noteView(nn,+uu,+kk)}
+ if(k=='inbox')return v?msgOpen(+v):inbox();
+ if(k=='admin'&&v=='n'&&OWNER)return noticeForm();
  if(k=='stats')return allStats();
  if(k=='wrong'&&v&&CUR[v])return wrongPage(v);
  if(k=='cal')return cal();
@@ -684,7 +882,7 @@ function goR(r){ROUTING=true;try{go2(r)}finally{ROUTING=false}updBk()}
 window.addEventListener('popstate',()=>{GUARD=false;if(CURR=='quiz'&&SS&&document.querySelector('.qpr')){try{history.pushState({g:1},'',location.href);GUARD=true}catch(e){}exitQuiz();return}if(location.hash=='#admin')return;const par=parentOf(CURR);if(par===null||(!NICK&&par!=='')){history.back();return}goR(par)});
 const H=(f,mk)=>function(...a){setR(mk(...a));return f.apply(this,a)};
 home=H(home,()=>'');subjects=H(subjects,()=>'subjects');pick=H(pick,()=>'pick');menu=H(menu,id=>'menu/'+id);
-subj=H(subj,n=>'subj/'+n);socPage=H(socPage,n=>'subj/'+n);allStats=H(allStats,()=>'stats');fbForm=H(fbForm,f=>'fb/'+(f||0));
+subj=H(subj,n=>'subj/'+n);socPage=H(socPage,n=>NEWS(n)?'prob/'+n:'subj/'+n);noteList=H(noteList,n=>'notes/'+n);noteView=H(noteView,(n,u,k)=>'note/'+n+'/'+u+'/'+k);inbox=H(inbox,()=>'inbox');msgOpen=H(msgOpen,id=>'inbox/'+id);noticeForm=H(noticeForm,()=>'admin/n');allStats=H(allStats,()=>'stats');fbForm=H(fbForm,f=>'fb/'+(f||0));
 admin=H(admin,()=>'admin');adminOne=H(adminOne,n=>'admin/u/'+n);fbTypes=H(fbTypes,()=>'admin/t');fbType=H(fbType,k=>'admin/t/'+k);fbPeople=H(fbPeople,()=>'admin/p');fbPerson=H(fbPerson,n=>'admin/p/'+n);
 wrongPage=H(wrongPage,n=>'wrong/'+n);profile=H(profile,()=>'profile');cal=H(cal,()=>'cal');pfNick=H(pfNick,()=>'profile/nick');pfPin=H(pfPin,()=>'profile/pin');
 quiz=(f=>function(){setR('quiz');const x=f.apply(this,arguments);saveSS();return x})(quiz);
@@ -696,11 +894,11 @@ result=(f=>function(){REPL=true;setR('result');const x=f.apply(this,arguments);s
  document.addEventListener('touchend',()=>{if(sx==null)return;A.style.transition='transform .2s ease';A.style.transform='';if(dx>80)history.back();sx=null})})();
 async function boot(){{const m=location.hash.match(/^#k=([A-Za-z0-9]{16,64})$/);if(m){ls('ak',m[1]);try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}try{sessionStorage.removeItem(KEY+'alive')}catch(e){}}}const FRESH=(()=>{try{const f=!sessionStorage.getItem(KEY+'alive');sessionStorage.setItem(KEY+'alive','1');return f}catch(e){return true}})();
  await chkAdmin();
- if(OWNER){adminOn();if(FRESH)home();else goR(curR());adminLoad();return}
+ if(OWNER){adminOn();if(FRESH&&!/^inbox/.test(curR()))home();else goR(curR());adminLoad();return}
  const lk=lastNick(),pn=ls('pin');
  if(!lk||!/^\d{4}$/.test(pn)){chkAdmin();return home()}
  NICK=lk;PIN=pn;try{R=okDV(JSON.parse(ls('rec:'+lk)))}catch(e){R={}}
- if(FRESH)home();else goR(curR());
+ if(FRESH&&!/^inbox/.test(curR()))home();else goR(curR());
  if(DB){try{const {data,error}=await DB.rpc('player_login',{p_nick:lk,p_pin:pn});if(!error&&data){
   if(data.status=='ok'||data.status=='new'){const loc=R;R=mergeR(okDV(data.data),loc);R._dv=DV;ls('rec:'+NICK,JSON.stringify(R));if(Object.keys(loc).length)sync()}
   else if(data.status=='wrong'){ls('last',null);ls('pin',null);NICK='';PIN='';REPL=true;home();soonMsg('비밀번호가 바뀌어 다시 입력해야 해요.')}}}catch(e){}}}

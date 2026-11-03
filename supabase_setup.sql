@@ -203,3 +203,173 @@ grant execute on function public.admin_me(text) to anon, authenticated;
 grant execute on function public.admin_save(text, jsonb) to anon, authenticated;
 grant execute on function public.admin_players(text) to anon, authenticated;
 grant execute on function public.admin_feedback(text) to anon, authenticated;
+
+-- ===== 메시지함 · 폰 알림 · 피드백 답장 (2026-11-03 추가) =====
+-- 'PUSH_URL', 'PUSH_SECRET' 부분은 실제 값으로 바꿔서 실행 (저장소가 공개라 실제 값은 적지 않음)
+create extension if not exists pg_net with schema extensions;
+
+create table if not exists public.messages (
+  id         bigint generated always as identity primary key,
+  to_nick    text not null,
+  title      text not null check (char_length(title) <= 120),
+  body       text not null default '' check (char_length(body) <= 4000),
+  meta       jsonb not null default '{}'::jsonb,
+  read_at    timestamptz,
+  created_at timestamptz not null default now()
+);
+create index if not exists messages_to on public.messages(to_nick, created_at desc);
+create table if not exists public.push_subs (
+  endpoint   text primary key,
+  nick       text not null,
+  sub        jsonb not null,
+  created_at timestamptz not null default now()
+);
+create table if not exists public.app_secrets (name text primary key, value text not null);
+create table if not exists public.replies_sent (rid text primary key, fid bigint, sent_at timestamptz not null default now());
+alter table public.feedback add column if not exists status text not null default 'new';
+alter table public.messages     enable row level security;
+alter table public.push_subs    enable row level security;
+alter table public.app_secrets  enable row level security;
+alter table public.replies_sent enable row level security;
+
+insert into public.app_secrets values ('push_url', 'PUSH_URL'), ('push_secret', 'PUSH_SECRET')
+  on conflict (name) do update set value = excluded.value;
+
+-- 누가 요청했는지: 관리자 키면 관리자 계정, 아니면 닉네임+비밀번호 확인
+create or replace function public.who(p_nick text, p_pin text, p_key text) returns text
+language plpgsql stable security definer set search_path = public, extensions as $$
+declare r public.players;
+begin
+  if p_key is not null and public.admin_ok(p_key) then return '풍산동신라면'; end if;
+  select * into r from public.players where nick = btrim(coalesce(p_nick, ''));
+  if not found or (r.locked_until is not null and r.locked_until > now())
+     or coalesce(p_pin, '') !~ '^[0-9]{4}$' or r.pin_hash <> crypt(p_pin, r.pin_hash) then return null; end if;
+  return r.nick;
+end $$;
+revoke all on function public.who(text, text, text) from public, anon, authenticated;
+
+create or replace function public.msg_list(p_nick text, p_pin text, p_key text default null) returns setof jsonb
+language plpgsql stable security definer set search_path = public as $$
+declare me text := public.who(p_nick, p_pin, p_key);
+begin
+  if me is null then return; end if;
+  return query select jsonb_build_object('id', id, 'title', title, 'body', body, 'meta', meta, 'read', read_at is not null, 'created_at', created_at)
+    from public.messages where to_nick = me order by created_at desc limit 200;
+end $$;
+create or replace function public.msg_read(p_nick text, p_pin text, p_key text, p_id bigint) returns boolean
+language plpgsql security definer set search_path = public as $$
+declare me text := public.who(p_nick, p_pin, p_key);
+begin
+  if me is null then return false; end if;
+  update public.messages set read_at = coalesce(read_at, now()) where id = p_id and to_nick = me;
+  return found;
+end $$;
+create or replace function public.msg_delete(p_nick text, p_pin text, p_key text, p_id bigint) returns boolean
+language plpgsql security definer set search_path = public as $$
+declare me text := public.who(p_nick, p_pin, p_key);
+begin
+  if me is null then return false; end if;
+  delete from public.messages where id = p_id and to_nick = me and read_at is not null;
+  return found;
+end $$;
+create or replace function public.push_subscribe(p_nick text, p_pin text, p_key text, p_sub jsonb) returns boolean
+language plpgsql security definer set search_path = public as $$
+declare me text := public.who(p_nick, p_pin, p_key);
+begin
+  if me is null or coalesce(p_sub->>'endpoint', '') !~ '^https://' or octet_length(p_sub::text) > 4000 then return false; end if;
+  insert into public.push_subs(endpoint, nick, sub) values (p_sub->>'endpoint', me, p_sub)
+    on conflict (endpoint) do update set nick = excluded.nick, sub = excluded.sub;
+  return true;
+end $$;
+create or replace function public.push_unsubscribe(p_endpoint text) returns boolean
+language sql security definer set search_path = public as $$
+  delete from public.push_subs where endpoint = p_endpoint returning true
+$$;
+
+-- 피드백이 들어오면 관리자 메시지함으로
+create or replace function public.fb_to_admin() returns trigger
+language plpgsql security definer set search_path = public as $$
+begin
+  insert into public.messages(to_nick, title, body, meta)
+  values ('풍산동신라면', '새 피드백이 도착했어요', coalesce(new.nick, '익명') || ': ' || left(new.body, 3000),
+          jsonb_build_object('kind', 'fb_new', 'fid', new.id, 'from', coalesce(new.nick, '익명'), 'q', new.body));
+  return new;
+end $$;
+drop trigger if exists fb_to_admin on public.feedback;
+create trigger fb_to_admin after insert on public.feedback for each row execute function public.fb_to_admin();
+
+-- 메시지가 생기면 폰 알림 보내기 (Edge Function 호출)
+create or replace function public.msg_push() returns trigger
+language plpgsql security definer set search_path = public, extensions as $$
+declare u text; s text;
+begin
+  select value into u from public.app_secrets where name = 'push_url';
+  select value into s from public.app_secrets where name = 'push_secret';
+  if u is null or u !~ '^https://' then return new; end if;
+  perform net.http_post(url := u,
+    body := jsonb_build_object('nick', new.to_nick, 'title', new.title, 'body', left(new.body, 140), 'id', new.id),
+    headers := jsonb_build_object('Content-Type', 'application/json', 'x-push-secret', s));
+  return new;
+exception when others then return new;
+end $$;
+drop trigger if exists msg_push on public.messages;
+create trigger msg_push after insert on public.messages for each row execute function public.msg_push();
+
+-- 닉네임을 바꾸면 메시지·알림·피드백도 따라가게
+create or replace function public.nick_follow() returns trigger
+language plpgsql security definer set search_path = public as $$
+begin
+  if new.nick <> old.nick then
+    update public.messages  set to_nick = new.nick where to_nick = old.nick;
+    update public.push_subs set nick = new.nick where nick = old.nick;
+    update public.feedback  set nick = new.nick where nick = old.nick;
+  end if;
+  return new;
+end $$;
+drop trigger if exists nick_follow on public.players;
+create trigger nick_follow after update of nick on public.players for each row execute function public.nick_follow();
+
+-- 관리자: 피드백 목록(번호·처리 상태 포함), 답장 보내기, 공지 보내기
+drop function if exists public.admin_feedback(text);
+create or replace function public.admin_feedback(p_key text) returns setof jsonb
+language plpgsql stable security definer set search_path = public as $$
+begin
+  if not public.admin_ok(p_key) then return; end if;
+  return query select jsonb_build_object('id', id, 'nick', nick, 'body', body, 'status', status, 'created_at', created_at)
+    from public.feedback order by created_at desc limit 500;
+end $$;
+create or replace function public.admin_reply(p_key text, p_rid text, p_fid bigint, p_changes text, p_howto text) returns text
+language plpgsql security definer set search_path = public as $$
+declare f public.feedback;
+begin
+  if not public.admin_ok(p_key) then return 'auth'; end if;
+  if exists (select 1 from public.replies_sent where rid = p_rid) then return 'dup'; end if;
+  select * into f from public.feedback where id = p_fid;
+  if not found then return 'nofb'; end if;
+  insert into public.replies_sent(rid, fid) values (p_rid, p_fid);
+  update public.feedback set status = 'done' where id = p_fid;
+  if f.nick is null or not exists (select 1 from public.players where nick = f.nick) then return 'anon'; end if;
+  insert into public.messages(to_nick, title, body, meta)
+  values (f.nick, '피드백에 대한 수정사항이 전달되었습니다', left(p_changes, 2000),
+          jsonb_build_object('kind', 'fb_reply', 'fid', p_fid, 'q', f.body, 'changes', left(p_changes, 2000), 'howto', left(coalesce(p_howto, ''), 1000)));
+  return 'sent';
+end $$;
+create or replace function public.admin_notice(p_key text, p_title text, p_body text) returns int
+language plpgsql security definer set search_path = public as $$
+declare n int;
+begin
+  if not public.admin_ok(p_key) or char_length(btrim(coalesce(p_title, ''))) = 0 then return -1; end if;
+  insert into public.messages(to_nick, title, body, meta)
+    select nick, left(btrim(p_title), 120), left(coalesce(p_body, ''), 4000), jsonb_build_object('kind', 'notice') from public.players;
+  get diagnostics n = row_count;
+  return n;
+end $$;
+
+grant execute on function public.msg_list(text, text, text) to anon, authenticated;
+grant execute on function public.msg_read(text, text, text, bigint) to anon, authenticated;
+grant execute on function public.msg_delete(text, text, text, bigint) to anon, authenticated;
+grant execute on function public.push_subscribe(text, text, text, jsonb) to anon, authenticated;
+grant execute on function public.push_unsubscribe(text) to anon, authenticated;
+grant execute on function public.admin_feedback(text) to anon, authenticated;
+grant execute on function public.admin_reply(text, text, bigint, text, text) to anon, authenticated;
+grant execute on function public.admin_notice(text, text, text) to anon, authenticated;
