@@ -548,3 +548,46 @@ end $$;
 grant execute on function public.admin_clear_notices(text) to anon, authenticated;
 grant execute on function public.admin_clear_feedback(text) to anon, authenticated;
 grant execute on function public.admin_delete_player(text, text) to anon, authenticated;
+-- ===== 공지 사진 첨부 (2026-11-06 추가) =====
+create table if not exists public.notice_imgs (
+  id         uuid primary key default gen_random_uuid(),
+  data       text not null check (char_length(data) <= 1500000),
+  created_at timestamptz not null default now()
+);
+alter table public.notice_imgs enable row level security;
+-- 관리자만 사진 올리기 (압축된 이미지 data URL)
+create or replace function public.admin_notice_img(p_key text, p_data text) returns uuid
+language plpgsql security definer set search_path = public as $$
+declare i uuid;
+begin
+  if not public.admin_ok(p_key) or p_data not like 'data:image/%' then return null; end if;
+  insert into public.notice_imgs(data) values (p_data) returning id into i;
+  return i;
+end $$;
+-- 공지 사진 보기 (추측할 수 없는 무작위 id로만 열람)
+create or replace function public.notice_img(p_id uuid) returns text
+language sql stable security definer set search_path = public as $$
+  select data from public.notice_imgs where id = p_id
+$$;
+-- 공지 보내기에 사진 목록(p_imgs) 추가
+drop function if exists public.admin_notice_to(text, text, text, text, text[]);
+create or replace function public.admin_notice_to(p_key text, p_title text, p_body text, p_to text, p_nicks text[] default null, p_imgs uuid[] default null) returns int
+language plpgsql security definer set search_path = public as $$
+declare n int;
+begin
+  if not public.admin_ok(p_key) or char_length(btrim(coalesce(p_title, ''))) = 0 then return -1; end if;
+  insert into public.messages(to_nick, title, body, meta)
+    select p.nick, left(btrim(p_title), 120), left(coalesce(p_body, ''), 4000),
+           jsonb_build_object('kind', 'notice', 'to', p_to, 'imgs', to_jsonb(coalesce(p_imgs, '{}'::uuid[])))
+    from public.players p
+    where case p_to
+      when 'all' then true
+      when 'staff' then p.nick = '풍산동신라면' or p.nick in (select nick from public.sub_keys where nick is not null)
+      when 'some' then p.nick = any(coalesce(p_nicks, '{}'::text[]))
+      else false end;
+  get diagnostics n = row_count;
+  return n;
+end $$;
+grant execute on function public.admin_notice_img(text, text) to anon, authenticated;
+grant execute on function public.notice_img(uuid) to anon, authenticated;
+grant execute on function public.admin_notice_to(text, text, text, text, text[], uuid[]) to anon, authenticated;

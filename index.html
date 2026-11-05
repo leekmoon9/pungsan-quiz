@@ -503,6 +503,18 @@ body.cap .capm{display:flex}
 
 .akb{position:absolute;z-index:5;top:calc(env(safe-area-inset-top) + 12px);right:calc(env(safe-area-inset-right) + 14px);display:flex;align-items:center;gap:5px;padding:8px 12px 8px 10px;border-radius:999px;border:1.5px solid var(--ln);background:#fffdf8;box-shadow:0 3px 0 rgba(110,90,60,.18),0 6px 14px rgba(80,60,35,.12);font:inherit;font-size:13.5px;font-weight:700;color:#5a5245;cursor:pointer;-webkit-tap-highlight-color:transparent}
 .akb svg{width:17px;height:17px}.akb:active{transform:translateY(2px);box-shadow:0 1px 0 rgba(110,90,60,.18)}
+
+.nim2{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}.nim2:empty{display:none}
+.nim2>div{position:relative;aspect-ratio:1;border-radius:10px;overflow:hidden;border:1.5px solid var(--ln);background:#fff}
+.nim2 img{width:100%;height:100%;object-fit:cover;display:block}
+.nim2 button{position:absolute;top:4px;right:4px;width:24px;height:24px;border-radius:50%;border:none;background:rgba(30,25,20,.7);color:#fff;font-size:16px;line-height:1;cursor:pointer}
+.nadd{display:flex;align-items:center;gap:8px;margin-top:10px;padding:11px 14px;border:1.5px dashed #c9bfab;border-radius:12px;background:#fffdf8;color:#5a5245;font-weight:700;font-size:14.5px;cursor:pointer}
+.nadd svg{width:20px;height:20px}.nadd small{margin-left:auto;color:#9a917f;font-weight:600;font-size:12px}
+.mgi{margin:12px 0 0;border-radius:12px;overflow:hidden;border:1.3px solid var(--ln);background:#fff;min-height:60px;display:grid;place-items:center}
+.mgi img{width:100%;display:block;cursor:zoom-in}.mgl{font-size:13px;color:#9a917f;padding:18px}
+.imz{position:fixed;inset:0;z-index:200;background:rgba(20,16,12,.88);display:grid;place-items:center;padding:calc(env(safe-area-inset-top) + 16px) 12px calc(env(safe-area-inset-bottom) + 16px)}
+.imz img{max-width:100%;max-height:100%;object-fit:contain;border-radius:6px}
+.imz button{position:absolute;top:calc(env(safe-area-inset-top) + 12px);right:14px;width:40px;height:40px;border-radius:50%;border:none;background:rgba(255,255,255,.18);color:#fff;font-size:24px}
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -679,8 +691,11 @@ async function msgOpen(id){if(!MSGS)await msgLoad();const m=(MSGS||[]).find(x=>x
  const k=m.meta&&m.meta.kind;let b='';
  if(k=='fb_reply')b=`<div class="mgs"><span>보내신 피드백</span><blockquote>${nl(m.meta.q)}</blockquote></div><div class="mgs"><span>수정한 내용</span><p>${nl(m.meta.changes)}</p></div>${m.meta.howto?`<div class="mgs"><span>확인하는 방법</span><p>${nl(m.meta.howto)}</p></div>`:''}`;
  else if(k=='fb_new')b=`<div class="mgs"><span>보낸 사람</span><p><b>${esc(m.meta.from||'익명')}</b></p></div><div class="mgs"><span>내용</span><blockquote>${nl(m.meta.q)}</blockquote></div>${OWNER?`<button class="lk" onclick="admin(1)">관리자 화면에서 보기 ›</button>`:''}`;
- else b=`<div class="mgs"><p>${nl(m.body)}</p></div>`;
- show(`<div class="card mgv"><div class="mgt">${k=='notice'?'<span class="chp" style="background:#8fb8ec">공지</span>':k=='fb_reply'?'<span class="chp" style="background:#9bd3ae">피드백 답장</span>':k=='fb_new'?'<span class="chp" style="background:#f0a35e">새 피드백</span>':''}<small>${fdt(m.created_at)}</small></div><h2>${esc(m.title)}</h2>${b}</div><div class="row"><button class="b g mgdel" onclick="msgDel(${id})">메시지 삭제</button></div>`)}
+ else b=`<div class="mgs"><p>${nl(m.body)}</p></div>${(m.meta&&m.meta.imgs||[]).map(i=>`<figure class="mgi" data-i="${esc(i)}"><span class="mgl">사진 불러오는 중…</span></figure>`).join('')}`;
+ show(`<div class="card mgv"><div class="mgt">${k=='notice'?'<span class="chp" style="background:#8fb8ec">공지</span>':k=='fb_reply'?'<span class="chp" style="background:#9bd3ae">피드백 답장</span>':k=='fb_new'?'<span class="chp" style="background:#f0a35e">새 피드백</span>':''}<small>${fdt(m.created_at)}</small></div><h2>${esc(m.title)}</h2>${b}</div><div class="row"><button class="b g mgdel" onclick="msgDel(${id})">메시지 삭제</button></div>`);mgImgs()}
+const NIMC=new Map();
+async function mgImgs(){for(const f of document.querySelectorAll('.mgi[data-i]')){const i=f.dataset.i;try{let d=NIMC.get(i);if(!d){const r=await DB.rpc('notice_img',{p_id:i});if(r.error||!r.data)throw 0;d=r.data;NIMC.set(i,d)}if(!document.body.contains(f))return;f.innerHTML=`<img src="${d}" alt="공지 사진" onclick="imgBig(this.src)">`}catch(e){f.innerHTML='<span class="mgl">사진을 불러오지 못했어요.</span>'}}}
+function imgBig(src){const w=document.createElement('div');w.className='imz';w.innerHTML=`<img src="${src}" alt=""><button aria-label="닫기">×</button>`;w.onclick=()=>w.remove();document.body.appendChild(w)}
 async function msgDel(id){if(!(await askBox('메시지를 지울까요?','지운 메시지는 다시 볼 수 없어요.','삭제')))return;
  try{if(DB){const {data,error}=await DB.rpc('msg_delete',Object.assign(whoP(),{p_id:id}));if(error||data!==true)throw 0}MSGS=(MSGS||[]).filter(x=>x.id!=id);mailBadge();soonMsg('메시지를 지웠어요.');inbox()}catch(e){soonMsg('지우지 못했어요. 다시 시도해 주세요.')}}
 async function msgDelRead(){const L=(MSGS||[]).filter(m=>m.read);if(!L.length)return;if(!(await askBox('읽은 메시지를 모두 지울까요?',`${L.length}개를 지워요. 지운 메시지는 다시 볼 수 없어요.`,'삭제')))return;
@@ -751,8 +766,12 @@ function fbCopy(){const L=FB.filter(x=>x.st!='done').slice().sort((a,b)=>a.t-b.t
  try{navigator.clipboard.writeText(t).then(ok,()=>fbCopyShow(t))}catch(e){fbCopyShow(t)}}
 function fbCopyShow(t){show(`<h2>피드백 복사</h2><p class="tag">아래 내용을 길게 눌러 모두 선택한 뒤 복사해 주세요.</p><div class="card"><textarea readonly style="min-height:50vh">${esc(t)}</textarea></div>`)}
 let NTO='all',NTS=new Set();
-function noticeForm(pre){if(pre){NTO='some';NTS=new Set([pre])}else{NTO='all';NTS=new Set()}
- show(`<h2>공지 보내기</h2><div class="ntg" role="tablist">${[['all','전체'],['staff','관리자'],['some','개인']].map(([k,l])=>`<button data-k="${k}" onclick="ntTo('${k}')">${l}</button>`).join('')}</div><div id="ntw"></div><div class="card"><input type="text" id="ntt" maxlength="60" placeholder="제목"><textarea id="ntb" maxlength="2000" placeholder="내용" style="margin-top:8px"></textarea></div><div class="row"><button class="b" id="nts" onclick="noticeSend()">보내기</button></div>`);ntTo(NTO)}
+let NIMG=[];const ICN_PIC='<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="14" rx="2.5"/><circle cx="9" cy="10" r="1.8"/><path d="M4 17l5-4.5 3.5 3 3-2.5 4.5 4" stroke-linecap="round"/></svg>';
+function nImgShrink(f){return new Promise((ok,no)=>{const u=URL.createObjectURL(f),im=new Image();im.onload=()=>{const M=1280,r=Math.min(1,M/Math.max(im.width,im.height)),c=document.createElement('canvas');c.width=Math.round(im.width*r);c.height=Math.round(im.height*r);const x=c.getContext('2d');x.fillStyle='#fff';x.fillRect(0,0,c.width,c.height);x.drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);let q=.82,d=c.toDataURL('image/jpeg',q);while(d.length>900000&&q>.4){q-=.12;d=c.toDataURL('image/jpeg',q)}ok(d)};im.onerror=()=>{URL.revokeObjectURL(u);no()};im.src=u})}
+async function nImgAdd(inp){const fs=[...inp.files];inp.value='';for(const f of fs){if(NIMG.length>=4){soonMsg('사진은 4장까지 첨부할 수 있어요.');break}try{NIMG.push(await nImgShrink(f))}catch(e){soonMsg('이 사진은 열 수 없어요.')}}nImgDraw()}
+function nImgDraw(){const w=document.getElementById('nimg');if(!w)return;w.innerHTML=NIMG.map((d,i)=>`<div><img src="${d}" alt=""><button aria-label="사진 빼기" onclick="NIMG.splice(${i},1);nImgDraw()">×</button></div>`).join('');const a=document.querySelector('.nadd');if(a)a.style.display=NIMG.length>=4?'none':''}
+function noticeForm(pre){NIMG=[];if(pre){NTO='some';NTS=new Set([pre])}else{NTO='all';NTS=new Set()}
+ show(`<h2>공지 보내기</h2><div class="ntg" role="tablist">${[['all','전체'],['staff','관리자'],['some','개인']].map(([k,l])=>`<button data-k="${k}" onclick="ntTo('${k}')">${l}</button>`).join('')}</div><div id="ntw"></div><div class="card"><input type="text" id="ntt" maxlength="60" placeholder="제목"><textarea id="ntb" maxlength="2000" placeholder="내용" style="margin-top:8px"></textarea><div class="nim2" id="nimg"></div><label class="nadd" for="nti">${ICN_PIC}<span>사진 첨부</span><small>최대 4장</small></label><input type="file" id="nti" accept="image/*" multiple hidden onchange="nImgAdd(this)"></div><div class="row"><button class="b" id="nts" onclick="noticeSend()">보내기</button></div>`);ntTo(NTO)}
 function ntTo(k){NTO=k;document.querySelectorAll('.ntg button').forEach(b=>b.classList.toggle('on',b.dataset.k==k));const w=document.getElementById('ntw');
  if(k=='all')w.innerHTML=`<p class="ntm">참여자 <b>${ADM.length}명</b> 모두에게 보내요.</p>`;
  else if(k=='staff')w.innerHTML=`<p class="ntm"><b>나와 보조 관리자</b>에게만 보내요.</p>`;
@@ -765,8 +784,10 @@ function ntBtn(){const b=document.getElementById('nts'),m=document.getElementByI
  if(m)m.innerHTML=NTS.size?`<b>${NTS.size}명</b> 선택했어요.`:'받을 사람을 눌러서 골라 주세요.';b.disabled=NTO=='some'&&!NTS.size;b.textContent=NTO=='some'&&NTS.size?`${NTS.size}명에게 보내기`:NTO=='staff'?'관리자에게 보내기':'전체에게 보내기'}
 async function noticeSend(){const t=document.getElementById('ntt').value.trim(),b=document.getElementById('ntb').value.trim();if(!t)return soonMsg('제목을 써 주세요.');
  const who=NTO=='all'?'모든 사용자에게':NTO=='staff'?'관리자에게만':(NTS.size==1?`<b>${esc([...NTS][0])}</b> 님에게`:`선택한 ${NTS.size}명에게`);
- if(!(await askBox('공지를 보낼까요?',`<b>${esc(t)}</b><br>${who} 보내져요.`,'보내기')))return;
- try{let r=await DB.rpc('admin_notice_to',{p_key:AK(),p_title:t,p_body:b,p_to:NTO,p_nicks:NTO=='some'?[...NTS]:null});
+ if(!(await askBox('공지를 보낼까요?',`<b>${esc(t)}</b>${NIMG.length?` · 사진 ${NIMG.length}장`:''}<br>${who} 보내져요.`,'보내기')))return;
+ const sb=document.getElementById('nts');if(sb){sb.disabled=true;sb.textContent=NIMG.length?'사진 올리는 중…':'보내는 중…'}
+ let ids=[];if(NIMG.length){try{for(const d of NIMG){const q=await DB.rpc('admin_notice_img',{p_key:AK(),p_data:d});if(q.error||!q.data)throw 0;ids.push(q.data)}}catch(e){if(sb)ntBtn();return soonMsg('사진을 올리지 못했어요. 「공지_사진첨부.sql」을 먼저 실행해 주세요.')}}
+ try{let r=await DB.rpc('admin_notice_to',Object.assign({p_key:AK(),p_title:t,p_body:b,p_to:NTO,p_nicks:NTO=='some'?[...NTS]:null},ids.length?{p_imgs:ids}:{}));
   if(r.error&&NTO=='all')r=await DB.rpc('admin_notice',{p_key:AK(),p_title:t,p_body:b});
   if(r.error||r.data<0)throw 0;soonMsg(`${r.data}명에게 보냈어요.`);admin()}catch(e){soonMsg('보내지 못했어요. 서버 설정을 확인해 주세요.')}}
 function wrongAna(){let h='';
