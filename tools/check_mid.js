@@ -8,5 +8,5 @@ for(const k in ECOQ){const L=ECOQ[k],M=ECOMK[k]||[];const b=L.filter(q=>!q.lv).l
   if(t=='sh'&&!(Array.isArray(q.a)&&q.m&&q.q.includes('[빈칸]'))){console.log('sh bad',k,i);bad++}
   if(!TIPS[q.g]){console.log('no tip',k,i,q.g);bad++}
   (q.e.match(/⟦(\d)⟧/g)||[]).forEach(t=>{if(+t[1]>q.o.length){console.log('tok',k,i);bad++}})})}
-for(const k in NOTE['경제']){const v=NOTE['경제'][k];v.pg.forEach(p=>{if(!fs.existsSync('/home/claude/pungsan-quiz/'+p)){console.log('missing',p);bad++}});v.b.forEach(b=>{if(!['h','h2','p','ul','key','def','vs','flow','tbl','tip','img'].includes(b[0])){console.log('blk',k,b[0]);bad++}})}
+for(const k in NOTE['경제']){const v=NOTE['경제'][k];v.pg.forEach(p=>{if(!fs.existsSync('/home/claude/pungsan-quiz/'+p)){console.log('missing',p);bad++}});v.b.forEach(b=>{if(!['h','h2','p','ul','key','def','vs','flow','tbl','tip','img','fig','figs'].includes(b[0])){console.log('blk',k,b[0]);bad++}})}
 console.log('bad',bad);

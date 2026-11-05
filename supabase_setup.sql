@@ -509,3 +509,42 @@ begin
   return n;
 end $$;
 grant execute on function public.admin_notice_to(text, text, text, text, text[]) to anon, authenticated;
+-- ===== 초기화 메뉴 분리 (2026-11-06 추가) =====
+-- 공지 정보 초기화: 모든 사람의 메시지함에서 공지를 지움
+create or replace function public.admin_clear_notices(p_key text) returns int
+language plpgsql security definer set search_path = public as $$
+declare n int;
+begin
+  if not public.admin_ok(p_key) then return -1; end if;
+  delete from public.messages where meta->>'kind' = 'notice';
+  get diagnostics n = row_count;
+  return n;
+end $$;
+-- 피드백 정보 초기화: 받은 피드백과 답장 기록을 모두 지움
+create or replace function public.admin_clear_feedback(p_key text) returns int
+language plpgsql security definer set search_path = public as $$
+declare n int;
+begin
+  if not public.admin_ok(p_key) then return -1; end if;
+  delete from public.feedback where true;
+  get diagnostics n = row_count;
+  delete from public.replies_sent where true;
+  return n;
+end $$;
+-- 개인별 계정 삭제: 계정, 메시지함, 폰 알림 구독을 지움 (본인 관리자 계정은 삭제 불가)
+create or replace function public.admin_delete_player(p_key text, p_nick text) returns int
+language plpgsql security definer set search_path = public as $$
+declare n int;
+begin
+  if not public.admin_ok(p_key) then return -1; end if;
+  if p_nick = '풍산동신라면' then return -2; end if;
+  delete from public.push_subs where nick = p_nick;
+  delete from public.messages where to_nick = p_nick;
+  update public.sub_keys set nick = null where nick = p_nick;
+  delete from public.players where nick = p_nick;
+  get diagnostics n = row_count;
+  return n;
+end $$;
+grant execute on function public.admin_clear_notices(text) to anon, authenticated;
+grant execute on function public.admin_clear_feedback(text) to anon, authenticated;
+grant execute on function public.admin_delete_player(text, text) to anon, authenticated;
