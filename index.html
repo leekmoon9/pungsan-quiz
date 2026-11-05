@@ -492,6 +492,14 @@ body.cap .capm{display:flex}
 .nkey .nla,.ntip .nla,.nvs .nla{display:flex;align-items:flex-start}.nkey .nla>span,.ntip .nla>span,.nvs .nla>span{flex:1;min-width:0}
 .nkey .nex,.ntip .nex,.nvs .nex{margin-top:5px}
 .nkey p,.ntip p{line-height:1.75}
+
+.dlt{display:flex;justify-content:space-between;align-items:center;margin:10px 2px 0;font-size:13px;color:#8a8170;font-weight:700}
+.dlt button{border:none;background:none;font:inherit;font-size:13px;color:#b4443a;font-weight:700;cursor:pointer;padding:4px 2px}.dlt button:disabled{opacity:.4}
+.dll button{justify-content:flex-start}.dll button small{margin-left:auto}
+.dck{flex:none;width:20px;height:20px;border:2px solid #c9bfab;border-radius:5px;background:#fff;position:relative}
+.dll button.on .dck{background:#d9776b;border-color:#c0574b}
+.dll button.on .dck::after{content:'';position:absolute;inset:2px;background:#fff;-webkit-mask:var(--ck) center/contain no-repeat;mask:var(--ck) center/contain no-repeat}
+.dlr{gap:10px}.dlr .b{flex:1}
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -994,14 +1002,21 @@ async function rsDo(k){if(!OWNER)return;rsToggle(false);
  const [t,m,f]=k=='nt'?['공지 정보를 초기화할까요?','모든 사람의 메시지함에서 <b>보낸 공지</b>가 지워져요. 되돌릴 수 없어요.','admin_clear_notices']:['피드백 정보를 초기화할까요?','받은 <b>피드백</b>과 답장 기록이 모두 지워져요. 되돌릴 수 없어요.','admin_clear_feedback'];
  if(!(await askBox(t,m,'초기화')))return;
  try{const r=await DB.rpc(f,{p_key:AK()});if(r.error||r.data<0)throw 0;if(k=='fb'){FB=[];admLoad.ok=false}soonMsg(`${r.data}개를 지웠어요.`);rsToggle(false)}catch(e){soonMsg('초기화하지 못했어요. 서버 설정을 확인해 주세요.')}}
-let DLS=null;
-async function delPage(){if(!OWNER)return;show('<h2>개인별 계정 삭제</h2><p class="tag">불러오는 중…</p>');if(!(await admLoad(true)))return show('<h2>개인별 계정 삭제</h2><p>불러오지 못했어요.</p>');DLS=null;
- show(`<h2>개인별 계정 삭제</h2><p class="tag">삭제할 계정을 하나 골라 주세요. 기록과 메시지함이 함께 지워져요.</p><div class="card ntp"><input type="search" id="dlq" placeholder="닉네임 검색" oninput="delList()"><div class="dll" id="dll"></div></div><div class="row"><button class="b dlb" id="dlb" disabled onclick="delGo()">계정을 골라 주세요</button></div>`);delList()}
-function delList(){const q=((document.getElementById('dlq')||{}).value||'').trim(),L=ADM.filter(r=>r.nick&&r.nick!=ADM_NICK&&r.nick.includes(q)).sort((a,b)=>b.t-a.t);
- document.getElementById('dll').innerHTML=L.length?L.map(r=>`<button class="${DLS==r.nick?'on':''}" onclick="DLS=decodeURIComponent('${encodeURIComponent(r.nick)}');delList()"><b>${esc(r.nick)}</b><small>최근 활동 ${r.t?fd(r.t):'-'}</small></button>`).join(''):'<p class="mut" style="font-size:14px;margin:8px 2px">계정이 없어요.</p>';
- const b=document.getElementById('dlb');b.disabled=!DLS;b.innerHTML=DLS?`<b>${esc(DLS)}</b> 계정 삭제`:'계정을 골라 주세요'}
-async function delGo(){if(!DLS)return;if(!(await askBox('계정을 삭제할까요?',`<b>${esc(DLS)}</b> 님의 계정, 풀이 기록, 메시지함이 모두 지워져요. 되돌릴 수 없어요.`,'삭제')))return;
- try{const r=await DB.rpc('admin_delete_player',{p_key:AK(),p_nick:DLS});if(r.error||r.data<0)throw 0;soonMsg(r.data?`${DLS} 님 계정을 삭제했어요.`:'이미 없는 계정이에요.');ADM=ADM.filter(x=>x.nick!=DLS);DLS=null;delList()}catch(e){soonMsg('삭제하지 못했어요. 서버 설정을 확인해 주세요.')}}
+let DLS=new Set();
+async function delPage(){if(!OWNER)return;show('<h2>개인별 계정 삭제</h2><p class="tag">불러오는 중…</p>');if(!(await admLoad(true)))return show('<h2>개인별 계정 삭제</h2><p>불러오지 못했어요.</p>');DLS=new Set();
+ show(`<h2>개인별 계정 삭제</h2><p class="tag">삭제할 계정을 눌러서 골라 주세요. 여러 명을 고를 수 있고, 기록과 메시지함이 함께 지워져요.</p><div class="card ntp"><input type="search" id="dlq" placeholder="닉네임 검색" oninput="delList()"><div class="dlt"><span id="dln">0명 선택</span><button onclick="delAll()" id="dla">보이는 계정 모두 선택</button></div><div class="dll" id="dll"></div></div><div class="row dlr"><button class="b g" onclick="goBack()">취소</button><button class="b dlb" id="dlb" disabled onclick="delGo()">계정을 골라 주세요</button></div>`);delList()}
+function delVis(){const q=((document.getElementById('dlq')||{}).value||'').trim();return ADM.filter(r=>r.nick&&r.nick!=ADM_NICK&&r.nick.includes(q)).sort((a,b)=>b.t-a.t)}
+function delList(){const L=delVis();
+ document.getElementById('dll').innerHTML=L.length?L.map(r=>`<button class="${DLS.has(r.nick)?'on':''}" aria-pressed="${DLS.has(r.nick)}" onclick="delPick(decodeURIComponent('${encodeURIComponent(r.nick)}'))"><i class="dck"></i><b>${esc(r.nick)}</b><small>최근 활동 ${r.t?fd(r.t):'-'}</small></button>`).join(''):'<p class="mut" style="font-size:14px;margin:8px 2px">계정이 없어요.</p>';
+ const n=DLS.size,b=document.getElementById('dlb');b.disabled=!n;b.textContent=n?`${n}명 계정 삭제`:'계정을 골라 주세요';document.getElementById('dln').textContent=`${n}명 선택`;
+ const a=document.getElementById('dla');const all=L.length&&L.every(r=>DLS.has(r.nick));a.textContent=all?'모두 선택 해제':'보이는 계정 모두 선택';a.disabled=!L.length}
+function delPick(n){DLS.has(n)?DLS.delete(n):DLS.add(n);delList()}
+function delAll(){const L=delVis(),all=L.every(r=>DLS.has(r.nick));L.forEach(r=>all?DLS.delete(r.nick):DLS.add(r.nick));delList()}
+async function delGo(){const L=[...DLS];if(!L.length)return;const nm=L.length==1?`<b>${esc(L[0])}</b> 님의`:`<b>${L.slice(0,3).map(esc).join(', ')}</b>${L.length>3?` 외 ${L.length-3}명`:''}, 모두 ${L.length}명의`;
+ if(!(await askBox(`${L.length}명의 계정을 삭제할까요?`,`${nm} 계정, 풀이 기록, 메시지함이 모두 지워져요. 되돌릴 수 없어요.`,'삭제')))return;
+ const b=document.getElementById('dlb');if(b){b.disabled=true;b.textContent='삭제하는 중…'}let ok=0,fail=0;
+ for(const n of L){try{const r=await DB.rpc('admin_delete_player',{p_key:AK(),p_nick:n});if(r.error||r.data<0)throw 0;ok++;ADM=ADM.filter(x=>x.nick!=n);DLS.delete(n)}catch(e){fail++}}
+ soonMsg(fail?(ok?`${ok}명은 삭제했고 ${fail}명은 실패했어요.`:'삭제하지 못했어요. 서버 설정을 확인해 주세요.'):`${ok}명의 계정을 삭제했어요.`);if(document.getElementById('dll'))delList()}
 async function myReset(){if(!OWNER)return;if(!(await askBox('내 기록을 초기화할까요?','풀이 기록, 오답노트, 공부 시간이 모두 지워집니다.','초기화')))return;
  R={_dv:DV,_t:{},_fx:{}};ls('rec:'+NICK,JSON.stringify(R));try{sessionStorage.removeItem(KEY+'ss')}catch(e){}await sync();soonMsg('초기화했어요.');subjects()}
 
@@ -1286,6 +1301,7 @@ function go2(r){
  if(k=='inbox')return v?msgOpen(+v):inbox();
  if(k=='guide')return guide();
  if(k=='admin'&&v=='n'&&OWNER)return noticeForm();
+ if(k=='admin'&&v=='d'&&OWNER)return delPage();
  if(k=='stats')return allStats();
  if(k=='wrong'&&v&&CUR[v])return wrongPage(v);
  if(k=='mock'&&v&&MOCK[v])return mockPage(v);
@@ -1305,7 +1321,7 @@ window.addEventListener('popstate',e=>{if(location.hash=='#admin')return;const s
  HI=s.i;if(s.r==='__x'){askExit();return}if(!NICK){history.back();return}goR(s.r)});
 const H=(f,mk)=>function(...a){setR(mk(...a));return f.apply(this,a)};
 home=H(home,()=>'');subjects=H(subjects,()=>'subjects');
-subj=H(subj,n=>'subj/'+n);socPage=H(socPage,n=>NEWS(n)?'prob/'+n:'subj/'+n);noteList=H(noteList,n=>'notes/'+n);noteView=H(noteView,(n,u,k)=>'note/'+n+'/'+u+'/'+k);inbox=H(inbox,()=>'inbox');guide=H(guide,()=>'guide');msgOpen=H(msgOpen,id=>'inbox/'+id);noticeForm=H(noticeForm,()=>'admin/n');allStats=H(allStats,()=>'stats');fbForm=H(fbForm,f=>'fb/'+(f||0));
+subj=H(subj,n=>'subj/'+n);socPage=H(socPage,n=>NEWS(n)?'prob/'+n:'subj/'+n);noteList=H(noteList,n=>'notes/'+n);noteView=H(noteView,(n,u,k)=>'note/'+n+'/'+u+'/'+k);inbox=H(inbox,()=>'inbox');guide=H(guide,()=>'guide');msgOpen=H(msgOpen,id=>'inbox/'+id);noticeForm=H(noticeForm,()=>'admin/n');delPage=H(delPage,()=>'admin/d');allStats=H(allStats,()=>'stats');fbForm=H(fbForm,f=>'fb/'+(f||0));
 admin=H(admin,()=>'admin');adminOne=H(adminOne,n=>'admin/u/'+n);fbTypes=H(fbTypes,()=>'admin/t');fbType=H(fbType,k=>'admin/t/'+k);fbPeople=H(fbPeople,()=>'admin/p');fbPerson=H(fbPerson,n=>'admin/p/'+n);
 wrongPage=H(wrongPage,n=>'wrong/'+n);mockPage=H(mockPage,n=>'mock/'+n);profile=H(profile,()=>'profile');cal=H(cal,()=>'cal');pfNick=H(pfNick,()=>'profile/nick');pfPin=H(pfPin,()=>'profile/pin');
 quiz=(f=>function(){setR('quiz');const x=f.apply(this,arguments);saveSS();return x})(quiz);
