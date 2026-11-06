@@ -175,6 +175,9 @@ body.hasbk .fbw h2:first-child{padding-left:0}
 .mgs{margin:0 0 14px}.mgs>span{display:block;font-size:12.5px;font-weight:800;color:var(--mut);margin-bottom:4px;letter-spacing:.2px}
 .mgs p{margin:0;line-height:1.65;text-align:justify}.mgs blockquote{margin:0;padding:10px 12px;border-left:4px solid #e0d2b8;background:color-mix(in srgb,#e0d2b8 22%,transparent);border-radius:0 10px 10px 0;line-height:1.6}
 #app .b.mgdel{color:#a3392f}
+.mgk{margin:0 0 12px;padding:12px 13px 13px;border-radius:12px;border:1.5px solid color-mix(in srgb,var(--hc) 45%,var(--ln));border-left:5px solid var(--hc);background:color-mix(in srgb,var(--hc) 10%,#fffdf8)}
+.mgkh{display:flex;align-items:center;gap:9px;margin-bottom:8px}.mgkh .hbi{width:28px;height:28px;border-radius:8px}.mgkh .hbi svg{width:17px;height:17px}.mgkh b{font-size:14.5px}
+.mgk p{margin:0;line-height:1.65;word-break:keep-all;overflow-wrap:anywhere}.mgk.q p{color:#5a5246}
 #app .mgv h2{background:none;word-break:keep-all;margin-left:0;padding:0}
 .admw:has(.admb) .mlb{width:40px}.admw:has(.admb) .b.admb{padding:8px 12px}
 .nti svg{width:64px;height:64px;display:block;margin:0 auto 10px}
@@ -801,10 +804,12 @@ async function inbox(){const draw=()=>{if(CURR!='inbox')return;const L=MSGS||[],
   if(rd)h+=`<div class="row"><button class="b g" onclick="msgDelRead()">읽은 메시지 모두 지우기 (${rd}개)</button></div>`;
   show(h,'inbox')};
  draw();if(DB&&NICK){await msgLoad();draw()}}
+const ICN_OK2='<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',ICN_EYE='<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M2.5 12s3.5-6.5 9.5-6.5S21.5 12 21.5 12s-3.5 6.5-9.5 6.5S2.5 12 2.5 12z"/><circle cx="12" cy="12" r="2.8"/></svg>';
+const mgK=(c,ic,lab,t,q)=>`<div class="mgk${q?' q':''}" style="--hc:${c}"><div class="mgkh"><span class="hbi">${ic}</span><b>${lab}</b></div><p>${nl(t||'')}</p></div>`;
 async function msgOpen(id){if(!MSGS)await msgLoad();const m=(MSGS||[]).find(x=>x.id==id);if(!m){soonMsg('지워진 메시지예요.');return inbox()}
  if(!m.read){m.read=true;mailBadge();if(DB)DB.rpc('msg_read',Object.assign(whoP(),{p_id:id})).then(()=>{},()=>{})}
  const k=m.meta&&m.meta.kind;let b='';
- if(k=='fb_reply')b=`<div class="mgs"><span>보내신 피드백</span><blockquote>${nl(m.meta.q)}</blockquote></div><div class="mgs"><span>${m.meta.answer?'답장':'수정한 내용'}</span><p>${nl(m.meta.answer||m.meta.changes)}</p></div>${m.meta.howto?`<div class="mgs"><span>확인하는 방법</span><p>${nl(m.meta.howto)}</p></div>`:''}`;
+ if(k=='fb_reply')b=mgK('#c9bfae',HB_FB,'보내신 피드백',m.meta.q,1)+mgK('#9bd3ae',ICN_OK2,m.meta.answer?'답장':'수정한 내용',m.meta.answer||m.meta.changes)+(m.meta.howto?mgK('#8fb8ec',ICN_EYE,'확인하는 방법',m.meta.howto):'');
  else if(k=='fb_new')b=`<div class="mgs"><span>보낸 사람</span><p><b>${esc(m.meta.from||'익명')}</b></p></div><div class="mgs"><span>내용</span><blockquote>${nl(m.meta.q)}</blockquote></div>${OWNER?`<button class="lk" onclick="admin(1)">관리자 화면에서 보기 ›</button>`:''}`;
  else if(k=='post')b=`<button class="b pgo" onclick="postView(${+m.meta.post||0})">공지 보러 가기 ›</button>`;
  else b=`<div class="mgs"><p>${nl(m.body)}</p></div>${(m.meta&&m.meta.imgs||[]).map(i=>`<figure class="mgi" data-i="${esc(i)}"><span class="mgl">사진 불러오는 중…</span></figure>`).join('')}`;
@@ -1517,7 +1522,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>프로필 보기</h2><p class="tag">비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v54';
+const APPV='v55';
 function profile(){if(ADMINMODE||SUBMODE)PFOK=true;if(!PFOK)return pfGate();
  show(`<h2>내 프로필</h2>
  <div class="card pf"><div class="pr"><span>닉네임</span><b>${esc(NICK)}</b>${ADMINMODE||SUBMODE?`<span class="mut" style="font-size:13px">${SUBMODE?'보조 관리자':'관리자'} 고정</span>`:'<button class="lk" onclick="pfNick()">변경하기</button>'}</div>
