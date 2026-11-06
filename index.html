@@ -793,9 +793,10 @@ const SUBJ=[[['독서와|작문','b',1],['영어','r'],['중국어|회화','t'],
 const SECN=['언어 영역','수리 영역','사회 영역','과학 영역'];
 const COMMON=['독서와|작문','영어','미적분'];
 const selOK=()=>Array.isArray(R._sel);
-function selRe(){if(document.body.classList.contains('selg')&&selOK()){SELT=null;document.body.classList.remove('selg');subjects()}}
+let SELF=false;
+function selRe(){if(SELF&&CURR=='sel'&&selOK()){SELF=false;SELT=null;document.body.classList.remove('selg');subjects()}}
 let SELT=null;
-function pickSel(){if(!SELT)SELT=new Set(Array.isArray(R._sel)?R._sel:[]);const first=!Array.isArray(R._sel);setTimeout(()=>document.body.classList.toggle('selg',first));
+function pickSel(){if(!SELT)SELT=new Set(Array.isArray(R._sel)?R._sel:[]);const first=!Array.isArray(R._sel);SELF=first;document.body.classList.toggle('selg',first);
  let h=`<h2>선택과목 고르기</h2><p class="tag">${first?'처음 한 번만 하면 돼요. ':''}지금 듣고 있는 선택과목을 모두 골라 주세요.<br>공통과목(독서와 작문 · 영어 · 미적분)은 자동으로 들어가요.</p>`;
  SUBJ.forEach((row,ri)=>{const L=row.filter(([n])=>!COMMON.includes(n));if(!L.length)return;h+=`<h3 class="sec">${SECN[ri]}</h3><div class="slg">`+L.map(([n,c])=>`<button class="slc${SELT.has(n)?' on':''}" style="--sc:${SC[c]}" data-n="${encodeURIComponent(n)}" onclick="selTog(this)"><i>${ICN_OK2}</i><b>${n.split('|').join(' ')}</b></button>`).join('')+`</div>`});
  h+=`<div class="slbar"><button class="b" id="sls" ${SELT.size?'':'disabled'} onclick="selSave()">${SELT.size?`선택 완료 · ${SELT.size}과목`:'선택과목을 골라 주세요'}</button></div>`;show(h)}
@@ -1255,7 +1256,7 @@ const mkTot=n=>MOCK[n]?MOCK[n].filter((_,r)=>mkDone(n,r)).length:0;
 const mkNudge=n=>{const t=mkTot(n);return t>=3&&+(ls('mkseen:'+n)||0)<t};
 function mockGoH(n){const HX=mkHx(n),r=HX.find(i=>!mkDone(n,i));if(r===undefined)return mockPage(n);mockGo(n,r)}
 function mockCard(n,col){const has=!!MOCK[n],op=has&&mkOpen(n),c=mkCnt(n),N=mkN(n),HX=mkHx(n),hc=HX.filter(r=>mkDone(n,r)).length,rt=has?mkRate(n):null,wr=has?mkAll(n).filter(q=>R[q.id]&&!R[q.id].ok&&isUnf(q)).length:0,nd=has&&mkNudge(n);
- let h=`<div class="mkw${op?'':' mklk'}" style="--uc:${col}"><button class="lcb mkc${sDone(n)?' cpl':''}" onclick="mockGo('${n}')"${op?'':' tabindex="-1"'}>${ICN_EXAM}<span><b>${c>=N?'모의고사 완료':`모의고사 · ${c+1}회`}</b><span class="mkd">${Array.from({length:N},(_,r)=>`<i class="${mkDone(n,r)?'on':''}"></i>`).join('')}</span></span></button>`;
+ let h=`<div class="mkw${op?'':' mklk'}" style="--uc:${col}"><button class="lcb mkc${sDone(n)?' cpl':''}" onclick="mockGo('${n}')"${op?'':' tabindex="-1"'}>${ICN_EXAM}<span><b>${c>=N?'모의고사 완료':`모의고사 · ${c+1}회`}</b><span class="mkd">${Array.from({length:N},(_,r)=>`<i class="${has&&MOCK[n][r]&&mkDone(n,r)?'on':''}"></i>`).join('')}</span></span></button>`;
  if(HX.length)h+=`<button class="lcb mkc mkch${hc>=HX.length?' cpl':''}" onclick="mockGoH('${n}')"${op?'':' tabindex="-1"'}>${ICN_EXAM}<span><b>${hc>=HX.length?'고난도 모의고사 완료':`고난도 모의고사 · ${hc+1}회`}</b><span class="mkd">${HX.map(r=>`<i class="${mkDone(n,r)?'on':''}"></i>`).join('')}</span></span></button>`;
  h+=`<button class="mks${nd?' nud':''}" onclick="mockPage('${n}')">${ICN_MST}<span><b>모의고사 통계${nd?'<i class="mkdot">약점 분석 도착</i>':''}</b></span></button>`;
  h+=op?'':`<div class="mkov" onclick="mockGo('${n}')"><span class="mklc">${LOCK.replace('lki','')}</span><b>${has?'문제 풀이 완료 시 잠금 해제':'모의고사 준비 중'}</b></div>`;
@@ -1570,7 +1571,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>프로필 보기</h2><p class="tag">비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v62';
+const APPV='v63';
 function profile(){if(NICK&&!selOK())return pickSel();if(ADMINMODE||SUBMODE)PFOK=true;if(!PFOK)return pfGate();
  show(`<h2>내 프로필</h2>
  <div class="card pf"><div class="pr"><span>닉네임</span><b>${esc(NICK)}</b>${ADMINMODE||SUBMODE?`<span class="mut" style="font-size:13px">${SUBMODE?'보조 관리자':'관리자'} 고정</span>`:'<button class="lk" onclick="pfNick()">변경하기</button>'}</div>
