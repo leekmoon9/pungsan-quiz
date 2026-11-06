@@ -715,9 +715,9 @@ async function subSetNick(){const v=document.getElementById('snk').value.trim(),
   st.innerHTML=`<span class="no-t">${data=='taken'?'이미 있는 닉네임이에요. 다른 닉네임을 써 주세요.':data=='bad'?'닉네임은 1~12자로 써 주세요.':'링크를 다시 확인해 주세요.'}</span>`}catch(e){st.innerHTML='<span class="no-t">서버에 연결되지 않았어요. 잠시 후 다시 해 주세요.</span>'}
  b.disabled=false;b.textContent='시작하기'}
 async function subBoot(FRESH){SUBMODE=true;PIN='';NICK=ls('subnick')||'';
- if(NICK){try{R=okDV(JSON.parse(ls('rec:'+NICK)))}catch(e){R={}}if(FRESH&&!/^inbox/.test(curR()))home();else goR(curR());subLoad();return}
- const r=await subLoad();if(r=='nick')return subNickPage();if(r=='ok')return home();if(r=='off'){show('<div class="fbw"><h2>보조 관리자</h2><p class="tag fbd">서버에 연결되지 않았어요.<br>인터넷을 확인하고 다시 열어 주세요.</p></div>')}}
-async function adminLoad(){if(!DB)return;try{const {data,error}=await DB.rpc('admin_me',{p_key:AK()});if(error)return;if(!data){ls('ak',null);OWNER=false;ADMINMODE=false;NICK='';ls('last',null);home();soonMsg('관리자 링크가 맞지 않아요.');return}const srv=okDV(data.data);R=(R._dv===DV)?mrg(srv,R):srv;R._dv=DV;ls('rec:'+NICK,JSON.stringify(R));sync()}catch(e){};sendReplies()}
+ if(NICK){try{R=okDV(JSON.parse(ls('rec:'+NICK)))}catch(e){R={}}if(!selOK())pickSel();else if(FRESH&&!/^inbox/.test(curR()))home();else goR(curR());subLoad().then(selRe);return}
+ const r=await subLoad();if(r=='nick')return subNickPage();if(r=='ok')return selOK()?home():pickSel();if(r=='off'){show('<div class="fbw"><h2>보조 관리자</h2><p class="tag fbd">서버에 연결되지 않았어요.<br>인터넷을 확인하고 다시 열어 주세요.</p></div>')}}
+async function adminLoad(){if(!DB)return;try{const {data,error}=await DB.rpc('admin_me',{p_key:AK()});if(error)return;if(!data){ls('ak',null);OWNER=false;ADMINMODE=false;NICK='';ls('last',null);home();soonMsg('관리자 링크가 맞지 않아요.');return}const srv=okDV(data.data);R=(R._dv===DV)?mrg(srv,R):srv;R._dv=DV;ls('rec:'+NICK,JSON.stringify(R));sync();selRe()}catch(e){};sendReplies()}
 function adminOn(){ADMINMODE=true;NICK=ADM_NICK;PIN='';ls('last',ADM_NICK);ls('pin',null);try{R=JSON.parse(ls('rec:'+NICK))||{}}catch(e){R={}}if(R._dv!==DV)R={}}
 async function enter(){if(SUBMODE){const go=document.getElementById('go');if(go){go.disabled=true;go.textContent='확인 중…'}await subLoad();REPL=true;return subjects()}if(ADMINMODE){const go=document.getElementById('go');if(go){go.disabled=true;go.textContent='확인 중…'}await adminLoad();REPL=true;return subjects()}const lk=lastNick(),el=document.getElementById('nk'),pe=document.getElementById('pn');
  const v=(lk||(el?el.value:'')).trim(),p=lk?ls('pin'):(pe?pe.value.trim():'');if(!v)return;
@@ -792,7 +792,8 @@ function animBars(){setTimeout(()=>document.querySelectorAll('[data-w]').forEach
 const SUBJ=[[['독서와|작문','b',1],['영어','r'],['중국어|회화','t'],['일본어|회화','j']],[['미적분','y'],['기하','y']],[['정치','g'],['경제','g'],['동아시아|역사기행','g'],['현대사회와|윤리','g'],['한국지리|탐구','g']],[['세포와|물질대사','p'],['물질과|에너지','p'],['역학과|에너지','p'],['행성우주|과학','p']]];
 const SECN=['언어 영역','수리 영역','사회 영역','과학 영역'];
 const COMMON=['독서와|작문','영어','미적분'];
-const selOK=()=>ADMINMODE||SUBMODE||Array.isArray(R._sel);
+const selOK=()=>Array.isArray(R._sel);
+function selRe(){if(document.body.classList.contains('selg')&&selOK()){SELT=null;document.body.classList.remove('selg');subjects()}}
 let SELT=null;
 function pickSel(){if(!SELT)SELT=new Set(Array.isArray(R._sel)?R._sel:[]);const first=!Array.isArray(R._sel);setTimeout(()=>document.body.classList.toggle('selg',first));
  let h=`<h2>선택과목 고르기</h2><p class="tag">${first?'처음 한 번만 하면 돼요. ':''}지금 듣고 있는 선택과목을 모두 골라 주세요.<br>공통과목(독서와 작문 · 영어 · 미적분)은 자동으로 들어가요.</p>`;
@@ -1334,7 +1335,7 @@ async function myFill(){if(!OWNER)return;if(!(await askBox('내 진행도를 모
  let c=0;R._nv=R._nv||{};R._nd=R._nd||{};SUBJ.flat().forEach(([n])=>{if(!CUR[n])return;socQ(n).concat(mkAll(n)).forEach(q=>{R[q.id]={ok:1};c++});R._nv[n]=R._nv[n]||{};CUR[n].forEach((U,u)=>{R._nd[n+'|'+u]=1;U.m.forEach((_,k)=>{R._nv[n][u+'-'+k]=1})})});
  R._fx={};try{sessionStorage.removeItem(KEY+'ss')}catch(e){}save();await sync();soonMsg(`${c}문제를 완료 처리했어요.`);profile()}
 async function myReset(){if(!OWNER)return;if(!(await askBox('내 기록을 초기화할까요?','풀이 기록, 오답노트, 공부 시간이 모두 지워집니다.','초기화')))return;
- R={_dv:DV,_t:{},_fx:{}};ls('rec:'+NICK,JSON.stringify(R));try{sessionStorage.removeItem(KEY+'ss')}catch(e){}await sync();soonMsg('초기화했어요.');profile()}
+ R={_dv:DV,_t:{},_fx:{}};ls('rec:'+NICK,JSON.stringify(R));try{sessionStorage.removeItem(KEY+'ss')}catch(e){}await sync();SELT=null;soonMsg('초기화했어요. 선택과목을 다시 골라 주세요.');pickSel()}
 
 // ---- 앱 설치 유도 ----
 let DP=null;
@@ -1568,7 +1569,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>프로필 보기</h2><p class="tag">비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v60';
+const APPV='v61';
 function profile(){if(NICK&&!selOK())return pickSel();if(ADMINMODE||SUBMODE)PFOK=true;if(!PFOK)return pfGate();
  show(`<h2>내 프로필</h2>
  <div class="card pf"><div class="pr"><span>닉네임</span><b>${esc(NICK)}</b>${ADMINMODE||SUBMODE?`<span class="mut" style="font-size:13px">${SUBMODE?'보조 관리자':'관리자'} 고정</span>`:'<button class="lk" onclick="pfNick()">변경하기</button>'}</div>
@@ -1721,13 +1722,13 @@ async function boot(){{const m=location.hash.match(/^#s=([A-Za-z0-9]{16,64})$/);
  await chkAdmin();if(CWM)cwArm();
  if(OWNER||SK())setMan();
  if(!OWNER&&SK())return subBoot(FRESH);
- if(OWNER){adminOn();if(FRESH&&!/^inbox/.test(curR()))home();else goR(curR());adminLoad();return}
+ if(OWNER){adminOn();if(!selOK())pickSel();else if(FRESH&&!/^inbox/.test(curR()))home();else goR(curR());adminLoad();return}
  const lk=lastNick(),pn=ls('pin');
  if(!lk||!/^\d{4}$/.test(pn)){chkAdmin();return home()}
  NICK=lk;PIN=pn;try{R=okDV(JSON.parse(ls('rec:'+lk)))}catch(e){R={}}
  if(!selOK())pickSel();else if(FRESH&&!/^inbox/.test(curR()))home();else goR(curR());
  if(DB){try{const {data,error}=await DB.rpc('player_login',{p_nick:lk,p_pin:pn});if(!error&&data){
-  if(data.status=='ok'||data.status=='new'){const loc=R;R=mrg(okDV(data.data),loc);R._dv=DV;ls('rec:'+NICK,JSON.stringify(R));if(Object.keys(loc).length)sync();if(document.body.classList.contains('selg')&&selOK()){SELT=null;document.body.classList.remove('selg');subjects()}}
+  if(data.status=='ok'||data.status=='new'){const loc=R;R=mrg(okDV(data.data),loc);R._dv=DV;ls('rec:'+NICK,JSON.stringify(R));if(Object.keys(loc).length)sync();selRe()}
   else if(data.status=='wrong'){ls('last',null);ls('pin',null);NICK='';PIN='';REPL=true;home();soonMsg('비밀번호가 바뀌어 다시 입력해야 해요.')}}}catch(e){}}}
 
 if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(r=>r.update()).catch(()=>{}));
