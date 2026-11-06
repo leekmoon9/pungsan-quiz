@@ -802,14 +802,15 @@ function selTog(el){const n=decodeURIComponent(el.dataset.n);SELT.has(n)?SELT.de
 function selSave(){if(!SELT||!SELT.size)return;const first=!Array.isArray(R._sel);R._sel=SUBJ.flat().map(x=>x[0]).filter(n=>SELT.has(n));SELT=null;document.body.classList.remove('selg');save();soonMsg(first?'선택과목을 저장했어요.':'선택과목을 바꿨어요.');subjects()}
 function sgCard(n,c,o){if(COVER[n])return bk(n,c,o);return `<div class="card pc" style="margin:0;padding:0;overflow:hidden;text-align:center;background:var(--bg);aspect-ratio:6/5;display:flex;flex-direction:column" onclick="subj('${n}')"><div style="position:absolute;top:0;left:0;right:0;pointer-events:none;height:34px;background:linear-gradient(to bottom,${SC[c]} 0,${SC[c]} 18%,transparent 100%)"></div><div style="flex:1;display:flex;align-items:center;justify-content:center;padding:4px;line-height:1.3;font-weight:600;white-space:nowrap" class="sl">${n.split('|').join('<br>')}</div></div>`}
 let SGMORE=false;
+function sgMore(b){SGMORE=!SGMORE;const w=document.getElementById('sgm');if(w)w.hidden=!SGMORE;b.classList.toggle('on',SGMORE);const c=b.querySelector('.chev');if(c)c.textContent=SGMORE?'⌃':'⌄';if(SGMORE&&typeof animBars=='function')animBars()}
 const SC={y:'#f2cf6b',b:'#8fb8ec',r:'#ee9a9a',t:'#93d3d8',j:'#c9b6ec',g:'#9bd3ae',p:'#f1a9c8'};
 function subjects(){if(NICK&&!selOK())return pickSel();let h=`<div class="hd" style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px"><div><h2>학습하기</h2></div><span class="admw"><button class="b g s admb gdb2" onclick="guide()">사용법</button><button class="b g s admb gdb2 ntb" onclick="board()">공지<span class="ntd" hidden></span></button>${mailBtn()}<button class="pfb" aria-label="내 프로필" onclick="profile()">${PSVG}</button></span></div><div class="hd2${(OWNER||SUBMODE)&&DB?' ha':''}"><p class="tag"><b>${esc(NICK)}</b> 님</p>${OWNER&&DB?'<span class="adm2"><span class="rsw"><button class="b g s admb rsb" id="rsbt" aria-expanded="false" aria-haspopup="menu" onclick="rsToggle()">초기화</button>'+RSP()+'</span><button class="b g s admb" onclick="admin()">관리자</button></span>':SUBMODE&&DB?'<span class="adm2"><button class="b g s admb" onclick="admin()">관리자</button></span>':''}</div><div class="hub">${isApp()?`<button class="hb" style="--hc:#e3b55a" onclick="allStats()"><i class="hbi">${HB_ST}</i><b>전체 통계</b></button>`:`<button class="hb lkd" style="--hc:#bdb3a0" onclick="lockMsg()"><i class="hbi">${LOCK}</i><b>전체 통계</b></button>`}<button class="hb" style="--hc:#8fb8ec" onclick="fbForm(1)"><i class="hbi">${HB_FB}</i><b>피드백</b></button></div>`;
  const ALL=SUBJ.flat(),SEL=Array.isArray(R._sel)?R._sel:[],mine=ALL.filter(([n])=>COMMON.includes(n)||SEL.includes(n));
  if(selOK()&&SEL.length){h+=`<h3 class="sec">공통과목</h3><div class="sg c2">`+ALL.filter(([n])=>COMMON.includes(n)).map(x=>sgCard(...x)).join('')+`</div>`;
   h+=`<div class="sech"><h3 class="sec">선택과목</h3><button class="lk" onclick="pickSel()">바꾸기</button></div><div class="sg c2">`+ALL.filter(([n])=>SEL.includes(n)).map(x=>sgCard(...x)).join('')+`</div>`;
   const rest=SUBJ.map(row=>row.filter(([n])=>!mine.some(m=>m[0]==n)));
-  h+=`<button class="sgmore${SGMORE?' on':''}" onclick="SGMORE=!SGMORE;subjects()"><span>다른 과목 보기</span><small>${rest.flat().length}과목</small><span class="chev">${SGMORE?'⌃':'⌄'}</span></button>`;
-  if(SGMORE)rest.forEach((row,ri)=>{if(!row.length)return;h+=`<h3 class="sec">${SECN[ri]}</h3><div class="sg c2">`+row.map(x=>sgCard(...x)).join('')+`</div>`})}
+  h+=`<button class="sgmore${SGMORE?' on':''}" onclick="sgMore(this)"><span>다른 과목 보기</span><small>${rest.flat().length}과목</small><span class="chev">${SGMORE?'⌃':'⌄'}</span></button><div id="sgm"${SGMORE?'':' hidden'}>`;
+  rest.forEach((row,ri)=>{if(!row.length)return;h+=`<h3 class="sec">${SECN[ri]}</h3><div class="sg c2">`+row.map(x=>sgCard(...x)).join('')+`</div>`});h+=`</div>`}
  else SUBJ.forEach((row,ri)=>{h+=`<h3 class="sec">${SECN[ri]}</h3><div class="sg c2">`+row.map(x=>sgCard(...x)).join('')+`</div>`});
  show(h);animBars();mailBadge();afterHome()}
 let FBF=0;
@@ -1567,7 +1568,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>프로필 보기</h2><p class="tag">비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v59';
+const APPV='v60';
 function profile(){if(NICK&&!selOK())return pickSel();if(ADMINMODE||SUBMODE)PFOK=true;if(!PFOK)return pfGate();
  show(`<h2>내 프로필</h2>
  <div class="card pf"><div class="pr"><span>닉네임</span><b>${esc(NICK)}</b>${ADMINMODE||SUBMODE?`<span class="mut" style="font-size:13px">${SUBMODE?'보조 관리자':'관리자'} 고정</span>`:'<button class="lk" onclick="pfNick()">변경하기</button>'}</div>
@@ -1623,10 +1624,18 @@ let HST=(()=>{try{return JSON.parse(sessionStorage.getItem('pq_hst'))||[]}catch(
 const svH=()=>{try{sessionStorage.setItem('pq_hst',JSON.stringify(HST))}catch(e){}};
 const curU=r=>r?'#/'+encR(r):location.pathname+location.search;
 const actOK=()=>!(navigator.userActivation&&!navigator.userActivation.isActive);
-function armH(){if(HST[0]==='__x')return;try{history.replaceState({r:'__x',i:0},'',location.pathname+location.search);HST=['__x',CURR];HI=1;history.pushState({r:CURR,i:1},'',curU(CURR));svH()}catch(e){}}
+// 안드로이드 크롬(CloseWatcher 지원): 기록을 쌓지 않고 뒤로 가기를 직접 받아서, 「종료」 한 번에 앱이 꺼지게 함
+const CWM=(()=>{try{return 'CloseWatcher' in window&&history.length<=1&&!/iPhone|iPad|iPod/.test(navigator.userAgent)}catch(e){return false}})();
+let CWO=null;
+function cwArm(){if(!CWM||CWO)return;try{CWO=new CloseWatcher();CWO.onclose=()=>{CWO=null;setTimeout(cwArm,0);cwBack()}}catch(e){}}
+function cwBack(){const md=document.querySelector('.mdw');if(md){const c=md.querySelector('[data-v="0"]');if(c)c.click();else md.remove();return}
+ const tv=document.querySelector('.tbv');if(tv){tv.remove();return}
+ if(CURR=='quiz'&&SS&&document.querySelector('.qz,.qpr'))return exitQuiz();
+ if(!NICK||CURR==''||CURR=='subjects')return askExit();const par=parentOf(CURR);if(par===null)return askExit();goR(par)}
+function armH(){if(CWM){cwArm();return}if(HST[0]==='__x')return;try{history.replaceState({r:'__x',i:0},'',location.pathname+location.search);HST=['__x',CURR];HI=1;history.pushState({r:CURR,i:1},'',curU(CURR));svH()}catch(e){}}
 document.addEventListener('pointerdown',()=>{if(NICK)armH()},true);document.addEventListener('keydown',()=>{if(NICK)armH()},true);
 async function askExit(){if(EXQ)return;EXQ=true;const ok=await askBox('앱을 종료할까요?','','종료');EXQ=false;
- if(ok){try{window.close()}catch(e){}setTimeout(()=>soonMsg('뒤로 가기를 한 번 더 누르면 종료돼요.'),300)}else{IGN++;window._igt=setTimeout(()=>IGN=0,700);history.forward()}}
+ if(ok){try{window.close()}catch(e){}setTimeout(()=>soonMsg('뒤로 가기를 한 번 더 누르면 종료돼요.'),300)}else if(CWM){}else{IGN++;window._igt=setTimeout(()=>IGN=0,700);history.forward()}}
 function goUp(){if(CURR=='quiz'&&SS&&document.querySelector('.qz,.qpr'))return exitQuiz();
  if(HI>1){history.back();return}const par=parentOf(CURR);if(par===null)return;goR(par)}
 function setR(r){const prev=CURR;CURR=r;updBk();const t=curU(r);
@@ -1707,9 +1716,9 @@ result=(f=>function(){REPL=true;setR('result');const x=f.apply(this,arguments);s
 (function(){const sa=window.navigator.standalone===true;if(!sa)return;let sx=null,sy=0,dx=0;
  document.addEventListener('touchstart',e=>{const t=e.touches[0];if(t.clientX<26&&history.length>1){sx=t.clientX;sy=t.clientY;dx=0;A.style.transition='none'}else sx=null},{passive:true});
  document.addEventListener('touchmove',e=>{if(sx==null)return;const t=e.touches[0];dx=t.clientX-sx;if(Math.abs(t.clientY-sy)>Math.abs(dx)&&dx<30){sx=null;A.style.transform='';return}A.style.transform='translateX('+Math.max(0,dx*.6)+'px)'},{passive:true});
- document.addEventListener('touchend',()=>{if(sx==null)return;A.style.transition='transform .2s ease';A.style.transform='';if(dx>80)history.back();sx=null})})();
+ document.addEventListener('touchend',()=>{if(sx==null)return;A.style.transition='transform .2s ease';A.style.transform='';if(dx>80){CWM?cwBack():history.back()}sx=null})})();
 async function boot(){{const m=location.hash.match(/^#s=([A-Za-z0-9]{16,64})$/);if(m){if(ls('sk')!==m[1]){ls('subnick',null)}ls('sk',m[1]);ls('pin',null);try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}try{sessionStorage.removeItem(KEY+'alive')}catch(e){}}}{const m=location.hash.match(/^#k=([A-Za-z0-9]{16,64})$/);if(m){ls('ak',m[1]);try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}try{sessionStorage.removeItem(KEY+'alive')}catch(e){}}}const FRESH=(()=>{try{const f=!sessionStorage.getItem(KEY+'alive');sessionStorage.setItem(KEY+'alive','1');return f}catch(e){return true}})();
- await chkAdmin();
+ await chkAdmin();if(CWM)cwArm();
  if(OWNER||SK())setMan();
  if(!OWNER&&SK())return subBoot(FRESH);
  if(OWNER){adminOn();if(FRESH&&!/^inbox/.test(curR()))home();else goR(curR());adminLoad();return}
