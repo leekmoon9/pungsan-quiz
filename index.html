@@ -1010,7 +1010,7 @@ const AVC=['#8fb8ec','#9bd3ae','#f3c969','#f0a35e','#c9a7e8','#e9978f','#7fcfc6'
 const avc=n=>AVC[[...n].reduce((a,c)=>a+c.charCodeAt(0),0)%AVC.length];
 const hbBtn=(c,ic,t,sm,on)=>`<button class="hb" style="--hc:${c}" onclick="${on}"><i class="hbi">${ic}</i><span><b>${t}</b>${sm?`<small>${sm}</small>`:''}</span><span class="chev">›</span></button>`;
 let SUBS=null;
-async function subList(){try{const {data,error}=await DB.rpc('admin_subs',{p_key:AK()});if(error||!Array.isArray(data))throw 0;SUBS={};data.forEach(x=>{if(x.nick)SUBS[x.nick]=x.slot})}catch(e){SUBS={}}const w=document.getElementById('ppl');if(w)w.innerHTML=pplHTML()}
+async function subList(){let ok=true;try{const {data,error}=await DB.rpc('admin_subs',{p_key:AK()});if(error||!Array.isArray(data))throw 0;const m={};data.forEach(x=>{if(x.nick)m[x.nick]=x.slot});SUBS=m}catch(e){ok=false}const w=document.getElementById('ppl');if(w){w.innerHTML=pplHTML();const n=document.getElementById('sbn');if(n)n.hidden=ok}}
 function pplHTML(){const sb=SUBS||{};return ADM.slice().sort((a,b)=>((b.nick in sb)-(a.nick in sb))||(b.t-a.t)).map(r=>`<button onclick="adminOne(decodeURIComponent('${encodeURIComponent(r.nick)}'))"><i class="av" style="--avc:${avc(r.nick)}">${esc([...r.nick][0]||'?')}</i><span><b>${esc(r.nick)}${r.nick in sb?`<em class="rol">관리자·${sb[r.nick]}</em>`:''}</b><small>${r.t?fd(r.t):'기록 없음'}</small></span></button>`).join('')}
 async function admin(force){if(SUBMODE)return subAdmin(force);if(!(await admLoad(force)))return show('<h2>관리자</h2><p>불러오지 못했어요.</p>');if(!POSTS)postLoad().then(()=>{if(CURR=='admin'){const e=document.getElementById('apn');if(e)e.textContent=POSTS.length}});
  const pend=FB.filter(x=>x.st!='done').length,act=ADM.filter(r=>Date.now()-r.t<7*864e5).length;
@@ -1028,7 +1028,7 @@ async function admin(force){if(SUBMODE)return subAdmin(force);if(!(await admLoad
  h+=`<div class="sbt">가장 시급한 것</div>`+(top.length?top.map(fbCard).join(''):'<div class="card mut">지금 급하게 고칠 의견은 없어요.</div>');
  h+=`<div class="hub">${hbBtn('#c9a7e8',ICN_GRID,'유형별 보기','','fbTypes()')}${hbBtn('#9bd3ae',ICN_PPL,'개인별 보기','','fbPeople()')}</div><div class="hub hub1">${hbBtn('#f0a35e',ICN_CLIP,'클로드에게 보낼 피드백 복사',pend?`답장하지 않은 피드백 ${pend}개`:'답장할 피드백이 없어요','fbCopy()')}</div>`;
  // ---- 개인별 통계 ----
- h+=`<h3 class="sec">개인별 통계</h3>`+(ADM.length?`<div class="ppl" id="ppl">${pplHTML()}</div>`:'<div class="card mut">아직 참여한 사람이 없어요.</div>');if(!SUBS)subList();
+ h+=`<h3 class="sec">개인별 통계</h3><p class="mut" id="sbn" hidden style="font-size:12.5px;margin:-4px 2px 8px">보조 관리자 표시(관리자·번호)는 「3_보조관리자_20명.sql」을 실행하면 나와요.</p>`+(ADM.length?`<div class="ppl" id="ppl">${pplHTML()}</div>`:'<div class="card mut">아직 참여한 사람이 없어요.</div>');subList();
  h+=wrongAna();
  h+=``;
  show(h);animBars()}
