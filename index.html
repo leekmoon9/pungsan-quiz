@@ -208,7 +208,7 @@ body.hasbk .fbw h2:first-child{padding-left:0}
 .nvs{display:grid;grid-template-columns:1fr auto 1fr;align-items:stretch;gap:8px;margin:12px 0}
 .nvs>div{padding:10px 12px;border:1.5px solid color-mix(in srgb,var(--nc) 60%,#cdbfa5);border-radius:12px;background:#fff}.nvs>div>b{display:block;font-family:'Jua',sans-serif;font-weight:400;font-size:17px;line-height:1.25;margin-bottom:4px}
 .nvs>div p{margin:0;font-size:14px;line-height:1.6}.nvs>i{align-self:center;font-family:'Jua',sans-serif;font-weight:400;font-style:normal;font-size:18px;color:#d4443a}
-.nfl{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:12px 0}.nfl span{padding:4px 12px;border:1.5px dashed color-mix(in srgb,var(--nc) 70%,#8a7a60);border-radius:999px;background:#fff;font-size:14px;font-weight:600}.nfl i{font-style:normal;color:color-mix(in srgb,var(--nc) 70%,#6e5236);font-weight:800}
+.nfl{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:12px 0}.nfl>span{padding:4px 12px;border:1.5px dashed color-mix(in srgb,var(--nc) 70%,#8a7a60);border-radius:999px;background:#fff;font-size:14px;font-weight:600}.nfl>i{font-style:normal;color:color-mix(in srgb,var(--nc) 70%,#6e5236);font-weight:800}
 .ntw{overflow-x:auto;margin:12px 0}.ntb{width:100%;border-collapse:collapse;font-size:13.5px;line-height:1.5;background:#fff}
 .ntb th,.ntb td{border:1.3px solid #d5c9b2;padding:7px 8px;vertical-align:top;text-align:left}.ntb tr:first-child th{background:color-mix(in srgb,var(--nc) 32%,#fff);text-align:center}.ntb th{background:color-mix(in srgb,var(--nc) 12%,#fff);white-space:nowrap}
 .ntip{margin:16px 0 4px;padding:12px 14px;border:2px dashed #e07a6f;border-radius:14px;background:#fff7f5}.ntip>span{font-family:'Jua',sans-serif;font-weight:400;font-size:17px;color:#d4443a;display:block;line-height:1.2;margin-bottom:2px}.ntip p{margin:0}
@@ -616,6 +616,19 @@ body.pfx{overflow:hidden}
 .padh .seg button{padding:6px 12px!important;height:auto;min-height:0;white-space:nowrap}
 .pgrow{border-radius:0!important}
 @media (min-width:900px) and (orientation:landscape){body.pdw main{padding-left:66px;padding-right:20px}body.pdw .qback{left:14px}body.pdw #sides{display:none}}
+.mth{font-family:'Times New Roman','STIX Two Text',Cambria,serif;font-size:1.08em;white-space:nowrap;letter-spacing:0}
+.mth i{font-style:italic;padding-right:.04em}
+.mth sup,.mth sub{font-size:.68em;line-height:0}
+.mf{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;margin:0 .12em;font-size:.92em;line-height:1.15}
+.mf>span:first-child{border-bottom:1.2px solid currentColor;padding:0 .15em}
+.mf>span:last-child{padding:0 .15em}
+.msq>span{border-top:1.2px solid currentColor;padding:0 .1em;margin-left:.02em}
+.mint{display:inline-flex;align-items:center;font-size:1.25em;line-height:1;margin-right:.1em}
+.mlm2{display:inline-flex;flex-direction:column;font-size:.5em;line-height:1.05;margin-left:.05em;align-self:stretch;justify-content:space-between}
+.mlim{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;line-height:1.05;margin-right:.15em}
+.mlim>span{font-size:.62em}
+.hdn{display:flex;flex-direction:column;gap:2px;margin:4px 0 10px;padding:9px 12px;border-radius:12px;background:color-mix(in srgb,#e0372c 9%,var(--card));border:1.5px solid color-mix(in srgb,#e0372c 35%,var(--ln));color:#8a2a22;font-size:13px;text-align:left}
+.hdn b{font-size:14px}
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -1051,7 +1064,7 @@ async function adminOne(n){if(!(await admLoad()))return admin();const r=ADM.find
  h+=`<div class="card"><div class="mut" style="font-size:13px;margin-bottom:6px">최근 2주 공부</div><div class="strip">${strip}</div></div>`;
  h+=`<h3 class="sec">과목별 진행도</h3><div class="card">${SUBJ.flat().map(([n,c,o])=>{const a=achX(n,X);return `<div class="arw"><div class="al"><span>${n.split('|').join(' ')}</span><b>${a}%</b></div><div class="bar"><i data-w="${a}" style="width:0;background:${SC[c]}"></i></div></div>`}).join('')}</div>`;
  const tg={};allQ().forEach(q=>{const x=X[q.id];if(x){const t=tg[q.g]=tg[q.g]||{n:0,w:0};t.n++;if(!x.ok)t.w++}});const wk=Object.keys(tg).filter(k=>tg[k].w).sort((a,b)=>tg[b].w/tg[b].n-tg[a].w/tg[a].n);
- h+=`<h3 class="sec">오답 유형 분석</h3>`+(wk.length?wk.map(k=>{const rr=Math.round(tg[k].w/tg[k].n*100);return `<div class="card"><div class="al"><b>${esc(k)}</b><span class="no-t">${tg[k].w}/${tg[k].n} 틀림</span></div><div class="bar"><i data-w="${rr}" style="width:0;background:#e9978f"></i></div>${TIPS[k]?`<div class="mut" style="font-size:13px;margin-top:6px">${esc(TIPS[k])}</div>`:''}</div>`}).join(''):`<div class="card mut">${Object.keys(tg).length?'틀린 영역이 없어요.':'아직 푼 문제가 없어요.'}</div>`);
+ h+=`<h3 class="sec">오답 유형 분석</h3>`+(wk.length?wk.map(k=>{const rr=Math.round(tg[k].w/tg[k].n*100);return `<div class="card"><div class="al"><b>${esc(k)}</b><span class="no-t">${tg[k].w}/${tg[k].n} 틀림</span></div><div class="bar"><i data-w="${rr}" style="width:0;background:#e9978f"></i></div>${TIPS[k]?`<div class="mut" style="font-size:13px;margin-top:6px">${MX(esc(TIPS[k]))}</div>`:''}</div>`}).join(''):`<div class="card mut">${Object.keys(tg).length?'틀린 영역이 없어요.':'아직 푼 문제가 없어요.'}</div>`);
  h+=``;show(h);animBars()}
 
 const SOCN=['정치','경제','동아시아|역사기행','현대사회와|윤리','한국지리|탐구'];
@@ -1097,7 +1110,8 @@ const NOTE_DEMO={demo:1,pg:[],b:[
  ['flow',['갈등 발생','대화와 타협','합의','사회 통합']],
  ['def','정치권력','국가 기관이 사회 구성원에게 행사하는 강제력'],
  ['tip','좁은 의미와 넓은 의미를 구분하는 문제가 자주 나와요. 활동의 **주체가 국가 기관인지**부터 확인하세요.']]};
-const ntIn=t=>esc(t||'').replace(/==(.+?)==/g,'<mark>$1</mark>').replace(/\*\*(.+?)\*\*/g,'<b class="ntr">$1</b>').replace(/__(.+?)__/g,'<u>$1</u>').replace(/(^|\n)(예|연습|참고)\s*[:)]\s*/g,'$1<em class="nex">$2</em>').replace(/ ?(→|⇒) ?/g,'<i class="nar">$1</i>').replace(/(\d) (?=(?:mm|mL|L|g|kg|K|°C|Pa|atm|kJ|J|mol|M|m|s|h|%|원|명|개|배|기압|N)(?![A-Za-z가-힣]))/g,'$1\u00a0').replace(/ (=|≈|∝)(?= )/g,'\u00a0$1').replace(/\n/g,'<br>');
+const ntIn=t=>{const M=[];const x=ntIn0(String(t||'').replace(/\$([^$]+)\$/g,(_,m)=>{M.push(m);return '\u0001'+(M.length-1)+'\u0001'}));return x.replace(/\u0001(\d+)\u0001/g,(_,k)=>'<span class="mth">'+mxp(esc(M[+k]))+'</span>')};
+const ntIn0=t=>esc(t||'').replace(/==(.+?)==/g,'<mark>$1</mark>').replace(/\*\*(.+?)\*\*/g,'<b class="ntr">$1</b>').replace(/__(.+?)__/g,'<u>$1</u>').replace(/(^|\n)(예|연습|참고)\s*[:)]\s*/g,'$1<em class="nex">$2</em>').replace(/ ?(→|⇒) ?/g,'<i class="nar">$1</i>').replace(/(\d) (?=(?:mm|mL|L|g|kg|K|°C|Pa|atm|kJ|J|mol|M|m|s|h|%|원|명|개|배|기압|N)(?![A-Za-z가-힣]))/g,'$1\u00a0').replace(/ (=|≈|∝)(?= )/g,'\u00a0$1').replace(/\n/g,'<br>');
 const ntL=l=>{const m=l.match(/^\s*(예|연습|참고)\s*[:)]\s*/);if(m)return `<span class="nl nlx"><em class="nex">${m[1]}</em><span>${ntIn(l.slice(m[0].length))}</span></span>`;const a=l.match(/^\s*([→⇒])\s*/);if(a)return `<span class="nl nla"><i class="nar">${a[1]}</i><span>${ntIn(l.slice(a[0].length))}</span></span>`;return `<span class="nl">${ntIn(l)}</span>`};
 const ntP=t=>String(t||'').split('\n').map(ntL).join('');
 function ntSnap(){const a=document.querySelector('.nt');if(!a)return;const G=28,cs=getComputedStyle(a),o=a.getBoundingClientRect().top+parseFloat(cs.paddingTop)+parseFloat(cs.borderTopWidth);
@@ -1174,7 +1188,7 @@ const sDone=n=>!!MOCK[n]&&MOCK[n].length>0&&mkCnt(n)>=mkN(n);
 // 모든 과목 회차당 25문항 내외·50분·100점(3/4/5점 배점)
 function mkSpec(n){return {qn:25,min:50,pts:100}}
 // 자료(표·그래프·사례·보기)가 복잡한 문항일수록 높은 배점
-function mkSc(q){const t=q.q||'',bl=t.split(/\n\s*\n/);let v=0;if(q.tb)v+=3;if(q.fig)v+=3;
+function mkSc(q){const t=q.q||'',bl=t.split(/\n\s*\n/);let v=q.hd?20:0;if(q.tb)v+=3;if(q.fig)v+=3;
  if(bl.some(x=>!/\?(\s*\(단[^)]*\))?\s*$/.test(x)&&!/^<보기>/.test(x)&&!/^\[(표|그림)\]$/.test(x)))v+=2;if(/<보기>/.test(t))v+=1;
  if(/\(가\)|갑:|갑국|을국|A국|사례/.test(t))v+=1;if(t.length>160)v+=1;return v}
 function mkReform(){for(const n in MOCK){const sp=mkSpec(n);if(!MOCK[n].length){delete MOCK[n];continue}
@@ -1324,7 +1338,7 @@ function svBody(n,col){const qs=CUR[n]?socQ(n):[];if(!qs.length)return `<div cla
  h+=`<button class="svw" onclick="wrongPage('${n}')"><span><b>오답노트</b><small>${wr.length?(un.length?`남은 오답 ${un.length}문제`:'오답을 모두 고쳤어요'):'아직 틀린 문제가 없어요'}</small></span>${un.length?`<span class="wnc">${un.length}</span>`:''}<span class="chev">›</span></button>`;
  if(NEWS(n)){const mc=mkCnt(n),mr=MOCK[n]?mkRate(n):null;h+=`<div class="svm" style="--uc:${col}"><span>모의고사</span><b>${mc}/${mkN(n)}회</b><small>${!MOCK[n]?'준비 중':mr==null?(mkOpen(n)?'아직 안 풀었어요':'아직 잠겨 있어요'):`정답률 ${mr}%`}</small></div>`}
  h+=`<div class="svh">보완할 영역</div>`;
- h+=!x.n?`<div class="mut svx">문제를 풀면 여기에 보여요.</div>`:!wk.length?`<div class="mut svx">틀린 영역이 없어요.</div>`:wk.map(w=>`<div class="svk"><div><b class="no-t">${esc(w.k)}</b> <span class="mut">${w.c}/${w.n} 정답</span></div>${TIPS[w.k]?`<div class="mut">${esc(TIPS[w.k])}</div>`:''}</div>`).join('');
+ h+=!x.n?`<div class="mut svx">문제를 풀면 여기에 보여요.</div>`:!wk.length?`<div class="mut svx">틀린 영역이 없어요.</div>`:wk.map(w=>`<div class="svk"><div><b class="no-t">${esc(w.k)}</b> <span class="mut">${w.c}/${w.n} 정답</span></div>${TIPS[w.k]?`<div class="mut">${MX(esc(TIPS[w.k]))}</div>`:''}</div>`).join('');
  return h}
 function svTog(ix){document.querySelectorAll('.svt').forEach(b=>{const on=b.id=='svt'+ix&&b.getAttribute('aria-expanded')!='true';b.setAttribute('aria-expanded',on);b.classList.toggle('on',on);document.getElementById('svp'+b.id.slice(3)).classList.toggle('on',on)})}
 
@@ -1333,12 +1347,12 @@ function soon(){const o=document.getElementById('toast');if(o)o.remove();const t
 function hstr(t){let h=1779033703^t.length;for(let i=0;i<t.length;i++){h=Math.imul(h^t.charCodeAt(i),3432918353);h=h<<13|h>>>19}return ()=>{h=Math.imul(h^h>>>16,2246822507);h=Math.imul(h^h>>>13,3266489909);return ((h^=h>>>16)>>>0)/4294967296}}
 function mkPerm(qs){const out={},mc=qs.filter(q=>q.t=='mc');if(!mc.length)return out;const rnd=hstr((NICK||'?')+'|'+mc.map(q=>q.id).join(','));
  const sh=a=>{for(let i=a.length-1;i>0;i--){const j=Math.floor(rnd()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};const bags={};let prev=-1;
- mc.forEach(q=>{const n=q.o.length;if(q.o.every(x=>/^[ㄱ-ㅎ](, [ㄱ-ㅎ])*$/.test(x))){out[q.id]=[...Array(n).keys()];return}let b=bags[n];if(!b||!b.length)b=bags[n]=sh([...Array(n).keys()]);let k=0;if(b[0]===prev&&b.length>1)k=1+Math.floor(rnd()*(b.length-1));const pos=b.splice(k,1)[0];prev=pos;
+ mc.forEach(q=>{const n=q.o.length;if(q.ns||q.o.every(x=>/^[ㄱ-ㅎ](, [ㄱ-ㅎ])*$/.test(x))){out[q.id]=[...Array(n).keys()];return}let b=bags[n];if(!b||!b.length)b=bags[n]=sh([...Array(n).keys()]);let k=0;if(b[0]===prev&&b.length>1)k=1+Math.floor(rnd()*(b.length-1));const pos=b.splice(k,1)[0];prev=pos;
   const rest=sh([...Array(n).keys()].filter(x=>x!==q.a));rest.splice(pos,0,q.a);out[q.id]=rest});return out}
 const CIRC='①②③④⑤⑥⑦⑧';
 const pmOf=q=>(SS&&SS.perm&&SS.perm[q.id])||q.o.map((_,i)=>i);
 const posOf=(q,idx)=>pmOf(q).indexOf(idx);
-const exT=q=>esc(q.e||'').replace(/⟦(\d)⟧/g,(_,d)=>CIRC[q.t=='mc'?posOf(q,+d-1):+d-1]||d);
+const exT=q=>MX(esc(q.e||'')).replace(/⟦(\d)⟧/g,(_,d)=>CIRC[q.t=='mc'?posOf(q,+d-1):+d-1]||d);
 
 function startRun(n,segs,meta){OPEN=-1;SS={pid:'run',cat:'all',meta:Object.assign({subj:n,back:"socPage('"+n+"')",backLabel:kd(n)[1]+' 선택으로',kind:kd(n)[1]},meta||{}),segs,si:0,qs:segs[0].qs,i:0,resp:{},graded:[]};SS.base={};Object.keys(R).forEach(k=>{if(k[0]!='_')SS.base[k]=1});SS.perm={};segs.forEach(x=>Object.assign(SS.perm,mkPerm(x.qs)));draft=null;QS0=Date.now();quiz()}
 const ttl=()=>SS.meta?SS.meta.title:P(SS.pid).name;
@@ -1346,7 +1360,24 @@ function goBack(){if(HI>1){LEAVE=1;history.back();return}if(SS&&SS.meta&&SS.meta
 const qbl=t=>esc(t).replace(/\[빈칸\]/g,'<span class="blk"></span>').replace(/&lt;(보기|자료|표|그림)&gt;/g,'<span style="white-space:nowrap">&lt;$1&gt;</span>');
 function qln(b){return b.split('\n').map(l=>{const m=l.match(/^((?:[ㄱㄴㄷㄹㅁ]\.)|(?:\([가-하A-Z0-9]\))|(?:[•])|(?:사례 ?\d+:))\s*(.*)$/);return m?`<div class="qli"><b>${esc(m[1])}</b><span>${qbl(m[2])}</span></div>`:`<div>${qbl(l)}</div>`}).join('')}
 function tbH(t){return `<div class="qtw"><table class="qtb">${t.h?`<tr>${t.h.map(x=>`<th>${qbl(x)}</th>`).join('')}</tr>`:''}${t.r.map(r=>`<tr>${r.map((x,i)=>i==0&&t.h?`<th>${qbl(x)}</th>`:`<td>${qbl(x)}</td>`).join('')}</tr>`).join('')}</table></div>`}
-function GR(o){const W=250,H=196,X0=34,Y0=168,sx=x=>X0+x*19.5,sy=y=>Y0-y*15;let g='';
+// ---- 수학 그래프: 좌표 범위 xr·yr 안에 곡선 fs, 칠하기 fill, 점 pts, 선 ln ----
+function FG(o){const W=o.w||260,H=o.h||200,P=16,[x0,x1]=o.xr||[-3,3],[y0,y1]=o.yr||[-3,3],X=x=>P+(x-x0)/(x1-x0)*(W-2*P),Y=y=>H-P-(y-y0)/(y1-y0)*(H-2*P);
+ const it=t=>esc(t).replace(/([a-zA-Z]+)/g,'<tspan font-style="italic" font-family="Times New Roman,serif">$1</tspan>');
+ let g=`<defs><marker id="fa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#2a2620"/></marker></defs>`;
+ const path=(f,a,b,n)=>{let d='',pen=false;n=n||160;for(let i=0;i<=n;i++){const x=a+(b-a)*i/n,y=f(x);if(!isFinite(y)||y<y0-(y1-y0)*.6||y>y1+(y1-y0)*.6){pen=false;continue}d+=(pen?'L':'M')+X(x).toFixed(1)+' '+Y(Math.max(y0-(y1-y0)*.05,Math.min(y1+(y1-y0)*.05,y))).toFixed(1);pen=true}return d};
+ g+=`<clipPath id="fc${FG.n=(FG.n||0)+1}"><rect x="${P-2}" y="${P-6}" width="${W-2*P+6}" height="${H-2*P+10}"/></clipPath>`;const cid='fc'+FG.n;
+ (o.fill||[]).forEach(F=>{const n=120,lo=F.g||(()=>0);let d='';for(let i=0;i<=n;i++){const x=F.a+(F.b-F.a)*i/n;d+=(i?'L':'M')+X(x).toFixed(1)+' '+Y(F.f(x)).toFixed(1)}for(let i=n;i>=0;i--){const x=F.a+(F.b-F.a)*i/n;d+='L'+X(x).toFixed(1)+' '+Y(lo(x)).toFixed(1)}g+=`<path d="${d}Z" fill="${F.c||'#f3c969'}" fill-opacity="${F.op||.45}" stroke="none" clip-path="url(#${cid})"/>`;if(F.t)g+=`<text x="${X(F.tx??(F.a+F.b)/2)}" y="${Y(F.ty??(F.f((F.a+F.b)/2)+lo((F.a+F.b)/2))/2)+4}" text-anchor="middle" font-weight="700">${it(F.t)}</text>`});
+ if(o.ax!==0){const ay=y0<=0&&y1>=0?Y(0):Y(y0),ax=x0<=0&&x1>=0?X(0):X(x0);g+=`<path d="M${P-6} ${ay}H${W-4}" stroke="#2a2620" stroke-width="1.3" marker-end="url(#fa)"/><path d="M${ax} ${H-P+6}V4" stroke="#2a2620" stroke-width="1.3" marker-end="url(#fa)"/>`;
+  g+=`<text x="${W-6}" y="${ay+14}" text-anchor="end">${it(o.xl||'x')}</text><text x="${ax+7}" y="12">${it(o.yl||'y')}</text>`;if(x0<=0&&x1>=0&&y0<=0&&y1>=0&&o.o!==0)g+=`<text x="${ax-4}" y="${ay+13}" text-anchor="end">O</text>`}
+ (o.ln||[]).forEach(l=>{const [a,b,c,d]=l.p;g+=`<path d="M${X(a)} ${Y(b)}L${X(c)} ${Y(d)}" stroke="${l.c||'#8a8170'}" stroke-width="${l.w||1.4}" ${l.d!==0?'stroke-dasharray="4 3"':''} fill="none" clip-path="url(#${cid})"/>`;if(l.t)g+=`<text x="${X(l.tx??c)+(l.dx||4)}" y="${Y(l.ty??d)+(l.dy||-4)}" font-weight="700" fill="${l.c||'#5a5246'}">${it(l.t)}</text>`});
+ (o.fs||[]).forEach(F=>{g+=`<path d="${path(F.f,F.a??x0,F.b??x1)}" stroke="${F.c||'#5b7fa8'}" stroke-width="${F.w||2.3}" ${F.d?'stroke-dasharray="6 4"':''} fill="none" clip-path="url(#${cid})"/>`;if(F.t){const tx=F.tx??(F.b??x1);g+=`<text x="${X(tx)+(F.dx||4)}" y="${Y(F.ty??F.f(tx))+(F.dy||-6)}" font-weight="700" fill="${F.c||'#46668c'}" text-anchor="${F.an||'start'}">${it(F.t)}</text>`}});
+ (o.pts||[]).forEach(q=>{if(q.g){g+=`<path d="M${X(q.x)} ${Y(q.y)}V${Y(0)}M${X(q.x)} ${Y(q.y)}H${X(0)}" stroke="#9a8f7c" stroke-width="1" stroke-dasharray="3 3" fill="none"/>`}g+=q.o?`<circle cx="${X(q.x)}" cy="${Y(q.y)}" r="3.4" fill="#fff" stroke="#2a2620" stroke-width="1.5"/>`:q.n?'':`<circle cx="${X(q.x)}" cy="${Y(q.y)}" r="3.4" fill="#2a2620"/>`;if(q.t)g+=`<text x="${X(q.x)+(q.dx??6)}" y="${Y(q.y)+(q.dy??-6)}" font-weight="700">${it(q.t)}</text>`});
+ const ay=y0<=0&&y1>=0?Y(0):Y(y0),ax=x0<=0&&x1>=0?X(0):X(x0);
+ (o.xt||[]).forEach(([x,t])=>{g+=`<text x="${X(x)}" y="${ay+14}" text-anchor="middle">${it(t)}</text>`});
+ (o.yt||[]).forEach(([y,t])=>{g+=`<text x="${ax-5}" y="${Y(y)+4}" text-anchor="end">${it(t)}</text>`});
+ (o.tx||[]).forEach(([x,y,t])=>{g+=`<text x="${X(x)}" y="${Y(y)}" text-anchor="middle" font-weight="700">${it(t)}</text>`});
+ return `<svg class="qgr" viewBox="0 0 ${W} ${H}" font-size="12.5" fill="#2a2620" font-family="inherit">${g}</svg>`}
+function GR(o){if(o&&o.m)return FG(o);const W=250,H=196,X0=34,Y0=168,sx=x=>X0+x*19.5,sy=y=>Y0-y*15;let g='';
  g+=`<defs><marker id="ga" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#5b7fa8"/></marker><marker id="gx" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#2a2620"/></marker></defs>`;
  if(o.ax!==0){g+=`<path d="M${X0} ${Y0}H${W-10}M${X0} ${Y0}V10" stroke="#2a2620" stroke-width="1.6" fill="none" marker-end="url(#gx)"/><path d="M${X0} ${Y0}V10" stroke="#2a2620" stroke-width="1.6" marker-end="url(#gx)"/>`;
  g+=`<text x="${W-8}" y="${Y0+15}" text-anchor="end">${esc(o.x||'수량')}</text><text x="${X0+8}" y="13">${esc(o.y||'가격')}</text>${o.nz?'':`<text x="${X0-6}" y="${Y0+14}" text-anchor="end">0</text>`}`}
@@ -1359,6 +1390,34 @@ function GR(o){const W=250,H=196,X0=34,Y0=168,sx=x=>X0+x*19.5,sy=y=>Y0-y*15;let 
  (o.yt||[]).forEach(([y,t])=>{g+=`<text x="${X0-5}" y="${sy(y)+4}" text-anchor="end">${esc(t)}</text>`});
  (o.tx||[]).forEach(([x,y,t])=>{g+=`<text x="${sx(x)}" y="${sy(y)}" text-anchor="middle">${esc(t)}</text>`});
  return `<svg class="qgr" viewBox="0 0 ${W} ${H}" font-size="12.5" fill="#2a2620" font-family="inherit">${g}</svg>`}
+// ---- 수식 표기: 문장 속 $...$ 를 간단한 TeX 문법으로 그려 줌 (수리 과목) ----
+const MSYM={to:'→',infty:'∞',le:'≤',ge:'≥',leq:'≤',geq:'≥',ne:'≠',neq:'≠',pi:'π',cdot:'·',times:'×',div:'÷',pm:'±',prime:'′',alpha:'α',beta:'β',gamma:'γ',theta:'θ',lt:'&lt;',gt:'&gt;',dots:'…',ldots:'…',cdots:'⋯',therefore:'∴',because:'∵',Rightarrow:'⇒',Leftrightarrow:'⇔',quad:' ',in:'∈',mid:'|'};
+function mxp(s){let i=0,o='';
+ const ent=()=>{const m=/^&[a-z#0-9]+;/.exec(s.slice(i));if(m){i+=m[0].length;return m[0]}return null};
+ const grp=()=>{while(s[i]==' ')i++;if(s[i]=='{'){let d=1,j=i+1;while(j<s.length&&d){if(s[j]=='{')d++;else if(s[j]=='}')d--;j++}const t=s.slice(i+1,j-1);i=j;return mxp(t)}
+  if(s[i]=='\\'){const m=/^\\([a-zA-Z]+)/.exec(s.slice(i));if(m){i+=m[0].length;return MSYM[m[1]]||m[1]}}
+  if(s[i]=='&'){const e=ent();if(e)return e}const c=s[i++]||'';return /[a-zA-Z]/.test(c)?'<i>'+c+'</i>':c};
+ while(i<s.length){const c=s[i];
+  if(c=='\\'){const m=/^\\([a-zA-Z]+|.)/.exec(s.slice(i));i+=m[0].length;const k=m[1];
+   if(k=='frac'||k=='dfrac'){const a=grp(),b=grp();o+=`<span class="mf"><span>${a}</span><span>${b}</span></span>`}
+   else if(k=='sqrt'){o+=`<span class="msq">√<span>${grp()}</span></span>`}
+   else if(k=='int'){let lo='',hi='',has=0;for(let t=0;t<2;t++){if(s[i]=='_'){i++;lo=grp();has=1}else if(s[i]=='^'){i++;hi=grp();has=1}}o+=has?`<span class="mint">∫<span class="mlm2"><span>${hi}</span><span>${lo}</span></span></span>`:'<span class="mint">∫</span>'}
+   else if(k=='lim'){let sb='';if(s[i]=='_'){i++;sb=grp()}o+=`<span class="mlim">lim<span>${sb}</span></span>`}
+   else if(k=='Big'||k=='big'||k=='left'||k=='right'){}
+   else if(k==','){o+=' '}else if(k==' '){o+=' '}else if(k=='{'||k=='}'||k=='|'){o+=k}
+   else if(k=='text'){o+=grp().replace(/<\/?i>/g,'')}
+   else if(['sin','cos','tan','log','ln','max','min'].includes(k)){o+=k}
+   else o+=MSYM[k]??k;continue}
+  if(c=='^'){i++;o+='<sup>'+grp()+'</sup>';continue}
+  if(c=='_'){i++;o+='<sub>'+grp()+'</sub>';continue}
+  if(c=='{'){o+=grp();continue}
+  if(c=="'"){i++;o+='′';continue}
+  if(c=='&'){const e=ent();if(e){o+=e;continue}}
+  if(c=='-'){i++;o+='−';continue}
+  if(/[a-zA-Z]/.test(c)){i++;o+='<i>'+c+'</i>';continue}
+  i++;o+=c}
+ return o}
+const MX=t=>String(t).indexOf('$')<0?t:String(t).replace(/\$([^$]+)\$/g,(_,m)=>'<span class="mth">'+mxp(m)+'</span>');
 function qtx(t,q){q=q||{};const bl=String(t).replace(/\n(?=<보기>)/g,'\n\n').split(/\n\s*\n/).map(b=>b.replace(/^\n+|\n+$/g,'')).filter(b=>b);let o='';
  const isQ=b=>/\?(\s*\(단[^)]*\))?\s*$/.test(b)&&b.split('\n').length<=3;
  bl.forEach((b,i)=>{
@@ -1367,13 +1426,13 @@ function qtx(t,q){q=q||{};const bl=String(t).replace(/\n(?=<보기>)/g,'\n\n').s
   if(/^<보기>/.test(b)){o+=`<div class="qbk"><i>보기</i>${qln(b.replace(/^<보기>\s*\n?/,''))}</div>`;return}
   if(bl.length==1||isQ(b))o+=`<div class="qst">${qln(b)}</div>`;else if(i==0&&!b.includes('\n')&&!/^(\(|[ㄱ-ㅎ]\.|[•]|사례)/.test(b))o+=`<div class="qin">${qln(b)}</div>`;else o+=`<div class="qdt">${qln(b)}</div>`});
  if(q.fig&&!bl.includes('[그림]'))o=`<div class="qfg">${GR(q.fig)}</div>`+o;if(q.tb&&!bl.includes('[표]'))o=tbH(q.tb)+o;
- return `<div class="qbox">${o}</div>`}
+ return MX(`<div class="qbox">${o}</div>`)}
 function quiz(){const q=SS.qs[SS.i],N=SS.qs.length,seg=SS.segs[SS.si],r=SS.resp[q.id]||{};QID=q.id;if(!QS0)QS0=Date.now();
- const tn={mc:'객관식',ox:'O/X',sh:'빈칸 채우기',es:'서술형'}[q.t];
- let h=`<div class="qz"><div class="tag">${SS.meta&&SS.meta.mode=='wrong'?'<span class="prc" style="background:#f3c9c4;color:#7a2e26">오답노트</span> ':SS.meta&&SS.meta.practice?'<span class="prc">다시 풀기</span> ':''}${esc(ttl())} · ${esc(seg.label)}${SS.segs.length>1?` <span class="sgn">${SS.si+1}/${SS.segs.length}</span>`:''}</div><div class="qpr"><b>${SS.i+1}</b><span>/ ${N}</span><div class="bar"><i style="width:${(SS.i+1)/N*100}%"></i></div></div><div class="card"><div class="tag" style="margin-bottom:2px">${tn}${q.pt?` · <b class="qpt">${q.pt}점</b>`:''}</div>${SS.meta&&SS.meta.t0?`<div class="mkt" id="mkt">${mkTime()}</div>`:''}<div class="q${q.q.length>70||q.q.includes('\n')?' ql':''}">${qtx(q.q,q)}</div>`;
- if(q.t=='mc')pmOf(q).forEach((k,pos)=>{h+=`<button class="opt${r.v===k?' sel':''}" onclick="pk(${k})"><span class="on">${pos+1}</span>${esc(q.o[k])}</button>`});
+ const MS=SS.meta&&isPad(SS.meta.subj),tn={mc:'객관식',ox:'O/X',sh:MS?'단답형':'빈칸 채우기',es:'서술형'}[q.t];
+ let h=`<div class="qz"><div class="tag">${SS.meta&&SS.meta.mode=='wrong'?'<span class="prc" style="background:#f3c9c4;color:#7a2e26">오답노트</span> ':SS.meta&&SS.meta.practice?'<span class="prc">다시 풀기</span> ':''}${esc(ttl())} · ${esc(seg.label)}${SS.segs.length>1?` <span class="sgn">${SS.si+1}/${SS.segs.length}</span>`:''}</div><div class="qpr"><b>${SS.i+1}</b><span>/ ${N}</span><div class="bar"><i style="width:${(SS.i+1)/N*100}%"></i></div></div><div class="card"><div class="tag" style="margin-bottom:2px">${tn}${q.pt?` · <b class="qpt">${q.pt}점</b>`:''}</div>${SS.meta&&SS.meta.t0?`<div class="mkt" id="mkt">${mkTime()}</div>`:''}${q.hd?'<div class="hdn"><b>고난도 문제</b>노트처럼 넓은 곳에 풀어 보는 걸 추천해요.</div>':''}<div class="q${q.q.length>70||q.q.includes('\n')?' ql':''}">${qtx(q.q,q)}</div>`;
+ if(q.t=='mc')pmOf(q).forEach((k,pos)=>{h+=`<button class="opt${r.v===k?' sel':''}" onclick="pk(${k})"><span class="on">${pos+1}</span>${MX(esc(q.o[k]))}</button>`});
  else if(q.t=='ox')h+=`<div class="oxr">${[true,false].map(k=>`<button class="opt ox${r.v===k?' sel':''}" onclick="pk(${k})">${k?'O':'X'}</button>`).join('')}</div>`;
- else if(q.t=='sh')h+=`<input type="text" id="in" placeholder="빈칸에 들어갈 말" value="${esc(r.v||'')}" autocomplete="off" onkeydown="if(event.key=='Enter'){event.preventDefault();${SS.i<N-1?'nav(1)':'submitSeg()'}}">`;
+ else if(q.t=='sh')h+=`<input type="text" id="in" placeholder="${MS?'답 (숫자로)':'빈칸에 들어갈 말'}" value="${esc(r.v||'')}" autocomplete="off" onkeydown="if(event.key=='Enter'){event.preventDefault();${SS.i<N-1?'nav(1)':'submitSeg()'}}">`;
  else h+=`<textarea id="in" placeholder="답안을 직접 써 보세요">${esc(r.v||'')}</textarea>`;
  h+=`<div class="row"><button class="b g" ${SS.i?'':'disabled'} onclick="nav(-1)">이전</button>${SS.i<N-1?'<button class="b" onclick="nav(1)">다음</button>':'<button class="b sbm" onclick="submitSeg()">제출</button>'}</div></div>`;
  
@@ -1414,9 +1473,9 @@ function result(){QS0=0;const rs=(SS.graded||[]).filter(q=>SS.resp[q.id]&&SS.res
  const weak=Object.keys(tg).filter(k=>tg[k].c<tg[k].n).sort((a,b)=>tg[a].c/tg[a].n-tg[b].c/tg[b].n),pc=Math.round(c/rs.length*100);
  let h=`<div class="card"><div class="tag">${esc(ttl())} · ${labs.map(esc).join(', ')}</div><h2 style="margin:4px 0">결과</h2>${SS.meta.mock&&rs.some(q=>q.pt)?`<div class="big">${rs.filter(q=>SS.resp[q.id].ok).reduce((a,q)=>a+(q.pt||0),0)}<small style="font-size:.45em"> / ${rs.reduce((a,q)=>a+(q.pt||0),0)}점</small></div><div class="mut">${c} / ${rs.length}문항 정답${SS.meta.t0?` · ${Math.round((Date.now()-SS.meta.t0)/60000)}분 걸림`:''}</div>`:`<div class="big">${c} / ${rs.length}</div>`}<div class="mut">정답률 ${pc}%</div>${SS.meta.mode=='wrong'?`<div class="prn" style="background:#e3f0e6;color:#2f6a43">맞힌 ${c}문제는 오답 완료로 표시됐어요. 진행 상황(통계)에는 반영되지 않아요.</div>`:''}${SS.meta.mode!='wrong'&&(SS.meta.practice||rs.every(q=>SS.base&&SS.base[q.id]))?'<div class="prn">다시 푼 결과라서 진행 상황(통계)에는 반영되지 않았어요.</div>':rs.some(q=>SS.base&&SS.base[q.id])?'<div class="prn">전에 풀었던 문제는 처음 결과가 그대로 유지돼요.</div>':''}<div class="bar" style="height:9px;margin-top:10px"><i data-w="${pc}" style="width:0"></i></div></div>`;
  h+=`<h3 class="sec">영역별 정답률</h3><div class="card">${Object.keys(tg).map(k=>{const t=tg[k],r=Math.round(t.c/t.n*100);return `<div class="arw"><div class="al"><span>${esc(k)}</span><b>${t.c}/${t.n}</b></div><div class="bar"><i data-w="${r}" style="width:0"></i></div></div>`}).join('')}</div>`;
- h+=`<h3 class="sec">보완해야 할 약점</h3>`+(weak.length?weak.map(k=>`<div class="card"><b class="no-t">${esc(k)}</b> <span class="mut">(${tg[k].n-tg[k].c}문제 틀림)</span>${TIPS[k]?`<div class="mut" style="margin-top:6px;font-size:14px">${esc(TIPS[k])}</div>`:''}</div>`).join(''):'<div class="card">약점이 없어요. 이 범위는 완벽해요! 🎉</div>');
+ h+=`<h3 class="sec">보완해야 할 약점</h3>`+(weak.length?weak.map(k=>`<div class="card"><b class="no-t">${esc(k)}</b> <span class="mut">(${tg[k].n-tg[k].c}문제 틀림)</span>${TIPS[k]?`<div class="mut" style="margin-top:6px;font-size:14px">${MX(esc(TIPS[k]))}</div>`:''}</div>`).join(''):'<div class="card">약점이 없어요. 이 범위는 완벽해요! 🎉</div>');
  if(wr.length){h+=`<h3 class="sec">틀린 문제 해설</h3>`;wr.forEach(q=>{const r=SS.resp[q.id];
-  h+=`<div class="card"><div class="tag">${esc(q.g||'')}</div><div class="q" style="font-weight:500;margin:4px 0 10px">${qtx(q.q,q)}</div><div>내 답: <span class="no-t">${r.blank?'(안 풂)':esc(ans(q,r,0))}</span></div><div>정답: <span class="ok-t">${esc(ans(q,r,1))}</span></div>`;
+  h+=`<div class="card"><div class="tag">${esc(q.g||'')}</div><div class="q" style="font-weight:500;margin:4px 0 10px">${qtx(q.q,q)}</div><div>내 답: <span class="no-t">${r.blank?'(안 풂)':MX(esc(ans(q,r,0)))}</span></div><div>정답: <span class="ok-t">${MX(esc(ans(q,r,1)))}</span></div>`;
   if(q.t=='es'){const miss=q.pts.filter((p,k)=>!(r.chk||[])[k]);h+=`<div class="fb no">빠진 요소:\n${miss.map(x=>'· '+esc(x)).join('\n')}</div>`}else h+=`<div class="fb ok">${exT(q)}</div>`;if(isPad(SS.meta.subj))h+=padThumb(q.id);
   if(q.t=='sh'&&!r.blank)h+=`<button class="lk" style="margin-top:6px" onclick="ovr2('${q.id}')">내 답도 맞는 표현이에요 (정답 처리)</button>`;h+=`</div>`})}
  h+=wr.length?`<div class="row"><button class="b" onclick="retryWrong()">틀린 문제만 다시</button></div>`:'';
@@ -1626,4 +1685,5 @@ if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.ser
 <script src="data/chem.js?v=3"></script>
 <script src="data/eth.js?v=1"></script>
 <script src="data/geo.js?v=1"></script>
+<script src="data/math.js?v=1"></script>
 <script>mkReform();boot()</script></body></html>
