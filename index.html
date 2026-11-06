@@ -563,7 +563,7 @@ body.cap .capm{display:flex}
 .sbg div b{font-weight:600;color:var(--mut);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .sbg div.on{border-style:solid;border-color:color-mix(in srgb,#9bd3ae 70%,var(--ln));background:color-mix(in srgb,#9bd3ae 14%,var(--card))}
 .sbg div.on b{color:var(--tx);font-weight:700}
-.ppl .rol{align-self:flex-start;font-style:normal;font-size:11px;font-weight:700;padding:1px 7px;margin:1px 0;border-radius:999px;background:color-mix(in srgb,#5b7fa8 16%,var(--card));color:#46668c;white-space:nowrap}
+.ppl .rol{font-style:normal;font-size:11px;font-weight:600;color:var(--mut);margin-left:5px;white-space:nowrap}
 :root{--pbg:#fffdf8;--pln:rgba(91,127,168,.16);--pk1:#2a2620;--pk2:#2f6fd0;--pk3:#d4382c;--phi:#f3c969}
 .pad{margin-top:12px;padding:0!important;overflow:hidden;text-align:left}
 .padh{display:flex;align-items:center;gap:6px;padding:9px 10px 9px 14px;border-bottom:1.5px solid var(--ln)}
@@ -604,7 +604,7 @@ body.pfx{overflow:hidden}
 .pth img{width:100%;border-radius:10px;border:1.5px solid var(--ln);background:var(--pbg)}
 @media (min-width:900px) and (orientation:landscape){
  body.pdw main{max-width:min(1500px,100%)}
- .qz.pz{display:grid;grid-template-columns:minmax(360px,1fr) minmax(0,1.2fr);grid-template-rows:auto auto 1fr;column-gap:18px;align-items:start}
+ .qz.pz{display:grid;grid-template-columns:minmax(320px,clamp(320px,34vw,460px)) minmax(0,1fr);grid-template-rows:auto auto 1fr;column-gap:18px;align-items:start}
  .qz.pz>*{grid-column:1;min-width:0}
  .qz.pz>#pad{grid-column:2;grid-row:1/4;margin-top:0;position:sticky;top:12px}
  .qz.pz.plh>*{grid-column:2}.qz.pz.plh>#pad{grid-column:1}
@@ -1011,7 +1011,7 @@ const avc=n=>AVC[[...n].reduce((a,c)=>a+c.charCodeAt(0),0)%AVC.length];
 const hbBtn=(c,ic,t,sm,on)=>`<button class="hb" style="--hc:${c}" onclick="${on}"><i class="hbi">${ic}</i><span><b>${t}</b>${sm?`<small>${sm}</small>`:''}</span><span class="chev">›</span></button>`;
 let SUBS=null;
 async function subList(){try{const {data,error}=await DB.rpc('admin_subs',{p_key:AK()});if(error||!Array.isArray(data))throw 0;SUBS={};data.forEach(x=>{if(x.nick)SUBS[x.nick]=x.slot})}catch(e){SUBS={}}const w=document.getElementById('ppl');if(w)w.innerHTML=pplHTML()}
-function pplHTML(){const sb=SUBS||{};return ADM.slice().sort((a,b)=>((b.nick in sb)-(a.nick in sb))||(b.t-a.t)).map(r=>`<button onclick="adminOne(decodeURIComponent('${encodeURIComponent(r.nick)}'))"><i class="av" style="--avc:${avc(r.nick)}">${esc([...r.nick][0]||'?')}</i><span><b>${esc(r.nick)}</b>${r.nick in sb?`<em class="rol">보조 관리자 · ${sb[r.nick]}번</em>`:''}<small>${r.t?fd(r.t):'기록 없음'}</small></span></button>`).join('')}
+function pplHTML(){const sb=SUBS||{};return ADM.slice().sort((a,b)=>((b.nick in sb)-(a.nick in sb))||(b.t-a.t)).map(r=>`<button onclick="adminOne(decodeURIComponent('${encodeURIComponent(r.nick)}'))"><i class="av" style="--avc:${avc(r.nick)}">${esc([...r.nick][0]||'?')}</i><span><b>${esc(r.nick)}${r.nick in sb?`<em class="rol">관리자·${sb[r.nick]}</em>`:''}</b><small>${r.t?fd(r.t):'기록 없음'}</small></span></button>`).join('')}
 async function admin(force){if(SUBMODE)return subAdmin(force);if(!(await admLoad(force)))return show('<h2>관리자</h2><p>불러오지 못했어요.</p>');if(!POSTS)postLoad().then(()=>{if(CURR=='admin'){const e=document.getElementById('apn');if(e)e.textContent=POSTS.length}});
  const pend=FB.filter(x=>x.st!='done').length,act=ADM.filter(r=>Date.now()-r.t<7*864e5).length;
  let h=`<h2>관리자</h2><p class="tag">나만 볼 수 있는 화면이에요.</p>`;
