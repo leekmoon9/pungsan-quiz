@@ -370,9 +370,9 @@ body.cap .capm{display:flex}
 .mkw>.lcb{border-style:solid!important}.mkch{--hu:color-mix(in srgb,var(--uc) 55%,#d9534a);border-top-color:var(--hu)!important;background:color-mix(in srgb,var(--hu) 9%,var(--card))!important}.mkch .mkd i.on{background:var(--hu)}.mkch.cpl{background:color-mix(in srgb,var(--hu) 30%,#fffdf8)!important}
 .slg{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
 .slc{display:flex;align-items:center;gap:10px;padding:14px 12px;border:1.5px solid var(--ln);border-top:6px solid var(--sc);border-radius:12px;background:var(--card);color:var(--tx);font:inherit;text-align:left;cursor:pointer;-webkit-tap-highlight-color:transparent}
-.slc i{flex:none;width:24px;height:24px;border-radius:7px;border:2px solid #cfc4b0;display:grid;place-items:center;font-style:normal;font-weight:900;font-size:14px;color:#fff}
+.slc i{flex:none;box-sizing:border-box;width:28px;height:28px;min-height:0;max-height:28px;padding:0;line-height:0;align-self:center;border-radius:8px;border:1.5px solid #d6cdbd;background:#fff;display:grid;place-items:center;color:#2a2620}.slc i svg{width:17px;height:17px;opacity:0}
 .slc b{font-size:15px;word-break:keep-all}
-.slc.on{border-color:color-mix(in srgb,var(--sc) 80%,#8a7a60);background:color-mix(in srgb,var(--sc) 28%,#fffdf8)}.slc.on i{background:#2a2620;border-color:#2a2620}
+.slc.on{border-color:color-mix(in srgb,var(--sc) 80%,#8a7a60);background:color-mix(in srgb,var(--sc) 28%,#fffdf8)}.slc.on i{background:color-mix(in srgb,var(--sc) 85%,#fff);border-color:color-mix(in srgb,var(--sc) 70%,#5a4a36)}.slc.on i svg{opacity:1}.slc i svg path{stroke-width:3.2}.slc{transition:none}
 .slbar{position:sticky;bottom:0;padding:14px 0 calc(14px + env(safe-area-inset-bottom));background:linear-gradient(to bottom,transparent,var(--bg) 30%)}.slbar .b{width:100%}
 .sech{display:flex;align-items:center;justify-content:space-between}.sech .lk{font-size:13.5px}
 .sgmore{display:flex;align-items:center;gap:8px;width:100%;margin:18px 0 6px;padding:14px 16px;border:1.5px dashed var(--ln);border-radius:12px;background:var(--card);color:var(--tx);font:inherit;font-weight:700;cursor:pointer}.sgmore small{color:var(--mut);font-weight:600}.sgmore .chev{margin-left:auto;color:#a39a88}
@@ -796,9 +796,9 @@ const selOK=()=>ADMINMODE||SUBMODE||Array.isArray(R._sel);
 let SELT=null;
 function pickSel(){if(!SELT)SELT=new Set(Array.isArray(R._sel)?R._sel:[]);const first=!Array.isArray(R._sel);setTimeout(()=>document.body.classList.toggle('selg',first));
  let h=`<h2>선택과목 고르기</h2><p class="tag">${first?'처음 한 번만 하면 돼요. ':''}지금 듣고 있는 선택과목을 모두 골라 주세요.<br>공통과목(독서와 작문 · 영어 · 미적분)은 자동으로 들어가요.</p>`;
- SUBJ.forEach((row,ri)=>{const L=row.filter(([n])=>!COMMON.includes(n));if(!L.length)return;h+=`<h3 class="sec">${SECN[ri]}</h3><div class="slg">`+L.map(([n,c])=>`<button class="slc${SELT.has(n)?' on':''}" style="--sc:${SC[c]}" onclick="selTog(decodeURIComponent('${encodeURIComponent(n)}'))"><i>${SELT.has(n)?'✓':''}</i><b>${n.split('|').join(' ')}</b></button>`).join('')+`</div>`});
+ SUBJ.forEach((row,ri)=>{const L=row.filter(([n])=>!COMMON.includes(n));if(!L.length)return;h+=`<h3 class="sec">${SECN[ri]}</h3><div class="slg">`+L.map(([n,c])=>`<button class="slc${SELT.has(n)?' on':''}" style="--sc:${SC[c]}" data-n="${encodeURIComponent(n)}" onclick="selTog(this)"><i>${ICN_OK2}</i><b>${n.split('|').join(' ')}</b></button>`).join('')+`</div>`});
  h+=`<div class="slbar"><button class="b" id="sls" ${SELT.size?'':'disabled'} onclick="selSave()">${SELT.size?`선택 완료 · ${SELT.size}과목`:'선택과목을 골라 주세요'}</button></div>`;show(h)}
-function selTog(n){SELT.has(n)?SELT.delete(n):SELT.add(n);const y=scrollY;pickSel();scrollTo(0,y)}
+function selTog(el){const n=decodeURIComponent(el.dataset.n);SELT.has(n)?SELT.delete(n):SELT.add(n);el.classList.toggle('on',SELT.has(n));const b=document.getElementById('sls');if(b){b.disabled=!SELT.size;b.textContent=SELT.size?`선택 완료 · ${SELT.size}과목`:'선택과목을 골라 주세요'}}
 function selSave(){if(!SELT||!SELT.size)return;const first=!Array.isArray(R._sel);R._sel=SUBJ.flat().map(x=>x[0]).filter(n=>SELT.has(n));SELT=null;document.body.classList.remove('selg');save();soonMsg(first?'선택과목을 저장했어요.':'선택과목을 바꿨어요.');subjects()}
 function sgCard(n,c,o){if(COVER[n])return bk(n,c,o);return `<div class="card pc" style="margin:0;padding:0;overflow:hidden;text-align:center;background:var(--bg);aspect-ratio:6/5;display:flex;flex-direction:column" onclick="subj('${n}')"><div style="position:absolute;top:0;left:0;right:0;pointer-events:none;height:34px;background:linear-gradient(to bottom,${SC[c]} 0,${SC[c]} 18%,transparent 100%)"></div><div style="flex:1;display:flex;align-items:center;justify-content:center;padding:4px;line-height:1.3;font-weight:600;white-space:nowrap" class="sl">${n.split('|').join('<br>')}</div></div>`}
 let SGMORE=false;
@@ -1567,7 +1567,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>프로필 보기</h2><p class="tag">비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v58';
+const APPV='v59';
 function profile(){if(NICK&&!selOK())return pickSel();if(ADMINMODE||SUBMODE)PFOK=true;if(!PFOK)return pfGate();
  show(`<h2>내 프로필</h2>
  <div class="card pf"><div class="pr"><span>닉네임</span><b>${esc(NICK)}</b>${ADMINMODE||SUBMODE?`<span class="mut" style="font-size:13px">${SUBMODE?'보조 관리자':'관리자'} 고정</span>`:'<button class="lk" onclick="pfNick()">변경하기</button>'}</div>
@@ -1716,9 +1716,9 @@ async function boot(){{const m=location.hash.match(/^#s=([A-Za-z0-9]{16,64})$/);
  const lk=lastNick(),pn=ls('pin');
  if(!lk||!/^\d{4}$/.test(pn)){chkAdmin();return home()}
  NICK=lk;PIN=pn;try{R=okDV(JSON.parse(ls('rec:'+lk)))}catch(e){R={}}
- if(FRESH&&!/^inbox/.test(curR()))home();else goR(curR());
+ if(!selOK())pickSel();else if(FRESH&&!/^inbox/.test(curR()))home();else goR(curR());
  if(DB){try{const {data,error}=await DB.rpc('player_login',{p_nick:lk,p_pin:pn});if(!error&&data){
-  if(data.status=='ok'||data.status=='new'){const loc=R;R=mrg(okDV(data.data),loc);R._dv=DV;ls('rec:'+NICK,JSON.stringify(R));if(Object.keys(loc).length)sync()}
+  if(data.status=='ok'||data.status=='new'){const loc=R;R=mrg(okDV(data.data),loc);R._dv=DV;ls('rec:'+NICK,JSON.stringify(R));if(Object.keys(loc).length)sync();if(document.body.classList.contains('selg')&&selOK()){SELT=null;document.body.classList.remove('selg');subjects()}}
   else if(data.status=='wrong'){ls('last',null);ls('pin',null);NICK='';PIN='';REPL=true;home();soonMsg('비밀번호가 바뀌어 다시 입력해야 해요.')}}}catch(e){}}}
 
 if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(r=>r.update()).catch(()=>{}));
