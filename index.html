@@ -270,7 +270,7 @@ body{word-spacing:-.06em}
 .gdn{flex:none;width:30px;height:30px;border-radius:50%;background:#f9df99;color:#3a3226;font-family:'Jua',sans-serif;font-size:17px;display:flex;align-items:center;justify-content:center}
 .gdb p{margin:4px 0;line-height:1.65}.gdb ul{margin:6px 0;padding-left:20px;line-height:1.7}.gdw{color:#a3392f;font-weight:700;font-size:14px}.gdok{color:var(--ok);font-weight:700}
 .b.gdbt{margin-top:8px}
-.gdi{margin-top:10px;display:flex;justify-content:center}.gdi img{display:block;width:100%;max-width:300px;border-radius:12px;border:1.5px solid var(--ln);box-shadow:0 3px 10px rgba(90,70,40,.12)}
+.gdi{margin-top:10px;display:flex;justify-content:center;align-items:flex-start}.gdi img{display:block;width:100%;max-width:300px;border-radius:12px;border:1.5px solid var(--ln);box-shadow:0 3px 10px rgba(90,70,40,.12)}
 .gdi.two{gap:8px}.gdi.two img{width:calc(50% - 4px)}
 #app .b.gdb2{color:#2a2620}
 .admw:has(.rsb) .b.admb{padding:8px 10px;font-size:14px}
@@ -556,6 +556,7 @@ body.cap .capm{display:flex}
 .gdx a{padding:6px 11px;border-radius:999px;border:1.5px solid var(--ln);background:var(--card);color:var(--tx);font-size:13px;font-weight:700;text-decoration:none}
 .gds{scroll-margin-top:70px}
 .gdr{color:#e05a4f}
+.gdi img.gdwd{max-width:100%}
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -806,7 +807,7 @@ function guide(){const S=(n,t,body,img)=>`<section class="gds" id="gd${n}"><div 
  h+=`<nav class="gdx">${['시작하기','앱 설치','과목 고르기','공부하기','문제 풀기','모의고사','오답노트','통계·달력','공지','메시지함·알림','피드백','프로필'].map((t,i)=>`<a href="#gd${i+1}" onclick="event.preventDefault();document.getElementById('gd${i+1}').scrollIntoView({behavior:'smooth',block:'start'})">${i+1}. ${t}</a>`).join('')}</nav>`;
  h+=S(1,'닉네임으로 시작하기','<p>닉네임과 <b>숫자 4자리 비밀번호</b>를 정해요. 다른 폰에서도 같은 닉네임·비밀번호로 들어오면 기록이 그대로 이어져요.</p><p class="gdw">비밀번호를 잊으면 기록을 찾을 수 없어요.</p>','g_start');
  h+=S(2,'앱으로 설치하기',`<p>홈 화면에 추가하면 앱처럼 쓸 수 있어요. <b>전체 통계, 공부 달력, 폰 알림</b>은 앱에서만 돼요.</p><ul><li>아이폰: 사파리 <b>공유</b> → <b>홈 화면에 추가</b></li><li>안드로이드: 크롬 메뉴 <b>⋮</b> → <b>앱 설치</b></li></ul>${isApp()?'<p class="gdok">지금 앱으로 쓰고 있어요 👍</p>':'<button class="b gdbt" onclick="installApp()">앱으로 설치하기</button>'}`);
- h+=S(3,'과목 고르기','<p>학습하기 화면에서 과목을 눌러요. 진행도 막대가 있는 과목이 열린 과목이고, <b>준비 중</b> 과목은 곧 열려요.</p><p>맨 위 버튼: <b>사용법</b> · <b>공지</b> · <b>편지봉투</b>(메시지함) · <b>사람</b>(프로필)</p>',['g_subj','g_top']);
+ h+=S(3,'과목 고르기','<p>학습하기 화면에서 과목을 눌러요. 진행도 막대가 있는 과목이 열린 과목이고, <b>준비 중</b> 과목은 곧 열려요.</p><p>맨 위 버튼: <b>사용법</b> · <b>공지</b> · <b>편지봉투</b>(메시지함) · <b>사람</b>(프로필)</p><div class="gdi"><img class="gdwd" src="guide/g_top.jpg" alt="" loading="lazy"></div>','g_subj');
  h+=S(4,'공부하기 (필기)','<p>과목에 들어가 <b>공부하기</b>를 누르면 교과서 핵심을 정리한 필기가 나와요. <b>형광펜</b>은 꼭 외울 내용, 그림·지도·표는 교과서 자료를 다시 정리한 거예요.</p><ul><li><b>교과서 원문 보기</b>: 그 단원의 교과서 쪽을 바로 볼 수 있어요.</li><li>필기 맨 아래 버튼으로 <b>그 단원 문제</b>를 바로 풀 수 있어요.</li><li>맨 위 <b>처음부터 공부하기</b> 카드는 이어서 볼 단원을 알려 줘요.</li></ul>',['g_learn','g_note']);
  h+=S(5,'문제 풀기','<p><b>문제 풀기</b>에서 대단원을 펼쳐 중단원을 골라요. 중단원마다 <b>기본 문제</b>와 자료를 읽고 푸는 <b>실전 문제</b>가 있어요.</p><p>다 풀고 <b>제출</b>하면 정답과 해설이 나와요. <b>처음 푼 결과만</b> 진행도와 통계에 들어가요.</p>','g_quiz');
  h+=S(6,'모의고사','<p>과목마다 <b>5회분</b>이 있어요. 회차당 <b>25문항 내외 · 50분 · 100점 만점</b>이고, 학력평가처럼 자료·사례·&lt;보기&gt;를 분석하는 문제예요.</p><ul><li>그 과목 <b>문제를 모두 풀면</b> 열려요. (11월 23일부터는 모두 열려요.)</li><li>위쪽에 <b>남은 시간</b>이 나오고, 50분을 넘기면 초과 시간이 표시돼요. 제출하면 점수와 오답이 바로 나와요.</li><li><b>모의고사 통계</b>에서 회차별 점수를 볼 수 있어요.</li></ul>','g_mock');
