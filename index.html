@@ -724,7 +724,7 @@ async function inbox(){const draw=()=>{if(CURR!='inbox')return;const L=MSGS||[],
   let h=`<h2>메시지함</h2><p class="tag">${L.length?(n?`읽지 않은 메시지 ${n}개`:'모든 메시지를 읽었어요'):''}</p>`;
   if(MSGS===null)h+=`<div class="card mut" style="text-align:center;padding:24px">불러오는 중…</div>`;
   else if(!L.length)h+=`<div class="card mgx">${MAIL}<p>아직 받은 메시지가 없어요.</p></div>`;
-  else h+=L.map(m=>`<button class="mgc${m.read?' rd':''}" onclick="msgOpen(${m.id})"><span class="mgd"></span><span class="mgb"><b>${esc(m.title)}</b><small>${fdt(m.created_at)}</small><span class="mgp">${esc(((m.meta&&m.meta.kind=='fb_reply')?m.meta.changes:m.body||'').replace(/\s+/g,' ').slice(0,60))}</span></span><span class="chev">›</span></button>`).join('');
+  else h+=L.map(m=>`<button class="mgc${m.read?' rd':''}" onclick="msgOpen(${m.id})"><span class="mgd"></span><span class="mgb"><b>${esc(m.title)}</b><small>${fdt(m.created_at)}</small><span class="mgp">${esc(((m.meta&&m.meta.kind=='fb_reply')?m.meta.changes:m.meta&&m.meta.kind=='post'?'':m.body||'').replace(/\s+/g,' ').slice(0,60))}</span></span><span class="chev">›</span></button>`).join('');
   if(rd)h+=`<div class="row"><button class="b g" onclick="msgDelRead()">읽은 메시지 모두 지우기 (${rd}개)</button></div>`;
   show(h,'inbox')};
  draw();if(DB&&NICK){await msgLoad();draw()}}
@@ -733,7 +733,7 @@ async function msgOpen(id){if(!MSGS)await msgLoad();const m=(MSGS||[]).find(x=>x
  const k=m.meta&&m.meta.kind;let b='';
  if(k=='fb_reply')b=`<div class="mgs"><span>보내신 피드백</span><blockquote>${nl(m.meta.q)}</blockquote></div><div class="mgs"><span>수정한 내용</span><p>${nl(m.meta.changes)}</p></div>${m.meta.howto?`<div class="mgs"><span>확인하는 방법</span><p>${nl(m.meta.howto)}</p></div>`:''}`;
  else if(k=='fb_new')b=`<div class="mgs"><span>보낸 사람</span><p><b>${esc(m.meta.from||'익명')}</b></p></div><div class="mgs"><span>내용</span><blockquote>${nl(m.meta.q)}</blockquote></div>${OWNER?`<button class="lk" onclick="admin(1)">관리자 화면에서 보기 ›</button>`:''}`;
- else if(k=='post')b=`<div class="mgs"><p>${nl(m.body)}</p></div><button class="b pgo" onclick="postView(${+m.meta.post||0})">공지 보러 가기 ›</button>`;
+ else if(k=='post')b=`<button class="b pgo" onclick="postView(${+m.meta.post||0})">공지 보러 가기 ›</button>`;
  else b=`<div class="mgs"><p>${nl(m.body)}</p></div>${(m.meta&&m.meta.imgs||[]).map(i=>`<figure class="mgi" data-i="${esc(i)}"><span class="mgl">사진 불러오는 중…</span></figure>`).join('')}`;
  show(`<div class="card mgv"><div class="mgt">${k=='notice'?'<span class="chp" style="background:#8fb8ec">알림</span>':k=='post'?'<span class="chp" style="background:#f3c969">공지</span>':k=='fb_reply'?'<span class="chp" style="background:#9bd3ae">피드백 답장</span>':k=='fb_new'?'<span class="chp" style="background:#f0a35e">새 피드백</span>':''}<small>${fdt(m.created_at)}</small></div><h2>${esc(m.title)}</h2>${b}</div><div class="row"><button class="b g mgdel" onclick="msgDel(${id})">메시지 삭제</button></div>`);mgImgs()}
 const NIMC=new Map();
@@ -781,7 +781,7 @@ async function postLoad(){if(!DB)return POSTS||(POSTS=[]);try{const {data,error}
 function postBadge(){const n=(POSTS||[]).filter(x=>pT(x)>pSeen()).length;document.querySelectorAll('.ntb .ntd').forEach(d=>d.hidden=!n)}
 async function board(){const seen=pSeen();const draw=()=>{const L=POSTS||[];
  let h=`<h2>공지</h2><p class="tag">${POSTS==null?'불러오는 중…':L.length?`새 소식과 안내를 모아 둔 곳이에요.`:'아직 올라온 공지가 없어요.'}</p>${OWNER&&DB?`<div class="hub hub1" style="margin:0 0 14px">${hbBtn('#e3b55a',ICN_MEGA,'공지 올리기','관리자만 보여요','postForm()')}</div>`:''}`;
- h+=L.map(x=>{const nw=pT(x)>seen,ni=(x.imgs||[]).length;return `<button class="pst${nw?' nw':''}" onclick="postView(${x.id})"><span class="psm">${nw?'<span class="chp pnw">NEW</span>':''}<small>${fdt(x.created_at)}</small>${ni?`<span class="psi">${ICN_PIC}${ni}</span>`:''}</span><b>${esc(x.title)}</b>${x.body?`<span class="psp">${esc(x.body.replace(/\s+/g,' ').slice(0,120))}</span>`:''}</button>`}).join('');
+ h+=L.map(x=>{const nw=pT(x)>seen,ni=(x.imgs||[]).length;return `<button class="pst${nw?' nw':''}" onclick="postView(${x.id})"><span class="psm">${nw?'<span class="chp pnw">NEW</span>':''}<small>${fdt(x.created_at)}</small>${ni?`<span class="psi">${ICN_PIC}${ni}</span>`:''}</span><b>${esc(x.title)}</b></button>`}).join('');
  if(POSTS&&!L.length)h+=`<div class="card ntx2">${ICN_MEGA}<p>새 소식이 생기면 여기에 올라와요.</p></div>`;
  show(h,'board')};
  draw();await postLoad();if(CURR!='board')return;draw();const mx=Math.max(0,...(POSTS||[]).map(pT));if(mx>pSeen())ls('pseen',String(mx));postBadge()}
