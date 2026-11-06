@@ -557,6 +557,12 @@ body.cap .capm{display:flex}
 .gds{scroll-margin-top:70px}
 .gdr{color:#e05a4f}
 .gdi img.gdwd{max-width:100%}
+.sbg{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
+.sbg div{display:flex;align-items:center;gap:8px;padding:8px 10px;border:1.5px dashed var(--ln);border-radius:10px;font-size:14px;min-width:0}
+.sbg div span{flex:none;font-size:12px;font-weight:700;color:var(--mut);width:30px}
+.sbg div b{font-weight:600;color:var(--mut);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sbg div.on{border-style:solid;border-color:color-mix(in srgb,#9bd3ae 70%,var(--ln));background:color-mix(in srgb,#9bd3ae 14%,var(--card))}
+.sbg div.on b{color:var(--tx);font-weight:700}
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -884,6 +890,8 @@ const ICN_GRID='<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="
 const AVC=['#8fb8ec','#9bd3ae','#f3c969','#f0a35e','#c9a7e8','#e9978f','#7fcfc6'];
 const avc=n=>AVC[[...n].reduce((a,c)=>a+c.charCodeAt(0),0)%AVC.length];
 const hbBtn=(c,ic,t,sm,on)=>`<button class="hb" style="--hc:${c}" onclick="${on}"><i class="hbi">${ic}</i><span><b>${t}</b>${sm?`<small>${sm}</small>`:''}</span><span class="chev">›</span></button>`;
+async function subList(){const w=document.getElementById('sbl');if(!w)return;try{const {data,error}=await DB.rpc('admin_subs',{p_key:AK()});if(error||!Array.isArray(data))throw 0;const n=data.filter(x=>x.nick).length;
+ w.innerHTML=`<p class="tag" style="margin:0 0 8px">${data.length}자리 중 <b>${n}명</b> 가입</p><div class="sbg">${data.map(x=>`<div class="${x.nick?'on':''}"><span>${x.slot}번</span><b>${x.nick?esc(x.nick):'미가입'}</b></div>`).join('')}</div>`}catch(e){if(document.getElementById('sbl'))w.innerHTML='<p class="mut">「보조관리자_20명.sql」을 실행하면 자리별 가입 닉네임이 여기에 나와요.</p>'}}
 async function admin(force){if(SUBMODE)return subAdmin(force);if(!(await admLoad(force)))return show('<h2>관리자</h2><p>불러오지 못했어요.</p>');if(!POSTS)postLoad().then(()=>{if(CURR=='admin'){const e=document.getElementById('apn');if(e)e.textContent=POSTS.length}});
  const pend=FB.filter(x=>x.st!='done').length,act=ADM.filter(r=>Date.now()-r.t<7*864e5).length;
  let h=`<h2>관리자</h2><p class="tag">나만 볼 수 있는 화면이에요.</p>`;
@@ -901,6 +909,7 @@ async function admin(force){if(SUBMODE)return subAdmin(force);if(!(await admLoad
  h+=`<div class="hub">${hbBtn('#c9a7e8',ICN_GRID,'유형별 보기','','fbTypes()')}${hbBtn('#9bd3ae',ICN_PPL,'개인별 보기','','fbPeople()')}</div><div class="hub hub1">${hbBtn('#f0a35e',ICN_CLIP,'클로드에게 보낼 피드백 복사',pend?`답장하지 않은 피드백 ${pend}개`:'답장할 피드백이 없어요','fbCopy()')}</div>`;
  // ---- 개인별 통계 ----
  h+=`<h3 class="sec">개인별 통계</h3>`+(ADM.length?`<div class="ppl">${ADM.slice().sort((a,b)=>b.t-a.t).map(r=>`<button onclick="adminOne(decodeURIComponent('${encodeURIComponent(r.nick)}'))"><i class="av" style="--avc:${avc(r.nick)}">${esc([...r.nick][0]||'?')}</i><span><b>${esc(r.nick)}</b><small>${r.t?fd(r.t):'기록 없음'}</small></span></button>`).join('')}</div>`:'<div class="card mut">아직 참여한 사람이 없어요.</div>');
+ h+=`<h3 class="sec">보조 관리자</h3><div class="card sbl" id="sbl"><p class="mut">불러오는 중…</p></div>`;setTimeout(subList,0);
  h+=wrongAna();
  h+=``;
  show(h);animBars()}
