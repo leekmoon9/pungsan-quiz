@@ -1173,7 +1173,8 @@ function socGo(n,u,k,opt){const segs=[];const nm=n.split('|').join(' ');opt=opt|
  const wseg=tsg.filter(x=>{const g=gInfo(x.qs);return g.weak&&g.u>0}),unN=[].concat(...wseg.map(x=>x.qs)).filter(isUnf).length;
  if(unN){askBox('취약한 유형이에요',`틀린 문제가 많아요. 먼저 오답부터 고쳐 보세요.<small class="mdn">오답 ${unN}문제를 다시 풀어요. 다 고치면 &lsquo;오답 완료&rsquo; 표시가 붙어요.</small>`,'오답 풀기').then(ok=>{if(ok)startWrong(n,wseg,xm)});return}
  if(done){askBox('다시 푸시겠습니까?','2회차부터는 통계에 반영되지 않습니다.','다음').then(ok=>{if(ok)startRun(n,segs,Object.assign({title:nm,practice:true},xm))});return}
- startRun(n,segs,Object.assign({title:nm},xm))}
+ let run=segs;if(NEWS(n)){const rest=segs.map(x=>Object.assign({},x,{qs:x.qs.filter(q=>!R[q.id])})).filter(x=>x.qs.length);const tot=a=>a.reduce((t,x)=>t+x.qs.length,0);if(rest.length&&tot(rest)<tot(segs)){run=rest;const sk=tsg.filter(x=>x.qs.every(q=>R[q.id])).map(x=>x.label.split(' · ').pop());setTimeout(()=>soonMsg(sk.length?`${sk.join('·')}은 이미 풀었어요. 이어서 풀게요.`:'이미 푼 문제는 건너뛰고 이어서 풀게요.'),300)}}
+ startRun(n,run,Object.assign({title:nm},xm))}
 
 function subj(n){if(!hasC(n)&&!STAFF()&&CUR[n]){soon();return subjects()}if(NEWS(n))return learnHome(n);if(isSoc(n))return socPage(n);return subjects()}
 function allStats(){if(!isApp()){setTimeout(lockMsg,50);return subjects()}const qs=[].concat(...PASS.map(p=>p.Q)),s=st(qs);
