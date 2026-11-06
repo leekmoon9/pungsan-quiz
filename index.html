@@ -1076,9 +1076,9 @@ let SUBS=null;
 async function subList(){let ok=true;try{const {data,error}=await DB.rpc('admin_subs',{p_key:AK()});if(error||!Array.isArray(data))throw 0;const m={};data.forEach(x=>{if(x.nick)m[x.nick]=x.slot});SUBS=m}catch(e){ok=false}const w=document.getElementById('ppl');if(w){w.innerHTML=pplHTML();const n=document.getElementById('sbn');if(n)n.hidden=ok}}
 function pplHTML(){const sb=SUBS||{};return ADM.filter(r=>r.nick!==ADM_NICK).sort((a,b)=>((b.nick in sb)-(a.nick in sb))||(b.t-a.t)).map(r=>`<button onclick="adminOne(decodeURIComponent('${encodeURIComponent(r.nick)}'))"><i class="av" style="--avc:${avc(r.nick)}">${esc([...r.nick][0]||'?')}</i><span><b>${esc(r.nick)}${r.nick in sb?`<em class="rol">관리자·${sb[r.nick]}</em>`:''}</b><small>${r.t?fd(r.t):'기록 없음'}</small></span></button>`).join('')}
 async function admin(force){if(SUBMODE)return subAdmin(force);if(!(await admLoad(force)))return show('<h2>관리자</h2><p>불러오지 못했어요.</p>');if(!POSTS)postLoad().then(()=>{if(CURR=='admin'){const e=document.getElementById('apn');if(e)e.textContent=POSTS.length}});
- const pend=FB.filter(x=>x.st!='done').length,act=ADM.filter(r=>Date.now()-r.t<7*864e5).length;
+ const pend=FB.filter(x=>x.st!='done').length,AP=ADM.filter(r=>r.nick!==ADM_NICK),act=AP.filter(r=>Date.now()-r.t<7*864e5).length;
  let h=`<h2>관리자</h2><p class="tag">나만 볼 수 있는 화면이에요.</p>`;
- h+=`<div class="ast"><div><b>${ADM.length}</b><span>참여자</span></div><div><b>${act}</b><span>이번 주 활동</span></div><div class="${pend?'hot':''}"><b>${pend}</b><span>답장 대기</span></div><div><b id="apn">${POSTS?POSTS.length:'-'}</b><span>공지</span></div></div>`;
+ h+=`<div class="ast"><div><b>${AP.length}</b><span>참여자</span></div><div><b>${act}</b><span>이번 주 활동</span></div><div class="${pend?'hot':''}"><b>${pend}</b><span>답장 대기</span></div><div><b id="apn">${POSTS?POSTS.length:'-'}</b><span>공지</span></div></div>`;
  h+=`<h3 class="sec">소식 전하기</h3><div class="hub hub1">${hbBtn('#8fb8ec',ICN_BELL2,'알림 보내기','','noticeForm()')}${hbBtn('#e3b55a',ICN_MEGA,'공지 올리기','','postForm()')}</div>`;
  // ---- 의견 보기 ----
  const now=Date.now(),rec=FB.filter(x=>now-x.t<14*864e5),base=rec.length?rec:FB,cnt={};FBT.forEach(t=>cnt[t[0]]=0);base.forEach(x=>cnt[x.k]++);
