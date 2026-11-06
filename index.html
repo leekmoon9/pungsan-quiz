@@ -1507,7 +1507,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>프로필 보기</h2><p class="tag">비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v52';
+const APPV='v53';
 function profile(){if(ADMINMODE||SUBMODE)PFOK=true;if(!PFOK)return pfGate();
  show(`<h2>내 프로필</h2>
  <div class="card pf"><div class="pr"><span>닉네임</span><b>${esc(NICK)}</b>${ADMINMODE||SUBMODE?`<span class="mut" style="font-size:13px">${SUBMODE?'보조 관리자':'관리자'} 고정</span>`:'<button class="lk" onclick="pfNick()">변경하기</button>'}</div>
@@ -1573,6 +1573,10 @@ function setR(r){const prev=CURR;CURR=r;updBk();const t=curU(r);
   else{NAVT=1;setTimeout(()=>NAVT=0);
    const j=HI>1?HST.lastIndexOf(r,HI-1):-1;
    if(j>=1){const d=j-HI;HST.length=j+1;HI=j;IGN++;window._igt=setTimeout(()=>IGN=0,700);history.go(d)}
+   else if(/^board/.test(r)&&/^admin\/w/.test(prev)){const k=HST.lastIndexOf('subjects',HI-1);
+    // 공지를 올린 뒤: 글쓰기·관리자 화면 기록을 걷어 내고 [과목 선택 → 공지]만 남김
+    if(k>=1&&k+1<HI){const d=k+1-HI,sub=r!='board';HST.length=k+2;HST[k+1]='board';if(sub)HST[k+2]=r;HI=k+1;IGN++;window._igt=setTimeout(()=>IGN=0,700);window.addEventListener('popstate',()=>{try{history.replaceState({r:'board',i:k+1},'',curU('board'));if(sub){history.pushState({r,i:k+2},'',t)}HI=sub?k+2:k+1;svH()}catch(e){}},{once:true});history.go(d)}
+    else{HST[HI]=r;history.replaceState({r,i:HI},'',t)}}
    else if(prev==''||prev=='quiz'||prev=='result'||!actOK()){HST[HI]=r;history.replaceState({r,i:HI},'',t)}
    else if(r.startsWith('note/')&&prev.startsWith('note/')){HST[HI]=r;history.replaceState({r,i:HI},'',t)}
    else if(r.startsWith('note/')&&prev!==parentOf(r)){const par=parentOf(r);HST[HI]=par;history.replaceState({r:par,i:HI},'',curU(par));HI++;HST.length=HI;HST[HI]=r;history.pushState({r,i:HI},'',t)}
