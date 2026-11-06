@@ -1228,13 +1228,14 @@ const wkBadge=g=>(g.weak?'<span class="wkb">취약</span>':'')+(g.weak&&g.fixed?
 function allSegs(n,u,k){const segs=[];CUR[n].forEach((U,ui)=>{if(u!==undefined&&ui!==u)return;U.m.forEach((M,ki)=>{if(k!==undefined&&ki<k)return;if(M.q.length)segs.push({label:(u===undefined||CUR[n].length>1&&KIND[n]?U.n+' · ':'')+M.n,qs:M.q})})});return segs}
 function startWrong(n,segs,extra){const ws=segs.map(x=>({label:x.label,qs:x.qs.filter(isUnf)})).filter(x=>x.qs.length);if(!ws.length){soonMsg('고칠 오답이 없어요.');return}
  startRun(n,ws,Object.assign({title:n.split('|').join(' ')+' 오답노트',mode:'wrong',practice:true},extra||{}))}
-function RSP(){const it=[['me','내 계정 전체 초기화','풀이 기록·오답노트·공부 시간'],['nt','알림 정보 초기화','모든 사람의 메시지함 속 알림'],['fb','피드백 정보 초기화','받은 피드백과 답장 기록'],['del','개인별 계정 삭제','계정을 골라서 삭제']];
+function RSP(){const it=[['nt','알림 정보 초기화','모든 사람의 메시지함 속 알림'],['fb','피드백 정보 초기화','받은 피드백과 답장 기록'],['del','개인별 계정 삭제','계정을 골라서 삭제']];
  return `<div class="rsm" id="rsp" role="menu" aria-hidden="true">${it.map(([k,t,d],i)=>`${k=='del'?'<hr>':''}<button class="rso${k=='del'?' rsd':''}" role="menuitem" onclick="rsDo('${k}')"><span><b>${t}</b><small>${d}</small></span>${k=='del'?'<i>›</i>':''}</button>`).join('')}</div>`}
 function rsToggle(f){const p=document.getElementById('rsp'),b=document.getElementById('rsbt');if(!p)return;const o=f===undefined?!p.classList.contains('on'):f;p.classList.toggle('on',o);p.setAttribute('aria-hidden',!o);if(b){b.setAttribute('aria-expanded',o);b.classList.toggle('on',o)}
  document.removeEventListener('pointerdown',rsOut,true);if(o)setTimeout(()=>document.addEventListener('pointerdown',rsOut,true),0)}
 function rsOut(e){if(e.target.closest&&e.target.closest('.rsw'))return;rsToggle(false)}
 async function rsDo(k){if(!OWNER)return;rsToggle(false);
  if(k=='me')return myReset();
+ if(k=='all')return myFill();
  if(k=='del')return delPage();
  const [t,m,f]=k=='nt'?['알림 정보를 초기화할까요?','모든 사람의 메시지함에서 <b>보낸 알림</b>이 지워져요. 공지 탭의 글은 그대로예요. 되돌릴 수 없어요.','admin_clear_notices']:['피드백 정보를 초기화할까요?','받은 <b>피드백</b>과 답장 기록이 모두 지워져요. 되돌릴 수 없어요.','admin_clear_feedback'];
  if(!(await askBox(t,m,'초기화')))return;
@@ -1254,8 +1255,11 @@ async function delGo(){const L=[...DLS];if(!L.length)return;const nm=L.length==1
  const b=document.getElementById('dlb');if(b){b.disabled=true;b.textContent='삭제하는 중…'}let ok=0,fail=0;
  for(const n of L){try{const r=await DB.rpc('admin_delete_player',{p_key:AK(),p_nick:n});if(r.error||r.data<0)throw 0;ok++;ADM=ADM.filter(x=>x.nick!=n);DLS.delete(n)}catch(e){fail++}}
  soonMsg(fail?(ok?`${ok}명은 삭제했고 ${fail}명은 실패했어요.`:'삭제하지 못했어요. 서버 설정을 확인해 주세요.'):`${ok}명의 계정을 삭제했어요.`);if(document.getElementById('dll'))delList()}
+async function myFill(){if(!OWNER)return;if(!(await askBox('내 진행도를 모두 완료할까요?','모든 과목의 <b>필기 읽음, 문제, 모의고사</b>가 전부 맞힌 것으로 처리돼요.<br>공부 시간은 그대로예요. 되돌리려면 「내 계정 전체 초기화」를 쓰세요.','완료 처리')))return;
+ let c=0;R._nv=R._nv||{};R._nd=R._nd||{};SUBJ.flat().forEach(([n])=>{if(!CUR[n])return;socQ(n).concat(mkAll(n)).forEach(q=>{R[q.id]={ok:1};c++});R._nv[n]=R._nv[n]||{};CUR[n].forEach((U,u)=>{R._nd[n+'|'+u]=1;U.m.forEach((_,k)=>{R._nv[n][u+'-'+k]=1})})});
+ R._fx={};try{sessionStorage.removeItem(KEY+'ss')}catch(e){}save();await sync();soonMsg(`${c}문제를 완료 처리했어요.`);profile()}
 async function myReset(){if(!OWNER)return;if(!(await askBox('내 기록을 초기화할까요?','풀이 기록, 오답노트, 공부 시간이 모두 지워집니다.','초기화')))return;
- R={_dv:DV,_t:{},_fx:{}};ls('rec:'+NICK,JSON.stringify(R));try{sessionStorage.removeItem(KEY+'ss')}catch(e){}await sync();soonMsg('초기화했어요.');subjects()}
+ R={_dv:DV,_t:{},_fx:{}};ls('rec:'+NICK,JSON.stringify(R));try{sessionStorage.removeItem(KEY+'ss')}catch(e){}await sync();soonMsg('초기화했어요.');profile()}
 
 // ---- 앱 설치 유도 ----
 let DP=null;
@@ -1448,7 +1452,9 @@ function profile(){if(ADMINMODE||SUBMODE)PFOK=true;if(!PFOK)return pfGate();
  show(`<h2>내 프로필</h2>
  <div class="card pf"><div class="pr"><span>닉네임</span><b>${esc(NICK)}</b>${ADMINMODE||SUBMODE?`<span class="mut" style="font-size:13px">${SUBMODE?'보조 관리자':'관리자'} 고정</span>`:'<button class="lk" onclick="pfNick()">변경하기</button>'}</div>
  ${ADMINMODE||SUBMODE?'':`<div class="pr"><span>비밀번호</span><b id="pv">••••</b><button class="lk" onclick="const e=document.getElementById('pv');e.textContent=e.textContent=='••••'?PIN:'••••'">보기</button><button class="lk" onclick="pfPin()">변경하기</button></div>`}<div class="pr"><span>폰 알림</span><b>${notiState()}</b>${notiState()=='켜짐'?'':'<button class="lk" onclick="notiFromProfile()">켜기</button>'}</div></div>
- `)}
+ ${OWNER?myProg():''}`)}
+function myProg(){const L=SUBJ.flat().filter(([n])=>CUR[n]&&socQ(n).length),qs=[].concat(...L.map(([n])=>socQ(n).concat(mkAll(n)))),d=qs.filter(q=>R[q.id]).length,pc=qs.length?Math.round(d/qs.length*100):0;
+ return `<h3 class="sec">내 진행도</h3><div class="card"><div class="al"><span>열린 과목 ${L.length}개 · ${d} / ${qs.length}문제</span><b>${pc}%</b></div><div class="bar" style="height:9px;margin:6px 0 4px"><i style="width:${pc}%"></i></div><p class="mut" style="font-size:12.5px;margin:6px 0 0">관리자만 보여요. 앱을 둘러보다 진행도가 애매하게 남았을 때 한 번에 정리할 수 있어요.</p></div><div class="qk"><button onclick="myFill()">모두 완료로 채우기</button><button class="dng" onclick="myReset()">모두 초기화</button></div>`}
 function calGo(d){const [y,mo]=CALM;let ny=y,nm=mo+d;if(nm<0){nm=11;ny--}if(nm>11){nm=0;ny++}cal([ny,nm],d)}
 function cal(m,dir){if(!isApp()){setTimeout(lockMsg,50);return subjects()}if(m)CALM=m;if(!CALM){const d=new Date();CALM=[d.getFullYear(),d.getMonth()]}const [y,mo]=CALM,t=R._t||{};
  const first=new Date(y,mo,1).getDay(),n=new Date(y,mo+1,0).getDate(),tk=dkey();let mt=0,md=0;
