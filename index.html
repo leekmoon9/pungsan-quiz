@@ -178,7 +178,8 @@ body.hasbk .fbw h2:first-child{padding-left:0}
 #app .mgv h2{background:none;word-break:keep-all;margin-left:0;padding:0}
 .admw:has(.admb) .mlb{width:40px}.admw:has(.admb) .b.admb{padding:8px 12px}
 .nti svg{width:64px;height:64px;display:block;margin:0 auto 10px}
-.fid{font-size:12px;font-weight:800;color:var(--mut)}.fbc.fdn{opacity:.6}
+.fid{font-size:12px;font-weight:800;color:var(--mut)}
+.fbrb{margin-left:auto;padding:5px 13px;border-radius:999px;border:1.5px solid #8fb8ec;background:#eef5fd;color:#33507a;font-size:13px;font-weight:800;cursor:pointer}.fdn .fbrb{border-color:#d6cdbd;background:#fff;color:var(--mut)}.fbc.fdn{opacity:.6}
 .lch{display:flex;flex-direction:column;gap:12px;margin-top:14px}
 .lcb{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:10px;width:100%;padding:18px 14px 18px 16px;border:none;border-radius:18px;background:var(--card);box-shadow:0 3px 14px rgba(90,70,40,.12);border-top:6px solid var(--uc);color:var(--tx);font:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:transform .15s;padding:22px 18px}
 .lcb:active{transform:scale(.98)}.lci{width:52px;height:52px;flex:none}
@@ -796,14 +797,14 @@ async function inbox(){const draw=()=>{if(CURR!='inbox')return;const L=MSGS||[],
   let h=`<h2>메시지함</h2><p class="tag">${L.length?(n?`읽지 않은 메시지 ${n}개`:'모든 메시지를 읽었어요'):''}</p>`;
   if(MSGS===null)h+=`<div class="card mut" style="text-align:center;padding:24px">불러오는 중…</div>`;
   else if(!L.length)h+=`<div class="card mgx">${MAIL}<p>아직 받은 메시지가 없어요.</p></div>`;
-  else h+=L.map(m=>`<button class="mgc${m.read?' rd':''}" onclick="msgOpen(${m.id})"><span class="mgd"></span><span class="mgb"><b>${esc(m.title)}</b><small>${fdt(m.created_at)}</small><span class="mgp">${esc(((m.meta&&m.meta.kind=='fb_reply')?m.meta.changes:m.meta&&m.meta.kind=='post'?'':m.body||'').replace(/\s+/g,' ').slice(0,60))}</span></span><span class="chev">›</span></button>`).join('');
+  else h+=L.map(m=>`<button class="mgc${m.read?' rd':''}" onclick="msgOpen(${m.id})"><span class="mgd"></span><span class="mgb"><b>${esc(m.title)}</b><small>${fdt(m.created_at)}</small><span class="mgp">${esc(((m.meta&&m.meta.kind=='fb_reply')?(m.meta.answer||m.meta.changes):m.meta&&m.meta.kind=='post'?'':m.body||'').replace(/\s+/g,' ').slice(0,60))}</span></span><span class="chev">›</span></button>`).join('');
   if(rd)h+=`<div class="row"><button class="b g" onclick="msgDelRead()">읽은 메시지 모두 지우기 (${rd}개)</button></div>`;
   show(h,'inbox')};
  draw();if(DB&&NICK){await msgLoad();draw()}}
 async function msgOpen(id){if(!MSGS)await msgLoad();const m=(MSGS||[]).find(x=>x.id==id);if(!m){soonMsg('지워진 메시지예요.');return inbox()}
  if(!m.read){m.read=true;mailBadge();if(DB)DB.rpc('msg_read',Object.assign(whoP(),{p_id:id})).then(()=>{},()=>{})}
  const k=m.meta&&m.meta.kind;let b='';
- if(k=='fb_reply')b=`<div class="mgs"><span>보내신 피드백</span><blockquote>${nl(m.meta.q)}</blockquote></div><div class="mgs"><span>수정한 내용</span><p>${nl(m.meta.changes)}</p></div>${m.meta.howto?`<div class="mgs"><span>확인하는 방법</span><p>${nl(m.meta.howto)}</p></div>`:''}`;
+ if(k=='fb_reply')b=`<div class="mgs"><span>보내신 피드백</span><blockquote>${nl(m.meta.q)}</blockquote></div><div class="mgs"><span>${m.meta.answer?'답장':'수정한 내용'}</span><p>${nl(m.meta.answer||m.meta.changes)}</p></div>${m.meta.howto?`<div class="mgs"><span>확인하는 방법</span><p>${nl(m.meta.howto)}</p></div>`:''}`;
  else if(k=='fb_new')b=`<div class="mgs"><span>보낸 사람</span><p><b>${esc(m.meta.from||'익명')}</b></p></div><div class="mgs"><span>내용</span><blockquote>${nl(m.meta.q)}</blockquote></div>${OWNER?`<button class="lk" onclick="admin(1)">관리자 화면에서 보기 ›</button>`:''}`;
  else if(k=='post')b=`<button class="b pgo" onclick="postView(${+m.meta.post||0})">공지 보러 가기 ›</button>`;
  else b=`<div class="mgs"><p>${nl(m.body)}</p></div>${(m.meta&&m.meta.imgs||[]).map(i=>`<figure class="mgi" data-i="${esc(i)}"><span class="mgl">사진 불러오는 중…</span></figure>`).join('')}`;
@@ -974,7 +975,16 @@ async function admLoad(force){if(!force&&ADM.length+FB.length&&admLoad.ok)return
  try{const [a,b]=await Promise.all([DB.rpc('admin_players',{p_key:AK()}),DB.rpc('admin_feedback',{p_key:AK()})]);if(a.error||!a.data)throw 0;
   ADM=a.data.map(x=>({nick:x.nick,R:okDV(x.data),t:Date.parse(x.updated_at)}));FB=(b.data||[]).map(x=>({id:x.id,st:x.status||'new',nick:x.nick||'익명',text:x.body,t:Date.parse(x.created_at),k:fbCls(x.body)}));admLoad.ok=true;return true}catch(e){return false}}
 const chip=k=>{const t=FT(k);return `<span class="chp" style="background:${t[2]}">${t[1]}</span>`};
-const fbCard=x=>`<div class="card fbc${x.st=='done'?' fdn':''}"><div class="fbh">${chip(x.k)}<b>${esc(x.nick)}</b>${x.id?`<span class="fid">#${x.id}</span>`:''}${x.st=='done'?'<span class="chp" style="background:#9bd3ae">답장 완료</span>':''}<span class="mut">${fd(x.t)}</span></div><div class="fbt">${esc(x.text||'')}</div></div>`;
+const fbCard=x=>`<div class="card fbc${x.st=='done'?' fdn':''}"><div class="fbh">${chip(x.k)}<b>${esc(x.nick)}</b>${x.id?`<span class="fid">#${x.id}</span>`:''}${x.st=='done'?'<span class="chp" style="background:#9bd3ae">답장 완료</span>':''}<span class="mut">${fd(x.t)}</span>${x.id&&OWNER?`<button class="fbrb" onclick="event.stopPropagation();fbReply(${x.id})">${x.st=='done'?'다시 답장':'답장'}</button>`:''}</div><div class="fbt">${esc(x.text||'')}</div></div>`;
+async function fbReply(id){if(!(await admLoad()))return admin();const x=FB.find(f=>f.id==id);if(!x)return admin();
+ show(`<h2>피드백 답장</h2><p class="tag"><b>${esc(x.nick)}</b> 님의 메시지함으로 보내져요.</p><div class="card fbc"><div class="fbh">${chip(x.k)}<b>${esc(x.nick)}</b><span class="fid">#${x.id}</span><span class="mut">${fd(x.t)}</span></div><div class="fbt">${esc(x.text||'')}</div></div><div class="card"><textarea id="frt" maxlength="2000" placeholder="답장 내용" style="min-height:150px"></textarea></div><div class="row"><button class="b" id="frs" onclick="fbReplySend(${x.id})">답장 보내기</button></div>`)}
+async function fbReplySend(id){const x=FB.find(f=>f.id==id),t=(document.getElementById('frt').value||'').trim();if(!x)return;if(!t)return soonMsg('답장 내용을 써 주세요.');
+ if(x.nick=='익명')return soonMsg('익명 피드백이라 답장을 보낼 수 없어요.');
+ if(!(await askBox('답장을 보낼까요?',`<b>${esc(x.nick)}</b> 님에게 보내져요.`,'보내기')))return;
+ const sb=document.getElementById('frs');if(sb){sb.disabled=true;sb.textContent='보내는 중…'}
+ try{let r=await DB.rpc('admin_fb_answer',{p_key:AK(),p_fid:id,p_text:t});
+  if(r.error)r=await DB.rpc('admin_reply',{p_key:AK(),p_rid:'m'+id+'-'+Date.now(),p_fid:id,p_changes:t,p_howto:''});
+  if(r.error||!['sent','anon'].includes(r.data))throw 0;x.st='done';soonMsg(r.data=='anon'?'가입하지 않은 사람이라 메시지함에는 못 보냈어요. 답장 완료로 표시했어요.':'답장을 보냈어요.');goUp()}catch(e){if(sb){sb.disabled=false;sb.textContent='답장 보내기'}soonMsg('보내지 못했어요. 다시 시도해 주세요.')}}
 
 function fbCopy(){const L=FB.filter(x=>x.st!='done').slice().sort((a,b)=>a.t-b.t);if(!L.length)return soonMsg('답장하지 않은 피드백이 없어요.');
  const t=`[풍산 학습 피드백] 답장 전 ${L.length}개\n\n`+L.map(x=>`#${x.id} · ${x.nick} · ${fd(x.t)} · ${FT(x.k)[1]}\n${x.text}`).join('\n\n')+`\n\n위 피드백을 보고 수정할 내용을 적어 줄게.`;
@@ -1507,7 +1517,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>프로필 보기</h2><p class="tag">비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v53';
+const APPV='v54';
 function profile(){if(ADMINMODE||SUBMODE)PFOK=true;if(!PFOK)return pfGate();
  show(`<h2>내 프로필</h2>
  <div class="card pf"><div class="pr"><span>닉네임</span><b>${esc(NICK)}</b>${ADMINMODE||SUBMODE?`<span class="mut" style="font-size:13px">${SUBMODE?'보조 관리자':'관리자'} 고정</span>`:'<button class="lk" onclick="pfNick()">변경하기</button>'}</div>
@@ -1613,6 +1623,7 @@ function go2(r){
  if(k=='admin'&&/^w(\/\d+)?$/.test(v)&&OWNER)return postForm(+v.split('/')[1]||0);
  if(k=='guide')return guide();
  if(k=='admin'&&v=='n'&&OWNER)return noticeForm();
+ if(k=='admin'&&/^r\/\d+$/.test(v)&&OWNER)return fbReply(+v.slice(2));
  if(k=='admin'&&v=='d'&&OWNER)return delPage();
  if(k=='stats')return allStats();
  if(k=='wrong'&&v&&CUR[v])return wrongPage(v);
@@ -1634,7 +1645,7 @@ window.addEventListener('popstate',e=>{if(location.hash=='#admin')return;const s
 const H=(f,mk)=>function(...a){setR(mk(...a));return f.apply(this,a)};
 home=H(home,()=>'');subjects=H(subjects,()=>'subjects');
 subj=H(subj,n=>'subj/'+n);socPage=H(socPage,n=>NEWS(n)?'prob/'+n:'subj/'+n);noteList=H(noteList,n=>'notes/'+n);noteView=H(noteView,(n,u,k)=>'note/'+n+'/'+u+'/'+k);inbox=H(inbox,()=>'inbox');board=H(board,()=>'board');postView=H(postView,id=>'board/'+id);postForm=H(postForm,id=>'admin/w'+(id?'/'+id:''));guide=H(guide,()=>'guide');msgOpen=H(msgOpen,id=>'inbox/'+id);noticeForm=H(noticeForm,()=>'admin/n');delPage=H(delPage,()=>'admin/d');allStats=H(allStats,()=>'stats');fbForm=H(fbForm,f=>'fb/'+(f||0));
-admin=H(admin,()=>'admin');adminOne=H(adminOne,n=>'admin/u/'+n);fbTypes=H(fbTypes,()=>'admin/t');fbType=H(fbType,k=>'admin/t/'+k);fbPeople=H(fbPeople,()=>'admin/p');fbPerson=H(fbPerson,n=>'admin/p/'+n);
+admin=H(admin,()=>'admin');adminOne=H(adminOne,n=>'admin/u/'+n);fbTypes=H(fbTypes,()=>'admin/t');fbType=H(fbType,k=>'admin/t/'+k);fbPeople=H(fbPeople,()=>'admin/p');fbPerson=H(fbPerson,n=>'admin/p/'+n);fbReply=H(fbReply,id=>'admin/r/'+id);
 wrongPage=H(wrongPage,n=>'wrong/'+n);mockPage=H(mockPage,n=>'mock/'+n);profile=H(profile,()=>'profile');cal=H(cal,()=>'cal');pfNick=H(pfNick,()=>'profile/nick');pfPin=H(pfPin,()=>'profile/pin');
 quiz=(f=>function(){setR('quiz');const x=f.apply(this,arguments);saveSS();return x})(quiz);
 result=(f=>function(){REPL=true;setR('result');const x=f.apply(this,arguments);saveSS();return x})(result);
