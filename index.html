@@ -900,7 +900,7 @@ const pI=k=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-w
 function padHTML(){const op=ls('padopen')!=='0';return `<section class="card pad${op?'':' pcl'}" id="pad"><div class="padh"><b>풀이판</b><div class="seg"><button id="pmS" class="${PST.mode=='sheet'?'on':''}" onclick="padMode('sheet')">연습장</button><button id="pmO" class="${PST.mode=='over'?'on':''}" onclick="padMode('over')">문제 위에</button></div><button class="pib pswp" onclick="padSwap()" title="문제와 풀이판 자리 바꾸기" aria-label="좌우 바꾸기">${pI('sw')}</button><button class="pib pfo" onclick="padFold()" title="${op?'접기':'펼치기'}" aria-label="풀이판 접기">${pI('fo')}</button></div>
 <div class="pmini" id="pmini"></div><div class="ptb"><span class="pg">${['p','h','e'].map(k=>`<button class="pib${PST.tool==k?' on':''}" data-t="${k}" onclick="padTool('${k}')" aria-label="${{p:'펜',h:'형광펜',e:'지우개'}[k]}">${pI(k)}</button>`).join('')}</span><span class="psep"></span><span class="pg">${[1,2,3].map(c=>`<button class="pib${PST.col==c?' on':''}" data-c="${c}" onclick="padCol(${c})" aria-label="색 ${c}"><i class="psw" style="background:var(--pk${c})"></i></button>`).join('')}</span><span class="psep"></span><span class="pg">${[[1.6,5],[2.8,8],[4.6,12]].map(([w,z])=>`<button class="pib${PST.wid==w?' on':''}" data-w="${w}" onclick="padWid(${w})" aria-label="굵기"><i class="pdt" style="width:${z}px;height:${z}px"></i></button>`).join('')}</span><span class="psep"></span><span class="pg"><button class="pib" id="pUn" onclick="padUndo()" aria-label="되돌리기">${pI('un')}</button><button class="pib" id="pRe" onclick="padRedo()" aria-label="다시 하기">${pI('re')}</button><button class="pib" id="pCl" onclick="padClear()" aria-label="모두 지우기">${pI('cl')}</button></span><span class="pg ppush"><button class="pib" onclick="padBg()" aria-label="배경 바꾸기">${pI('bg')}</button><button class="pib${PST.pen?' on':''}" id="pPen" onclick="padPen()" aria-label="펜으로만 쓰기">${pI('pen')}</button><button class="pib" onclick="padFull()" aria-label="크게 보기">${pI('fu')}</button></span></div>
 <div class="psw2${PST.pen?' pen':''}" id="psw"><canvas id="pcS"></canvas><div class="phint" id="phint">여기에 풀이를 써 보세요</div></div><button class="pgrow" onclick="padGrow()">↓ 연습장 아래로 늘리기</button></section>`}
-function padMount(q){const qz=document.querySelector('#app .qz');if(!qz)return;PD={id:q.id,d:pGet(q.id),redo:{s:[],o:[]}};
+function padMount(q){if(!ls('padhint')){ls('padhint','1');setTimeout(()=>soonMsg('두 손가락으로 밀면 풀이판을 위아래로 움직일 수 있어요.'),600)}const qz=document.querySelector('#app .qz');if(!qz)return;PD={id:q.id,d:pGet(q.id),redo:{s:[],o:[]}};
  const card=qz.querySelector(':scope>.card');card.classList.add('pqc');const ov=document.createElement('canvas');ov.id='pcO';card.appendChild(ov);
  qz.classList.add('pz');if(ls('padlh')==='1')qz.classList.add('plh');document.body.classList.add('pdw');
  const m=document.getElementById('pmini');if(m)m.innerHTML=qtx(q.q,q);
@@ -919,15 +919,22 @@ function padDraw(L){const c=pC(L);if(!c||!PD)return;const x=c.getContext('2d'),W
  PD.d[L].forEach(st=>pStroke(x,st,W));if(L=='s'){const h=document.getElementById('phint');if(h)h.style.opacity=PD.d.s.length?0:1}padBtns()}
 function padBtns(){if(!PD)return;const L=PST.mode=='over'?'o':'s',u=document.getElementById('pUn'),r=document.getElementById('pRe'),c=document.getElementById('pCl');if(u)u.disabled=!PD.d[L].length;if(r)r.disabled=!PD.redo[L].length;if(c)c.disabled=!PD.d[L].length}
 function pPos(e,L){const r=pC(L).getBoundingClientRect();return [Math.round((e.clientX-r.left)/r.width*PS),Math.round((e.clientY-r.top)/r.width*PS)]}
-function padDown(e,L){if(!PD||(L=='o'&&PST.mode!='over'))return;if(e.pointerType=='touch'&&PST.pen)return;
+// 두 손가락: 그리지 않고 화면(풀이판)을 위아래·좌우로 움직이기
+const PTS=new Map();let PAN=null;
+function pScr(el){for(let e=el;e&&e!==document.body;e=e.parentElement){const cs=getComputedStyle(e);if(/(auto|scroll)/.test(cs.overflowY+cs.overflowX)&&(e.scrollHeight>e.clientHeight+1||e.scrollWidth>e.clientWidth+1))return e}return document.scrollingElement||document.documentElement}
+function pMid(){let x=0,y=0;PTS.forEach(v=>{x+=v.x;y+=v.y});return {x:x/PTS.size,y:y/PTS.size}}
+function padDown(e,L){if(e.pointerType=='touch'&&!PST.pen){PTS.set(e.pointerId,{x:e.clientX,y:e.clientY});if(PTS.size>=2){e.preventDefault();if(PACT&&!PACT.er&&PACT.st){const a=PD.d[PACT.L],i=a.lastIndexOf(PACT.st);if(i>=0)a.splice(i,1);padDraw(PACT.L)}PACT=null;try{pC(L).setPointerCapture(e.pointerId)}catch(_){}PAN={m:pMid(),el:pScr(pC(L))};return}}
+ if(!PD||(L=='o'&&PST.mode!='over'))return;if(e.pointerType=='touch'&&PST.pen)return;
  if(e.pointerType=='pen'&&!PST.pen){PST.pen=true;padPenApply();soonMsg('펜이 감지됐어요. 손가락으로는 화면을 넘길 수 있어요.')}
  e.preventDefault();try{pC(L).setPointerCapture(e.pointerId)}catch(_){}const p=pPos(e,L);
  if(PST.tool=='e'){PACT={L,er:1};padErase(L,p);return}
  PACT={L,st:{k:PST.tool,c:PST.col,w:PST.wid,p:p.slice()},t:Date.now(),x:e.clientX,y:e.clientY,mv:0};PD.d[L].push(PACT.st);PD.redo[L]=[];padDraw(L)}
-function padMove(e){if(!PACT)return;const L=PACT.L,p=pPos(e,L);if(PACT.er)return padErase(L,p);PACT.mv=Math.max(PACT.mv,Math.hypot(e.clientX-PACT.x,e.clientY-PACT.y));
+function padMove(e){if(e.pointerType=='touch'&&!PST.pen&&PTS.has(e.pointerId)){PTS.set(e.pointerId,{x:e.clientX,y:e.clientY});if(PAN&&PTS.size>=2){e.preventDefault();const m=pMid(),dx=m.x-PAN.m.x,dy=m.y-PAN.m.y;PAN.m=m;PAN.el.scrollBy(-dx,-dy);if(PAN.el!==document.scrollingElement&&PAN.el!==document.documentElement&&((dy>0&&PAN.el.scrollTop<=0)||(dy<0&&PAN.el.scrollTop+PAN.el.clientHeight>=PAN.el.scrollHeight-1)))scrollBy(0,-dy);return}}
+ if(!PACT)return;const L=PACT.L,p=pPos(e,L);if(PACT.er)return padErase(L,p);PACT.mv=Math.max(PACT.mv,Math.hypot(e.clientX-PACT.x,e.clientY-PACT.y));
  (e.getCoalescedEvents?e.getCoalescedEvents():[e]).forEach(v=>{const q=pPos(v,L),a=PACT.st.p,n=a.length;if(Math.abs(a[n-2]-q[0])+Math.abs(a[n-1]-q[1])>=6)a.push(q[0],q[1])});
  if(L=='s'){const y=p[1]/PS*pC('s').getBoundingClientRect().width;if(y>(PD.ph||PD.d.h)-60){PD.d.h=(PD.ph||PD.d.h)+240;padSize()}}padDraw(L)}
-function padUp(e){if(!PACT)return;const a=PACT;PACT=null;
+function padUp(e){if(e&&e.pointerType=='touch'){PTS.delete(e.pointerId);if(PAN){if(PTS.size<2)PAN=null;return}}
+ if(!PACT)return;const a=PACT;PACT=null;
  if(a.L=='o'&&!a.er&&a.mv<6&&Date.now()-a.t<300&&e&&e.clientX!=null){const o=pC('o');o.style.pointerEvents='none';const el=document.elementFromPoint(e.clientX,e.clientY);o.style.pointerEvents='';const t=el&&el.closest('button,input,textarea,a,label');if(t){PD.d.o.pop();padDraw('o');if(/INPUT|TEXTAREA/.test(t.tagName))t.focus();else t.click();return}}
  pPut(PD.id);padBtns()}
 function padErase(L,p){const r=Math.round(14/pC(L).getBoundingClientRect().width*PS),a=PD.d[L],b=a.filter(st=>{for(let i=0;i<st.p.length;i+=2)if(Math.hypot(st.p[i]-p[0],st.p[i+1]-p[1])<r)return false;return true});if(b.length!=a.length){PD.d[L]=b;PD.redo[L]=[];padDraw(L);pPut(PD.id)}}
@@ -1571,7 +1578,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>프로필 보기</h2><p class="tag">비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v63';
+const APPV='v64';
 function profile(){if(NICK&&!selOK())return pickSel();if(ADMINMODE||SUBMODE)PFOK=true;if(!PFOK)return pfGate();
  show(`<h2>내 프로필</h2>
  <div class="card pf"><div class="pr"><span>닉네임</span><b>${esc(NICK)}</b>${ADMINMODE||SUBMODE?`<span class="mut" style="font-size:13px">${SUBMODE?'보조 관리자':'관리자'} 고정</span>`:'<button class="lk" onclick="pfNick()">변경하기</button>'}</div>
