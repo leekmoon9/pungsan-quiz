@@ -298,9 +298,14 @@ body{word-spacing:-.06em}
 h3.sec{font-size:21px!important}
 .hc h1{font-size:clamp(27px,8vw,35px)!important}
 /* 4. 첫 화면: 유리 효과 대신 종이 카드 + 마스킹테이프 */
-.hc{background:#fffdf7!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;border:1.5px solid var(--ln);box-shadow:0 3px 0 rgba(120,100,70,.12)!important;border-radius:6px!important;transform:rotate(-.5deg)}
-.hc::before,.hc::after{content:'';position:absolute;top:-10px;width:70px;height:20px;background:rgba(249,223,153,.85)}
-.hc::before{left:-14px;transform:rotate(-24deg)}.hc::after{right:-14px;transform:rotate(22deg);background:rgba(155,211,174,.8)}
+.hc{background:rgba(255,253,248,.74)!important;-webkit-backdrop-filter:blur(22px) saturate(180%)!important;backdrop-filter:blur(22px) saturate(180%)!important;border:1px solid rgba(255,255,255,.8)!important;border-radius:30px!important;box-shadow:0 14px 36px rgba(80,60,30,.16),inset 0 1px 0 rgba(255,255,255,.9)!important;padding:26px 22px 22px!important}
+.hc input[type=text],.hc .b{border-radius:16px!important}
+.hlogo{width:76px;height:76px;border-radius:50%;box-shadow:0 6px 16px rgba(60,45,20,.16),0 0 0 4px #fffdf8;margin:2px auto 14px;display:block}
+.htit{color:#2a2620;line-height:0;margin:0 auto 6px}.htit svg{height:38px;width:auto}
+.hc p.hsub{font-size:14px;color:#8f8676;margin:2px 0 0}
+.spl .hc{background:none!important;border:0!important;box-shadow:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;padding:0!important}
+.spl .hlogo{width:118px;height:118px;box-shadow:0 10px 26px rgba(60,45,20,.18),0 0 0 6px #fffdf8;margin-bottom:22px}.spl .htit svg{height:50px}
+@media (min-width:860px) and (min-height:600px) and (min-aspect-ratio:1/1){.spl .hlogo{width:150px;height:150px}.spl .htit svg{height:62px}.spl .st,#sides .st{scale:1.22}}
 
 .fbw{min-height:calc(100vh - 60px);min-height:calc(100svh - 60px);display:flex;flex-direction:column;justify-content:center;text-align:center}
 .fbw .tag{max-width:420px;margin:0 auto 6px}
@@ -756,8 +761,8 @@ async function subSetNick(){const v=document.getElementById('snk').value.trim(),
   st.innerHTML=`<span class="no-t">${data=='taken'?'이미 있는 닉네임이에요. 다른 닉네임을 써 주세요.':data=='bad'?'닉네임은 1~12자로 써 주세요.':'링크를 다시 확인해 주세요.'}</span>`}catch(e){st.innerHTML='<span class="no-t">서버에 연결되지 않았어요. 잠시 후 다시 해 주세요.</span>'}
  b.disabled=false;b.textContent='시작하기'}
 async function subBoot(FRESH){SUBMODE=true;PIN='';NICK=ls('subnick')||'';
- if(NICK){try{R=okDV(JSON.parse(ls('rec:'+NICK)))}catch(e){R={}}if(!selOK())pickSel();else if(FRESH&&!/^inbox/.test(curR()))home();else goR(curR());subLoad().then(selRe);return}
- const r=await subLoad();if(r=='nick')return subNickPage();if(r=='ok')return selOK()?home():pickSel();if(r=='off'){show('<div class="fbw"><h2>보조 관리자</h2><p class="tag fbd">서버에 연결되지 않았어요.<br>인터넷을 확인하고 다시 열어 주세요.</p></div>')}}
+ if(NICK){try{R=okDV(JSON.parse(ls('rec:'+NICK)))}catch(e){R={}}if(!selOK())pickSel();else if(FRESH&&!/^inbox/.test(curR()))splash();else goR(curR());subLoad().then(selRe);return}
+ const r=await subLoad();if(r=='nick')return subNickPage();if(r=='ok')return selOK()?splash():pickSel();if(r=='off'){show('<div class="fbw"><h2>보조 관리자</h2><p class="tag fbd">서버에 연결되지 않았어요.<br>인터넷을 확인하고 다시 열어 주세요.</p></div>')}}
 async function adminLoad(){if(!DB)return;try{const {data,error}=await DB.rpc('admin_me',{p_key:AK()});if(error)return;if(!data){ls('ak',null);OWNER=false;ADMINMODE=false;NICK='';ls('last',null);home();soonMsg('관리자 링크가 맞지 않아요.');return}const srv=okDV(data.data);R=(R._dv===DV)?mrg(srv,R):srv;R._dv=DV;ls('rec:'+NICK,JSON.stringify(R));sync();selRe()}catch(e){};sendReplies()}
 function adminOn(){ADMINMODE=true;NICK=ADM_NICK;PIN='';ls('last',ADM_NICK);ls('pin',null);try{R=JSON.parse(ls('rec:'+NICK))||{}}catch(e){R={}}if(R._dv!==DV)R={}}
 async function enter(){if(SUBMODE){const go=document.getElementById('go');if(go){go.disabled=true;go.textContent='확인 중…'}await subLoad();REPL=true;return subjects()}if(ADMINMODE){const go=document.getElementById('go');if(go){go.disabled=true;go.textContent='확인 중…'}await adminLoad();REPL=true;return subjects()}const lk=lastNick(),el=document.getElementById('nk'),pe=document.getElementById('pn');
@@ -797,7 +802,11 @@ function stk(side){const col={};SUBJ.flat().forEach(([n,c])=>col[n]=c);
  const LT=[['c','독서와|작문',12,6,-8,48],['p','영어',40,44,5],['c','미적분',46,64,7,48]];
  const LB=[['c','기하',46,6,7,48],['p','정치',18,44,-5],['c','행성우주|과학',12,64,-7,48]];
  const LAND=(()=>{try{return matchMedia('(orientation:landscape) and (max-height:520px)').matches}catch(e){return false}})();
- const W=WIDE();return (LAND?(side?LB:LT):W?(side?PB:PT):(side?B:T)).map((x,i)=>{const d=`left:${x[2]}%;top:${x[3]}%;--r:${x[4]}deg;animation-delay:${i*25}ms`;
+ // 앱 열 때 화면: 가운데가 작아서 위아래를 더 채움
+ const ST=[['c','독서와|작문',6,6,-8,46],['p','영어',36,10,5],['e','⭐',84,8,15],['c','기하',68,22,7,44],['p','중국어|회화',4,46,-5],['c','미적분',42,36,-6,44],['p','일본어|회화',58,62,6],['p','동아시아|역사기행',8,82,4]];
+ const SB=[['p','정치',6,8,-6],['c','경제',34,4,7,44],['p','현대사회와|윤리',54,16,-4],['c','한국지리|탐구',8,40,-7,44],['p','세포와|물질대사',30,48,5],['c','행성우주|과학',76,40,8,44],['p','역학과|에너지',6,80,-4],['c','물질과|에너지',58,72,6,44],['e','⭐',86,84,-10]];
+ const SPT=[...PT,['p','중국어|회화',36,82,-4],['c','현대사회와|윤리',4,60,6,58],['e','⭐',90,78,12],['c','일본어|회화',70,64,-6,58]],SPB=[...PB,['p','세포와|물질대사',66,80,-5],['c','행성우주|과학',88,58,7,58],['p','미적분',8,78,5],['e','⭐',44,84,-12]];
+ const W=WIDE(),SP=splash.on;return (LAND?(side?LB:LT):W?(SP?(side?SPB:SPT):(side?PB:PT)):SP?(side?SB:ST):(side?B:T)).map((x,i)=>{const d=`left:${x[2]}%;top:${x[3]}%;--r:${x[4]}deg;animation-delay:${i*25}ms`;
   if(x[0]=='c')return`<img class="st${x[6]?' r1':''}" src="${COVER[x[1]]}" alt="" style="${d};width:${x[5]}px">`;
   if(x[0]=='p')return`<span class="st pl${x[5]?' r1':''}" style="${d};--pc:${SC[col[x[1]]]}">${x[1].split('|').join(' ')}</span>`;
   return`<span class="st" style="${d};font-size:26px">${x[1]}</span>`}).join('')}
@@ -819,7 +828,11 @@ function stkSide(){const col={};SUBJ.flat().forEach(([n,c])=>col[n]=c);
  const mk=(A,seed)=>A.map(([t,n],i)=>{const x=(i+seed)%2?54:16,top=9+i*22,rot=((i*37+seed*13)%17)-8,d=`left:${x}%;top:${top}%;--r:${rot}deg;animation-delay:${(i+4)*45}ms`;
   return t=='c'?`<img class="st" src="${COVER[n]}" alt="" style="${d};width:66px">`:`<span class="st pl" style="${d};--pc:${SC[col[n]]};font-size:15px">${n.split('|').join(' ')}</span>`}).join('');
  return `<div class="sd sdl">${mk(L,0)}</div><div class="sd sdr">${mk(R,1)}</div>`}
-function home(){const lk=lastNick(),cu=document.getElementById('nk'),nv=cu?cu.value:'';show(`<div class="hero">${AKB()?`<button class="akb" onclick="keyLink()" aria-label="관리자 링크로 로그인">${ICN_KEY}<span>관리자</span></button>`:''}<div class="sa">${stk(0)}</div><div class="hc"><h1><span>풍산고 기말 시험 대비</span></h1>${lk?`<p style="font-size:17px;margin:6px 0 0;color:#2a2620"><b>${esc(lk)}</b>님 환영합니다.</p>`:'<p class="tag">닉네임을 입력하고 시작하세요</p>'}<div class="row" style="justify-content:center;margin-top:20px;flex-direction:column;align-items:center;gap:10px">${lk?'':`<input type="text" id="nk" maxlength="12" placeholder="닉네임 (최대 12자)" value="${esc(nv)}" style="max-width:260px;text-align:center" oninput="ckGo()"><input type="text" class="pw" autocomplete="off" id="pn" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호 숫자 4자리" style="max-width:260px;text-align:center;letter-spacing:4px" oninput="this.value=this.value.replace(/\D/g,'');ckGo()" onkeydown="if(event.key=='Enter'&&!document.getElementById('go').disabled)enter()"><div class="mut" style="font-size:12px;margin-top:-6px;max-width:260px;line-height:1.5">처음 쓰는 닉네임이면 새로 만들어져요.<br>다른 기기에서도 같은 닉네임·비밀번호로<br>이어서 풀 수 있어요.</div>`}<button class="b" id="go" style="max-width:260px" ${lk?'':'disabled'} onclick="enter()">시작하기</button></div></div><div class="sa">${stk(1)}</div></div>`);setTimeout(()=>{if(document.querySelector('.hero'))instPrompt()},450);const sd=document.createElement('div');sd.id='sides';sd.innerHTML=stkSide();document.body.appendChild(sd);requestAnimationFrame(fitSt)}
+function home(){const lk=lastNick(),cu=document.getElementById('nk'),nv=cu?cu.value:'';show(`<div class="hero">${AKB()?`<button class="akb" onclick="keyLink()" aria-label="관리자 링크로 로그인">${ICN_KEY}<span>관리자</span></button>`:''}<div class="sa">${stk(0)}</div><div class="hc"><img class="hlogo" src="logo-192.png" alt=""><h1 class="htit" aria-label="풍산 학습">${HW_TITLE}</h1><p class="hsub">풍산고 기말 시험 대비</p>${lk?`<p style="font-size:17px;margin:10px 0 0;color:#2a2620"><b>${esc(lk)}</b>님 환영합니다.</p>`:''}<div class="row" style="justify-content:center;margin-top:20px;flex-direction:column;align-items:center;gap:10px">${lk?'':`<input type="text" id="nk" maxlength="12" placeholder="닉네임 (최대 12자)" value="${esc(nv)}" style="max-width:260px;text-align:center" oninput="ckGo()"><input type="text" class="pw" autocomplete="off" id="pn" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호 숫자 4자리" style="max-width:260px;text-align:center;letter-spacing:4px" oninput="this.value=this.value.replace(/\D/g,'');ckGo()" onkeydown="if(event.key=='Enter'&&!document.getElementById('go').disabled)enter()"><div class="mut" style="font-size:12px;margin-top:-6px;max-width:260px;line-height:1.5">처음 쓰는 닉네임이면 새로 만들어져요.<br>다른 기기에서도 같은 닉네임·비밀번호로<br>이어서 풀 수 있어요.</div>`}<button class="b" id="go" style="max-width:260px" ${lk?'':'disabled'} onclick="enter()">시작하기</button></div></div><div class="sa">${stk(1)}</div></div>`);setTimeout(()=>{if(document.querySelector('.hero'))instPrompt()},450);const sd=document.createElement('div');sd.id='sides';sd.innerHTML=stkSide();document.body.appendChild(sd);requestAnimationFrame(fitSt)}
+// 앱 열 때 잠깐: 로고와 손글씨 제목 → 홈 (로그인한 사람만)
+function splash(go){splash.on=true;show(`<div class="hero spl"><div class="sa">${stk(0)}</div><div class="hc"><img class="hlogo" src="logo-192.png" alt=""><h1 class="htit" aria-label="풍산 학습">${HW_TITLE}</h1></div><div class="sa">${stk(1)}</div></div>`);splash.on=false;
+ const sd=document.createElement('div');sd.id='sides';sd.innerHTML=stkSide();document.body.appendChild(sd);requestAnimationFrame(fitSt);
+ setTimeout(()=>{if(!document.querySelector('.spl'))return;REPL=true;TBSW=Date.now();(go||subjects)();const a=document.getElementById('app');if(a&&!RDM())a.animate([{opacity:0},{opacity:1}],{duration:320,easing:'ease-out'})},1100)}
 function fitSt(){document.querySelectorAll('.sa').forEach(a=>{const h=a.getBoundingClientRect().height;a.classList.toggle('lo',h<135);a.classList.toggle('no',h<64)})}
 window.addEventListener('resize',()=>{if(document.querySelector('.hero'))fitSt()});
 
@@ -1621,7 +1634,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v75';
+const APPV='v76';
 function profile(){if(NICK&&!selOK())return pickSel();if(ADMINMODE||SUBMODE)PFOK=true;
  show(`<div class="pftop"></div>${STAFF()&&DB?admBig():''}
  <div class="card pf"><div class="pr"><span>닉네임</span><b>${esc(NICK)}</b>${ADMINMODE||SUBMODE?`<span class="mut" style="font-size:13px;white-space:nowrap">${SUBMODE?'':'관리자 '}고정</span>`:'<button class="lk" onclick="pfNick()">변경하기</button>'}</div>
@@ -1850,11 +1863,11 @@ async function boot(){{const m=location.hash.match(/^#s=([A-Za-z0-9]{16,64})$/);
  await chkAdmin();if(CWM)cwArm();
  if(OWNER||SK())setMan();
  if(!OWNER&&SK())return subBoot(FRESH);
- if(OWNER){adminOn();if(!selOK())pickSel();else if(FRESH&&!/^inbox/.test(curR()))home();else goR(curR());adminLoad();return}
+ if(OWNER){adminOn();if(!selOK())pickSel();else if(FRESH&&!/^inbox/.test(curR()))splash();else goR(curR());adminLoad();return}
  const lk=lastNick(),pn=ls('pin');
  if(!lk||!/^\d{4}$/.test(pn)){chkAdmin();return home()}
  NICK=lk;PIN=pn;try{R=okDV(JSON.parse(ls('rec:'+lk)))}catch(e){R={}}
- if(!selOK())pickSel();else if(FRESH&&!/^inbox/.test(curR()))home();else goR(curR());
+ if(!selOK())pickSel();else if(FRESH&&!/^inbox/.test(curR()))splash();else goR(curR());
  if(DB){try{const {data,error}=await DB.rpc('player_login',{p_nick:lk,p_pin:pn});if(!error&&data){
   if(data.status=='ok'||data.status=='new'){const loc=R;R=mrg(okDV(data.data),loc);R._dv=DV;ls('rec:'+NICK,JSON.stringify(R));if(Object.keys(loc).length)sync();selRe()}
   else if(data.status=='wrong'){ls('last',null);ls('pin',null);NICK='';PIN='';REPL=true;home();soonMsg('비밀번호가 바뀌어 다시 입력해야 해요.')}}}catch(e){}}}
