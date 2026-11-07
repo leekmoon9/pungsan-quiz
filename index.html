@@ -836,16 +836,21 @@ function splOrb(){const hero=document.querySelector('.spl'),orb=document.getElem
  const L=W?[['p','영어'],['c','미적분'],['p','기하'],['c','독서와|작문'],['p','정치'],['c','한국지리|탐구'],['p','현대사회와|윤리'],['c','세포와|물질대사'],['p','중국어|회화'],['c','행성우주|과학']]
   :n==3?[['c','독서와|작문'],['p','영어'],['c','미적분'],['c','한국지리|탐구'],['p','정치'],['c','행성우주|과학']]
   :[['c','독서와|작문'],['p','영어'],['c','미적분'],['p','중국어|회화'],['p','정치'],['c','한국지리|탐구'],['p','현대사회와|윤리'],['c','행성우주|과학']];
+ const O=W?[[-90,'p','물질과|에너지'],[90,'e','⭐'],[145,'p','일본어|회화'],[180,'c','경제'],[215,'e','⭐'],[-35,'c','동아시아|역사기행'],[0,'e','⭐'],[35,'c','역학과|에너지']]:[];
  const cw=W?62:hr.width<600?46:56;
  orb.innerHTML=L.map((x,i)=>{const r=(i%2?6:-6);
-  return x[0]=='c'?`<img class="st os" src="${COVER[x[1]]}" alt="" style="--r:${r}deg;width:${cw}px">`:`<span class="st pl os" style="--r:${r}deg;--pc:${SC[col[x[1]]]}">${x[1].split('|').join(' ')}</span>`}).join('');
+  return x[0]=='c'?`<img class="st os" src="${COVER[x[1]]}" alt="" style="--r:${r}deg;width:${cw}px">`:`<span class="st pl os" style="--r:${r}deg;--pc:${SC[col[x[1]]]}">${x[1].split('|').join(' ')}</span>`}).join('')
+  +O.map((x,i)=>{const r=(i%2?-7:7);return x[1]=='c'?`<img class="st oo" data-t="${x[0]}" src="${COVER[x[2]]}" alt="" style="--r:${r}deg;width:${cw}px">`:x[1]=='e'?`<span class="st oo" data-t="${x[0]}" style="--r:${r}deg;font-size:26px">${x[2]}</span>`:`<span class="st pl oo" data-t="${x[0]}" style="--r:${r}deg;--pc:${SC[col[x[2]]]}">${x[2].split('|').join(' ')}</span>`}).join('');
  const place=()=>{const els=[...orb.querySelectorAll('.os')],sz=els.map(e=>[e.offsetWidth||60,e.offsetHeight||40]);
   if(!W){// 폰·세로 태블릿: 로고 위 한 줄, 제목 아래 한 줄. 로고·제목과의 간격은 모두 같게
    const GAP=hr.width<600?40:56,mh=Math.max(...sz.map(z=>z[1])),yt=br.top-hr.top-GAP-mh/2,yb=br.bottom-hr.top+GAP+mh/2;
    els.forEach((e,i)=>{const row=i<n?0:1,j=i%n,x=hr.width*(2*j+1)/(2*n),y=row?yb:yt;e.style.left=(x-sz[i][0]/2)+'px';e.style.top=(y-sz[i][1]/2)+'px'});return}
   // 큰 화면: 로고·제목 둘레 타원 위에 같은 간격으로 한 바퀴
   const GAP=90;els.forEach((e,i)=>{const [w,h]=sz[i],t=(-90+18+i*360/els.length)*Math.PI/180,A=br.width/2+GAP+w/2,B=br.height/2+GAP*.7+h/2;
-   e.style.left=(cx+A*Math.cos(t)-w/2)+'px';e.style.top=(cy+B*Math.sin(t)-h/2)+'px'})};
+   e.style.left=(cx+A*Math.cos(t)-w/2)+'px';e.style.top=(cy+B*Math.sin(t)-h/2)+'px'});
+  // 바깥 줄: 화면 가장자리 쪽 큰 타원 위
+  orb.querySelectorAll('.oo').forEach(e=>{const w=e.offsetWidth||60,h=e.offsetHeight||40,t=(+e.dataset.t)*Math.PI/180,A2=hr.width/2-Math.max(70,w/2+40),B2=hr.height/2-Math.max(56,h/2+30);
+   e.style.left=(hr.width/2+A2*Math.cos(t)-w/2)+'px';e.style.top=(cy+B2*Math.sin(t)-h/2)+'px'})};
  place();if(document.fonts&&document.fonts.ready)document.fonts.ready.then(place)}
 addEventListener('resize',()=>{if(document.querySelector('.spl'))splOrb()});
 function fitSt(){document.querySelectorAll('.sa').forEach(a=>{const h=a.getBoundingClientRect().height;a.classList.toggle('lo',h<135);a.classList.toggle('no',h<64)})}
@@ -1649,7 +1654,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v77';
+const APPV='v78';
 function profile(){if(NICK&&!selOK())return pickSel();if(ADMINMODE||SUBMODE)PFOK=true;
  show(`<div class="pftop"></div>${STAFF()&&DB?admBig():''}
  <div class="card pf"><div class="pr"><span>닉네임</span><b>${esc(NICK)}</b>${ADMINMODE||SUBMODE?`<span class="mut" style="font-size:13px;white-space:nowrap">${SUBMODE?'':'관리자 '}고정</span>`:'<button class="lk" onclick="pfNick()">변경하기</button>'}</div>
