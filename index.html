@@ -304,8 +304,9 @@ h3.sec{font-size:21px!important}
 .htit{color:#2a2620;line-height:0;margin:0 auto 6px}.htit svg{height:38px;width:auto}
 .hc p.hsub{font-size:14px;color:#8f8676;margin:2px 0 0}
 .spl .hc{background:none!important;border:0!important;box-shadow:none!important;-webkit-backdrop-filter:none!important;backdrop-filter:none!important;padding:0!important}
+#sporb{position:fixed;inset:0;pointer-events:none;z-index:0}#sporb .st{position:absolute;margin:0}
 .spl .hlogo{width:118px;height:118px;box-shadow:0 10px 26px rgba(60,45,20,.18),0 0 0 6px #fffdf8;margin-bottom:22px}.spl .htit svg{height:50px}
-@media (min-width:860px) and (min-height:600px) and (min-aspect-ratio:1/1){.spl .hlogo{width:150px;height:150px}.spl .htit svg{height:62px}.spl .st,#sides .st{scale:1.22}}
+@media (min-width:860px) and (min-height:600px) and (min-aspect-ratio:1/1){.spl .hlogo{width:150px;height:150px}.spl .htit svg{height:62px}#sporb .st{scale:1.15}}
 
 .fbw{min-height:calc(100vh - 60px);min-height:calc(100svh - 60px);display:flex;flex-direction:column;justify-content:center;text-align:center}
 .fbw .tag{max-width:420px;margin:0 auto 6px}
@@ -786,7 +787,7 @@ const norm=s=>s.replace(/[\s.,·]/g,'').toLowerCase();
 const grade=(q,v)=>{const n=norm(v);return n&&q.a.some(k=>q.ex?n===norm(k):k.split('&').every(p=>n.includes(norm(p))))};
 function st(qs,X){X=X||R;const d=qs.filter(q=>X[q.id]),c=d.filter(q=>X[q.id].ok).length;return{n:d.length,c,t:qs.length,r:d.length?Math.round(c/d.length*100):null}}
 const stTxt=s=>s.n?`${s.n}/${s.t}문제 풀이 · 정답률 ${s.r}%`:`${s.t}문제 · 아직 풀지 않음`;
-let LK=null,TBSW=0;const show=(h,k)=>{document.body.classList.remove('pdw','pfx');const nw=k===undefined||k!==LK;LK=k===undefined?null:k;{const sd=document.getElementById('sides');if(sd)sd.remove()}document.querySelectorAll('.tbv').forEach(e=>e.remove());A.innerHTML=h;if(nw){window.scrollTo(0,0);A.classList.remove('in');if(Date.now()-TBSW>900){void A.offsetWidth;A.classList.add('in')}}};
+let LK=null,TBSW=0;const show=(h,k)=>{document.body.classList.remove('pdw','pfx');const nw=k===undefined||k!==LK;LK=k===undefined?null:k;{const sd=document.getElementById('sides');if(sd)sd.remove();const so=document.getElementById('sporb');if(so)so.remove()}document.querySelectorAll('.tbv').forEach(e=>e.remove());A.innerHTML=h;if(nw){window.scrollTo(0,0);A.classList.remove('in');if(Date.now()-TBSW>900){void A.offsetWidth;A.classList.add('in')}}};
 let SS=null,draft=null;
 const WIDE=()=>{try{return matchMedia('(min-width:860px) and (min-height:600px) and (min-aspect-ratio:1/1)').matches}catch(e){return false}};
 function stk(side){const col={};SUBJ.flat().forEach(([n,c])=>col[n]=c);
@@ -802,11 +803,7 @@ function stk(side){const col={};SUBJ.flat().forEach(([n,c])=>col[n]=c);
  const LT=[['c','독서와|작문',12,6,-8,48],['p','영어',40,44,5],['c','미적분',46,64,7,48]];
  const LB=[['c','기하',46,6,7,48],['p','정치',18,44,-5],['c','행성우주|과학',12,64,-7,48]];
  const LAND=(()=>{try{return matchMedia('(orientation:landscape) and (max-height:520px)').matches}catch(e){return false}})();
- // 앱 열 때 화면: 가운데가 작아서 위아래를 더 채움
- const ST=[['c','독서와|작문',6,6,-8,46],['p','영어',36,10,5],['e','⭐',84,8,15],['c','기하',68,22,7,44],['p','중국어|회화',4,46,-5],['c','미적분',42,36,-6,44],['p','일본어|회화',58,62,6],['p','동아시아|역사기행',8,82,4]];
- const SB=[['p','정치',6,8,-6],['c','경제',34,4,7,44],['p','현대사회와|윤리',54,16,-4],['c','한국지리|탐구',8,40,-7,44],['p','세포와|물질대사',30,48,5],['c','행성우주|과학',76,40,8,44],['p','역학과|에너지',6,80,-4],['c','물질과|에너지',58,72,6,44],['e','⭐',86,84,-10]];
- const SPT=[...PT,['p','중국어|회화',36,82,-4],['c','현대사회와|윤리',4,60,6,58],['e','⭐',90,78,12],['c','일본어|회화',70,64,-6,58]],SPB=[...PB,['p','세포와|물질대사',66,80,-5],['c','행성우주|과학',88,58,7,58],['p','미적분',8,78,5],['e','⭐',44,84,-12]];
- const W=WIDE(),SP=splash.on;return (LAND?(side?LB:LT):W?(SP?(side?SPB:SPT):(side?PB:PT)):SP?(side?SB:ST):(side?B:T)).map((x,i)=>{const d=`left:${x[2]}%;top:${x[3]}%;--r:${x[4]}deg;animation-delay:${i*25}ms`;
+ const W=WIDE();return (LAND?(side?LB:LT):W?(side?PB:PT):(side?B:T)).map((x,i)=>{const d=`left:${x[2]}%;top:${x[3]}%;--r:${x[4]}deg;animation-delay:${i*25}ms`;
   if(x[0]=='c')return`<img class="st${x[6]?' r1':''}" src="${COVER[x[1]]}" alt="" style="${d};width:${x[5]}px">`;
   if(x[0]=='p')return`<span class="st pl${x[5]?' r1':''}" style="${d};--pc:${SC[col[x[1]]]}">${x[1].split('|').join(' ')}</span>`;
   return`<span class="st" style="${d};font-size:26px">${x[1]}</span>`}).join('')}
@@ -829,10 +826,28 @@ function stkSide(){const col={};SUBJ.flat().forEach(([n,c])=>col[n]=c);
   return t=='c'?`<img class="st" src="${COVER[n]}" alt="" style="${d};width:66px">`:`<span class="st pl" style="${d};--pc:${SC[col[n]]};font-size:15px">${n.split('|').join(' ')}</span>`}).join('');
  return `<div class="sd sdl">${mk(L,0)}</div><div class="sd sdr">${mk(R,1)}</div>`}
 function home(){const lk=lastNick(),cu=document.getElementById('nk'),nv=cu?cu.value:'';show(`<div class="hero">${AKB()?`<button class="akb" onclick="keyLink()" aria-label="관리자 링크로 로그인">${ICN_KEY}<span>관리자</span></button>`:''}<div class="sa">${stk(0)}</div><div class="hc"><img class="hlogo" src="logo-192.png" alt=""><h1 class="htit" aria-label="풍산 학습">${HW_TITLE}</h1><p class="hsub">풍산고 기말 시험 대비</p>${lk?`<p style="font-size:17px;margin:10px 0 0;color:#2a2620"><b>${esc(lk)}</b>님 환영합니다.</p>`:''}<div class="row" style="justify-content:center;margin-top:20px;flex-direction:column;align-items:center;gap:10px">${lk?'':`<input type="text" id="nk" maxlength="12" placeholder="닉네임 (최대 12자)" value="${esc(nv)}" style="max-width:260px;text-align:center" oninput="ckGo()"><input type="text" class="pw" autocomplete="off" id="pn" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호 숫자 4자리" style="max-width:260px;text-align:center;letter-spacing:4px" oninput="this.value=this.value.replace(/\D/g,'');ckGo()" onkeydown="if(event.key=='Enter'&&!document.getElementById('go').disabled)enter()"><div class="mut" style="font-size:12px;margin-top:-6px;max-width:260px;line-height:1.5">처음 쓰는 닉네임이면 새로 만들어져요.<br>다른 기기에서도 같은 닉네임·비밀번호로<br>이어서 풀 수 있어요.</div>`}<button class="b" id="go" style="max-width:260px" ${lk?'':'disabled'} onclick="enter()">시작하기</button></div></div><div class="sa">${stk(1)}</div></div>`);setTimeout(()=>{if(document.querySelector('.hero'))instPrompt()},450);const sd=document.createElement('div');sd.id='sides';sd.innerHTML=stkSide();document.body.appendChild(sd);requestAnimationFrame(fitSt)}
-// 앱 열 때 잠깐: 로고와 손글씨 제목 → 홈 (로그인한 사람만)
-function splash(go){splash.on=true;show(`<div class="hero spl"><div class="sa">${stk(0)}</div><div class="hc"><img class="hlogo" src="logo-192.png" alt=""><h1 class="htit" aria-label="풍산 학습">${HW_TITLE}</h1></div><div class="sa">${stk(1)}</div></div>`);splash.on=false;
- const sd=document.createElement('div');sd.id='sides';sd.innerHTML=stkSide();document.body.appendChild(sd);requestAnimationFrame(fitSt);
+// 앱 열 때 잠깐: 로고와 손글씨 제목 → 홈 (로그인한 사람만). 스티커는 로고·제목 둘레에 같은 간격으로
+function splash(go){show(`<div class="hero spl"><div class="sa"></div><div class="hc"><img class="hlogo" src="logo-192.png" alt=""><h1 class="htit" aria-label="풍산 학습">${HW_TITLE}</h1></div><div class="sa"></div></div>`);{const o=document.createElement('div');o.id='sporb';o.className='orb';document.body.appendChild(o)}
+ requestAnimationFrame(splOrb);
  setTimeout(()=>{if(!document.querySelector('.spl'))return;REPL=true;TBSW=Date.now();(go||subjects)();const a=document.getElementById('app');if(a&&!RDM())a.animate([{opacity:0},{opacity:1}],{duration:320,easing:'ease-out'})},1100)}
+function splOrb(){const hero=document.querySelector('.spl'),orb=document.getElementById('sporb'),hc=hero&&hero.querySelector('.hc');if(!orb||!hc)return;
+ const col={};SUBJ.flat().forEach(([n,c])=>col[n]=c);const W=WIDE(),hr={left:0,top:0,width:innerWidth,height:innerHeight,bottom:innerHeight},br=hc.getBoundingClientRect(),cx=br.left-hr.left+br.width/2,cy=br.top-hr.top+br.height/2;
+ const n=W?0:hr.width<600?3:4;
+ const L=W?[['p','영어'],['c','미적분'],['p','기하'],['c','독서와|작문'],['p','정치'],['c','한국지리|탐구'],['p','현대사회와|윤리'],['c','세포와|물질대사'],['p','중국어|회화'],['c','행성우주|과학']]
+  :n==3?[['c','독서와|작문'],['p','영어'],['c','미적분'],['c','한국지리|탐구'],['p','정치'],['c','행성우주|과학']]
+  :[['c','독서와|작문'],['p','영어'],['c','미적분'],['p','중국어|회화'],['p','정치'],['c','한국지리|탐구'],['p','현대사회와|윤리'],['c','행성우주|과학']];
+ const cw=W?62:hr.width<600?46:56;
+ orb.innerHTML=L.map((x,i)=>{const r=(i%2?6:-6);
+  return x[0]=='c'?`<img class="st os" src="${COVER[x[1]]}" alt="" style="--r:${r}deg;width:${cw}px">`:`<span class="st pl os" style="--r:${r}deg;--pc:${SC[col[x[1]]]}">${x[1].split('|').join(' ')}</span>`}).join('');
+ const place=()=>{const els=[...orb.querySelectorAll('.os')],sz=els.map(e=>[e.offsetWidth||60,e.offsetHeight||40]);
+  if(!W){// 폰·세로 태블릿: 로고 위 한 줄, 제목 아래 한 줄. 로고·제목과의 간격은 모두 같게
+   const GAP=hr.width<600?40:56,mh=Math.max(...sz.map(z=>z[1])),yt=br.top-hr.top-GAP-mh/2,yb=br.bottom-hr.top+GAP+mh/2;
+   els.forEach((e,i)=>{const row=i<n?0:1,j=i%n,x=hr.width*(2*j+1)/(2*n),y=row?yb:yt;e.style.left=(x-sz[i][0]/2)+'px';e.style.top=(y-sz[i][1]/2)+'px'});return}
+  // 큰 화면: 로고·제목 둘레 타원 위에 같은 간격으로 한 바퀴
+  const GAP=90;els.forEach((e,i)=>{const [w,h]=sz[i],t=(-90+18+i*360/els.length)*Math.PI/180,A=br.width/2+GAP+w/2,B=br.height/2+GAP*.7+h/2;
+   e.style.left=(cx+A*Math.cos(t)-w/2)+'px';e.style.top=(cy+B*Math.sin(t)-h/2)+'px'})};
+ place();if(document.fonts&&document.fonts.ready)document.fonts.ready.then(place)}
+addEventListener('resize',()=>{if(document.querySelector('.spl'))splOrb()});
 function fitSt(){document.querySelectorAll('.sa').forEach(a=>{const h=a.getBoundingClientRect().height;a.classList.toggle('lo',h<135);a.classList.toggle('no',h<64)})}
 window.addEventListener('resize',()=>{if(document.querySelector('.hero'))fitSt()});
 
@@ -1634,7 +1649,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v76';
+const APPV='v77';
 function profile(){if(NICK&&!selOK())return pickSel();if(ADMINMODE||SUBMODE)PFOK=true;
  show(`<div class="pftop"></div>${STAFF()&&DB?admBig():''}
  <div class="card pf"><div class="pr"><span>닉네임</span><b>${esc(NICK)}</b>${ADMINMODE||SUBMODE?`<span class="mut" style="font-size:13px;white-space:nowrap">${SUBMODE?'':'관리자 '}고정</span>`:'<button class="lk" onclick="pfNick()">변경하기</button>'}</div>
