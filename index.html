@@ -442,7 +442,7 @@ body.cap .capm{display:flex}
 .cki{display:inline-block;width:.85em;height:.85em;margin-right:4px;vertical-align:-.05em;background:currentColor;-webkit-mask:var(--ck) center/contain no-repeat;mask:var(--ck) center/contain no-repeat}.ntn .cki{margin:0}
 
 .card.bk:not(.bkx):not(.cpl){background:color-mix(in srgb,var(--sc) 12%,#fffdf8)!important;border-color:color-mix(in srgb,var(--sc) 45%,var(--ln))!important}
-.card.bk.bkx{background:transparent!important;border:1.5px dashed #d2c8b4!important;border-top:4px solid #dcd3c2!important;box-shadow:none!important}
+.card.bk.bkx{background:var(--bg)!important;border:1.5px dashed #d2c8b4!important;border-top:4px solid #dcd3c2!important;box-shadow:none!important}
 .card.bk.bkx::before{background:#dcd3c2}
 .card.bk.bkx .tp{opacity:1}.card.bk.bkx img{filter:grayscale(1) contrast(.85);opacity:.55;box-shadow:none}.card.bk.bkx .nm{color:#9a917f}
 .bkr{display:flex;align-items:center;gap:5px;align-self:flex-start;padding:5px 10px;border-radius:8px;background:rgba(120,100,70,.08);font-size:12.5px;font-weight:800;color:#8f8673;letter-spacing:-.2px}
@@ -1659,7 +1659,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v79';
+const APPV='v80';
 function profile(){if(NICK&&!selOK())return pickSel();if(ADMINMODE||SUBMODE)PFOK=true;
  show(`<div class="pftop"></div>${STAFF()&&DB?admBig():''}
  <div class="card pf"><div class="pr"><span>닉네임</span><b>${esc(NICK)}</b>${ADMINMODE||SUBMODE?`<span class="mut" style="font-size:13px;white-space:nowrap">${SUBMODE?'':'관리자 '}고정</span>`:'<button class="lk" onclick="pfNick()">변경하기</button>'}</div>
