@@ -1621,7 +1621,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v74';
+const APPV='v75';
 function profile(){if(NICK&&!selOK())return pickSel();if(ADMINMODE||SUBMODE)PFOK=true;
  show(`<div class="pftop"></div>${STAFF()&&DB?admBig():''}
  <div class="card pf"><div class="pr"><span>닉네임</span><b>${esc(NICK)}</b>${ADMINMODE||SUBMODE?`<span class="mut" style="font-size:13px;white-space:nowrap">${SUBMODE?'':'관리자 '}고정</span>`:'<button class="lk" onclick="pfNick()">변경하기</button>'}</div>
@@ -1786,7 +1786,7 @@ function parentOf(r){const [k,...rest]=r.split('/'),v=rest.join('/');
  if(k=='prob'||k=='notes')return 'subj/'+v;if(k=='note'){const ps=v.split('/');ps.pop();ps.pop();return 'notes/'+ps.join('/')}
  if(k=='sel')return Array.isArray(R._sel)?'subjects':null;
  if(k=='inbox')return v?'inbox':'subjects';if(k=='board')return v?'board':'subjects';if(k=='guide')return 'profile';
- if(k=='pick'||k=='menu'||k=='subj'||k=='profile'&&!v)return 'subjects';if(k=='stats')return null;if(k=='admin'&&!v)return 'profile';
+ if(k=='pick'||k=='menu'||k=='subj'||k=='profile'&&!v)return 'subjects';if(k=='stats')return 'subjects';if(k=='admin'&&!v)return 'profile';
  if(k=='cal')return 'stats';if(k=='profile')return 'profile';if(k=='admin'){if(/^t\/./.test(v))return 'admin/t';if(/^p\/./.test(v))return 'admin/p';return 'admin'}if(k=='fb')return v=='1'?'profile':'';
  if(k=='mock')return 'subj/'+v;
  if(k=='wrong')return (NEWS(v)?'prob/':'subj/')+v;if(k=='quiz'||k=='result'){if(SS&&SS.meta&&SS.meta.note)return 'note/'+SS.meta.note.join('/');if(SS&&SS.meta&&SS.meta.wp)return 'wrong/'+SS.meta.subj;if(SS&&SS.meta&&SS.meta.subj)return (NEWS(SS.meta.subj)?'prob/':'subj/')+SS.meta.subj;if(SS&&SS.pid&&!SS.meta)return 'menu/'+SS.pid;return 'subjects'}
