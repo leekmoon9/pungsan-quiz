@@ -634,6 +634,11 @@ body.selg #rf{display:none}
 #tbr .mlc{position:absolute;top:6px;left:calc(50% + 7px);min-width:18px;height:18px;padding:0 4px;box-sizing:border-box;border-radius:9px;background:#e0372c;color:#fff;font-size:11px;font-weight:800;display:grid;place-items:center;border:1.5px solid #fffdf8}
 #tbr .mlc{top:6px!important;right:auto!important;left:calc(50% + 7px)!important;width:auto!important;transform:none!important;line-height:1!important}
 #tbr .mlc[hidden],#tbr .ntd[hidden]{display:none}
+html,body{overflow-x:clip}
+.pfhub{margin:0 0 12px}
+#app h2.hwt{background:none;padding:0;margin:0 0 2px -4px;color:#2a2620;line-height:0}#app h2.hwt svg{height:40px;width:auto;display:block}
+body.tbsw #app,body.tbsw #app *{animation:none!important}
+
 .admbig{display:flex;align-items:center;gap:14px;width:100%;text-align:left;padding:16px;border:0;border-radius:20px;background:linear-gradient(135deg,#2f2a23,#4a4136);color:#fffaf0;margin:6px 0 14px;box-shadow:0 6px 18px rgba(40,30,15,.18);font:inherit;cursor:pointer}
 .admbig .abi{width:44px;height:44px;border-radius:14px;background:rgba(255,255,255,.14);display:grid;place-items:center;flex:none}.admbig .abi svg{width:24px;height:24px}
 .admbig .abt{flex:1;min-width:0}.admbig b{font-size:17px;display:block}.admbig small{font-size:12.5px;opacity:.75}.admbig .abd{background:#e0372c;color:#fff;font-weight:800;font-size:12px;border-radius:999px;padding:4px 9px;white-space:nowrap}.admbig .chev{opacity:.6;font-size:20px}
@@ -840,7 +845,9 @@ function sgCard(n,c,o){if(COVER[n])return bk(n,c,o);return `<div class="card pc"
 let SGMORE=false;
 function sgMore(b){SGMORE=!SGMORE;const w=document.getElementById('sgm');if(w)w.hidden=!SGMORE;b.classList.toggle('on',SGMORE);if(SGMORE&&typeof animBars=='function')animBars()}
 const SC={y:'#f2cf6b',b:'#8fb8ec',r:'#ee9a9a',t:'#93d3d8',j:'#c9b6ec',g:'#9bd3ae',p:'#f1a9c8'};
-function subjects(){if(NICK&&!selOK())return pickSel();document.body.classList.remove('selg');SELF=false;let h=`<div class="hd" style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px"><div><h2>학습하기</h2></div></div><div class="hd2"><p class="tag"><b>${esc(NICK)}</b> 님</p></div><div class="hub">${isApp()?`<button class="hb" style="--hc:#e3b55a" onclick="allStats()"><i class="hbi">${HB_ST}</i><b>전체 통계</b></button>`:`<button class="hb lkd" style="--hc:#bdb3a0" onclick="lockMsg()"><i class="hbi">${LOCK}</i><b>전체 통계</b></button>`}<button class="hb" style="--hc:#8fb8ec" onclick="fbForm(1)"><i class="hbi">${HB_FB}</i><b>피드백</b></button></div>`;
+// 풍산 학습 전용 손글씨 제목 (한 획씩 그린 모노라인)
+const HW_TITLE='<svg viewBox="-12 -8 484 116" fill="none" stroke="currentColor" stroke-width="8.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path transform="translate(0 0)" d="M24 12H76 M38 13C37.5 20 37 26 36 33 M62 13C62.5 20 63 26 64 33 M18 33H82 M10 49H90 M50 49V62 M32 81 A18 13 0 1 0 68 81 A18 13 0 1 0 32 81Z"/><path transform="translate(108 0)" d="M36 8C36 26 26 40 12 50 M31 27C38 36 46 42 55 47 M74 4V62 M74 32H90 M22 64V80Q22 89 31 89H86"/><path transform="translate(246 0)" d="M28 5.5L40 8.5 M12 20H54 M19 40 A14 11 0 1 0 47 40 A14 11 0 1 0 19 40Z M74 2V60 M74 30H90 M16 70H70Q79 70 79 80C79 88 75 95 69 100"/><path transform="translate(354 0)" d="M50 4C50 18 38 30 22 37 M49 18C56 27 64 32 78 37 M6 50H94 M26 62V88Q26 95 33 95H67Q74 95 74 88V62 M26 77H74"/></svg>';
+function subjects(){if(NICK&&!selOK())return pickSel();document.body.classList.remove('selg');SELF=false;let h=`<div class="hd" style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px"><div><h2 class="hwt" aria-label="풍산 학습">${HW_TITLE}</h2></div></div>`;
  const ALL=SUBJ.flat(),SEL=Array.isArray(R._sel)?R._sel:[],mine=ALL.filter(([n])=>COMMON.includes(n)||SEL.includes(n));
  if(selOK()&&SEL.length){h+=`<h3 class="sec">공통과목</h3><div class="sg c2">`+ALL.filter(([n])=>COMMON.includes(n)).map(x=>sgCard(...x)).join('')+`</div>`;
   h+=`<div class="sech"><h3 class="sec">선택과목</h3><button class="lk" onclick="pickSel()">바꾸기</button></div><div class="sg c2">`+ALL.filter(([n])=>SEL.includes(n)).map(x=>sgCard(...x)).join('')+`</div>`;
@@ -1028,16 +1035,16 @@ function guide(){const S=(n,t,body,img)=>`<section class="gds" id="gd${n}"><div 
  h+=`<nav class="gdx">${['시작하기','앱 설치','과목 고르기','공부하기','문제 풀기','모의고사','오답노트','통계·달력','공지','메시지함·알림','피드백','프로필'].map((t,i)=>`<a href="#gd${i+1}" onclick="event.preventDefault();document.getElementById('gd${i+1}').scrollIntoView({behavior:'smooth',block:'start'})">${i+1}. ${t}</a>`).join('')}</nav>`;
  h+=S(1,'닉네임으로 시작하기','<p>닉네임과 <b>숫자 4자리 비밀번호</b>를 정해요. 다른 폰에서도 같은 닉네임·비밀번호로 들어오면 기록이 그대로 이어져요.</p><p class="gdw">비밀번호를 잊으면 기록을 찾을 수 없어요.</p>','g_start');
  h+=S(2,'앱으로 설치하기',`<p>홈 화면에 추가하면 앱처럼 쓸 수 있어요. <b>전체 통계, 공부 달력, 폰 알림</b>은 앱에서만 돼요.</p><ul><li>아이폰: 사파리 <b>공유</b> → <b>홈 화면에 추가</b></li><li>안드로이드: 크롬 메뉴 <b>⋮</b> → <b>앱 설치</b></li></ul>${isApp()?'<p class="gdok">지금 앱으로 쓰고 있어요 👍</p>':'<button class="b gdbt" onclick="installApp()">앱으로 설치하기</button>'}`);
- h+=S(3,'과목 고르기','<p>학습하기 화면에서 과목을 눌러요. 진행도 막대가 있는 과목이 열린 과목이고, <b>준비 중</b> 과목은 곧 열려요.</p><p>화면 맨 아래 탭바: <b>집</b>(학습하기) · <b>확성기</b>(공지) · <b>편지봉투</b>(메시지함) · <b>책</b>(사용법) · <b>동그라미</b>(프로필)</p>','g_subj');
+ h+=S(3,'과목 고르기','<p>풍산 학습 첫 화면에서 과목을 눌러요. 진행도 막대가 있는 과목이 열린 과목이고, <b>준비 중</b> 과목은 곧 열려요.</p><p>화면 맨 아래 탭바: <b>집</b>(학습) · <b>확성기</b>(공지) · <b>편지봉투</b>(메시지함) · <b>막대</b>(전체 통계) · <b>사람</b>(프로필)</p>','g_subj');
  h+=S(4,'공부하기 (필기)','<p>과목에 들어가 <b>공부하기</b>를 누르면 교과서 핵심을 정리한 필기가 나와요. <b>형광펜</b>은 꼭 외울 내용, 그림·지도·표는 교과서 자료를 다시 정리한 거예요.</p><ul><li><b>교과서 원문 보기</b>: 그 단원의 교과서 쪽을 바로 볼 수 있어요.</li><li>필기 맨 아래 버튼으로 <b>그 단원 문제</b>를 바로 풀 수 있어요.</li><li>맨 위 <b>처음부터 공부하기</b> 카드는 이어서 볼 단원을 알려 줘요.</li></ul>',['g_learn','g_note']);
  h+=S(5,'문제 풀기','<p><b>문제 풀기</b>에서 대단원을 펼쳐 중단원을 골라요. 중단원마다 <b>기본 문제</b>와 자료를 읽고 푸는 <b>실전 문제</b>가 있어요.</p><p>다 풀고 <b>제출</b>하면 정답과 해설이 나와요. <b>처음 푼 결과만</b> 진행도와 통계에 들어가요.</p>','g_quiz');
  h+=S(6,'모의고사','<p>과목마다 <b>5회분</b>이 있어요. 회차당 <b>25문항 내외 · 50분 · 100점 만점</b>이고, 학력평가처럼 자료·사례·&lt;보기&gt;를 분석하는 문제예요.</p><ul><li>그 과목 <b>문제를 모두 풀면</b> 열려요. (11월 23일부터는 모두 열려요.)</li><li>위쪽에 <b>남은 시간</b>이 나오고, 50분을 넘기면 초과 시간이 표시돼요. 제출하면 점수와 오답이 바로 나와요.</li><li><b>모의고사 통계</b>에서 회차별 점수를 볼 수 있어요.</li></ul>','g_mock');
  h+=S(7,'오답노트','<p>틀린 문제는 과목 화면의 <b>오답노트</b>에 단원별로 모여요. 다시 풀어서 맞히면 <b>고친 오답</b>으로 바뀌어요. <b>취약</b> 표시가 붙은 유형은 오답부터 고치는 게 좋아요.</p>','g_wrong');
- h+=S(8,'전체 통계 · 공부 달력','<p>학습하기 화면의 <b>전체 통계</b>에서 총 공부 시간, 공부한 날, 과목별 정답률을 볼 수 있어요. <b>달력으로 보기</b>를 누르면 날짜별 공부 시간이 나와요. (앱 전용)</p>','g_stats');
+ h+=S(8,'전체 통계 · 공부 달력','<p>아래 탭바의 <b>막대</b>(전체 통계)에서 총 공부 시간, 공부한 날, 과목별 정답률을 볼 수 있어요. <b>달력으로 보기</b>를 누르면 날짜별 공부 시간이 나와요. (앱 전용)</p>','g_stats');
  h+=S(9,'공지','<p>맨 위 <b>공지</b> 버튼에서 새 과목·업데이트·시험 안내를 모아 볼 수 있어요. 새 공지가 올라오면 버튼에 <b class="gdr">빨간 점</b>이 생겨요.</p>','g_board');
  h+=S(10,'메시지함 · 알림','<p><b>편지봉투</b>를 누르면 메시지함이에요. 새 공지 알림, 피드백 답장, 관리자가 보낸 알림이 와요. 숫자는 읽지 않은 메시지 수예요.</p><p>프로필에서 <b>폰 알림</b>을 켜 두면 메시지가 올 때 폰으로도 알려 줘요.</p>','g_inbox');
- h+=S(11,'피드백 보내기','<p>정답이 이상하거나 불편한 점, 추가했으면 하는 과목이 있으면 학습하기 화면의 <b>피드백</b>으로 보내 주세요. 고쳐지면 메시지함으로 답장이 와요.</p>');
- h+=S(12,'프로필','<p>오른쪽 위 <b>사람 아이콘</b>에서 닉네임·비밀번호를 바꾸고 폰 알림을 켤 수 있어요.</p>','g_profile');
+ h+=S(11,'피드백 보내기','<p>정답이 이상하거나 불편한 점, 추가했으면 하는 과목이 있으면 프로필 맨 위 <b>피드백 보내기</b>로 보내 주세요. 고쳐지면 메시지함으로 답장이 와요.</p>');
+ h+=S(12,'프로필','<p>아래 탭바의 <b>사람</b>(프로필)에서 닉네임·비밀번호를 바꾸고 폰 알림을 켤 수 있어요.</p>','g_profile');
  h+=`<div class="row"><button class="b" onclick="subjects()">학습하러 가기</button></div>`;show(h)}
 
 // ================= 관리자 =================
@@ -1225,7 +1232,7 @@ function ntBlock(b){const [t,...a]=b;
  if(t=='img')return `<figure class="nim"><img src="${esc(a[0])}" alt="" loading="lazy">${a[1]?`<figcaption>${ntIn(a[1])}</figcaption>`:''}</figure>`;
  return ''}
 const ICN_NOTE='<svg class="lci" viewBox="0 0 48 48" fill="none" stroke="#1f1a15" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M24 13c-5-3.4-11-4-17-2.4v25c6-1.6 12-1 17 2.4 5-3.4 11-4 17-2.4v-25c-6-1.6-12-1-17 2.4z"/><path d="M24 13v25"/></svg>';
-const ICN_PEN='<svg class="lci" viewBox="0 0 48 48" fill="none" stroke="#1f1a15" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="16" width="26" height="26" rx="3.5"/><path d="M11.8 26.6l3.8 3.8 6.6-7.2" stroke-linecap="square" stroke-linejoin="miter"/><path d="M11.8 35.2h10.4"/><path d="M32 15.5l5.5-1.5 8.5-8.5a2.83 2.83 0 0 0-4-4l-8.5 8.5z"/><path d="M37.5 14 33.5 10"/></svg>';
+const ICN_PEN='<svg class="lci" viewBox="0 0 48 48" fill="none" stroke="#1f1a15" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="16" width="26" height="26" rx="3.5"/><path d="M11.8 26.6l3.8 3.8 6.6-7.2" stroke-linecap="square" stroke-linejoin="miter"/><path d="M11.8 35.2h10.4"/><path d="M34.5 42l4.4-2.9 7.5-13a2.8 2.8 0 0 0-4.8-2.8l-7.5 13z"/><path d="M38.9 39.1 34.1 36.3"/></svg>';
 const ICN_BOOK='<svg class="tbi" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5.5C5.5 4.3 8.6 4.3 12 6c3.4-1.7 6.5-1.7 9-.5V19c-2.5-1.2-5.6-1.2-9 .5-3.4-1.7-6.5-1.7-9-.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 6v13.5" stroke="currentColor" stroke-width="1.8"/></svg>';
 const sCol=n=>SC[SUBJ.flat().find(x=>x[0]==n)[1]];
 function midSegs(n,u,k){const M=CUR[n][u].m[k],g=u+'-'+k;return [[M.q.filter(q=>q.lv!='x'),'기본 개념'],[M.q.filter(q=>q.lv=='x'),'실전 문제']].filter(a=>a[0].length).map(([qs,l])=>({label:M.n+' · '+l,qs,grp:g}))}
@@ -1291,7 +1298,7 @@ function mkReform(){for(const n in MOCK){const sp=mkSpec(n);if(!MOCK[n].length){
  MOCK[n].spec=sp}}
 const mkPts=(n,r)=>mkR(n,r).reduce((a,q)=>a+(R[q.id]&&R[q.id].ok?(q.pt||0):0),0);
 const nDone=n=>{const nv=(R._nv&&R._nv[n])||{},has=[];CUR[n].forEach((U,u)=>U.m.forEach((M,k)=>{if(noteOf(n,u,k))has.push(u+'-'+k)}));return has.length>0&&has.every(x=>nv[x])};
-const ICN_MST='<svg class="lci" viewBox="0 0 48 48" fill="none" stroke="#1f1a15" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 39h30"/><path d="M14 33V23M22 33V14M30 33v-7M38 33V18"/></svg>';
+const ICN_MST='<svg class="lci" viewBox="0 0 48 48" fill="none" stroke="#1f1a15" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="30" height="30" rx="3.5"/><path d="M17.5 31.5v-6M24 31.5V17M30.5 31.5v-10"/></svg>';
 const ICN_RE='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19.5 12a7.5 7.5 0 1 1-2.2-5.3"/><path d="M19.5 4.5v4.2h-4.2"/></svg>';
 const mkTot=n=>MOCK[n]?MOCK[n].filter((_,r)=>mkDone(n,r)).length:0;
 const mkNudge=n=>{const t=mkTot(n);return t>=3&&+(ls('mkseen:'+n)||0)<t};
@@ -1609,15 +1616,16 @@ const PSVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-wi
 function askBox(title,msg,ok){return new Promise(res=>{const w=document.createElement('div');w.className='mdw';
  w.innerHTML=`<div class="mdc"><h3>${title}</h3>${msg?`<p>${msg}</p>`:'<div style="height:10px"></div>'}<div class="row" style="margin:0"><button class="b g" data-v="0">취소</button><button class="b" data-v="1">${ok||'확인'}</button></div></div>`;
  w.onclick=e=>{const v=e.target.dataset&&e.target.dataset.v;if(v===undefined&&e.target!==w)return;w.remove();res(v==='1')};document.body.appendChild(w)})}
-let PFOK=false,CALM=null;
-function pfGate(next){show(`<div class="fbw"><h2>프로필 보기</h2><p class="tag">비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
-function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v67';
-function profile(){if(NICK&&!selOK())return pickSel();if(ADMINMODE||SUBMODE)PFOK=true;if(!PFOK)return pfGate();
- show(`<h2>내 프로필</h2>${STAFF()&&DB?admBig():''}
- <div class="card pf"><div class="pr"><span>닉네임</span><b>${esc(NICK)}</b>${ADMINMODE||SUBMODE?`<span class="mut" style="font-size:13px;white-space:nowrap">${SUBMODE?'보조 관리자':'관리자'} 고정</span>`:'<button class="lk" onclick="pfNick()">변경하기</button>'}</div>
- ${ADMINMODE||SUBMODE?'':`<div class="pr"><span>비밀번호</span><b id="pv">••••</b><button class="lk" onclick="const e=document.getElementById('pv');e.textContent=e.textContent=='••••'?PIN:'••••'">보기</button><button class="lk" onclick="pfPin()">변경하기</button></div>`}<div class="pr"><span>폰 알림</span><b>${notiState()}</b>${notiState()=='켜짐'?'':'<button class="lk" onclick="notiFromProfile()">켜기</button>'}</div></div>
+let PFOK=false,PFSHOW=false,CALM=null;
+function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
+function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
+const APPV='v68';
+function profile(){if(NICK&&!selOK())return pickSel();if(ADMINMODE||SUBMODE)PFOK=true;
+ show(`<h2>내 프로필</h2>${STAFF()&&DB?admBig():''}<div class="hub hub1 pfhub">${hbBtn('#8fb8ec',HB_FB,'피드백 보내기','고쳐지면 메시지함으로 답장이 와요','fbForm(1)')}</div>
+ <div class="card pf"><div class="pr"><span>닉네임</span><b>${esc(NICK)}</b>${ADMINMODE||SUBMODE?`<span class="mut" style="font-size:13px;white-space:nowrap">${SUBMODE?'':'관리자 '}고정</span>`:'<button class="lk" onclick="pfNick()">변경하기</button>'}</div>
+ ${ADMINMODE||SUBMODE?'':`<div class="pr"><span>비밀번호</span><b id="pv">${PFSHOW?(PFSHOW=false,esc(PIN)):'••••'}</b><button class="lk" onclick="if(!PFOK)return pfShow();const e=document.getElementById('pv');e.textContent=e.textContent=='••••'?PIN:'••••'">보기</button><button class="lk" onclick="pfPin()">변경하기</button></div>`}<div class="pr"><span>폰 알림</span><b>${notiState()}</b>${notiState()=='켜짐'?'':'<button class="lk" onclick="notiFromProfile()">켜기</button>'}</div></div>
  <div class="card pf"><div class="pr"><span>선택과목</span><b class="pfsl">${Array.isArray(R._sel)?R._sel.map(n=>`<span>${n.split('|').join(' ')}</span>`).join('')||'없음':'아직 안 골랐어요'}</b><button class="lk" onclick="pickSel()">바꾸기</button></div></div>
+ <div class="hub hub1 pfhub">${hbBtn('#9bd3ae',TBG,'사용법','처음이라면 차례로 읽어 보세요','guide()')}</div>
  ${OWNER?myProg():''}<p class="mut" style="text-align:center;font-size:12px;margin-top:18px">앱 버전 ${APPV}</p>`)}
 const ICN_SH='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.2 7.5 9.5 4.3-1.3 7.5-4.9 7.5-9.5V6z"/><path d="m9 12 2.2 2.2L15.5 10"/></svg>';
 const RSI={chk:'<path d="M5 12.5 10 17l9-10"/>',re:'<path d="M4 12a8 8 0 1 0 2.4-5.7"/><path d="M4 4v4.5h4.5"/>',bell:'<path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2.2 2.2 0 0 0 4 0"/>',msg:'<path d="M4 5.5h16v10.5H9l-5 3.5z"/>',usr:'<circle cx="10" cy="8" r="3.6"/><path d="M3.5 19.5c.8-3.4 3.4-5.3 6.5-5.3 1.6 0 3 .5 4.1 1.3"/><path d="m16 15 5 5m0-5-5 5"/>'};
@@ -1647,6 +1655,7 @@ function cal(m,dir){if(!isApp()){setTimeout(lockMsg,50);return subjects()}if(m)C
   el.addEventListener('touchend',()=>{if(sx==null)return;sx=null;if(!hz)return;if(Math.abs(dx)>Math.min(70,W()*.22))out(dx<0?1:-1);else{el.style.transition='transform .25s cubic-bezier(.22,.8,.3,1)';el.style.transform=''}});
   el.addEventListener('touchcancel',()=>{sx=null;el.style.transition='transform .25s';el.style.transform=''})}}
 let NKT=null,NKOK=false;
+function pfShow(){pfGate('show')}
 function pfNick(){if(!PFOK)return pfGate('nick');NKOK=false;show(`<div class="fbw"><h2>닉네임 변경</h2><p class="tag">지금 닉네임: <b>${esc(NICK)}</b></p><div class="card" style="max-width:340px;margin:10px auto;width:100%;box-sizing:border-box"><input type="text" id="nn" maxlength="12" placeholder="새 닉네임 (최대 12자)" style="text-align:center" oninput="nkChk()"><div id="ns" class="mut" style="margin-top:8px;min-height:20px;font-size:14px"></div></div><div class="row" style="max-width:340px;margin:0 auto;width:100%"><button class="b" id="nb" disabled onclick="nkSave()">변경하기</button></div></div>`)}
 function nkChk(){const v=document.getElementById('nn').value.trim(),st=document.getElementById('ns'),b=document.getElementById('nb');NKOK=false;b.disabled=true;clearTimeout(NKT);
  if(!v){st.textContent='';return}if(v===NICK){st.innerHTML='<span class="no-t">지금 쓰는 닉네임이에요.</span>';return}
@@ -1672,20 +1681,37 @@ let CURR='',GUARD=false;
 const TBI={home:['<path d="M3.5 10.5 12 3.8l8.5 6.7V20a.9.9 0 0 1-.9.9h-5v-6.2h-5.2v6.2h-5a.9.9 0 0 1-.9-.9z"/>','<path fill="currentColor" stroke="none" d="M12 3.2 2.9 10.4c-.3.2-.4.5-.4.8V20c0 .8.6 1.4 1.4 1.4H9.3v-6.5h5.4v6.5h5.4c.8 0 1.4-.6 1.4-1.4v-8.8c0-.3-.1-.6-.4-.8z"/>'],
  noti:['<path d="M4 9.5v5l3 .2 8.5 4.3V5L7 9.3z"/><path d="M7 14.7 8.3 20h2.5L9.6 14.9"/><path d="M18.5 9a3.6 3.6 0 0 1 0 6"/>','<path fill="currentColor" stroke="none" d="M15.5 4.4 6.8 8.6H4.3c-.6 0-1 .4-1 1v4.8c0 .6.4 1 1 1h2.1l1.3 5.3c.1.3.4.5.7.5h2.4c.5 0 .8-.4.7-.9l-1.2-4.6 5.2 2.6c.5.3 1-.1 1-.6V5c0-.5-.5-.9-1-.6z"/><path d="M18.8 8.6a4 4 0 0 1 0 6.8"/>'],
  mail:['<rect x="3" y="5.5" width="18" height="13" rx="2.2"/><path d="m3.6 7 8.4 6.2L20.4 7"/>','<path fill="currentColor" stroke="none" d="M5.2 4.8h13.6c1.5 0 2.7 1.2 2.7 2.7v.3L12 14.3 2.5 7.8v-.3c0-1.5 1.2-2.7 2.7-2.7zM2.5 9.6l9 6.2c.3.2.7.2 1 0l9-6.2v6.9c0 1.5-1.2 2.7-2.7 2.7H5.2c-1.5 0-2.7-1.2-2.7-2.7z"/>'],
+ st:['<rect x="3.6" y="3.6" width="16.8" height="16.8" rx="3.6"/><path d="M8.4 16v-3M12 16V8M15.6 16v-5"/>','<rect x="2.8" y="2.8" width="18.4" height="18.4" rx="4.2" fill="currentColor" stroke="none"/><path d="M8.4 16.2v-3.2M12 16.2V7.8M15.6 16.2v-5.2" stroke="#fffdf8" stroke-width="2.2"/>'],
+ pf:['<circle cx="12" cy="8.3" r="4.1"/><path d="M4.6 20.3c.9-4 3.9-6.3 7.4-6.3s6.5 2.3 7.4 6.3"/>','<circle cx="12" cy="8.3" r="4.7" fill="currentColor" stroke="none"/><path fill="currentColor" stroke="none" d="M3.7 20.2c.9-4.6 4.2-7.2 8.3-7.2s7.4 2.6 8.3 7.2c.1.7-.4 1.3-1.1 1.3H4.8c-.7 0-1.2-.6-1.1-1.3z"/>'],
  guide:['<path d="M4 5.5c2.7-1 5.3-1 8 .8 2.7-1.8 5.3-1.8 8-.8V19c-2.7-1-5.3-1-8 .8-2.7-1.8-5.3-1.8-8-.8z"/><path d="M12 6.3v13.5"/>','<path fill="currentColor" stroke="none" d="M11.2 5.7C8.6 4 6 4 3.4 4.9c-.5.2-.9.6-.9 1.1V19c0 .7.7 1.2 1.4 1 2.4-.8 4.8-.6 7.3.9zM12.8 5.7c2.6-1.7 5.2-1.7 7.8-.8.5.2.9.6.9 1.1V19c0 .7-.7 1.2-1.4 1-2.4-.8-4.8-.6-7.3.9z"/>']};
-const TBR=['subjects','board','inbox','guide','profile'];
-function tbKey(){const r=CURR||'';if(/^board/.test(r))return 'noti';if(/^inbox/.test(r))return 'mail';if(/^guide/.test(r))return 'guide';if(/^(profile|admin)/.test(r))return 'pf';return 'home'}
-const TBK=['home','noti','mail','guide','pf'],TBL={home:'학습',noti:'공지',mail:'메시지함',guide:'사용법',pf:'프로필'};
+const TBG='<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"><path d="M4 5.5c2.7-1 5.3-1 8 .8 2.7-1.8 5.3-1.8 8-.8V19c-2.7-1-5.3-1-8 .8-2.7-1.8-5.3-1.8-8-.8z"/><path d="M12 6.3v13.5"/></svg>';
+const TBR=['subjects','board','inbox','stats','profile'];
+function tbKey(){const r=CURR||'';if(/^board/.test(r))return 'noti';if(/^inbox/.test(r))return 'mail';if(/^stats/.test(r))return 'st';if(/^(profile|admin|guide|fb)/.test(r))return 'pf';return 'home'}
+const TBK=['home','noti','mail','st','pf'],TBL={home:'학습',noti:'공지',mail:'메시지함',st:'전체 통계',pf:'프로필'};
 const RDM=()=>{try{return matchMedia('(prefers-reduced-motion: reduce)').matches}catch(e){return false}};
 let TBDIR=0,TBDRAG=null,TBNOCLK=0;
 // 탭 이동: 이전 화면은 옆으로 밀려 나가고 새 화면이 반대쪽에서 들어옴
-function tbGo(k){const cur=tbKey();if(k==cur&&!/^(subj|learn)/.test(CURR||''))return scrollTo({top:0,behavior:RDM()?'auto':'smooth'});
- TBSW=Date.now();const d=TBK.indexOf(k)-TBK.indexOf(cur);TBDIR=d>0?1:d<0?-1:0;
- if(TBDIR&&!RDM()){try{const app=document.getElementById('app'),o=document.createElement('div');o.className='tbsl';const w=document.createElement('div');
-  w.style.transform=`translateY(${-scrollY}px)`;w.appendChild(app.cloneNode(true));w.querySelectorAll('[id]').forEach(e=>e.removeAttribute('id'));w.firstChild.removeAttribute('id');w.firstChild.classList.remove('in');o.appendChild(w);document.body.appendChild(o);
-  o.animate([{transform:'translateX(0)',opacity:1},{transform:`translateX(${-TBDIR*34}%)`,opacity:0}],{duration:300,easing:'cubic-bezier(.3,.7,.2,1)'}).onfinish=()=>o.remove();setTimeout(()=>o.remove(),600)}catch(e){}}
- if(k=='home')subjects();else if(k=='noti')board();else if(k=='mail')inbox();else if(k=='guide')guide();else if(k=='pf')profile();
- if(TBDIR&&!RDM()){const app=document.getElementById('app');app.animate([{transform:`translateX(${TBDIR*38}%)`,opacity:0},{transform:'translateX(0)',opacity:1}],{duration:340,easing:'cubic-bezier(.25,.8,.25,1)'})}TBDIR=0}
+function tbGo(k,off){off=off||0;if(k=='st'&&!isApp()){tbSnap();return lockMsg()}const cur=tbKey();if(k==cur&&!/^(subj|learn)/.test(CURR||'')){tbSnap();return scrollTo({top:0,behavior:RDM()?'auto':'smooth'})}
+ TBSW=Date.now();const d=TBK.indexOf(k)-TBK.indexOf(cur);TBDIR=d>0?1:d<0?-1:0;const app=document.getElementById('app');
+ document.body.classList.add('tbsw');clearTimeout(tbGo.t);tbGo.t=setTimeout(()=>document.body.classList.remove('tbsw'),900);
+ const E='cubic-bezier(.22,.8,.24,1)',D=Math.round(330*(1-Math.min(.6,Math.abs(off)/innerWidth)));
+ if(TBDIR&&!RDM()){try{const o=document.createElement('div');o.className='tbsl';const w=document.createElement('div');
+  w.style.transform=`translateY(${-scrollY}px)`;const cl=app.cloneNode(true);cl.style.transform='';w.appendChild(cl);w.querySelectorAll('[id]').forEach(e=>e.removeAttribute('id'));cl.removeAttribute('id');cl.classList.remove('in');o.appendChild(w);document.body.appendChild(o);
+  o.animate([{transform:`translateX(${off}px)`},{transform:`translateX(${-TBDIR*100}vw)`}],{duration:D,easing:E,fill:'forwards'}).onfinish=()=>o.remove();setTimeout(()=>o.remove(),900)}catch(e){}}
+ app.style.transform='';app.style.transition='';
+ if(k=='home')subjects();else if(k=='noti')board();else if(k=='mail')inbox();else if(k=='st')allStats();else if(k=='pf')profile();
+ if(TBDIR&&!RDM())app.animate([{transform:`translateX(calc(${TBDIR*100}vw + ${off}px))`},{transform:'translateX(0)'}],{duration:D,easing:E});TBDIR=0}
+function tbSnap(){const app=document.getElementById('app');if(!app||!app.style.transform)return;app.style.transition='transform .28s cubic-bezier(.22,.8,.24,1)';app.style.transform='translateX(0)';setTimeout(()=>{app.style.transition='';app.style.transform=''},300)}
+// 탭 첫 화면에서 화면을 옆으로 밀면 옆 탭으로 넘어감 (과목·글 안에서는 안 됨)
+{let S=null;const hsc=el=>{for(;el&&el!==document.body;el=el.parentElement){if(el.matches&&el.matches('input,textarea,select,canvas,.mdw,#tbr,.tbsl'))return true;const cs=getComputedStyle(el);if(/(auto|scroll)/.test(cs.overflowX)&&el.scrollWidth>el.clientWidth+2)return true}return false};
+ document.addEventListener('touchstart',e=>{S=null;if(e.touches.length!==1||!NICK||!TBR.includes(CURR)||!document.body.classList.contains('tbon')||document.querySelector('.mdw,.tbsl'))return;
+  const t=e.touches[0];if(t.clientX<14||t.clientX>innerWidth-14||hsc(e.target))return;S={x:t.clientX,y:t.clientY,t:Date.now(),ax:0,dx:0}},{passive:true});
+ document.addEventListener('touchmove',e=>{if(!S)return;const t=e.touches[0],dx=t.clientX-S.x,dy=t.clientY-S.y;
+  if(!S.ax){if(Math.abs(dx)<10&&Math.abs(dy)<10)return;if(Math.abs(dx)>Math.abs(dy)*1.2)S.ax=1;else{S=null;return}}
+  e.preventDefault();const i=TBK.indexOf(tbKey()),edge=(dx>0&&i==0)||(dx<0&&i==TBK.length-1);S.dx=edge?dx*.25:dx;document.getElementById('app').style.transform=`translateX(${S.dx}px)`},{passive:false});
+ const end=()=>{if(!S||!S.ax){S=null;return}const {dx}=S,v=Math.abs(dx)/(Date.now()-S.t),i=TBK.indexOf(tbKey()),j=i+(dx<0?1:-1);S=null;
+  if(j>=0&&j<TBK.length&&(Math.abs(dx)>innerWidth*.22||(Math.abs(dx)>40&&v>.45)))tbGo(TBK[j],dx);else tbSnap()};
+ document.addEventListener('touchend',end);document.addEventListener('touchcancel',()=>{S=null;tbSnap()})}
 // 흰 알약을 지금 탭(또는 손가락) 위치로 옮김
 function tbPill(x,lift){const t=document.getElementById('tbr');if(!t)return;const p=t.querySelector('.tbp'),on=t.querySelector('button.on');if(!p||!on)return;
  const tr=t.getBoundingClientRect(),bs=[...t.querySelectorAll('button')],G=2,P=6,cw=t.clientWidth,av=cw-P*2-G*(bs.length-1),fs=bs.map(b=>b.classList.contains('on')?1.45:1),sm=fs.reduce((x,y)=>x+y,0);
@@ -1696,9 +1722,9 @@ function tbNear(x){const bs=[...document.querySelectorAll('#tbr button')];let bi
 function tbSetIcons(a){const t=document.getElementById('tbr');if(!t)return;t.querySelectorAll('button').forEach(b=>{const k=b.dataset.k,on=k==a;
   b.classList.toggle('on',on);b.setAttribute('aria-selected',on);const g=b.querySelector(':scope>svg');if(g&&TBI[k])g.innerHTML=TBI[k][on?1:0]})}
 function tabBar(){let t=document.getElementById('tbr');const on=!!NICK&&TBR.includes(CURR);document.body.classList.toggle('tbon',on);document.body.classList.toggle('tbuser',!!NICK);if(!on){if(t)t.hidden=true;return}
- const a=tbKey(),ini=(NICK||'?').trim().charAt(0);
+ const a=tbKey();
  if(!t){t=document.createElement('div');t.id='tbr';t.setAttribute('role','tablist');document.body.appendChild(t);
-  t.innerHTML='<span class="tbp" aria-hidden="true"></span>'+TBK.map(k=>`<button role="tab" data-k="${k}" aria-label="${TBL[k]}" class="${k=='noti'?'ntb':''}${k=='mail'?'mlb':''}">${k=='pf'?'<span class="tbpf"></span>':`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"></svg>`}${k=='noti'?'<span class="ntd" hidden></span>':''}${k=='mail'?'<span class="mlc" hidden></span>':''}</button>`).join('');
+  t.innerHTML='<span class="tbp" aria-hidden="true"></span>'+TBK.map(k=>`<button role="tab" data-k="${k}" aria-label="${TBL[k]}" class="${k=='noti'?'ntb':''}${k=='mail'?'mlb':''}">${`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"></svg>`}${k=='noti'?'<span class="ntd" hidden></span>':''}${k=='mail'?'<span class="mlc" hidden></span>':''}</button>`).join('');
   t.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;if(Date.now()-TBNOCLK<400)return;tbGo(b.dataset.k)});
   // 탭바 위에서 손가락을 끌면 알약이 따라오고, 뗀 곳의 탭으로 이동
   t.addEventListener('pointerdown',e=>{TBDRAG={x0:e.clientX,id:e.pointerId,mv:false}});
@@ -1711,9 +1737,9 @@ function tabBar(){let t=document.getElementById('tbr');const on=!!NICK&&TBR.incl
   t.hidden=false;tbSetIcons(a);t.querySelector('.tbp').classList.add('noa');requestAnimationFrame(()=>{tbPill();requestAnimationFrame(()=>t.querySelector('.tbp').classList.remove('noa'))})}
  else{const was=t.hidden;t.hidden=false;const prev=(t.querySelector('button.on')||{}).dataset;tbSetIcons(a);
   if(was){const p=t.querySelector('.tbp');p.classList.add('noa');tbPill();requestAnimationFrame(()=>p.classList.remove('noa'))}
-  else if(!prev||prev.k!==a){const ic=t.querySelector('button.on>svg,button.on .tbpf');if(ic&&!RDM())ic.animate([{transform:'scale(.82)'},{transform:'scale(1.12)'},{transform:'scale(1)'}],{duration:380,easing:'ease-out'});requestAnimationFrame(()=>tbPill())}
+  else if(!prev||prev.k!==a){const ic=t.querySelector('button.on>svg');if(ic&&!RDM())ic.animate([{transform:'scale(.82)'},{transform:'scale(1.12)'},{transform:'scale(1)'}],{duration:380,easing:'ease-out'});requestAnimationFrame(()=>tbPill())}
   else tbPill()}
- t.querySelector('.tbpf').textContent=ini;{const f=t.querySelector('button[data-k="pf"]');let sd=f.querySelector('.tbad');if(STAFF()&&!sd){f.insertAdjacentHTML('beforeend','<span class="tbad" aria-hidden="true">'+ICN_SH+'</span>')}else if(!STAFF()&&sd)sd.remove()}
+ {const f=t.querySelector('button[data-k="pf"]');let sd=f.querySelector('.tbad');if(STAFF()&&!sd){f.insertAdjacentHTML('beforeend','<span class="tbad" aria-hidden="true">'+ICN_SH+'</span>')}else if(!STAFF()&&sd)sd.remove()}
  try{postBadge()}catch(e){}try{mailBadge()}catch(e){}}
 function updBk(){let b=document.getElementById('bk');if(!b){b=document.createElement('button');b.id='bk';b.className='qback';b.setAttribute('aria-label','뒤로');
   b.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>';b.onclick=goUp;document.body.appendChild(b)}
@@ -1756,9 +1782,9 @@ function parentOf(r){const [k,...rest]=r.split('/'),v=rest.join('/');
  if(!r)return null;if(k=='subjects')return null;
  if(k=='prob'||k=='notes')return 'subj/'+v;if(k=='note'){const ps=v.split('/');ps.pop();ps.pop();return 'notes/'+ps.join('/')}
  if(k=='sel')return Array.isArray(R._sel)?'subjects':null;
- if(k=='inbox')return v?'inbox':'subjects';if(k=='board')return v?'board':'subjects';if(k=='guide')return 'subjects';
- if(k=='pick'||k=='menu'||k=='subj'||k=='stats'||k=='profile'&&!v)return 'subjects';if(k=='admin'&&!v)return 'profile';
- if(k=='cal')return 'stats';if(k=='profile')return 'profile';if(k=='admin'){if(/^t\/./.test(v))return 'admin/t';if(/^p\/./.test(v))return 'admin/p';return 'admin'}if(k=='fb')return v=='1'?'subjects':'';
+ if(k=='inbox')return v?'inbox':'subjects';if(k=='board')return v?'board':'subjects';if(k=='guide')return 'profile';
+ if(k=='pick'||k=='menu'||k=='subj'||k=='profile'&&!v)return 'subjects';if(k=='stats')return null;if(k=='admin'&&!v)return 'profile';
+ if(k=='cal')return 'stats';if(k=='profile')return 'profile';if(k=='admin'){if(/^t\/./.test(v))return 'admin/t';if(/^p\/./.test(v))return 'admin/p';return 'admin'}if(k=='fb')return v=='1'?'profile':'';
  if(k=='mock')return 'subj/'+v;
  if(k=='wrong')return (NEWS(v)?'prob/':'subj/')+v;if(k=='quiz'||k=='result'){if(SS&&SS.meta&&SS.meta.note)return 'note/'+SS.meta.note.join('/');if(SS&&SS.meta&&SS.meta.wp)return 'wrong/'+SS.meta.subj;if(SS&&SS.meta&&SS.meta.subj)return (NEWS(SS.meta.subj)?'prob/':'subj/')+SS.meta.subj;if(SS&&SS.pid&&!SS.meta)return 'menu/'+SS.pid;return 'subjects'}
  return 'subjects'}
@@ -1809,7 +1835,7 @@ const H=(f,mk)=>function(...a){setR(mk(...a));return f.apply(this,a)};
 home=H(home,()=>'');subjects=H(subjects,()=>'subjects');
 subj=H(subj,n=>'subj/'+n);socPage=H(socPage,n=>NEWS(n)?'prob/'+n:'subj/'+n);noteList=H(noteList,n=>'notes/'+n);noteView=H(noteView,(n,u,k)=>'note/'+n+'/'+u+'/'+k);inbox=H(inbox,()=>'inbox');board=H(board,()=>'board');postView=H(postView,id=>'board/'+id);postForm=H(postForm,id=>'admin/w'+(id?'/'+id:''));guide=H(guide,()=>'guide');pickSel=H(pickSel,()=>'sel');msgOpen=H(msgOpen,id=>'inbox/'+id);noticeForm=H(noticeForm,()=>'admin/n');delPage=H(delPage,()=>'admin/d');allStats=H(allStats,()=>'stats');fbForm=H(fbForm,f=>'fb/'+(f||0));
 admin=H(admin,()=>'admin');adminOne=H(adminOne,n=>'admin/u/'+n);fbTypes=H(fbTypes,()=>'admin/t');fbType=H(fbType,k=>'admin/t/'+k);fbPeople=H(fbPeople,()=>'admin/p');fbPerson=H(fbPerson,n=>'admin/p/'+n);fbReply=H(fbReply,id=>'admin/r/'+id);
-wrongPage=H(wrongPage,n=>'wrong/'+n);mockPage=H(mockPage,n=>'mock/'+n);profile=H(profile,()=>'profile');cal=H(cal,()=>'cal');pfNick=H(pfNick,()=>'profile/nick');pfPin=H(pfPin,()=>'profile/pin');
+wrongPage=H(wrongPage,n=>'wrong/'+n);mockPage=H(mockPage,n=>'mock/'+n);profile=H(profile,()=>'profile');cal=H(cal,()=>'cal');pfShow=H(pfShow,()=>'profile/pw');pfNick=H(pfNick,()=>'profile/nick');pfPin=H(pfPin,()=>'profile/pin');
 quiz=(f=>function(){setR('quiz');const x=f.apply(this,arguments);saveSS();return x})(quiz);
 result=(f=>function(){REPL=true;setR('result');const x=f.apply(this,arguments);saveSS();return x})(result);
 // 아이폰 홈 화면 앱: 왼쪽 가장자리에서 오른쪽으로 밀면 뒤로 가기
