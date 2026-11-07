@@ -618,7 +618,7 @@ body.selg #rf{display:none}
 #tbr button{position:relative;flex:1;height:54px;display:grid;place-items:center;border:0;border-radius:999px;background:none;color:#2a2620;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:flex .25s,background .25s}
 #tbr button.on{flex:1.45;background:none!important;box-shadow:none!important}
 #tbr button{z-index:1;transition:flex .34s cubic-bezier(.3,.8,.25,1)}
-#tbr .tbp{position:absolute;left:0;top:6px;height:54px;width:0;border-radius:999px;background:rgba(255,255,255,.78);box-shadow:inset 0 0 0 1px rgba(255,255,255,.9),0 2px 8px rgba(60,45,20,.12);transition:transform .38s cubic-bezier(.3,1.25,.4,1),width .34s cubic-bezier(.3,.8,.25,1),scale .2s;pointer-events:none;z-index:0}
+#tbr .tbp{position:absolute;left:0;top:6px;height:54px;width:0;border-radius:999px;background:rgba(255,255,255,.78);box-shadow:inset 0 0 0 1px rgba(255,255,255,.9),0 2px 8px rgba(60,45,20,.12);transition:translate .38s cubic-bezier(.3,1.25,.4,1),width .34s cubic-bezier(.3,.8,.25,1),scale .2s;pointer-events:none;z-index:0}
 #tbr .tbp.lift{transition:width .2s,scale .2s;scale:1.08;background:rgba(255,255,255,.62)}
 #tbr .tbp.noa{transition:none}
 #tbr{touch-action:none;-webkit-user-select:none;user-select:none}
@@ -1621,7 +1621,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v72';
+const APPV='v73';
 function profile(){if(NICK&&!selOK())return pickSel();if(ADMINMODE||SUBMODE)PFOK=true;
  show(`<div class="pftop"></div>${STAFF()&&DB?admBig():''}
  <div class="card pf"><div class="pr"><span>닉네임</span><b>${esc(NICK)}</b>${ADMINMODE||SUBMODE?`<span class="mut" style="font-size:13px;white-space:nowrap">${SUBMODE?'':'관리자 '}고정</span>`:'<button class="lk" onclick="pfNick()">변경하기</button>'}</div>
@@ -1719,8 +1719,8 @@ function tbSnap(){const app=document.getElementById('app');if(!app||!app.style.t
 function tbPill(x,lift){const t=document.getElementById('tbr');if(!t)return;const p=t.querySelector('.tbp'),on=t.querySelector('button.on');if(!p||!on)return;
  const tr=t.getBoundingClientRect(),bs=[...t.querySelectorAll('button')],G=2,P=6,cw=t.clientWidth,av=cw-P*2-G*(bs.length-1),fs=bs.map(b=>b.classList.contains('on')?1.45:1),sm=fs.reduce((x,y)=>x+y,0);
  const W=av*1.45/sm;let L;
- if(x==null){const i=bs.indexOf(on);L=P;for(let j=0;j<i;j++)L+=av*fs[j]/sm+G}else L=Math.max(P,Math.min(cw-P-W,x-tr.left-t.clientLeft-W/2));
- p.style.transform=`translateX(${L}px)`;p.style.width=W+'px';p.classList.toggle('lift',!!lift)}
+ if(x==null){const i=bs.indexOf(on);L=P;for(let j=0;j<i;j++)L+=av*fs[j]/sm+G}else{const raw=x-tr.left-t.clientLeft-W/2,mn=P,mx=cw-P-W,rb=d=>Math.min(26,d*.35);L=raw<mn?mn-rb(mn-raw):raw>mx?mx+rb(raw-mx):raw}
+ p.style.translate=`${L}px 0`;p.style.width=W+'px';p.classList.toggle('lift',!!lift)}
 function tbNear(x){const bs=[...document.querySelectorAll('#tbr button')];let bi=0,bd=1e9;bs.forEach((b,i)=>{const r=b.getBoundingClientRect(),dd=Math.abs(r.left+r.width/2-x);if(dd<bd){bd=dd;bi=i}});return TBK[bi]}
 function tbSetIcons(a){const t=document.getElementById('tbr');if(!t)return;t.querySelectorAll('button').forEach(b=>{const k=b.dataset.k,on=k==a;
   b.classList.toggle('on',on);b.setAttribute('aria-selected',on);const g=b.querySelector(':scope>svg');if(g&&TBI[k])g.innerHTML=TBI[k][on?1:0]})}
