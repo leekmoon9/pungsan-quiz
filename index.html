@@ -645,7 +645,7 @@ body.selg #rf{display:none}
 .rsh{display:flex;align-items:center;gap:6px;font-size:13px;font-weight:800;color:#8f8676;margin:4px 4px 8px}.rsh.dz{color:#c2453a;margin-top:6px}
 #tbr .tbad{position:absolute;left:calc(50% + 6px);bottom:9px;width:15px;height:15px;border-radius:50%;background:#2a2620;color:#fff;display:grid;place-items:center;border:1.5px solid #fffdf8}#tbr .tbad svg{width:10px;height:10px}
 
-body.tbon #rf{display:none}
+body.tbon #rf,body.tbuser #rf{display:none}
 body.tbon #app{padding-bottom:104px}
 .pfsl{flex:1;display:flex;flex-direction:column;gap:6px;min-width:0}.pfsl span{white-space:nowrap}
 .pqc{position:relative}
@@ -1695,7 +1695,7 @@ function tbPill(x,lift){const t=document.getElementById('tbr');if(!t)return;cons
 function tbNear(x){const bs=[...document.querySelectorAll('#tbr button')];let bi=0,bd=1e9;bs.forEach((b,i)=>{const r=b.getBoundingClientRect(),dd=Math.abs(r.left+r.width/2-x);if(dd<bd){bd=dd;bi=i}});return TBK[bi]}
 function tbSetIcons(a){const t=document.getElementById('tbr');if(!t)return;t.querySelectorAll('button').forEach(b=>{const k=b.dataset.k,on=k==a;
   b.classList.toggle('on',on);b.setAttribute('aria-selected',on);const g=b.querySelector(':scope>svg');if(g&&TBI[k])g.innerHTML=TBI[k][on?1:0]})}
-function tabBar(){let t=document.getElementById('tbr');const on=!!NICK&&TBR.includes(CURR);document.body.classList.toggle('tbon',on);if(!on){if(t)t.hidden=true;return}
+function tabBar(){let t=document.getElementById('tbr');const on=!!NICK&&TBR.includes(CURR);document.body.classList.toggle('tbon',on);document.body.classList.toggle('tbuser',!!NICK);if(!on){if(t)t.hidden=true;return}
  const a=tbKey(),ini=(NICK||'?').trim().charAt(0);
  if(!t){t=document.createElement('div');t.id='tbr';t.setAttribute('role','tablist');document.body.appendChild(t);
   t.innerHTML='<span class="tbp" aria-hidden="true"></span>'+TBK.map(k=>`<button role="tab" data-k="${k}" aria-label="${TBL[k]}" class="${k=='noti'?'ntb':''}${k=='mail'?'mlb':''}">${k=='pf'?'<span class="tbpf"></span>':`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"></svg>`}${k=='noti'?'<span class="ntd" hidden></span>':''}${k=='mail'?'<span class="mlc" hidden></span>':''}</button>`).join('');
