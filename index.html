@@ -642,7 +642,16 @@ body.selg #rf{display:none}
 #tbr .mlc[hidden],#tbr .ntd[hidden]{display:none}
 html,body{overflow-x:clip}
 .pfhub{margin:0 0 12px}
-#app .pftop{height:8px}
+#app .kh{display:flex;align-items:center;height:52px;margin:0 0 10px}
+#app .kh>h2{margin:0!important;padding:0!important;background:none!important;font-size:28px;line-height:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#app .kh>h2.hwt{line-height:0}#app .kh>h2.hwt svg{height:34px}
+#app .kh .ki{margin-left:auto;display:flex;gap:4px;flex:none}#app .kh .ki button{width:42px;height:42px;display:grid;place-items:center;border:0;border-radius:50%;background:none;color:#2a2620;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent}
+#app .kh .ki button:active{background:rgba(42,38,32,.08)}#app .kh .ki svg{width:26px;height:26px}
+#app .kc{display:flex;gap:8px;height:40px;margin:0 -16px 16px;padding:0 16px;overflow-x:auto;scrollbar-width:none}#app .kc::-webkit-scrollbar{display:none}
+#app .kc button{flex:none;display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 18px;border:0;border-radius:999px;font:inherit;font-weight:800;font-size:15px;white-space:nowrap;background:color-mix(in srgb,#2a2620 7%,var(--card));color:#6f6656;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background .2s,color .2s}
+#app .kc button.on{background:#2a2620;color:#fffdf8}#app .kc button i{font-style:normal;background:#e0372c;color:#fff;border-radius:999px;font-size:11.5px;min-width:18px;height:18px;display:grid;place-items:center;padding:0 5px;box-sizing:border-box}
+#app .kc:empty{display:none}
+#app .kc+*{margin-top:0!important}
 .skl{display:block;background:linear-gradient(90deg,#ebe3d2 25%,#f6f1e7 50%,#ebe3d2 75%);background-size:220% 100%;animation:skl 1.25s ease-in-out infinite;border-radius:8px}
 @keyframes skl{0%{background-position:130% 0}100%{background-position:-30% 0}}
 @media (prefers-reduced-motion:reduce){.skl{animation:none}}
@@ -832,6 +841,18 @@ function stkSide(){const col={};SUBJ.flat().forEach(([n,c])=>col[n]=c);
  return `<div class="sd sdl">${mk(L,0)}</div><div class="sd sdr">${mk(R,1)}</div>`}
 function home(){const lk=lastNick(),cu=document.getElementById('nk'),nv=cu?cu.value:'';show(`<div class="hero">${AKB()?`<button class="akb" onclick="keyLink()" aria-label="관리자 링크로 로그인">${ICN_KEY}<span>관리자</span></button>`:''}<div class="sa">${stk(0)}</div><div class="hc"><img class="hlogo" src="logo-192.png" alt=""><h1 class="htit" aria-label="풍산 학습">${HW_TITLE}</h1><p class="hsub">풍산고 기말 시험 대비</p>${lk?`<p style="font-size:17px;margin:10px 0 0;color:#2a2620"><b>${esc(lk)}</b>님 환영합니다.</p>`:''}<div class="row" style="justify-content:center;margin-top:20px;flex-direction:column;align-items:center;gap:10px">${lk?'':`<input type="text" id="nk" maxlength="12" placeholder="닉네임 (최대 12자)" value="${esc(nv)}" style="max-width:260px;text-align:center" oninput="ckGo()"><input type="text" class="pw" autocomplete="off" id="pn" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호 숫자 4자리" style="max-width:260px;text-align:center;letter-spacing:4px" oninput="this.value=this.value.replace(/\D/g,'');ckGo()" onkeydown="if(event.key=='Enter'&&!document.getElementById('go').disabled)enter()"><div class="mut" style="font-size:12px;margin-top:-6px;max-width:260px;line-height:1.5">처음 쓰는 닉네임이면 새로 만들어져요.<br>다른 기기에서도 같은 닉네임·비밀번호로<br>이어서 풀 수 있어요.</div>`}<button class="b" id="go" style="max-width:260px" ${lk?'':'disabled'} onclick="enter()">시작하기</button></div></div><div class="sa">${stk(1)}</div></div>`);setTimeout(()=>{if(document.querySelector('.hero'))instPrompt()},450);const sd=document.createElement('div');sd.id='sides';sd.innerHTML=stkSide();document.body.appendChild(sd);requestAnimationFrame(fitSt)}
 // 앱 열 때 잠깐: 로고와 손글씨 제목 → 홈 (로그인한 사람만). 스티커는 로고·제목 둘레에 같은 간격으로
+// 탭 첫 화면 머리: 제목 줄(오른쪽 아이콘) + 칩 줄. 모든 탭에서 같은 높이
+const KI=p=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;
+const KIC={sel:KI('<path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/>'),plus:KI('<rect x="3.5" y="3.5" width="17" height="17" rx="4"/><path d="M12 8v8M8 12h8"/>'),
+ trash:KI('<path d="M4 7h16M9 7V4.5h6V7M6.5 7l.9 12.2c.1.9.8 1.6 1.7 1.6h5.8c.9 0 1.6-.7 1.7-1.6L17.5 7"/>'),cal:KI('<rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/>'),
+ fb:KI('<path d="M4 5.5h16v10.5H9l-5 3.5z"/><path d="M8.5 10h7M8.5 13h4"/>'),book:KI('<path d="M4 5.5c2.7-1 5.3-1 8 .8 2.7-1.8 5.3-1.8 8-.8V19c-2.7-1-5.3-1-8 .8-2.7-1.8-5.3-1.8-8-.8z"/><path d="M12 6.3v13.5"/>')};
+// title: 제목 HTML, icons: [[아이콘,이름,onclick]], chips: [[글자,onclick,켜짐,배지]]
+function kHead(title,icons,chips){return `<div class="kh">${title}<div class="ki">${(icons||[]).map(([i,l,on])=>`<button aria-label="${l}" onclick="${on}">${KIC[i]}</button>`).join('')}</div></div>`
+ +`<div class="kc" role="tablist">${(chips||[]).map(([t,on,a,bd])=>`<button role="tab" aria-selected="${!!a}" class="${a?'on':''}" onclick="kChip(this);${on}">${t}${bd?`<i>${bd}</i>`:''}</button>`).join('')}</div>`}
+function kChip(b){b.parentElement.querySelectorAll('button').forEach(x=>{x.classList.toggle('on',x===b);x.setAttribute('aria-selected',x===b)})}
+function kGo(id){const e=typeof id=='string'?document.getElementById(id):id;if(!e)return;const off=16;scrollTo({top:Math.max(0,e.getBoundingClientRect().top+scrollY-off),behavior:RDM()?'auto':'smooth'})}
+const kTop=()=>scrollTo({top:0,behavior:RDM()?'auto':'smooth'});
+let BDF=0,MGF=0;
 // 로딩 스켈레톤: 기다리는 동안 화면 모양을 미리 보여 줌
 const SKL=(w,h,m)=>`<span class="skl" style="width:${w};height:${h}px;${m||''}"></span>`;
 const skMsgs=(n=5)=>Array.from({length:n},(_,i)=>`<div class="mgc skc" aria-hidden="true"><span class="skl" style="width:10px;height:10px;border-radius:50%;flex:none"></span><span style="flex:1">${SKL(['72%','58%','80%','64%','50%'][i%5],15)}${SKL('34%',11,'margin-top:9px')}</span></div>`).join('');
@@ -897,10 +918,10 @@ function sgMore(b){SGMORE=!SGMORE;const w=document.getElementById('sgm');if(w)w.
 const SC={y:'#f2cf6b',b:'#8fb8ec',r:'#ee9a9a',t:'#93d3d8',j:'#c9b6ec',g:'#9bd3ae',p:'#f1a9c8'};
 // 풍산 학습 전용 손글씨 제목 (한 획씩 그린 모노라인)
 const HW_TITLE='<svg viewBox="-12 -8 484 116" fill="none" stroke="currentColor" stroke-width="8.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path transform="translate(0 0)" d="M24 12H76 M38 13C37.5 20 37 26 36 33 M62 13C62.5 20 63 26 64 33 M18 33H82 M10 49H90 M50 49V62 M32 81 A18 13 0 1 0 68 81 A18 13 0 1 0 32 81Z"/><path transform="translate(108 0)" d="M36 8C36 26 26 40 12 50 M31 27C38 36 46 42 55 47 M74 4V62 M74 32H90 M22 64V80Q22 89 31 89H86"/><path transform="translate(246 0)" d="M28 5.5L40 8.5 M12 20H54 M19 40 A14 11 0 1 0 47 40 A14 11 0 1 0 19 40Z M74 2V60 M74 30H90 M16 70H70Q79 70 79 80C79 88 75 95 69 100"/><path transform="translate(354 0)" d="M50 4C50 18 38 30 22 37 M49 18C56 27 64 32 78 37 M6 50H94 M26 62V88Q26 95 33 95H67Q74 95 74 88V62 M26 77H74"/></svg>';
-function subjects(){if(NICK&&!selOK())return pickSel();document.body.classList.remove('selg');SELF=false;let h=`<div class="hd" style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px"><div><h2 class="hwt" aria-label="풍산 학습">${HW_TITLE}</h2></div></div>`;
- const ALL=SUBJ.flat(),SEL=Array.isArray(R._sel)?R._sel:[],mine=ALL.filter(([n])=>COMMON.includes(n)||SEL.includes(n));
- if(selOK()&&SEL.length){h+=`<h3 class="sec">공통과목</h3><div class="sg c2">`+ALL.filter(([n])=>COMMON.includes(n)).map(x=>sgCard(...x)).join('')+`</div>`;
-  h+=`<div class="sech"><h3 class="sec">선택과목</h3><button class="lk" onclick="pickSel()">바꾸기</button></div><div class="sg c2">`+ALL.filter(([n])=>SEL.includes(n)).map(x=>sgCard(...x)).join('')+`</div>`;
+function subjects(){if(NICK&&!selOK())return pickSel();document.body.classList.remove('selg');SELF=false;const ALL=SUBJ.flat(),SEL=Array.isArray(R._sel)?R._sel:[],mine=ALL.filter(([n])=>COMMON.includes(n)||SEL.includes(n)),hs=selOK()&&SEL.length;
+ let h=kHead(`<h2 class="hwt" aria-label="풍산 학습">${HW_TITLE}</h2>`,hs?[['sel','선택과목 바꾸기','pickSel()']]:[],hs?[['전체','kTop()',1],['공통과목',"kGo('sgc1')"],['선택과목',"kGo('sgc2')"],['다른 과목',"if(!SGMORE)sgMore(document.querySelector('.sgmore'));kGo(document.querySelector('.sgmore'))"]]:[]);
+ if(hs){h+=`<h3 class="sec" id="sgc1">공통과목</h3><div class="sg c2">`+ALL.filter(([n])=>COMMON.includes(n)).map(x=>sgCard(...x)).join('')+`</div>`;
+  h+=`<div class="sech" id="sgc2"><h3 class="sec">선택과목</h3><button class="lk" onclick="pickSel()">바꾸기</button></div><div class="sg c2">`+ALL.filter(([n])=>SEL.includes(n)).map(x=>sgCard(...x)).join('')+`</div>`;
   const rest=SUBJ.map(row=>row.filter(([n])=>!mine.some(m=>m[0]==n)));
   h+=`<button class="sgmore${SGMORE?' on':''}" onclick="sgMore(this)"><span>다른 과목 보기</span><small>${rest.flat().length}과목</small><span class="chev">›</span></button><div id="sgm"${SGMORE?'':' hidden'}>`;
   rest.forEach((row,ri)=>{if(!row.length)return;h+=`<h3 class="sec">${SECN[ri]}</h3><div class="sg c2">`+row.map(x=>sgCard(...x)).join('')+`</div>`});h+=`</div>`}
@@ -923,12 +944,12 @@ const MAIL='<svg class="mli" viewBox="0 0 24 24" fill="none" stroke="currentColo
 const mailBtn=()=>`<button class="mlb" aria-label="메시지함" onclick="inbox()">${MAIL}<span class="mlc" hidden></span></button>`;
 const fdt=t=>{const d=new Date(t);return (d.getMonth()+1)+'/'+d.getDate()+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')};
 const nl=t=>esc(t||'').replace(/\n/g,'<br>');
-async function inbox(){const draw=()=>{if(CURR!='inbox')return;const L=MSGS||[],n=unread(),rd=L.filter(m=>m.read).length;
-  let h=`<h2>메시지함</h2><p class="tag">${L.length?(n?`읽지 않은 메시지 ${n}개`:'모든 메시지를 읽었어요'):''}</p>`;
+async function inbox(){const draw=()=>{if(CURR!='inbox')return;const A0=MSGS||[],n=unread(),rd=A0.filter(m=>m.read).length,isR=m=>m.meta&&m.meta.kind=='fb_reply';
+  const L=A0.filter(m=>MGF==1?!m.read:MGF==2?isR(m):MGF==3?!isR(m):true);
+  let h=kHead('<h2>메시지함</h2>',rd?[['trash',`읽은 메시지 ${rd}개 지우기`,'msgDelRead()']]:[],[['전체','MGF=0;inbox()',MGF==0],['안읽음','MGF=1;inbox()',MGF==1,n||''],['답장','MGF=2;inbox()',MGF==2],['알림','MGF=3;inbox()',MGF==3]]);
   if(MSGS===null)h+=skMsgs();
-  else if(!L.length)h+=`<div class="card mgx">${MAIL}<p>아직 받은 메시지가 없어요.</p></div>`;
+  else if(!L.length)h+=`<div class="card mgx">${MAIL}<p>${MGF==1?'안 읽은 메시지가 없어요.':MGF==2?'받은 답장이 없어요.':MGF==3?'받은 알림이 없어요.':'아직 받은 메시지가 없어요.'}</p></div>`;
   else h+=L.map(m=>`<button class="mgc${m.read?' rd':''}" onclick="msgOpen(${m.id})"><span class="mgd"></span><span class="mgb"><b>${esc(m.title)}</b><small>${fdt(m.created_at)}</small><span class="mgp">${esc(((m.meta&&m.meta.kind=='fb_reply')?(m.meta.answer||m.meta.changes):m.meta&&m.meta.kind=='post'?'':m.body||'').replace(/\s+/g,' ').slice(0,60))}</span></span><span class="chev">›</span></button>`).join('');
-  if(rd)h+=`<div class="row"><button class="b g" onclick="msgDelRead()">읽은 메시지 모두 지우기 (${rd}개)</button></div>`;
   show(h,'inbox')};
  draw();if(DB&&NICK){await msgLoad();draw()}}
 const ICN_OK2='<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',ICN_EYE='<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M2.5 12s3.5-6.5 9.5-6.5S21.5 12 21.5 12s-3.5 6.5-9.5 6.5S2.5 12 2.5 12z"/><circle cx="12" cy="12" r="2.8"/></svg>';
@@ -1057,11 +1078,11 @@ const escA=t=>esc(t||'').replace(/"/g,'&quot;');
 const pT=x=>Date.parse(x.created_at)||0,pSeen=()=>+ls('pseen')||0;
 async function postLoad(){if(!DB)return POSTS||(POSTS=[]);try{const {data,error}=await DB.rpc('post_list');if(error)throw 0;POSTS=Array.isArray(data)?data:[]}catch(e){if(!POSTS)POSTS=[]}postBadge();return POSTS}
 function postBadge(){const n=(POSTS||[]).filter(x=>pT(x)>pSeen()).length;document.querySelectorAll('.ntb .ntd').forEach(d=>d.hidden=!n)}
-async function board(){const seen=pSeen();const draw=()=>{const L=POSTS||[];
- let h=`<h2>공지</h2><p class="tag">${POSTS==null?SKL('48%',14,'margin-top:4px'):L.length?`새 소식과 안내를 모아 둔 곳이에요.`:'아직 올라온 공지가 없어요.'}</p>${OWNER&&DB?`<div class="hub hub1" style="margin:0 0 14px">${hbBtn('#e3b55a',ICN_MEGA,'공지 올리기','','postForm()')}</div>`:''}`;
+async function board(keep){const seen=keep&&board.s!=null?board.s:pSeen();board.s=seen;const draw=()=>{if(CURR!='board')return;const A0=POSTS||[],nn=A0.filter(x=>pT(x)>seen).length,L=BDF?A0.filter(x=>pT(x)>seen):A0;
+ let h=kHead('<h2>공지</h2>',OWNER&&DB?[['plus','공지 올리기','postForm()']]:[],[['전체','BDF=0;board(1)',!BDF],['새 공지','BDF=1;board(1)',BDF,nn||'']]);
  h+=L.map(x=>{const nw=pT(x)>seen,ni=(x.imgs||[]).length;return `<button class="pst${nw?' nw':''}" onclick="postView(${x.id})"><span class="psm">${nw?'<span class="chp pnw">NEW</span>':''}<small>${fdt(x.created_at)}</small>${ni?`<span class="psi">${ICN_PIC}${ni}</span>`:''}</span><b>${esc(x.title)}</b></button>`}).join('');
  if(POSTS==null)h+=skPosts();
- if(POSTS&&!L.length)h+=`<div class="card ntx2">${ICN_MEGA}<p>새 소식이 생기면 여기에 올라와요.</p></div>`;
+ if(POSTS&&!L.length)h+=`<div class="card ntx2">${ICN_MEGA}<p>${BDF?'새로 올라온 공지가 없어요.':'새 소식이 생기면 여기에 올라와요.'}</p></div>`;
  show(h,'board')};
  draw();await postLoad();if(CURR!='board')return;draw();const mx=Math.max(0,...(POSTS||[]).map(pT));if(mx>pSeen())ls('pseen',String(mx));postBadge()}
 async function postView(id){if(!POSTS)await postLoad();const x=(POSTS||[]).find(y=>y.id==id);if(!x){soonMsg('지워진 공지예요.');return board()}
@@ -1094,8 +1115,8 @@ function guide(){const S=(n,t,body,img)=>`<section class="gds" id="gd${n}"><div 
  h+=S(8,'전체 통계 · 공부 달력','<p>아래 탭바의 <b>막대</b>(전체 통계)에서 총 공부 시간, 공부한 날, 과목별 정답률을 볼 수 있어요. <b>달력으로 보기</b>를 누르면 날짜별 공부 시간이 나와요. (앱 전용)</p>','g_stats');
  h+=S(9,'공지','<p>맨 위 <b>공지</b> 버튼에서 새 과목·업데이트·시험 안내를 모아 볼 수 있어요. 새 공지가 올라오면 버튼에 <b class="gdr">빨간 점</b>이 생겨요.</p>','g_board');
  h+=S(10,'메시지함 · 알림','<p><b>편지봉투</b>를 누르면 메시지함이에요. 새 공지 알림, 피드백 답장, 관리자가 보낸 알림이 와요. 숫자는 읽지 않은 메시지 수예요.</p><p>프로필에서 <b>폰 알림</b>을 켜 두면 메시지가 올 때 폰으로도 알려 줘요.</p>','g_inbox');
- h+=S(11,'피드백 보내기','<p>정답이 이상하거나 불편한 점, 추가했으면 하는 과목이 있으면 프로필의 <b>피드백 보내기</b>로 보내 주세요. 고쳐지면 메시지함으로 답장이 와요.</p>');
- h+=S(12,'프로필','<p>아래 탭바의 <b>사람</b>(프로필)에서 닉네임·비밀번호를 바꾸고 폰 알림을 켤 수 있어요.</p>','g_profile');
+ h+=S(11,'피드백 보내기','<p>정답이 이상하거나 불편한 점, 추가했으면 하는 과목이 있으면 프로필 오른쪽 위 <b>말풍선</b>으로 보내 주세요. 고쳐지면 메시지함으로 답장이 와요.</p>');
+ h+=S(12,'프로필','<p>아래 탭바의 <b>사람</b>(프로필)에서 닉네임·비밀번호를 바꾸고 폰 알림을 켤 수 있어요. 오른쪽 위 <b>말풍선</b>은 피드백 보내기, <b>책</b>은 이 사용법이에요.</p>','g_profile');
  h+=`<div class="row"><button class="b" onclick="subjects()">학습하러 가기</button></div>`;show(h)}
 
 // ================= 관리자 =================
@@ -1488,7 +1509,7 @@ function subj(n){if(!hasC(n)&&!STAFF()&&CUR[n]){soon();return subjects()}if(NEWS
 function sd2Strip(TT){let strip='';for(let i=13;i>=0;i--){const d=new Date(Date.now()-i*864e5),k=dkey(d),v=TT[k]||0,a=v>=1?Math.min(1,.25+v/3600):0;strip+=`<div class="sd2" title="${k}"><i style="background:${v>=1?`rgba(91,127,168,${a})`:'var(--bd)'}"></i><small>${d.getDate()}</small></div>`}return `<div class="card"><div class="mut" style="font-size:13px;margin-bottom:6px">최근 2주 공부</div><div class="strip">${strip}</div></div>`}
 function allStats(){if(!isApp()){setTimeout(lockMsg,50);return subjects()}const qs=[].concat(...PASS.map(p=>p.Q)),s=st(qs);
  const t=R._t||{},days=Object.keys(t).filter(k=>t[k]>=1),tot=days.reduce((a,k)=>a+t[k],0),td=t[dkey()]||0;
- let h=`<h2>전체 통계</h2><div class="pg2"><div class="card st2"><span>총 공부 시간</span><b>${fmtT(tot)}</b><small>오늘 ${fmtT(td)}</small></div><div class="card st2 pc" onclick="cal()"><span>공부한 날</span><b>${days.length}일</b><small class="lku">달력으로 보기 ›</small></div></div>${sd2Strip(t)}<div class="card"><div class="tag">전체 정답률</div><div class="big">${s.r==null?'-':s.r+'%'}</div><div class="mut">${s.n}문제 풀이 · ${s.c}문제 정답</div></div><h3>과목별 보기</h3><div class="svg">`;
+ let h=kHead('<h2>전체 통계</h2>',[['cal','공부 달력','cal()']],[['요약','kTop()',1],['과목별',"kGo('svh')"],['달력','cal()']])+`<div class="pg2"><div class="card st2"><span>총 공부 시간</span><b>${fmtT(tot)}</b><small>오늘 ${fmtT(td)}</small></div><div class="card st2 pc" onclick="cal()"><span>공부한 날</span><b>${days.length}일</b><small class="lku">달력으로 보기 ›</small></div></div>${sd2Strip(t)}<div class="card"><div class="tag">전체 정답률</div><div class="big">${s.r==null?'-':s.r+'%'}</div><div class="mut">${s.n}문제 풀이 · ${s.c}문제 정답</div></div><h3 id="svh">과목별 보기</h3><div class="svg">`;
  const L=SUBJ.flat();L.forEach(([n,c,o],ix)=>{const a=ach(n,o),col=SC[c];
   h+=`<button class="svt" id="svt${ix}" style="--sc:${col}" onclick="svTog(${ix})" aria-expanded="false"><span class="svn">${esc(n.split('|').join(' '))}</span><span class="svr"><b>${a}%</b><span class="chev">›</span></span><span class="bar"><i style="width:${a}%;background:${col}"></i></span></button>`;
   if(ix%2==1||ix==L.length-1)for(let k=ix-(ix%2);k<=ix;k++)h+=`<div class="svp" id="svp${k}"><div class="svi">${svBody(L[k][0],SC[L[k][1]])}</div></div>`});
@@ -1670,13 +1691,13 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v82';
+const APPV='v83';
 function profile(){if(NICK&&!selOK())return pickSel();if(ADMINMODE||SUBMODE)PFOK=true;
- show(`<div class="pftop"></div>${STAFF()&&DB?admBig():''}
+ show(kHead(`<h2>${esc(NICK)}</h2>`,[['fb','피드백 보내기','fbForm(1)'],['book','사용법','guide()']],[['내 정보','kTop()',1],...(STAFF()&&DB?[['관리자','admin()']]:[]),['선택과목',"kGo('pfsel')"],...(OWNER?[['초기화',"kGo('rsh')"]]:[])])+`${STAFF()&&DB?admBig():''}
  <div class="card pf"><div class="pr"><span>닉네임</span><b>${esc(NICK)}</b>${ADMINMODE||SUBMODE?`<span class="mut" style="font-size:13px;white-space:nowrap">${SUBMODE?'':'관리자 '}고정</span>`:'<button class="lk" onclick="pfNick()">변경하기</button>'}</div>
  ${ADMINMODE||SUBMODE?'':`<div class="pr"><span>비밀번호</span><b id="pv">${PFSHOW?(PFSHOW=false,esc(PIN)):'••••'}</b><button class="lk" onclick="if(!PFOK)return pfShow();const e=document.getElementById('pv');e.textContent=e.textContent=='••••'?PIN:'••••'">보기</button><button class="lk" onclick="pfPin()">변경하기</button></div>`}<div class="pr"><span>폰 알림</span><b>${notiState()}</b>${notiState()=='켜짐'?'':'<button class="lk" onclick="notiFromProfile()">켜기</button>'}</div></div>
- <div class="card pf"><div class="pr"><span>선택과목</span><b class="pfsl">${Array.isArray(R._sel)?R._sel.map(n=>`<span>${n.split('|').join(' ')}</span>`).join('')||'없음':'아직 안 골랐어요'}</b><button class="lk" onclick="pickSel()">바꾸기</button></div></div>
- <div class="pfq"><button class="card" onclick="fbForm(1)"><span class="rsi">${HB_FB}</span><b>피드백 보내기</b></button><button class="card" onclick="guide()"><span class="rsi">${TBG}</span><b>사용법</b></button></div>
+ <div class="card pf" id="pfsel"><div class="pr"><span>선택과목</span><b class="pfsl">${Array.isArray(R._sel)?R._sel.map(n=>`<span>${n.split('|').join(' ')}</span>`).join('')||'없음':'아직 안 골랐어요'}</b><button class="lk" onclick="pickSel()">바꾸기</button></div></div>
+ 
  ${OWNER?rsList():''}<p class="mut" style="text-align:center;font-size:12px;margin-top:18px">앱 버전 ${APPV}</p>`)}
 const ICN_SH='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.2 7.5 9.5 4.3-1.3 7.5-4.9 7.5-9.5V6z"/><path d="m9 12 2.2 2.2L15.5 10"/></svg>';
 const RSI={chk:'<path d="M5 12.5 10 17l9-10"/>',re:'<path d="M4 12a8 8 0 1 0 2.4-5.7"/><path d="M4 4v4.5h4.5"/>',bell:'<path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2.2 2.2 0 0 0 4 0"/>',msg:'<path d="M4 5.5h16v10.5H9l-5 3.5z"/>',usr:'<circle cx="10" cy="8" r="3.6"/><path d="M3.5 19.5c.8-3.4 3.4-5.3 6.5-5.3 1.6 0 3 .5 4.1 1.3"/><path d="m16 15 5 5m0-5-5 5"/>'};
@@ -1685,7 +1706,7 @@ function admBig(){if(!admBig.k&&DB){admBig.k=1;admLoad().then(ok=>{const e=docum
  return `<button class="admbig" onclick="admin()"><span class="abi">${ICN_SH}</span><span class="abt"><b>관리자 화면</b></span>${pend?`<span class="abd">답장 대기 ${pend}</span>`:'<span class="chev">›</span>'}</button>`}
 // 프로필 아래 초기화 모음 (관리자만)
 function rsList(){const r=(ic,t,d,on,ch)=>`<button class="rsr" onclick="${on}"><span class="rsi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${RSI[ic]}</svg></span><span class="rst"><b>${t}</b></span>${ch?'<span class="chev">›</span>':''}</button>`;
- let h=`<h3 class="sec">초기화</h3><div class="rsh">내 기록</div><div class="rsl">${r('chk','모두 완료로 채우기','테스트용 · 모든 과목을 맞힌 것으로','myFill()')}${r('re','내 기록 초기화','풀이·오답·공부 시간 삭제 후 선택과목부터 다시','myReset()')}</div>`;
+ let h=`<h3 class="sec" id="rsh">초기화</h3><div class="rsh">내 기록</div><div class="rsl">${r('chk','모두 완료로 채우기','테스트용 · 모든 과목을 맞힌 것으로','myFill()')}${r('re','내 기록 초기화','풀이·오답·공부 시간 삭제 후 선택과목부터 다시','myReset()')}</div>`;
  if(DB)h+=`<div class="rsh dz"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 4 2.5 20h19z"/><path d="M12 10v4.5M12 17.5v.1"/></svg>모든 사람에게 적용</div><div class="rsl dz">${r('bell','알림 정보 초기화','모든 사람의 메시지함 속 알림',"rsDo('nt')")}${r('msg','피드백 정보 초기화','받은 피드백과 답장 기록',"rsDo('fb')")}${r('usr','개인별 계정 삭제','계정을 골라서 삭제',"rsDo('del')",1)}</div>`;
  return h}
 function myProg(){const L=SUBJ.flat().filter(([n])=>CUR[n]&&socQ(n).length),qs=[].concat(...L.map(([n])=>socQ(n).concat(mkAll(n)))),d=qs.filter(q=>R[q.id]).length,pc=qs.length?Math.round(d/qs.length*100):0;
