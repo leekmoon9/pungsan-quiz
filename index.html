@@ -836,7 +836,8 @@ function splOrb(){const hero=document.querySelector('.spl'),orb=document.getElem
  const L=W?[['p','영어'],['c','미적분'],['p','기하'],['c','독서와|작문'],['p','정치'],['c','한국지리|탐구'],['p','현대사회와|윤리'],['c','세포와|물질대사'],['p','중국어|회화'],['c','행성우주|과학']]
   :n==3?[['c','독서와|작문'],['p','영어'],['c','미적분'],['c','한국지리|탐구'],['p','정치'],['c','행성우주|과학']]
   :[['c','독서와|작문'],['p','영어'],['c','미적분'],['p','중국어|회화'],['p','정치'],['c','한국지리|탐구'],['p','현대사회와|윤리'],['c','행성우주|과학']];
- const O=W?[[-90,'p','물질과|에너지'],[90,'e','⭐'],[145,'p','일본어|회화'],[180,'c','경제'],[215,'e','⭐'],[-35,'c','동아시아|역사기행'],[0,'e','⭐'],[35,'c','역학과|에너지']]:[];
+ const O=W?[[-90,'p','물질과|에너지'],[90,'e','⭐'],[145,'p','일본어|회화'],[180,'c','경제'],[215,'e','⭐'],[-35,'c','동아시아|역사기행'],[0,'e','⭐'],[35,'c','역학과|에너지']]
+  :[['tc','p',n==4?'일본어|회화':'중국어|회화'],['bc','p',n==4?'물질과|에너지':'현대사회와|윤리'],['ml','c','경제'],['mr','c','세포와|물질대사'],['tl','e','⭐'],['br','e','⭐']];
  const cw=W?62:hr.width<600?46:56;
  orb.innerHTML=L.map((x,i)=>{const r=(i%2?6:-6);
   return x[0]=='c'?`<img class="st os" src="${COVER[x[1]]}" alt="" style="--r:${r}deg;width:${cw}px">`:`<span class="st pl os" style="--r:${r}deg;--pc:${SC[col[x[1]]]}">${x[1].split('|').join(' ')}</span>`}).join('')
@@ -844,7 +845,11 @@ function splOrb(){const hero=document.querySelector('.spl'),orb=document.getElem
  const place=()=>{const els=[...orb.querySelectorAll('.os')],sz=els.map(e=>[e.offsetWidth||60,e.offsetHeight||40]);
   if(!W){// 폰·세로 태블릿: 로고 위 한 줄, 제목 아래 한 줄. 로고·제목과의 간격은 모두 같게
    const GAP=hr.width<600?40:56,mh=Math.max(...sz.map(z=>z[1])),yt=br.top-hr.top-GAP-mh/2,yb=br.bottom-hr.top+GAP+mh/2;
-   els.forEach((e,i)=>{const row=i<n?0:1,j=i%n,x=hr.width*(2*j+1)/(2*n),y=row?yb:yt;e.style.left=(x-sz[i][0]/2)+'px';e.style.top=(y-sz[i][1]/2)+'px'});return}
+   els.forEach((e,i)=>{const row=i<n?0:1,j=i%n,x=hr.width*(2*j+1)/(2*n),y=row?yb:yt;e.style.left=(x-sz[i][0]/2)+'px';e.style.top=(y-sz[i][1]/2)+'px'});
+   // 바깥: 위·아래 줄 바깥쪽과 로고 양옆에 드문드문
+   const lg=hc.querySelector('.hlogo').getBoundingClientRect(),ly=lg.top+lg.height/2,F=hr.width<600?48:70;
+   orb.querySelectorAll('.oo').forEach(e=>{const w=e.offsetWidth||50,h=e.offsetHeight||40,k=e.dataset.t,top=Math.max(h/2+18,yt-mh/2-F-h/2),bot=Math.min(hr.height-h/2-18,yb+mh/2+F+h/2);
+    const [x,y]={tc:[.5,top],bc:[.5,bot],tl:[.14,top],br:[.86,bot],ml:[.12,ly],mr:[.88,ly]}[k];e.style.left=(hr.width*x-w/2)+'px';e.style.top=(y-h/2)+'px'});return}
   // 큰 화면: 로고·제목 둘레 타원 위에 같은 간격으로 한 바퀴
   const GAP=90;els.forEach((e,i)=>{const [w,h]=sz[i],t=(-90+18+i*360/els.length)*Math.PI/180,A=br.width/2+GAP+w/2,B=br.height/2+GAP*.7+h/2;
    e.style.left=(cx+A*Math.cos(t)-w/2)+'px';e.style.top=(cy+B*Math.sin(t)-h/2)+'px'});
@@ -1654,14 +1659,14 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v78';
+const APPV='v79';
 function profile(){if(NICK&&!selOK())return pickSel();if(ADMINMODE||SUBMODE)PFOK=true;
  show(`<div class="pftop"></div>${STAFF()&&DB?admBig():''}
  <div class="card pf"><div class="pr"><span>닉네임</span><b>${esc(NICK)}</b>${ADMINMODE||SUBMODE?`<span class="mut" style="font-size:13px;white-space:nowrap">${SUBMODE?'':'관리자 '}고정</span>`:'<button class="lk" onclick="pfNick()">변경하기</button>'}</div>
  ${ADMINMODE||SUBMODE?'':`<div class="pr"><span>비밀번호</span><b id="pv">${PFSHOW?(PFSHOW=false,esc(PIN)):'••••'}</b><button class="lk" onclick="if(!PFOK)return pfShow();const e=document.getElementById('pv');e.textContent=e.textContent=='••••'?PIN:'••••'">보기</button><button class="lk" onclick="pfPin()">변경하기</button></div>`}<div class="pr"><span>폰 알림</span><b>${notiState()}</b>${notiState()=='켜짐'?'':'<button class="lk" onclick="notiFromProfile()">켜기</button>'}</div></div>
  <div class="card pf"><div class="pr"><span>선택과목</span><b class="pfsl">${Array.isArray(R._sel)?R._sel.map(n=>`<span>${n.split('|').join(' ')}</span>`).join('')||'없음':'아직 안 골랐어요'}</b><button class="lk" onclick="pickSel()">바꾸기</button></div></div>
  <div class="pfq"><button class="card" onclick="fbForm(1)"><span class="rsi">${HB_FB}</span><b>피드백 보내기</b></button><button class="card" onclick="guide()"><span class="rsi">${TBG}</span><b>사용법</b></button></div>
- ${OWNER?myProg():''}<p class="mut" style="text-align:center;font-size:12px;margin-top:18px">앱 버전 ${APPV}</p>`)}
+ ${OWNER?rsList():''}<p class="mut" style="text-align:center;font-size:12px;margin-top:18px">앱 버전 ${APPV}</p>`)}
 const ICN_SH='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.2 7.5 9.5 4.3-1.3 7.5-4.9 7.5-9.5V6z"/><path d="m9 12 2.2 2.2L15.5 10"/></svg>';
 const RSI={chk:'<path d="M5 12.5 10 17l9-10"/>',re:'<path d="M4 12a8 8 0 1 0 2.4-5.7"/><path d="M4 4v4.5h4.5"/>',bell:'<path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2.2 2.2 0 0 0 4 0"/>',msg:'<path d="M4 5.5h16v10.5H9l-5 3.5z"/>',usr:'<circle cx="10" cy="8" r="3.6"/><path d="M3.5 19.5c.8-3.4 3.4-5.3 6.5-5.3 1.6 0 3 .5 4.1 1.3"/><path d="m16 15 5 5m0-5-5 5"/>'};
 // 프로필 맨 위 「관리자 화면」 버튼 (관리자·보조 관리자)
