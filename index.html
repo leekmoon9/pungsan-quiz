@@ -613,6 +613,20 @@ body.cap .capm{display:flex}
 .pad.pfull .pmini{display:block}.pad.pfull .psw2{flex:1;overflow-y:auto}
 body.pfx{overflow:hidden}
 body.selg #rf{display:none}
+#tbr{position:fixed;z-index:55;left:16px;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));max-width:460px;margin:0 auto;display:flex;align-items:center;gap:2px;padding:6px;border-radius:999px;background:rgba(255,253,248,.55);-webkit-backdrop-filter:blur(22px) saturate(190%);backdrop-filter:blur(22px) saturate(190%);border:1px solid rgba(255,255,255,.75);box-shadow:0 10px 30px rgba(60,45,20,.18),0 2px 6px rgba(60,45,20,.08),inset 0 1px 0 rgba(255,255,255,.9),inset 0 -1px 0 rgba(120,100,70,.08)}
+#tbr[hidden],body:has(.qz) #tbr,body:has(.hero) #tbr,body.selg #tbr{display:none}
+#tbr button{position:relative;flex:1;height:54px;display:grid;place-items:center;border:0;border-radius:999px;background:none;color:#2a2620;padding:0;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:flex .25s,background .25s}
+#tbr button.on{flex:1.45;background:rgba(255,255,255,.78);box-shadow:inset 0 0 0 1px rgba(255,255,255,.9),0 2px 8px rgba(60,45,20,.12)}
+#tbr button:not(.on){background:none!important;box-shadow:none!important}#tbr button{width:auto!important;height:54px!important;border:0!important;margin:0!important;min-width:0!important}
+#tbr svg{width:29px;height:29px}
+#tbr .tbpf{width:29px;height:29px;border-radius:50%;background:#e9dfcc;display:grid;place-items:center;font-size:13.5px;font-weight:800;color:#5a4a36}
+#tbr button.on .tbpf{box-shadow:0 0 0 2px #fffdf8,0 0 0 3.5px #2a2620}
+#tbr .ntd{position:absolute;top:10px;left:calc(50% + 9px);width:9px;height:9px;border-radius:50%;background:#e0372c;border:1.5px solid #fffdf8}
+#tbr .mlc{position:absolute;top:6px;left:calc(50% + 7px);min-width:18px;height:18px;padding:0 4px;box-sizing:border-box;border-radius:9px;background:#e0372c;color:#fff;font-size:11px;font-weight:800;display:grid;place-items:center;border:1.5px solid #fffdf8}
+#tbr .mlc{top:6px!important;right:auto!important;left:calc(50% + 7px)!important;width:auto!important;transform:none!important;line-height:1!important}
+#tbr .mlc[hidden],#tbr .ntd[hidden]{display:none}
+body.tbon #rf{display:none}
+body.tbon #app{padding-bottom:104px}
 .pfsl{flex:1;display:flex;flex-direction:column;gap:6px;min-width:0}.pfsl span{white-space:nowrap}
 .pqc{position:relative}
 #pcO{position:absolute;inset:0;width:100%;height:100%;border-radius:inherit;pointer-events:none;z-index:3}
@@ -806,7 +820,7 @@ function sgCard(n,c,o){if(COVER[n])return bk(n,c,o);return `<div class="card pc"
 let SGMORE=false;
 function sgMore(b){SGMORE=!SGMORE;const w=document.getElementById('sgm');if(w)w.hidden=!SGMORE;b.classList.toggle('on',SGMORE);if(SGMORE&&typeof animBars=='function')animBars()}
 const SC={y:'#f2cf6b',b:'#8fb8ec',r:'#ee9a9a',t:'#93d3d8',j:'#c9b6ec',g:'#9bd3ae',p:'#f1a9c8'};
-function subjects(){if(NICK&&!selOK())return pickSel();let h=`<div class="hd" style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px"><div><h2>학습하기</h2></div><span class="admw"><button class="b g s admb gdb2" onclick="guide()">사용법</button><button class="b g s admb gdb2 ntb" onclick="board()">공지<span class="ntd" hidden></span></button>${mailBtn()}<button class="pfb" aria-label="내 프로필" onclick="profile()">${PSVG}</button></span></div><div class="hd2${(OWNER||SUBMODE)&&DB?' ha':''}"><p class="tag"><b>${esc(NICK)}</b> 님</p>${OWNER&&DB?'<span class="adm2"><span class="rsw"><button class="b g s admb rsb" id="rsbt" aria-expanded="false" aria-haspopup="menu" onclick="rsToggle()">초기화</button>'+RSP()+'</span><button class="b g s admb" onclick="admin()">관리자</button></span>':SUBMODE&&DB?'<span class="adm2"><button class="b g s admb" onclick="admin()">관리자</button></span>':''}</div><div class="hub">${isApp()?`<button class="hb" style="--hc:#e3b55a" onclick="allStats()"><i class="hbi">${HB_ST}</i><b>전체 통계</b></button>`:`<button class="hb lkd" style="--hc:#bdb3a0" onclick="lockMsg()"><i class="hbi">${LOCK}</i><b>전체 통계</b></button>`}<button class="hb" style="--hc:#8fb8ec" onclick="fbForm(1)"><i class="hbi">${HB_FB}</i><b>피드백</b></button></div>`;
+function subjects(){if(NICK&&!selOK())return pickSel();document.body.classList.remove('selg');SELF=false;let h=`<div class="hd" style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px"><div><h2>학습하기</h2></div></div><div class="hd2${(OWNER||SUBMODE)&&DB?' ha':''}"><p class="tag"><b>${esc(NICK)}</b> 님</p>${OWNER&&DB?'<span class="adm2"><span class="rsw"><button class="b g s admb rsb" id="rsbt" aria-expanded="false" aria-haspopup="menu" onclick="rsToggle()">초기화</button>'+RSP()+'</span><button class="b g s admb" onclick="admin()">관리자</button></span>':SUBMODE&&DB?'<span class="adm2"><button class="b g s admb" onclick="admin()">관리자</button></span>':''}</div><div class="hub">${isApp()?`<button class="hb" style="--hc:#e3b55a" onclick="allStats()"><i class="hbi">${HB_ST}</i><b>전체 통계</b></button>`:`<button class="hb lkd" style="--hc:#bdb3a0" onclick="lockMsg()"><i class="hbi">${LOCK}</i><b>전체 통계</b></button>`}<button class="hb" style="--hc:#8fb8ec" onclick="fbForm(1)"><i class="hbi">${HB_FB}</i><b>피드백</b></button></div>`;
  const ALL=SUBJ.flat(),SEL=Array.isArray(R._sel)?R._sel:[],mine=ALL.filter(([n])=>COMMON.includes(n)||SEL.includes(n));
  if(selOK()&&SEL.length){h+=`<h3 class="sec">공통과목</h3><div class="sg c2">`+ALL.filter(([n])=>COMMON.includes(n)).map(x=>sgCard(...x)).join('')+`</div>`;
   h+=`<div class="sech"><h3 class="sec">선택과목</h3><button class="lk" onclick="pickSel()">바꾸기</button></div><div class="sg c2">`+ALL.filter(([n])=>SEL.includes(n)).map(x=>sgCard(...x)).join('')+`</div>`;
@@ -994,7 +1008,7 @@ function guide(){const S=(n,t,body,img)=>`<section class="gds" id="gd${n}"><div 
  h+=`<nav class="gdx">${['시작하기','앱 설치','과목 고르기','공부하기','문제 풀기','모의고사','오답노트','통계·달력','공지','메시지함·알림','피드백','프로필'].map((t,i)=>`<a href="#gd${i+1}" onclick="event.preventDefault();document.getElementById('gd${i+1}').scrollIntoView({behavior:'smooth',block:'start'})">${i+1}. ${t}</a>`).join('')}</nav>`;
  h+=S(1,'닉네임으로 시작하기','<p>닉네임과 <b>숫자 4자리 비밀번호</b>를 정해요. 다른 폰에서도 같은 닉네임·비밀번호로 들어오면 기록이 그대로 이어져요.</p><p class="gdw">비밀번호를 잊으면 기록을 찾을 수 없어요.</p>','g_start');
  h+=S(2,'앱으로 설치하기',`<p>홈 화면에 추가하면 앱처럼 쓸 수 있어요. <b>전체 통계, 공부 달력, 폰 알림</b>은 앱에서만 돼요.</p><ul><li>아이폰: 사파리 <b>공유</b> → <b>홈 화면에 추가</b></li><li>안드로이드: 크롬 메뉴 <b>⋮</b> → <b>앱 설치</b></li></ul>${isApp()?'<p class="gdok">지금 앱으로 쓰고 있어요 👍</p>':'<button class="b gdbt" onclick="installApp()">앱으로 설치하기</button>'}`);
- h+=S(3,'과목 고르기','<p>학습하기 화면에서 과목을 눌러요. 진행도 막대가 있는 과목이 열린 과목이고, <b>준비 중</b> 과목은 곧 열려요.</p><p>맨 위 버튼: <b>사용법</b> · <b>공지</b> · <b>편지봉투</b>(메시지함) · <b>사람</b>(프로필)</p><div class="gdi"><img class="gdwd" src="guide/g_top.jpg" alt="" loading="lazy"></div>','g_subj');
+ h+=S(3,'과목 고르기','<p>학습하기 화면에서 과목을 눌러요. 진행도 막대가 있는 과목이 열린 과목이고, <b>준비 중</b> 과목은 곧 열려요.</p><p>화면 맨 아래 탭바: <b>집</b>(학습하기) · <b>확성기</b>(공지) · <b>편지봉투</b>(메시지함) · <b>책</b>(사용법) · <b>동그라미</b>(프로필)</p>','g_subj');
  h+=S(4,'공부하기 (필기)','<p>과목에 들어가 <b>공부하기</b>를 누르면 교과서 핵심을 정리한 필기가 나와요. <b>형광펜</b>은 꼭 외울 내용, 그림·지도·표는 교과서 자료를 다시 정리한 거예요.</p><ul><li><b>교과서 원문 보기</b>: 그 단원의 교과서 쪽을 바로 볼 수 있어요.</li><li>필기 맨 아래 버튼으로 <b>그 단원 문제</b>를 바로 풀 수 있어요.</li><li>맨 위 <b>처음부터 공부하기</b> 카드는 이어서 볼 단원을 알려 줘요.</li></ul>',['g_learn','g_note']);
  h+=S(5,'문제 풀기','<p><b>문제 풀기</b>에서 대단원을 펼쳐 중단원을 골라요. 중단원마다 <b>기본 문제</b>와 자료를 읽고 푸는 <b>실전 문제</b>가 있어요.</p><p>다 풀고 <b>제출</b>하면 정답과 해설이 나와요. <b>처음 푼 결과만</b> 진행도와 통계에 들어가요.</p>','g_quiz');
  h+=S(6,'모의고사','<p>과목마다 <b>5회분</b>이 있어요. 회차당 <b>25문항 내외 · 50분 · 100점 만점</b>이고, 학력평가처럼 자료·사례·&lt;보기&gt;를 분석하는 문제예요.</p><ul><li>그 과목 <b>문제를 모두 풀면</b> 열려요. (11월 23일부터는 모두 열려요.)</li><li>위쪽에 <b>남은 시간</b>이 나오고, 50분을 넘기면 초과 시간이 표시돼요. 제출하면 점수와 오답이 바로 나와요.</li><li><b>모의고사 통계</b>에서 회차별 점수를 볼 수 있어요.</li></ul>','g_mock');
@@ -1578,7 +1592,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>프로필 보기</h2><p class="tag">비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v64';
+const APPV='v65';
 function profile(){if(NICK&&!selOK())return pickSel();if(ADMINMODE||SUBMODE)PFOK=true;if(!PFOK)return pfGate();
  show(`<h2>내 프로필</h2>
  <div class="card pf"><div class="pr"><span>닉네임</span><b>${esc(NICK)}</b>${ADMINMODE||SUBMODE?`<span class="mut" style="font-size:13px">${SUBMODE?'보조 관리자':'관리자'} 고정</span>`:'<button class="lk" onclick="pfNick()">변경하기</button>'}</div>
@@ -1625,9 +1639,21 @@ async function pnSave(){const a=document.getElementById('p1').value,bt=document.
 let ROUTING=false,REPL=false;
 const encR=r=>r.split('/').map(encodeURIComponent).join('/');
 let CURR='',GUARD=false;
+const TBI={home:['<path d="M3.5 10.5 12 3.8l8.5 6.7V20a.9.9 0 0 1-.9.9h-5v-6.2h-5.2v6.2h-5a.9.9 0 0 1-.9-.9z"/>','<path fill="currentColor" stroke="none" d="M12 3.2 2.9 10.4c-.3.2-.4.5-.4.8V20c0 .8.6 1.4 1.4 1.4H9.3v-6.5h5.4v6.5h5.4c.8 0 1.4-.6 1.4-1.4v-8.8c0-.3-.1-.6-.4-.8z"/>'],
+ noti:['<path d="M4 9.5v5l3 .2 8.5 4.3V5L7 9.3z"/><path d="M7 14.7 8.3 20h2.5L9.6 14.9"/><path d="M18.5 9a3.6 3.6 0 0 1 0 6"/>','<path fill="currentColor" stroke="none" d="M15.5 4.4 6.8 8.6H4.3c-.6 0-1 .4-1 1v4.8c0 .6.4 1 1 1h2.1l1.3 5.3c.1.3.4.5.7.5h2.4c.5 0 .8-.4.7-.9l-1.2-4.6 5.2 2.6c.5.3 1-.1 1-.6V5c0-.5-.5-.9-1-.6z"/><path d="M18.8 8.6a4 4 0 0 1 0 6.8"/>'],
+ mail:['<rect x="3" y="5.5" width="18" height="13" rx="2.2"/><path d="m3.6 7 8.4 6.2L20.4 7"/>','<path fill="currentColor" stroke="none" d="M5.2 4.8h13.6c1.5 0 2.7 1.2 2.7 2.7v.3L12 14.3 2.5 7.8v-.3c0-1.5 1.2-2.7 2.7-2.7zM2.5 9.6l9 6.2c.3.2.7.2 1 0l9-6.2v6.9c0 1.5-1.2 2.7-2.7 2.7H5.2c-1.5 0-2.7-1.2-2.7-2.7z"/>'],
+ guide:['<path d="M4 5.5c2.7-1 5.3-1 8 .8 2.7-1.8 5.3-1.8 8-.8V19c-2.7-1-5.3-1-8 .8-2.7-1.8-5.3-1.8-8-.8z"/><path d="M12 6.3v13.5"/>','<path fill="currentColor" stroke="none" d="M11.2 5.7C8.6 4 6 4 3.4 4.9c-.5.2-.9.6-.9 1.1V19c0 .7.7 1.2 1.4 1 2.4-.8 4.8-.6 7.3.9zM12.8 5.7c2.6-1.7 5.2-1.7 7.8-.8.5.2.9.6.9 1.1V19c0 .7-.7 1.2-1.4 1-2.4-.8-4.8-.6-7.3.9z"/>']};
+const TBR=['subjects','board','inbox','guide','profile'];
+function tbKey(){const r=CURR||'';if(/^board/.test(r))return 'noti';if(/^inbox/.test(r))return 'mail';if(/^guide/.test(r))return 'guide';if(/^profile/.test(r))return 'pf';return 'home'}
+function tbGo(k){if(k=='home')return subjects();if(k=='noti')return board();if(k=='mail')return inbox();if(k=='guide')return guide();if(k=='pf')return profile()}
+function tabBar(){let t=document.getElementById('tbr');const on=!!NICK&&CURR!==''&&CURR!='quiz'&&CURR!='sel';document.body.classList.toggle('tbon',on);if(!on){if(t)t.hidden=true;return}
+ if(!t){t=document.createElement('div');t.id='tbr';t.setAttribute('role','tablist');document.body.appendChild(t)}t.hidden=false;const a=tbKey(),ini=(NICK||'?').trim().charAt(0);
+ const SV=(k)=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true">${TBI[k][a==k?1:0]}</svg>`;
+ t.innerHTML=[['home','학습'],['noti','공지'],['mail','메시지함'],['guide','사용법'],['pf','프로필']].map(([k,l])=>`<button role="tab" aria-label="${l}" aria-selected="${a==k}" class="${a==k?'on':''}${k=='noti'?' ntb':''}${k=='mail'?' mlb':''}" onclick="tbGo('${k}')">${k=='pf'?`<span class="tbpf">${esc(ini)}</span>`:SV(k)}${k=='noti'?'<span class="ntd" hidden></span>':''}${k=='mail'?'<span class="mlc" hidden></span>':''}</button>`).join('');
+ try{postBadge()}catch(e){}try{mailBadge()}catch(e){}}
 function updBk(){let b=document.getElementById('bk');if(!b){b=document.createElement('button');b.id='bk';b.className='qback';b.setAttribute('aria-label','뒤로');
   b.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg>';b.onclick=goUp;document.body.appendChild(b)}
- const show=CURR=='quiz'||(CURR!==''&&parentOf(CURR)!==null);b.hidden=!show;document.body.classList.toggle('hasbk',show);document.body.classList.toggle('onpf',/^profile/.test(CURR))}
+ const show=CURR=='quiz'||(CURR!==''&&!TBR.includes(CURR)&&parentOf(CURR)!==null);b.hidden=!show;tabBar();document.body.classList.toggle('hasbk',show);document.body.classList.toggle('onpf',/^profile/.test(CURR))}
 // ---- 뒤로가기: 실제 브라우저 기록을 경로 스택으로 사용 (사용자 동작 없이 pushState 하지 않음) ----
 let HST=(()=>{try{return JSON.parse(sessionStorage.getItem('pq_hst'))||[]}catch(e){return []}})(),HI=-1,IGN=0,LEAVE=0,NAVT=0,EXQ=false;
 {const s=history.state;if(s&&typeof s.i=='number'&&HST[s.i]!==undefined)HI=s.i;else HST=[]}
