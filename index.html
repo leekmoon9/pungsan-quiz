@@ -637,6 +637,7 @@ body.selg #rf{display:none}
 html,body{overflow-x:clip}
 .pfhub{margin:0 0 12px}
 #app .pftop{height:8px}
+.pfq{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}.pfq .card{margin:0;display:flex;align-items:center;gap:10px;padding:13px 14px;font:inherit;color:inherit;text-align:left;cursor:pointer;min-width:0}.pfq .card b{font-size:15.5px;font-weight:800;white-space:nowrap}.pfq .card:active{transform:scale(.98)}.pfq .rsi svg{width:19px;height:19px}
 #app h2.hwt{background:none;padding:0;margin:0 0 2px -4px;color:#2a2620;line-height:0}#app h2.hwt svg{height:40px;width:auto;display:block}
 body.tbsw #app,body.tbsw #app *{animation:none!important}
 
@@ -1620,14 +1621,13 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v70';
+const APPV='v71';
 function profile(){if(NICK&&!selOK())return pickSel();if(ADMINMODE||SUBMODE)PFOK=true;
  show(`<div class="pftop"></div>${STAFF()&&DB?admBig():''}
  <div class="card pf"><div class="pr"><span>닉네임</span><b>${esc(NICK)}</b>${ADMINMODE||SUBMODE?`<span class="mut" style="font-size:13px;white-space:nowrap">${SUBMODE?'':'관리자 '}고정</span>`:'<button class="lk" onclick="pfNick()">변경하기</button>'}</div>
  ${ADMINMODE||SUBMODE?'':`<div class="pr"><span>비밀번호</span><b id="pv">${PFSHOW?(PFSHOW=false,esc(PIN)):'••••'}</b><button class="lk" onclick="if(!PFOK)return pfShow();const e=document.getElementById('pv');e.textContent=e.textContent=='••••'?PIN:'••••'">보기</button><button class="lk" onclick="pfPin()">변경하기</button></div>`}<div class="pr"><span>폰 알림</span><b>${notiState()}</b>${notiState()=='켜짐'?'':'<button class="lk" onclick="notiFromProfile()">켜기</button>'}</div></div>
  <div class="card pf"><div class="pr"><span>선택과목</span><b class="pfsl">${Array.isArray(R._sel)?R._sel.map(n=>`<span>${n.split('|').join(' ')}</span>`).join('')||'없음':'아직 안 골랐어요'}</b><button class="lk" onclick="pickSel()">바꾸기</button></div></div>
- <div class="hub hub1 pfhub">${hbBtn('#8fb8ec',HB_FB,'피드백 보내기','','fbForm(1)')}</div>
- <div class="hub hub1 pfhub">${hbBtn('#9bd3ae',TBG,'사용법','','guide()')}</div>
+ <div class="pfq"><button class="card" onclick="fbForm(1)"><span class="rsi">${HB_FB}</span><b>피드백 보내기</b></button><button class="card" onclick="guide()"><span class="rsi">${TBG}</span><b>사용법</b></button></div>
  ${OWNER?myProg():''}<p class="mut" style="text-align:center;font-size:12px;margin-top:18px">앱 버전 ${APPV}</p>`)}
 const ICN_SH='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.2 7.5 9.5 4.3-1.3 7.5-4.9 7.5-9.5V6z"/><path d="m9 12 2.2 2.2L15.5 10"/></svg>';
 const RSI={chk:'<path d="M5 12.5 10 17l9-10"/>',re:'<path d="M4 12a8 8 0 1 0 2.4-5.7"/><path d="M4 4v4.5h4.5"/>',bell:'<path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2.2 2.2 0 0 0 4 0"/>',msg:'<path d="M4 5.5h16v10.5H9l-5 3.5z"/>',usr:'<circle cx="10" cy="8" r="3.6"/><path d="M3.5 19.5c.8-3.4 3.4-5.3 6.5-5.3 1.6 0 3 .5 4.1 1.3"/><path d="m16 15 5 5m0-5-5 5"/>'};
