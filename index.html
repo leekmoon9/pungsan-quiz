@@ -172,7 +172,13 @@ body.hasbk .fbw h2:first-child{padding-left:0}
 .mgp{font-size:13.5px;color:var(--mut);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .mgx{text-align:center;padding:26px 16px}.mgx .mli{width:54px;height:48px;opacity:.75}.mgx p{color:var(--mut);margin:8px 0 0}
 .mgv h2{margin:6px 0 14px;font-size:20px}.mgt{display:flex;align-items:center;gap:8px}.mgt small{color:var(--mut);margin-left:auto}
-.mgs{margin:0 0 14px}.mgs>span{display:block;font-size:12.5px;font-weight:800;color:var(--mut);margin-bottom:4px;letter-spacing:.2px}
+.mgs{margin:0 0 14px}
+#app .mgv>h2{margin:0 0 6px!important}.mgv .mgt{margin:0 0 14px;justify-content:flex-start}.mgv .mgt small{margin-left:0!important}
+.msb{display:flex;align-items:center;gap:8px;margin:0 0 12px}.msb .lk{margin-left:auto}.msd{flex:none!important;width:auto!important;min-height:0!important;padding:9px 16px!important;border-radius:999px!important}.msd:disabled{opacity:.45}
+.msa{display:inline-flex;align-items:center;gap:8px;border:0;background:none;font:inherit;font-weight:700;font-size:14.5px;color:var(--tx);padding:6px 2px;cursor:pointer}
+.msc{flex:none;width:22px;height:22px;border-radius:50%;border:2px solid #c9bfae;background:var(--card);display:grid;place-items:center;box-sizing:border-box}
+.mgc.sel .msc,.msa.on .msc{background:#2a2620;border-color:#2a2620}.mgc.sel .msc::after,.msa.on .msc::after{content:'';width:9px;height:5px;border:solid #fffdf8;border-width:0 0 2.2px 2.2px;transform:rotate(-45deg) translate(1px,-1px)}
+.mgc.msk{opacity:1}.mgc.sel{border-color:#2a2620!important}.mgs>span{display:block;font-size:12.5px;font-weight:800;color:var(--mut);margin-bottom:4px;letter-spacing:.2px}
 .mgs p{margin:0;line-height:1.65;text-align:justify}.mgs blockquote{margin:0;padding:10px 12px;border-left:4px solid #e0d2b8;background:color-mix(in srgb,#e0d2b8 22%,transparent);border-radius:0 10px 10px 0;line-height:1.6}
 #app .b.mgdel{color:#a3392f}
 .mgk{margin:0 0 12px;padding:12px 13px 13px;border-radius:12px;border:1.5px solid color-mix(in srgb,var(--hc) 45%,var(--ln));border-left:5px solid var(--hc);background:color-mix(in srgb,var(--hc) 10%,#fffdf8)}
@@ -561,6 +567,14 @@ body.cap .capm{display:flex}
 .pnt span{display:flex;flex-direction:column}
 .pnt small{color:var(--mut);font-size:12.5px;margin-top:2px}
 .pgo{margin-top:4px}
+.pvh{position:relative;display:flex;align-items:center;gap:10px;min-height:40px;margin:-1px 0 14px}
+.pvh h2{flex:1;min-width:0;margin:0!important;padding:0!important;background:none!important;font-size:20px;line-height:1.3;word-break:keep-all}
+body.hasbk #app>.pvh{margin-left:48px}@media (min-width:760px){body.hasbk #app>.pvh{margin-left:0}}
+.pvm{flex:none;width:40px;height:40px;border-radius:50%;border:1.5px solid var(--ln);background:var(--card);color:var(--tx);display:grid;place-items:center;cursor:pointer;box-shadow:0 2px 0 rgba(120,100,70,.14);-webkit-tap-highlight-color:transparent}.pvm svg{width:20px;height:20px}
+.pvdd{position:absolute;right:0;top:46px;z-index:20;min-width:132px;padding:6px;border-radius:14px;background:var(--card);border:1.5px solid var(--ln);box-shadow:0 10px 26px rgba(60,45,20,.18);display:flex;flex-direction:column}
+.pvdd button{border:0;background:none;font:inherit;font-weight:700;font-size:15px;color:var(--tx);text-align:left;padding:11px 12px;border-radius:10px;cursor:pointer}.pvdd button:active{background:rgba(42,38,32,.06)}.pvdd .dng{color:#b3392f}
+.pvd{margin:8px 4px 0;font-size:13px;color:var(--mut)}
+.pkg{grid-template-columns:1fr 1fr!important;margin-top:4px!important}
 .qk .dng{color:#b3392f!important;background:color-mix(in srgb,#e05a4f 10%,var(--card))!important;border-color:color-mix(in srgb,#e05a4f 35%,var(--ln))!important}
 .ast{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:8px 0 4px}
 .ast div{display:flex;flex-direction:column;align-items:center;gap:4px;padding:12px 2px 10px;border:1.5px dashed var(--ln);border-radius:12px;background:var(--card);min-width:0}
@@ -629,7 +643,8 @@ body.selg #rf{display:none}
 #tbr .tbp.noa{transition:none}
 #tbr{touch-action:none;-webkit-user-select:none;user-select:none}
 .tbsl{position:fixed;inset:0;z-index:4;overflow:hidden;pointer-events:none;background:transparent}
-.tbsl>div>main{padding-bottom:104px}
+.tbsl{padding-top:env(safe-area-inset-top,0px)}.tbsl>main{will-change:transform}.kpv.kin .kh,.kpv.kin .kc{visibility:hidden}
+#app .kb,#app{will-change:auto}
 .tbsl *{animation:none!important;transition:none!important}
 @media (prefers-reduced-motion:reduce){#tbr .tbp,#tbr button{transition:none}}
 #tbr button:not(.on){background:none!important;box-shadow:none!important}#tbr button{width:auto!important;height:54px!important;border:0!important;margin:0!important;min-width:0!important}
@@ -651,7 +666,49 @@ html,body{overflow-x:clip}
 #app .kc button{flex:none;display:inline-flex;align-items:center;gap:6px;height:40px;padding:0 18px;border:0;border-radius:999px;font:inherit;font-weight:800;font-size:15px;white-space:nowrap;background:color-mix(in srgb,#2a2620 7%,var(--card));color:#6f6656;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background .2s,color .2s}
 #app .kc button.on{background:#2a2620;color:#fffdf8}#app .kc button i{font-style:normal;background:#e0372c;color:#fff;border-radius:999px;font-size:11.5px;min-width:18px;height:18px;display:grid;place-items:center;padding:0 5px;box-sizing:border-box}
 #app .kc:empty{display:none}
-#app .kc+*{margin-top:0!important}
+#app .kc+*{margin-top:0!important}#app .kb>:first-child{margin-top:0!important}#app .kb>h3.sec:first-child{margin-top:2px!important}
+.sv1g{grid-template-columns:1fr}.sv1{grid-template-columns:1fr auto}.sv1 .svq{grid-column:1/-1;color:var(--mut);font-size:13px;margin-top:-1px}
+.awk{padding:6px 14px}.awh{display:flex;align-items:center;gap:8px;flex-wrap:wrap}.awh .mut{margin-left:auto;font-size:13px}
+.aws{font-size:12px;font-weight:700;padding:2px 9px;border-radius:999px;background:color-mix(in srgb,var(--sc) 35%,var(--card));white-space:nowrap}
+.kcal{padding:12px 10px}.kcal .cd{justify-content:flex-start;padding-top:6px}
+.pf .pr>span:first-child{font-weight:800;color:var(--tx);flex:none}.pfsl{gap:3px!important}
+.ast{grid-template-columns:repeat(3,1fr)!important}
+#app .hb{background:var(--card)!important;border:1.5px solid var(--ln)!important;border-left-width:1.5px!important;box-shadow:none!important}#app .hb .hbi{background:color-mix(in srgb,var(--hc) 55%,#fff)}
+img,button,a{-webkit-user-drag:none;-webkit-touch-callout:none}
+.fbk{margin:6px 0 12px}.fbk button{display:flex;align-items:center;justify-content:center;gap:6px;font-size:13.5px;padding:10px 4px;line-height:1.25;word-break:keep-all}.fbk button i{flex:none;width:9px;height:9px;border-radius:50%;background:var(--fc)}
+.bsw{position:fixed;inset:0;z-index:90;background:rgba(30,25,18,0);transition:background .25s}.bsw.on{background:rgba(30,25,18,.38)}
+.bsh{position:absolute;left:0;right:0;bottom:0;max-width:560px;margin:0 auto;background:var(--card,#fffdf8);border-radius:22px 22px 0 0;padding:10px 18px calc(20px + env(safe-area-inset-bottom));box-sizing:border-box;transform:translateY(100%);transition:transform .28s cubic-bezier(.22,.8,.3,1);box-shadow:0 -8px 30px rgba(40,30,15,.18)}
+.bsw.on .bsh{transform:none}.bsg{display:block;width:40px;height:5px;border-radius:9px;background:#d9cfbf;margin:0 auto 12px}.bsh h3{text-align:center;margin:0 0 12px;font-size:16px}
+.acr{display:flex;align-items:center;gap:12px;width:100%;padding:10px 4px;border:0;background:none;font:inherit;color:var(--tx);text-align:left;cursor:pointer;border-radius:12px}.acr:active{background:rgba(42,38,32,.05)}
+.acr>span:nth-child(2){flex:1;min-width:0;display:flex;flex-direction:column}.acr b{font-size:15.5px}.acr small{font-size:12.5px;color:var(--mut)}
+.acv{flex:none;width:46px;height:46px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-weight:800;font-size:18px;color:#fffdf8;background:var(--avc)}.acv svg{width:24px;height:24px}
+.acp{background:none;border:1.8px dashed #c9bfae;color:#8f8676;font-size:24px;font-weight:500}
+.acc{flex:none;width:22px;height:22px;border-radius:50%;border:2px solid #c9bfae;box-sizing:border-box;display:grid;place-items:center}.acc.on{border-color:#2a2620;background:#2a2620}.acc.on::after{content:'';width:9px;height:5px;border:solid #fffdf8;border-width:0 0 2.2px 2.2px;transform:rotate(-45deg) translate(1px,-1px)}
+.acm{font-size:13px;text-align:center;margin:8px 0 6px}
+/*DRAFTS*/
+body.chA #app .kc{gap:22px;margin:0 0 14px;padding:0 2px;height:42px}
+body.chA #app .kc button{background:none;padding:0 1px;border-radius:0;color:#a39a88;font-size:16px;position:relative;isolation:isolate;height:42px}
+body.chA #app .kc button.on{background:none;color:#2a2620}
+body.chA #app .kc button.on::after{content:'';position:absolute;left:-4px;right:-4px;bottom:10px;height:11px;background:#f6d65f;opacity:.8;border-radius:4px 2px 5px 3px;z-index:-1;transform:rotate(-1deg)}
+body.chB #app .kc{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:4px;padding:4px;margin:0 0 16px;height:auto;border-radius:14px;background:color-mix(in srgb,#2a2620 6%,var(--card));border:1.5px solid color-mix(in srgb,#2a2620 10%,var(--bd))}
+body.chB #app .kc button{height:36px;justify-content:center;background:transparent;border-radius:10px;color:#7a7264;padding:0 6px}
+body.chB #app .kc button.on{background:var(--card);color:var(--tx);box-shadow:0 1px 6px rgba(90,70,40,.16)}
+body.chC #app .kc button{background:var(--card);border:1.5px solid var(--bd);color:#7a7264;height:38px;border-radius:12px;box-shadow:0 2px 0 rgba(110,90,60,.08)}
+body.chC #app .kc button.on{background:color-mix(in srgb,#f2cf6b 32%,var(--card));border-color:#2a2620;color:#2a2620;box-shadow:0 2px 0 #2a2620}
+body.abA .mdc .row{gap:8px}
+body.abA .mdc .b{border-radius:999px!important;padding:13px;font-weight:800;box-shadow:none!important;border:0}
+body.abA .mdc .b.g{background:color-mix(in srgb,#2a2620 7%,var(--card));color:#6f6656}
+body.abA .mdc .b:not(.g){background:#2a2620!important;color:#fffdf8}
+body.abB .mdc{padding:24px 0 0;overflow:hidden}
+body.abB .mdc h3,body.abB .mdc p{padding:0 20px}
+body.abB .mdc .row{flex-direction:column-reverse;gap:0}
+body.abB .mdc .b{background:none!important;box-shadow:none!important;border:0;border-top:1px solid var(--bd);border-radius:0;padding:15px;font-weight:800;color:#2a2620}
+body.abB .mdc .b.g{font-weight:600;color:var(--mut)}
+body.bkA .b:not(.g){background:#2a2620!important;color:#fffdf8!important;border-radius:14px!important;box-shadow:0 3px 0 rgba(42,38,32,.18)!important}
+body.bkB .b:not(.g){background:var(--card)!important;color:#2a2620!important;border:1.8px solid #2a2620!important;border-radius:14px!important;box-shadow:0 3px 0 #2a2620!important;font-weight:800}
+body.bkA .b:disabled,body.bkB .b:disabled{opacity:.4}
+/*/DRAFTS*/
+.kmt{color:var(--mut);text-align:center;padding:22px 16px!important;font-size:14.5px}
 .skl{display:block;background:linear-gradient(90deg,#ebe3d2 25%,#f6f1e7 50%,#ebe3d2 75%);background-size:220% 100%;animation:skl 1.25s ease-in-out infinite;border-radius:8px}
 @keyframes skl{0%{background-position:130% 0}100%{background-position:-30% 0}}
 @media (prefers-reduced-motion:reduce){.skl{animation:none}}
@@ -845,19 +902,49 @@ function home(){const lk=lastNick(),cu=document.getElementById('nk'),nv=cu?cu.va
 const KI=p=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${p}</svg>`;
 const KIC={sel:KI('<path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/>'),plus:KI('<rect x="3.5" y="3.5" width="17" height="17" rx="4"/><path d="M12 8v8M8 12h8"/>'),
  trash:KI('<path d="M4 7h16M9 7V4.5h6V7M6.5 7l.9 12.2c.1.9.8 1.6 1.7 1.6h5.8c.9 0 1.6-.7 1.7-1.6L17.5 7"/>'),cal:KI('<rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/>'),
- fb:KI('<path d="M4 5.5h16v10.5H9l-5 3.5z"/><path d="M8.5 10h7M8.5 13h4"/>'),book:KI('<path d="M4 5.5c2.7-1 5.3-1 8 .8 2.7-1.8 5.3-1.8 8-.8V19c-2.7-1-5.3-1-8 .8-2.7-1.8-5.3-1.8-8-.8z"/><path d="M12 6.3v13.5"/>')};
-// title: 제목 HTML, icons: [[아이콘,이름,onclick]], chips: [[글자,onclick,켜짐,배지]]
-function kHead(title,icons,chips){return `<div class="kh">${title}<div class="ki">${(icons||[]).map(([i,l,on])=>`<button aria-label="${l}" onclick="${on}">${KIC[i]}</button>`).join('')}</div></div>`
- +`<div class="kc" role="tablist">${(chips||[]).map(([t,on,a,bd])=>`<button role="tab" aria-selected="${!!a}" class="${a?'on':''}" onclick="kChip(this);${on}">${t}${bd?`<i>${bd}</i>`:''}</button>`).join('')}</div>`}
-function kChip(b){b.parentElement.querySelectorAll('button').forEach(x=>{x.classList.toggle('on',x===b);x.setAttribute('aria-selected',x===b)})}
-function kGo(id){const e=typeof id=='string'?document.getElementById(id):id;if(!e)return;const off=16;scrollTo({top:Math.max(0,e.getBoundingClientRect().top+scrollY-off),behavior:RDM()?'auto':'smooth'})}
-const kTop=()=>scrollTo({top:0,behavior:RDM()?'auto':'smooth'});
-let BDF=0,MGF=0;
-// 로딩 스켈레톤: 기다리는 동안 화면 모양을 미리 보여 줌
+ fb:KI('<path d="M12 4.3c4.7 0 8.5 3.1 8.5 7s-3.8 7-8.5 7c-1.1 0-2.1-.2-3.1-.5L4.6 19.6l1.2-3.8c-1.4-1.3-2.3-2.8-2.3-4.5 0-3.9 3.8-7 8.5-7z"/><path d="M8.6 10.3h6.8M8.6 13.2h4.2"/>'),book:KI('<path d="M4 5.5c2.7-1 5.3-1 8 .8 2.7-1.8 5.3-1.8 8-.8V19c-2.7-1-5.3-1-8 .8-2.7-1.8-5.3-1.8-8-.8z"/><path d="M12 6.3v13.5"/>')};
+// ===== 탭·칩 화면: 칩마다 따로 된 화면. 옆으로 밀면 칩 순서대로, 마지막 칩 다음은 옆 탭 =====
+const KCH={home:0,noti:0,mail:0,st:0,pf:0};
+function kChips(t){return t=='home'?['내 과목','다른 과목','전체']:t=='noti'?['공지','업데이트']:t=='mail'?['전체','알림','답장']:t=='st'?['요약','과목별','달력']:['내 정보',...(STAFF()&&DB?['관리자']:[]),...(OWNER?['초기화']:[])]}
+const kIdx=(t,n)=>kChips(t).indexOf(n);
+function kSeq(){const s=[];TBK.forEach(t=>{if(t=='st'&&!isApp())return;kChips(t).forEach((_,c)=>s.push(t+':'+c))});return s}
+// title: 제목 HTML, icons: [[아이콘,이름,onclick]], t: 탭, bd: 칩별 배지 숫자
+function kHead(title,icons,t,bd){const c=KCH[t]||0;return `<div class="kh">${title}<div class="ki">${(icons||[]).map(([i,l,on])=>`<button aria-label="${l}" onclick="${on}">${KIC[i]}</button>`).join('')}</div></div>`
+ +`<div class="kc" role="tablist">${kChips(t).map((x,i)=>`<button role="tab" aria-selected="${i==c}" class="${i==c?'on':''}" onclick="kTap('${t}',${i})">${x}${bd&&bd[i]?`<i>${bd[i]}</i>`:''}</button>`).join('')}</div>`}
+const kPage=(t,head,body)=>head+`<div class="kb">${body}</div>`;
+const kKey=t=>'k:'+t+':'+KCH[t];
+function kChipOn(c){document.querySelectorAll('#app .kc button').forEach((b,i)=>{b.classList.toggle('on',i==c);b.setAttribute('aria-selected',i==c)})}
+function kTap(t,i){if(KNV)return;if(i==KCH[t]){scrollTo({top:0,behavior:RDM()?'auto':'smooth'});return}kNav(t,i)}
+let BDF=0,MGF=0,KNV=null;
+const TABF={home:()=>subjects(),noti:()=>board(),mail:()=>inbox(),st:()=>allStats(),pf:()=>profile()};
+const KHTML={home:()=>homeHTML(),noti:()=>boardHTML(),mail:()=>inboxHTML(),st:()=>statsHTML(),pf:()=>pfHTML()};
+// 넘어갈 화면을 미리 그려 둠 (전환 중에도 다음 화면이 보이게)
+function kPv(t,c,intra,tgt){const k0=KCH[t];KCH[t]=c;let h='';try{h=KHTML[t]()}catch(e){}KCH[t]=k0;
+ const o=document.createElement('div');o.className='tbsl';const m=document.createElement('main');m.id='app';m.className='kpv'+(intra?' kin':'');m.innerHTML=h;
+ if(tgt)m.style.transform=`translateY(${-tgt}px)`;o.appendChild(m);document.body.appendChild(o);
+ m.querySelectorAll('[data-w]').forEach(e=>{e.style.width=e.dataset.w+'%'});return o}
+// 이번 칩/탭 → (t,c) 로 옆으로 밀어서 넘어감. st: 손가락으로 끌던 중이면 {off,o}
+function kNav(t,c,st){if(KNV)return;st=st||{};
+ if(t=='st'&&!isApp()){if(st.o)st.o.remove();return webSt()}
+ const cur=tbKey(),cc=KCH[cur],onRoot=TBR.includes(CURR),seq=kSeq(),i0=seq.indexOf(cur+':'+cc),i1=seq.indexOf(t+':'+c),A=document.getElementById('app');
+ const intra=onRoot&&t==cur,dir=onRoot&&i0>=0&&i1>=0?(i1>i0?1:-1):0;
+ if(!dir||RDM()){if(st.o)st.o.remove();KCH[t]=c;TABF[t]();return}
+ KNV=1;TBSW=Date.now();document.body.classList.add('tbsw');clearTimeout(kNav.t);
+ const kb=A.querySelector('.kb'),mv=intra&&kb?kb:A,kbTop=kb?kb.getBoundingClientRect().top+scrollY:0,tgt=intra?Math.min(scrollY,kbTop):0,W=innerWidth,off=st.off||0;
+ const o=st.o||kPv(t,c,intra,tgt);
+ if(intra)kChipOn(c);else{tbSetIcons(t);tbPill()}
+ const D=Math.max(150,Math.round(300*(1-Math.min(.85,Math.abs(off)/W)))),E='cubic-bezier(.25,.8,.25,1)';
+ mv.animate([{transform:`translateX(${off}px)`},{transform:`translateX(${-dir*W}px)`}],{duration:D,easing:E,fill:'forwards'});
+ const an=o.animate([{transform:`translateX(${dir*W+off}px)`},{transform:'translateX(0)'}],{duration:D,easing:E,fill:'forwards'});
+ const fin=()=>{if(!KNV)return;mv.getAnimations().forEach(a=>a.cancel());mv.style.transform='';KCH[t]=c;try{TABF[t]()}catch(e){}scrollTo(0,tgt);o.remove();KNV=null;kNav.t=setTimeout(()=>document.body.classList.remove('tbsw'),400)};
+ an.onfinish=fin;setTimeout(fin,D+400)}
+// 웹에서 전체 통계: 알약은 끝까지 가고, 안내 창을 닫으면 원래 탭으로
+function webSt(){tbSetIcons('st');tbPill();lockMsg().then(()=>{tbSetIcons(tbKey());tbPill()})}
+// 로딩 스켈레톤:// 로딩 스켈레톤: 기다리는 동안 화면 모양을 미리 보여 줌
 const SKL=(w,h,m)=>`<span class="skl" style="width:${w};height:${h}px;${m||''}"></span>`;
 const skMsgs=(n=5)=>Array.from({length:n},(_,i)=>`<div class="mgc skc" aria-hidden="true"><span class="skl" style="width:10px;height:10px;border-radius:50%;flex:none"></span><span style="flex:1">${SKL(['72%','58%','80%','64%','50%'][i%5],15)}${SKL('34%',11,'margin-top:9px')}</span></div>`).join('');
 const skPosts=()=>Array.from({length:3},(_,i)=>`<div class="pst skc" aria-hidden="true">${SKL('26%',11)}${SKL(['76%','62%','70%'][i],17,'margin-top:4px')}</div>`).join('');
-const skAdmin=t=>`<h2>${t||'관리자'}</h2><div aria-label="불러오는 중"><div class="skr" style="margin:6px 0 14px">${[0,1,2].map(()=>`<div class="skt skc">${SKL('46%',24)}${SKL('64%',11)}</div>`).join('')}</div>${SKL('30%',18,'margin:18px 2px 10px')}${Array.from({length:3},()=>`<div class="mgc skc"><span style="flex:1">${SKL('40%',14)}${SKL('86%',12,'margin-top:9px')}</span></div>`).join('')}${SKL('30%',18,'margin:18px 2px 10px')}<div class="skr">${[0,1].map(()=>`<div class="skt skc" style="height:64px"></div>`).join('')}</div></div>`;
+const skAdmin=t=>`${t===0?'':`<h2>${t||'관리자'}</h2>`}<div aria-label="불러오는 중"><div class="skr" style="margin:6px 0 14px">${[0,1,2].map(()=>`<div class="skt skc">${SKL('46%',24)}${SKL('64%',11)}</div>`).join('')}</div>${SKL('30%',18,'margin:18px 2px 10px')}${Array.from({length:3},()=>`<div class="mgc skc"><span style="flex:1">${SKL('40%',14)}${SKL('86%',12,'margin-top:9px')}</span></div>`).join('')}${SKL('30%',18,'margin:18px 2px 10px')}<div class="skr">${[0,1].map(()=>`<div class="skt skc" style="height:64px"></div>`).join('')}</div></div>`;
 function splash(go){show(`<div class="hero spl"><div class="sa"></div><div class="hc"><img class="hlogo" src="logo-192.png" alt=""><h1 class="htit" aria-label="풍산 학습">${HW_TITLE}</h1></div><div class="sa"></div></div>`);{const o=document.createElement('div');o.id='sporb';o.className='orb';document.body.appendChild(o)}
  requestAnimationFrame(splOrb);
  setTimeout(()=>{if(!document.querySelector('.spl'))return;REPL=true;TBSW=Date.now();(go||subjects)();const a=document.getElementById('app');if(a&&!RDM())a.animate([{opacity:0},{opacity:1}],{duration:320,easing:'ease-out'})},1100)}
@@ -898,7 +985,7 @@ Object.assign(COVER,{'미적분':'data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQA
 function ach(n,o){const qs=isSoc(n)?socQ(n):[];return qs.length?Math.round(st(qs).c/qs.length*100):0}
 const hasC=n=>!!(CUR[n]&&(socQ(n).length||Object.keys(NOTE[n]||{}).length));
 function bk(n,c,o){const a=ach(n,o),rd=hasC(n);return `<div class="card pc bk${rd?'':' bkx'}${sDone(n)?' cpl':''}" style="--sc:${SC[c]}" onclick="${rd||STAFF()?`subj('${n}')`:'soon()'}"><div class="tp"><img src="${COVER[n]}" alt=""><div class="nm">${n.split('|').join('<br>')}</div></div>${rd?`<div><div class="al"><span>${sDone(n)?'<span class="cplb"><i class="cki"></i>모두 완료</span>':'진행도'}</span><b>${a}%</b></div><div class="bar"><i data-w="${a}" style="width:0;background:${SC[c]}"></i></div></div>`:`<div class="bkr">${LOCK}<span>준비 중</span></div>`}</div>`}
-function animBars(){setTimeout(()=>document.querySelectorAll('[data-w]').forEach(e=>{e.style.width=e.dataset.w+'%'}),90)}
+function animBars(){if(Date.now()-TBSW<900){document.querySelectorAll('#app [data-w]').forEach(e=>{e.style.transition='none';e.style.width=e.dataset.w+'%'});return}setTimeout(()=>document.querySelectorAll('[data-w]').forEach(e=>{e.style.width=e.dataset.w+'%'}),90)}
 const SUBJ=[[['독서와|작문','b',1],['영어','r'],['중국어|회화','t'],['일본어|회화','j']],[['미적분','y'],['기하','y']],[['정치','g'],['경제','g'],['동아시아|역사기행','g'],['현대사회와|윤리','g'],['한국지리|탐구','g']],[['세포와|물질대사','p'],['물질과|에너지','p'],['역학과|에너지','p'],['행성우주|과학','p']]];
 const SECN=['언어 영역','수리 영역','사회 영역','과학 영역'];
 const COMMON=['독서와|작문','영어','미적분'];
@@ -913,25 +1000,25 @@ function pickSel(){if(!SELT)SELT=new Set(Array.isArray(R._sel)?R._sel:[]);const 
 function selTog(el){const n=decodeURIComponent(el.dataset.n);SELT.has(n)?SELT.delete(n):SELT.add(n);el.classList.toggle('on',SELT.has(n));const b=document.getElementById('sls');if(b){b.disabled=!SELT.size;b.textContent=SELT.size?`선택 완료 · ${SELT.size}과목`:'선택과목을 골라 주세요'}}
 function selSave(){if(!SELT||!SELT.size)return;const first=!Array.isArray(R._sel);R._sel=SUBJ.flat().map(x=>x[0]).filter(n=>SELT.has(n));SELT=null;document.body.classList.remove('selg');save();soonMsg(first?'선택과목을 저장했어요.':'선택과목을 바꿨어요.');subjects()}
 function sgCard(n,c,o){if(COVER[n])return bk(n,c,o);return `<div class="card pc" style="margin:0;padding:0;overflow:hidden;text-align:center;background:var(--bg);aspect-ratio:6/5;display:flex;flex-direction:column" onclick="subj('${n}')"><div style="position:absolute;top:0;left:0;right:0;pointer-events:none;height:34px;background:linear-gradient(to bottom,${SC[c]} 0,${SC[c]} 18%,transparent 100%)"></div><div style="flex:1;display:flex;align-items:center;justify-content:center;padding:4px;line-height:1.3;font-weight:600;white-space:nowrap" class="sl">${n.split('|').join('<br>')}</div></div>`}
-let SGMORE=false;
-function sgMore(b){SGMORE=!SGMORE;const w=document.getElementById('sgm');if(w)w.hidden=!SGMORE;b.classList.toggle('on',SGMORE);if(SGMORE&&typeof animBars=='function')animBars()}
 const SC={y:'#f2cf6b',b:'#8fb8ec',r:'#ee9a9a',t:'#93d3d8',j:'#c9b6ec',g:'#9bd3ae',p:'#f1a9c8'};
 // 풍산 학습 전용 손글씨 제목 (한 획씩 그린 모노라인)
 const HW_TITLE='<svg viewBox="-12 -8 484 116" fill="none" stroke="currentColor" stroke-width="8.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path transform="translate(0 0)" d="M24 12H76 M38 13C37.5 20 37 26 36 33 M62 13C62.5 20 63 26 64 33 M18 33H82 M10 49H90 M50 49V62 M32 81 A18 13 0 1 0 68 81 A18 13 0 1 0 32 81Z"/><path transform="translate(108 0)" d="M36 8C36 26 26 40 12 50 M31 27C38 36 46 42 55 47 M74 4V62 M74 32H90 M22 64V80Q22 89 31 89H86"/><path transform="translate(246 0)" d="M28 5.5L40 8.5 M12 20H54 M19 40 A14 11 0 1 0 47 40 A14 11 0 1 0 19 40Z M74 2V60 M74 30H90 M16 70H70Q79 70 79 80C79 88 75 95 69 100"/><path transform="translate(354 0)" d="M50 4C50 18 38 30 22 37 M49 18C56 27 64 32 78 37 M6 50H94 M26 62V88Q26 95 33 95H67Q74 95 74 88V62 M26 77H74"/></svg>';
-function subjects(){if(NICK&&!selOK())return pickSel();document.body.classList.remove('selg');SELF=false;const ALL=SUBJ.flat(),SEL=Array.isArray(R._sel)?R._sel:[],mine=ALL.filter(([n])=>COMMON.includes(n)||SEL.includes(n)),hs=selOK()&&SEL.length;
- let h=kHead(`<h2 class="hwt" aria-label="풍산 학습">${HW_TITLE}</h2>`,hs?[['sel','선택과목 바꾸기','pickSel()']]:[],hs?[['전체','kTop()',1],['공통과목',"kGo('sgc1')"],['선택과목',"kGo('sgc2')"],['다른 과목',"if(!SGMORE)sgMore(document.querySelector('.sgmore'));kGo(document.querySelector('.sgmore'))"]]:[]);
- if(hs){h+=`<h3 class="sec" id="sgc1">공통과목</h3><div class="sg c2">`+ALL.filter(([n])=>COMMON.includes(n)).map(x=>sgCard(...x)).join('')+`</div>`;
-  h+=`<div class="sech" id="sgc2"><h3 class="sec">선택과목</h3><button class="lk" onclick="pickSel()">바꾸기</button></div><div class="sg c2">`+ALL.filter(([n])=>SEL.includes(n)).map(x=>sgCard(...x)).join('')+`</div>`;
-  const rest=SUBJ.map(row=>row.filter(([n])=>!mine.some(m=>m[0]==n)));
-  h+=`<button class="sgmore${SGMORE?' on':''}" onclick="sgMore(this)"><span>다른 과목 보기</span><small>${rest.flat().length}과목</small><span class="chev">›</span></button><div id="sgm"${SGMORE?'':' hidden'}>`;
-  rest.forEach((row,ri)=>{if(!row.length)return;h+=`<h3 class="sec">${SECN[ri]}</h3><div class="sg c2">`+row.map(x=>sgCard(...x)).join('')+`</div>`});h+=`</div>`}
- else SUBJ.forEach((row,ri)=>{h+=`<h3 class="sec">${SECN[ri]}</h3><div class="sg c2">`+row.map(x=>sgCard(...x)).join('')+`</div>`});
- show(h);animBars();mailBadge();afterHome()}
+// 홈: 내 과목(공통+선택) · 다른 과목 · 전체
+function homeHTML(){const ALL=SUBJ.flat(),SEL=Array.isArray(R._sel)?R._sel:[],mine=ALL.filter(([n])=>COMMON.includes(n)||SEL.includes(n)),c=KCH.home,grid=L=>`<div class="sg c2">${L.map(x=>sgCard(...x)).join('')}</div>`;
+ let b='';
+ if(c==0){b+=`<h3 class="sec">공통과목</h3>`+grid(ALL.filter(([n])=>COMMON.includes(n)));b+=`<h3 class="sec">선택과목</h3>`+(SEL.length?grid(ALL.filter(([n])=>SEL.includes(n))):`<div class="card kmt">고른 선택과목이 없어요.</div>`)}
+ else{const rows=c==1?SUBJ.map(row=>row.filter(([n])=>!mine.some(m=>m[0]==n))):SUBJ;let any=0;
+  rows.forEach((row,ri)=>{if(!row.length)return;any=1;b+=`<h3 class="sec">${SECN[ri]}</h3>`+grid(row)});if(!any)b+=`<div class="card kmt">다른 과목이 없어요.</div>`}
+ return kPage('home',kHead(`<h2 class="hwt" aria-label="풍산 학습">${HW_TITLE}</h2>`,[['sel','선택과목 바꾸기','pickSel()']],'home'),b)}
+function subjects(){if(NICK&&!selOK())return pickSel();document.body.classList.remove('selg');SELF=false;show(homeHTML(),kKey('home'));animBars();mailBadge();afterHome()}
 let FBF=0;
-function fbForm(f){FBF=f;show(`<div class="fbw"><h2>피드백</h2><p class="tag fbd">고쳐지면 메시지함으로 답장이 와요.</p><div class="card"><textarea id="fbt" maxlength="1000" placeholder="예) ETC 응용 2번 해설이 헷갈려요&#10;예) 영어도 빨리 열어 주세요" oninput="document.getElementById('fbs').disabled=!this.value.trim()"></textarea></div>${DB&&CANW!==false?'':'<p class="no-t" style="font-size:14px">서버에 연결되지 않았어요. 아래 버튼으로 내용을 복사해서 관리자에게 직접 보내 주세요.</p>'}<div class="row"><button class="b" id="fbs" disabled onclick="fbSend()">${DB&&CANW!==false?'보내기':'내용 복사하기'}</button></div></div>`)}
+let FBK='';
+function fbForm(f){FBF=f;FBK='';show(`<div class="fbw"><h2>피드백</h2><div class="ntg fbk" role="radiogroup" aria-label="피드백 유형">${FBT.map(t=>`<button role="radio" aria-checked="false" data-k="${t[0]}" style="--fc:${t[2]}" onclick="fbPick('${t[0]}')"><i></i>${t[1]}</button>`).join('')}</div><div class="card"><textarea id="fbt" maxlength="1000" placeholder="예) ETC 응용 2번 해설이 헷갈려요&#10;예) 영어도 빨리 열어 주세요" oninput="fbOK()"></textarea></div>${DB&&CANW!==false?'':'<p class="no-t" style="font-size:14px">서버에 연결되지 않았어요. 아래 버튼으로 내용을 복사해서 관리자에게 직접 보내 주세요.</p>'}<div class="row"><button class="b" id="fbs" disabled onclick="fbSend()">${DB&&CANW!==false?'보내기':'내용 복사하기'}</button></div></div>`)}
+function fbPick(k){FBK=k;document.querySelectorAll('.fbk button').forEach(b=>{const on=b.dataset.k==k;b.classList.toggle('on',on);b.setAttribute('aria-checked',on)});fbOK()}
+function fbOK(){const b=document.getElementById('fbs'),t=document.getElementById('fbt');if(b&&t)b.disabled=!t.value.trim()||!FBK}
 function soonMsg(m){const o=document.getElementById('toast');if(o)o.remove();const t=document.createElement('div');t.id='toast';t.className='toast';t.textContent=m;document.body.appendChild(t);setTimeout(()=>t.remove(),1850)}
 async function fbSend(){const t=document.getElementById('fbt').value.trim(),b=document.getElementById('fbs');if(!t)return;if(!DB||CANW===false){const ok=()=>soonMsg('복사했어요. 카톡으로 보내 주세요.');try{navigator.clipboard.writeText(t).then(ok,()=>{document.getElementById('fbt').select();soonMsg('길게 눌러서 복사해 주세요.')})}catch(e){document.getElementById('fbt').select();soonMsg('길게 눌러서 복사해 주세요.')}return}b.disabled=true;b.textContent='보내는 중…';
- try{const {error}=await DB.from('feedback').insert({nick:(NICK||lastNick()||'익명').slice(0,12),body:t});if(error)throw error;soonMsg('피드백이 전달됐어요. 고마워요!');FBF?subjects():home()}catch(e){b.disabled=false;b.textContent='보내기';soonMsg('보내지 못했어요. 다시 시도해 주세요.')}}
+ try{const {error}=await DB.from('feedback').insert({nick:(NICK||lastNick()||'익명').slice(0,12),body:(FBK?`[[k:${FBK}]]`:'')+t});if(error)throw error;soonMsg('피드백이 전달됐어요. 고마워요!');FBF?goUp():home()}catch(e){b.disabled=false;b.textContent='보내기';soonMsg('보내지 못했어요. 다시 시도해 주세요.')}}
 
 // ================= 메시지함 · 폰 알림 =================
 const VAPID='BEhEZYHO8qnRmgu6SvZxzNoFhJRO0wWwewnNUIgckZ4Hry8KYsR6iovr2KvH0F9f4UKbKTaTEo8Lk-IU5RGi5rk';
@@ -944,24 +1031,37 @@ const MAIL='<svg class="mli" viewBox="0 0 24 24" fill="none" stroke="currentColo
 const mailBtn=()=>`<button class="mlb" aria-label="메시지함" onclick="inbox()">${MAIL}<span class="mlc" hidden></span></button>`;
 const fdt=t=>{const d=new Date(t);return (d.getMonth()+1)+'/'+d.getDate()+' '+String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')};
 const nl=t=>esc(t||'').replace(/\n/g,'<br>');
-async function inbox(){const draw=()=>{if(CURR!='inbox')return;const A0=MSGS||[],n=unread(),rd=A0.filter(m=>m.read).length,isR=m=>m.meta&&m.meta.kind=='fb_reply';
-  const L=A0.filter(m=>MGF==1?!m.read:MGF==2?isR(m):MGF==3?!isR(m):true);
-  let h=kHead('<h2>메시지함</h2>',rd?[['trash',`읽은 메시지 ${rd}개 지우기`,'msgDelRead()']]:[],[['전체','MGF=0;inbox()',MGF==0],['안읽음','MGF=1;inbox()',MGF==1,n||''],['답장','MGF=2;inbox()',MGF==2],['알림','MGF=3;inbox()',MGF==3]]);
-  if(MSGS===null)h+=skMsgs();
-  else if(!L.length)h+=`<div class="card mgx">${MAIL}<p>${MGF==1?'안 읽은 메시지가 없어요.':MGF==2?'받은 답장이 없어요.':MGF==3?'받은 알림이 없어요.':'아직 받은 메시지가 없어요.'}</p></div>`;
-  else h+=L.map(m=>`<button class="mgc${m.read?' rd':''}" onclick="msgOpen(${m.id})"><span class="mgd"></span><span class="mgb"><b>${esc(m.title)}</b><small>${fdt(m.created_at)}</small><span class="mgp">${esc(((m.meta&&m.meta.kind=='fb_reply')?(m.meta.answer||m.meta.changes):m.meta&&m.meta.kind=='post'?'':m.body||'').replace(/\s+/g,' ').slice(0,60))}</span></span><span class="chev">›</span></button>`).join('');
-  show(h,'inbox')};
- draw();if(DB&&NICK){await msgLoad();draw()}}
+// 메시지 제목: 「새」 빼고, 피드백 관련은 짧게
+const mKind=m=>m.meta&&m.meta.kind,mIsR=m=>mKind(m)=='fb_reply';
+function mTitle(m){const k=mKind(m);if(k=='fb_reply')return '답장 도착';if(k=='fb_new')return '피드백 도착';let t=(m.title||'').replace(/^새\s+/,'');
+ if(k=='post'){const x=(POSTS||[]).find(y=>y.id==+m.meta.post);if(x&&pKind(x))t=t.replace(/^공지(?=\s*:)/,'업데이트')}return t}
+const mList=c=>(MSGS||[]).filter(m=>c==1?!mIsR(m):c==2?mIsR(m):true);
+let MSEL=null;
+function inboxHTML(){const c=KCH.mail,A0=MSGS||[],L=mList(c),un=[0,1,2].map(k=>mList(k).filter(m=>!m.read).length);let b='';
+ if(MSEL)b+=`<div class="msb msx"><button class="msa${L.length&&L.every(m=>MSEL.has(m.id))?' on':''}" onclick="msAll()"><span class="msc"></span>전체 선택</button><button class="lk" onclick="msOff()">취소</button><button class="b msd"${MSEL.size?'':' disabled'} onclick="msDel()">삭제${MSEL.size?' '+MSEL.size:''}</button></div>`;
+ if(MSGS===null)b+=skMsgs();
+ else if(!L.length)b+=`<div class="card kmt">${c==1?'받은 알림이 없어요.':c==2?'받은 답장이 없어요.':'받은 메시지가 없어요.'}</div>`;
+ else b+=L.map(m=>`<button class="mgc${m.read?' rd':''}${MSEL?' msk':''}${MSEL&&MSEL.has(m.id)?' sel':''}" onclick="${MSEL?`msTog(${m.id})`:`msgOpen(${m.id})`}">${MSEL?'<span class="msc"></span>':'<span class="mgd"></span>'}<span class="mgb"><b>${esc(mTitle(m))}</b><small>${fdt(m.created_at)}</small></span>${MSEL?'':'<span class="chev">›</span>'}</button>`).join('');
+ return kPage('mail',kHead('<h2>메시지함</h2>',A0.length?[['trash','메시지 골라서 지우기','msOn()']]:[],'mail',un),b)}
+async function inbox(){MSEL=null;show(inboxHTML(),kKey('mail'));if(DB&&NICK){await msgLoad();if(CURR!='inbox'||KNV)return;show(inboxHTML(),kKey('mail'))}}
+const msDraw=()=>show(inboxHTML(),kKey('mail'));
+function msOn(){MSEL=MSEL?null:new Set();msDraw()}
+function msOff(){MSEL=null;msDraw()}
+function msTog(id){MSEL.has(id)?MSEL.delete(id):MSEL.add(id);msDraw()}
+function msAll(){const L=mList(KCH.mail),on=!L.every(m=>MSEL.has(m.id));L.forEach(m=>on?MSEL.add(m.id):MSEL.delete(m.id));msDraw()}
+async function msDel(){const ids=[...MSEL];if(!ids.length)return;if(!(await askBox(`메시지 ${ids.length}개를 지울까요?`,'지운 메시지는 다시 볼 수 없어요.','삭제')))return;
+ let n=0;for(const id of ids){try{if(DB){const {data}=await DB.rpc('msg_delete',Object.assign(whoP(),{p_id:id}));if(data!==true)continue}n++;MSGS=(MSGS||[]).filter(x=>x.id!=id)}catch(e){}}
+ MSEL=null;mailBadge();soonMsg(`${n}개를 지웠어요.`);msDraw()}
 const ICN_OK2='<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',ICN_EYE='<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M2.5 12s3.5-6.5 9.5-6.5S21.5 12 21.5 12s-3.5 6.5-9.5 6.5S2.5 12 2.5 12z"/><circle cx="12" cy="12" r="2.8"/></svg>';
 const mgK=(c,ic,lab,t,q)=>`<div class="mgk${q?' q':''}" style="--hc:${c}"><div class="mgkh"><span class="hbi">${ic}</span><b>${lab}</b></div><p>${nl(t||'')}</p></div>`;
 async function msgOpen(id){if(!MSGS)await msgLoad();const m=(MSGS||[]).find(x=>x.id==id);if(!m){soonMsg('지워진 메시지예요.');return inbox()}
  if(!m.read){m.read=true;mailBadge();if(DB)DB.rpc('msg_read',Object.assign(whoP(),{p_id:id})).then(()=>{},()=>{})}
  const k=m.meta&&m.meta.kind;let b='';
- if(k=='fb_reply')b=mgK('#c9bfae',HB_FB,'보내신 피드백',m.meta.q,1)+mgK('#9bd3ae',ICN_OK2,m.meta.answer?'답장':'수정한 내용',m.meta.answer||m.meta.changes)+(m.meta.howto?mgK('#8fb8ec',ICN_EYE,'확인하는 방법',m.meta.howto):'');
- else if(k=='fb_new')b=`<div class="mgs"><span>보낸 사람</span><p><b>${esc(m.meta.from||'익명')}</b></p></div><div class="mgs"><span>내용</span><blockquote>${nl(m.meta.q)}</blockquote></div>${OWNER?`<button class="lk" onclick="admin(1)">관리자 화면에서 보기 ›</button>`:''}`;
+ if(k=='fb_reply')b=mgK('#c9bfae',HB_FB,'보내신 피드백',fbStrip(m.meta.q),1)+mgK('#9bd3ae',ICN_OK2,m.meta.answer?'답장':'수정한 내용',m.meta.answer||m.meta.changes)+(m.meta.howto?mgK('#8fb8ec',ICN_EYE,'확인하는 방법',m.meta.howto):'');
+ else if(k=='fb_new')b=`<div class="mgs"><span>보낸 사람</span><p><b>${esc(m.meta.from||'익명')}</b></p></div><div class="mgs"><span>내용</span><blockquote>${nl(fbStrip(m.meta.q))}</blockquote></div>${OWNER?`<button class="lk" onclick="admin(1)">관리자 화면에서 보기 ›</button>`:''}`;
  else if(k=='post')b=`<button class="b pgo" onclick="postView(${+m.meta.post||0})">공지 보러 가기 ›</button>`;
  else b=`<div class="mgs"><p>${nl(m.body)}</p></div>${(m.meta&&m.meta.imgs||[]).map(i=>`<figure class="mgi skl" data-i="${esc(i)}" aria-label="사진 불러오는 중"></figure>`).join('')}`;
- show(`<div class="card mgv"><div class="mgt">${k=='notice'?'<span class="chp" style="background:#8fb8ec">알림</span>':k=='post'?'<span class="chp" style="background:#f3c969">공지</span>':k=='fb_reply'?'<span class="chp" style="background:#9bd3ae">피드백 답장</span>':k=='fb_new'?'<span class="chp" style="background:#f0a35e">새 피드백</span>':''}<small>${fdt(m.created_at)}</small></div><h2>${esc(m.title)}</h2>${b}</div><div class="row"><button class="b g mgdel" onclick="msgDel(${id})">메시지 삭제</button></div>`);mgImgs()}
+ show(`<div class="card mgv"><h2>${esc(mTitle(m))}</h2><div class="mgt">${k=='notice'?'<span class="chp" style="background:#8fb8ec">알림</span>':k=='post'?'<span class="chp" style="background:#f3c969">공지</span>':k=='fb_reply'?'<span class="chp" style="background:#9bd3ae">답장</span>':k=='fb_new'?'<span class="chp" style="background:#f0a35e">피드백</span>':''}<small>${fdt(m.created_at)}</small></div>${b}</div><div class="row"><button class="b g mgdel" onclick="msgDel(${id})">메시지 삭제</button></div>`);mgImgs()}
 const NIMC=new Map();
 async function mgImgs(){for(const f of document.querySelectorAll('.mgi[data-i]')){const i=f.dataset.i;try{let d=NIMC.get(i);if(!d){const r=await DB.rpc('notice_img',{p_id:i});if(r.error||!r.data)throw 0;d=r.data;NIMC.set(i,d)}if(!document.body.contains(f))return;f.classList.remove('skl');f.innerHTML=`<img src="${d}" alt="공지 사진" onclick="imgBig(this.src)">`}catch(e){f.classList.remove('skl');f.innerHTML='<span class="mgl">사진을 불러오지 못했어요.</span>'}}}
 function imgBig(src){const w=document.createElement('div');w.className='imz';w.innerHTML=`<img src="${src}" alt=""><button aria-label="닫기">×</button>`;w.onclick=()=>w.remove();document.body.appendChild(w)}
@@ -1077,27 +1177,40 @@ const ICN_BELL2='<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke=
 const escA=t=>esc(t||'').replace(/"/g,'&quot;');
 const pT=x=>Date.parse(x.created_at)||0,pSeen=()=>+ls('pseen')||0;
 async function postLoad(){if(!DB)return POSTS||(POSTS=[]);try{const {data,error}=await DB.rpc('post_list');if(error)throw 0;POSTS=Array.isArray(data)?data:[]}catch(e){if(!POSTS)POSTS=[]}postBadge();return POSTS}
-function postBadge(){const n=(POSTS||[]).filter(x=>pT(x)>pSeen()).length;document.querySelectorAll('.ntb .ntd').forEach(d=>d.hidden=!n)}
-async function board(keep){const seen=keep&&board.s!=null?board.s:pSeen();board.s=seen;const draw=()=>{if(CURR!='board')return;const A0=POSTS||[],nn=A0.filter(x=>pT(x)>seen).length,L=BDF?A0.filter(x=>pT(x)>seen):A0;
- let h=kHead('<h2>공지</h2>',OWNER&&DB?[['plus','공지 올리기','postForm()']]:[],[['전체','BDF=0;board(1)',!BDF],['새 공지','BDF=1;board(1)',BDF,nn||'']]);
- h+=L.map(x=>{const nw=pT(x)>seen,ni=(x.imgs||[]).length;return `<button class="pst${nw?' nw':''}" onclick="postView(${x.id})"><span class="psm">${nw?'<span class="chp pnw">NEW</span>':''}<small>${fdt(x.created_at)}</small>${ni?`<span class="psi">${ICN_PIC}${ni}</span>`:''}</span><b>${esc(x.title)}</b></button>`}).join('');
- if(POSTS==null)h+=skPosts();
- if(POSTS&&!L.length)h+=`<div class="card ntx2">${ICN_MEGA}<p>${BDF?'새로 올라온 공지가 없어요.':'새 소식이 생기면 여기에 올라와요.'}</p></div>`;
- show(h,'board')};
- draw();await postLoad();if(CURR!='board')return;draw();const mx=Math.max(0,...(POSTS||[]).map(pT));if(mx>pSeen())ls('pseen',String(mx));postBadge()}
+// 공지 종류: 내용 맨 앞 표시 [[u]] 업데이트 / [[n]] 공지 (표시가 없는 예전 글은 제목으로 판단)
+const pKind=x=>{const b=x.body||'';if(b.startsWith('[[u]]'))return 1;if(b.startsWith('[[n]]'))return 0;return /업데이트/.test(x.title||'')?1:0};
+const pBody=x=>(x.body||'').replace(/^\[\[[un]\]\]\n?/,'');
+// 새 글: 이번 업데이트 전에 이미 본 글은 빼고, 글을 직접 열어 봐야 읽은 것으로
+const pBase=()=>{let b=ls('pbase');if(!b){b=String(pSeen()||Date.now());ls('pbase',b)}return +b};
+const pRd=()=>{try{return JSON.parse(ls('pread'))||[]}catch(e){return []}};
+const pNew=x=>pT(x)>pBase()&&!pRd().includes(x.id);
+function pMark(id){const a=pRd();if(!a.includes(id)){a.push(id);ls('pread',JSON.stringify(a.slice(-300)))}postBadge()}
+function postBadge(){const n=(POSTS||[]).filter(pNew).length;document.querySelectorAll('.ntb .ntd').forEach(d=>d.hidden=!n)}
+function boardHTML(){const c=KCH.noti,A0=POSTS||[],L=A0.filter(x=>pKind(x)==c),nn=[0,1].map(k=>A0.filter(x=>pKind(x)==k&&pNew(x)).length);
+ let b='';if(POSTS==null)b=skPosts();else if(!L.length)b=`<div class="card kmt">${c?'올라온 업데이트가 없어요.':'올라온 공지가 없어요.'}</div>`;
+ else b=L.map(x=>{const nw=pNew(x),ni=(x.imgs||[]).length;return `<button class="pst${nw?' nw':''}" onclick="postView(${x.id})"><b>${esc(x.title)}</b><span class="psm">${nw?'<span class="chp pnw">NEW</span>':''}<small>${fdt(x.created_at)}</small>${ni?`<span class="psi">${ICN_PIC}${ni}</span>`:''}</span></button>`}).join('');
+ return kPage('noti',kHead('<h2>공지</h2>',OWNER&&DB?[['plus','공지 올리기','postForm()']]:[],'noti',nn),b)}
+async function board(){show(boardHTML(),kKey('noti'));await postLoad();if(CURR!='board'||KNV)return;show(boardHTML(),kKey('noti'));postBadge()}
+const ICN_MORE='<svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><circle cx="5.5" cy="12" r="1.9"/><circle cx="12" cy="12" r="1.9"/><circle cx="18.5" cy="12" r="1.9"/></svg>';
+function pvMenu(b,id){const w=b.parentElement,o=w.querySelector('.pvdd');if(o){o.remove();return}
+ w.insertAdjacentHTML('beforeend',`<div class="pvdd" role="menu"><button role="menuitem" onclick="postForm(${id})">고치기</button><button role="menuitem" class="dng" onclick="this.parentElement.remove();postDel(${id})">지우기</button></div>`);
+ setTimeout(()=>document.addEventListener('click',function f(e){if(!e.target.closest('.pvdd,.pvm')){const d=document.querySelector('.pvdd');if(d)d.remove()}document.removeEventListener('click',f,true)},true))}
 async function postView(id){if(!POSTS)await postLoad();const x=(POSTS||[]).find(y=>y.id==id);if(!x){soonMsg('지워진 공지예요.');return board()}
- show(`<div class="card mgv pvw"><div class="mgt"><span class="chp" style="background:#f3c969">공지</span><small>${fdt(x.created_at)}${x.updated_at?' · 수정됨':''}</small></div><h2>${esc(x.title)}</h2>${x.body?`<div class="mgs"><p>${nl(x.body)}</p></div>`:''}${(x.imgs||[]).map(i=>`<figure class="mgi skl" data-i="${escA(i)}" aria-label="사진 불러오는 중"></figure>`).join('')}</div>${OWNER&&DB?`<div class="qk"><button onclick="postForm(${x.id})">고치기</button><button class="dng" onclick="postDel(${x.id})">지우기</button></div>`:''}`);mgImgs()}
-function postForm(id){const x=id?(POSTS||[]).find(y=>y.id==id):null;PEDIT=x?x.id:null;PIMG=x?(x.imgs||[]).map(i=>({id:i})):[];
- show(`<h2>${x?'공지 고치기':'공지 올리기'}</h2><div class="card"><input type="text" id="pt" maxlength="80" placeholder="제목" value="${x?escA(x.title):''}"><textarea id="pb" maxlength="4000" placeholder="내용" style="margin-top:8px;min-height:180px">${x?esc(x.body):''}</textarea><div class="nim2" id="pimg"></div><label class="nadd" for="pti">${ICN_PIC}<span>사진 추가</span><small>최대 ${PMAX}장</small></label><input type="file" id="pti" accept="image/*" multiple hidden onchange="pImgAdd(this)"></div><label class="pnt"><input type="checkbox" id="pnf"${x?'':' checked'}><span><b>모두에게 알림 보내기</b></span></label><div class="row"><button class="b" id="pts" onclick="postSave()">${x?'고친 내용 저장':'공지 올리기'}</button></div>`);pImgDraw()}
+ pMark(x.id);const pb=pBody(x),im=(x.imgs||[]).map(i=>`<figure class="mgi skl" data-i="${escA(i)}" aria-label="사진 불러오는 중"></figure>`).join('');
+ show(`<div class="pvh"><h2>${esc(x.title)}</h2>${OWNER&&DB?`<button class="pvm" aria-label="더보기" onclick="pvMenu(this,${x.id})">${ICN_MORE}</button>`:''}</div>${pb||im?`<div class="card mgv pvw">${pb?`<div class="mgs"><p>${nl(pb)}</p></div>`:''}${im}</div>`:''}<p class="pvd">${pKind(x)?'업데이트':'공지'} · ${fdt(x.created_at)}${x.updated_at?' · 수정됨':''}</p>`);mgImgs()}
+let PKIND=0;
+function pkTo(k){PKIND=k;document.querySelectorAll('.pkg button').forEach(b=>b.classList.toggle('on',+b.dataset.k==k))}
+function postForm(id){const x=id?(POSTS||[]).find(y=>y.id==id):null;PEDIT=x?x.id:null;PIMG=x?(x.imgs||[]).map(i=>({id:i})):[];PKIND=x?pKind(x):KCH.noti;
+ show(`<h2>${x?'공지 고치기':'공지 올리기'}</h2><div class="ntg pkg" role="tablist">${[[0,'공지'],[1,'업데이트']].map(([k,l])=>`<button data-k="${k}" class="${k==PKIND?'on':''}" onclick="pkTo(${k})">${l}</button>`).join('')}</div><div class="card"><input type="text" id="pt" maxlength="80" placeholder="제목" value="${x?escA(x.title):''}"><textarea id="pb" maxlength="4000" placeholder="내용" style="margin-top:8px;min-height:180px">${x?esc(pBody(x)):''}</textarea><div class="nim2" id="pimg"></div><label class="nadd" for="pti">${ICN_PIC}<span>사진 추가</span><small>최대 ${PMAX}장</small></label><input type="file" id="pti" accept="image/*" multiple hidden onchange="pImgAdd(this)"></div><label class="pnt"><input type="checkbox" id="pnf"${x?'':' checked'}><span><b>모두에게 알림 보내기</b></span></label><div class="row"><button class="b" id="pts" onclick="postSave()">${x?'고친 내용 저장':'공지 올리기'}</button></div>`);pImgDraw()}
 async function pImgAdd(inp){const fs=[...inp.files];inp.value='';for(const f of fs){if(PIMG.length>=PMAX){soonMsg(`사진은 ${PMAX}장까지 올릴 수 있어요.`);break}try{PIMG.push({d:await nImgShrink(f)})}catch(e){soonMsg('이 사진은 열 수 없어요.')}}pImgDraw()}
 function pImgDraw(){const w=document.getElementById('pimg');if(!w)return;w.innerHTML=PIMG.map((x,i)=>`<div><img ${x.d?`src="${x.d}"`:`data-pi="${escA(x.id)}"`} alt=""><button aria-label="사진 빼기" onclick="PIMG.splice(${i},1);pImgDraw()">×</button></div>`).join('');const a=document.querySelector('label[for=pti]');if(a)a.style.display=PIMG.length>=PMAX?'none':'';
  w.querySelectorAll('img[data-pi]').forEach(async im=>{const i=im.dataset.pi;try{let d=NIMC.get(i);if(!d){const r=await DB.rpc('notice_img',{p_id:i});if(r.error||!r.data)throw 0;d=r.data;NIMC.set(i,d)}im.src=d}catch(e){}})}
 async function postSave(){const t=document.getElementById('pt').value.trim(),b=document.getElementById('pb').value.trim(),nf=document.getElementById('pnf').checked;if(!t)return soonMsg('제목을 써 주세요.');
- if(!(await askBox(PEDIT?'고친 내용을 저장할까요?':'공지를 올릴까요?',`<b>${esc(t)}</b>${PIMG.length?` · 사진 ${PIMG.length}장`:''}<br>${nf?'모두에게 알림도 보내요.':'알림은 보내지 않아요.'}`,PEDIT?'저장':'올리기')))return;
+ if(!(await askBox(PEDIT?'고친 내용을 저장할까요?':(PKIND?'업데이트를':'공지를')+' 올릴까요?',`<b>${esc(t)}</b>${PIMG.length?` · 사진 ${PIMG.length}장`:''}<br>${nf?'모두에게 알림도 보내요.':'알림은 보내지 않아요.'}`,PEDIT?'저장':'올리기')))return;
  const sb=document.getElementById('pts'),lb=sb?sb.textContent:'',re=()=>{if(sb){sb.disabled=false;sb.textContent=lb}};if(sb){sb.disabled=true;sb.textContent=PIMG.some(x=>x.d)?'사진 올리는 중…':'올리는 중…'}
  const ids=[];try{for(const x of PIMG){if(x.id){ids.push(x.id);continue}const q=await DB.rpc('admin_notice_img',{p_key:AK(),p_data:x.d});if(q.error||!q.data)throw 0;x.id=q.data;NIMC.set(q.data,x.d);delete x.d;ids.push(q.data)}}catch(e){re();return soonMsg('사진을 올리지 못했어요. 「공지게시판.sql」을 먼저 실행해 주세요.')}
- try{const r=await DB.rpc('admin_post_save',{p_key:AK(),p_id:PEDIT,p_title:t,p_body:b,p_imgs:ids,p_notify:nf});if(r.error||!r.data)throw 0;
-  soonMsg(PEDIT?'고친 내용을 저장했어요.':'공지를 올렸어요.');await postLoad();ls('pseen',String(Math.max(pSeen(),...POSTS.map(pT))));postBadge();if(PEDIT)postView(r.data);else board()}catch(e){re();soonMsg('올리지 못했어요. 「공지게시판.sql」을 먼저 실행해 주세요.')}}
+ try{const r=await DB.rpc('admin_post_save',{p_key:AK(),p_id:PEDIT,p_title:t,p_body:(PKIND?'[[u]]':'[[n]]')+b,p_imgs:ids,p_notify:nf});if(r.error||!r.data)throw 0;
+  soonMsg(PEDIT?'고친 내용을 저장했어요.':'공지를 올렸어요.');await postLoad();pMark(r.data);KCH.noti=PKIND;if(PEDIT)postView(r.data);else board()}catch(e){re();soonMsg('올리지 못했어요. 「공지게시판.sql」을 먼저 실행해 주세요.')}}
 async function postDel(id){if(!(await askBox('공지를 지울까요?','지운 공지는 되돌릴 수 없어요. 사진도 함께 지워져요.','삭제')))return;
  try{const r=await DB.rpc('admin_post_del',{p_key:AK(),p_id:id});if(r.error||r.data!==true)throw 0;POSTS=(POSTS||[]).filter(x=>x.id!=id);soonMsg('공지를 지웠어요.');board()}catch(e){soonMsg('지우지 못했어요. 다시 시도해 주세요.')}}
 
@@ -1107,15 +1220,15 @@ function guide(){const S=(n,t,body,img)=>`<section class="gds" id="gd${n}"><div 
  h+=`<nav class="gdx">${['시작하기','앱 설치','과목 고르기','공부하기','문제 풀기','모의고사','오답노트','통계·달력','공지','메시지함·알림','피드백','프로필'].map((t,i)=>`<a href="#gd${i+1}" onclick="event.preventDefault();document.getElementById('gd${i+1}').scrollIntoView({behavior:'smooth',block:'start'})">${i+1}. ${t}</a>`).join('')}</nav>`;
  h+=S(1,'닉네임으로 시작하기','<p>닉네임과 <b>숫자 4자리 비밀번호</b>를 정해요. 다른 폰에서도 같은 닉네임·비밀번호로 들어오면 기록이 그대로 이어져요.</p><p class="gdw">비밀번호를 잊으면 기록을 찾을 수 없어요.</p>','g_start');
  h+=S(2,'앱으로 설치하기',`<p>홈 화면에 추가하면 앱처럼 쓸 수 있어요. <b>전체 통계, 공부 달력, 폰 알림</b>은 앱에서만 돼요.</p><ul><li>아이폰: 사파리 <b>공유</b> → <b>홈 화면에 추가</b></li><li>안드로이드: 크롬 메뉴 <b>⋮</b> → <b>앱 설치</b></li></ul>${isApp()?'<p class="gdok">지금 앱으로 쓰고 있어요 👍</p>':'<button class="b gdbt" onclick="installApp()">앱으로 설치하기</button>'}`);
- h+=S(3,'과목 고르기','<p>풍산 학습 첫 화면에서 과목을 눌러요. 진행도 막대가 있는 과목이 열린 과목이고, <b>준비 중</b> 과목은 곧 열려요.</p><p>화면 맨 아래 탭바: <b>집</b>(학습) · <b>확성기</b>(공지) · <b>편지봉투</b>(메시지함) · <b>막대</b>(전체 통계) · <b>사람</b>(프로필)</p>','g_subj');
+ h+=S(3,'과목 고르기','<p>풍산 학습 첫 화면에서 과목을 눌러요. 진행도 막대가 있는 과목이 열린 과목이고, <b>준비 중</b> 과목은 곧 열려요.</p><p>화면 맨 아래 탭바: <b>집</b>(학습) · <b>확성기</b>(공지) · <b>편지봉투</b>(메시지함) · <b>막대</b>(전체 통계) · <b>사람</b>(프로필)</p><p>탭마다 위에 칩(내 과목·다른 과목·전체 등)이 있어요. 칩을 누르거나 화면을 옆으로 밀면 다음 칩으로, 마지막 칩에서 더 밀면 옆 탭으로 넘어가요.</p>','g_subj');
  h+=S(4,'공부하기 (필기)','<p>과목에 들어가 <b>공부하기</b>를 누르면 교과서 핵심을 정리한 필기가 나와요. <b>형광펜</b>은 꼭 외울 내용, 그림·지도·표는 교과서 자료를 다시 정리한 거예요.</p><ul><li><b>교과서 원문 보기</b>: 그 단원의 교과서 쪽을 바로 볼 수 있어요.</li><li>필기 맨 아래 버튼으로 <b>그 단원 문제</b>를 바로 풀 수 있어요.</li><li>맨 위 <b>처음부터 공부하기</b> 카드는 이어서 볼 단원을 알려 줘요.</li></ul>',['g_learn','g_note']);
  h+=S(5,'문제 풀기','<p><b>문제 풀기</b>에서 대단원을 펼쳐 중단원을 골라요. 중단원마다 <b>기본 문제</b>와 자료를 읽고 푸는 <b>실전 문제</b>가 있어요.</p><p>다 풀고 <b>제출</b>하면 정답과 해설이 나와요. <b>처음 푼 결과만</b> 진행도와 통계에 들어가요.</p>','g_quiz');
  h+=S(6,'모의고사','<p>과목마다 <b>5회분</b>이 있어요. 회차당 <b>25문항 내외 · 50분 · 100점 만점</b>이고, 학력평가처럼 자료·사례·&lt;보기&gt;를 분석하는 문제예요.</p><ul><li>그 과목 <b>문제를 모두 풀면</b> 열려요. (11월 23일부터는 모두 열려요.)</li><li>위쪽에 <b>남은 시간</b>이 나오고, 50분을 넘기면 초과 시간이 표시돼요. 제출하면 점수와 오답이 바로 나와요.</li><li><b>모의고사 통계</b>에서 회차별 점수를 볼 수 있어요.</li></ul>','g_mock');
  h+=S(7,'오답노트','<p>틀린 문제는 과목 화면의 <b>오답노트</b>에 단원별로 모여요. 다시 풀어서 맞히면 <b>고친 오답</b>으로 바뀌어요. <b>취약</b> 표시가 붙은 유형은 오답부터 고치는 게 좋아요.</p>','g_wrong');
- h+=S(8,'전체 통계 · 공부 달력','<p>아래 탭바의 <b>막대</b>(전체 통계)에서 총 공부 시간, 공부한 날, 과목별 정답률을 볼 수 있어요. <b>달력으로 보기</b>를 누르면 날짜별 공부 시간이 나와요. (앱 전용)</p>','g_stats');
- h+=S(9,'공지','<p>맨 위 <b>공지</b> 버튼에서 새 과목·업데이트·시험 안내를 모아 볼 수 있어요. 새 공지가 올라오면 버튼에 <b class="gdr">빨간 점</b>이 생겨요.</p>','g_board');
- h+=S(10,'메시지함 · 알림','<p><b>편지봉투</b>를 누르면 메시지함이에요. 새 공지 알림, 피드백 답장, 관리자가 보낸 알림이 와요. 숫자는 읽지 않은 메시지 수예요.</p><p>프로필에서 <b>폰 알림</b>을 켜 두면 메시지가 올 때 폰으로도 알려 줘요.</p>','g_inbox');
- h+=S(11,'피드백 보내기','<p>정답이 이상하거나 불편한 점, 추가했으면 하는 과목이 있으면 프로필 오른쪽 위 <b>말풍선</b>으로 보내 주세요. 고쳐지면 메시지함으로 답장이 와요.</p>');
+ h+=S(8,'전체 통계 · 공부 달력','<p>아래 탭바의 <b>막대</b>(전체 통계)에서 총 공부 시간, 공부한 날, 약점 유형을 볼 수 있어요. <b>과목별</b> 칩에서 과목마다 자세히, <b>달력</b> 칩에서 날짜별 공부 시간을 봐요. (앱 전용)</p>','g_stats');
+ h+=S(9,'공지','<p>아래 탭바의 <b>확성기</b>(공지)에서 시험 안내는 <b>공지</b> 칩, 앱 소식은 <b>업데이트</b> 칩에 모여 있어요. 아직 안 열어 본 글이 있으면 <b class="gdr">빨간 점</b>이 생겨요.</p>','g_board');
+ h+=S(10,'메시지함 · 알림','<p><b>편지봉투</b>를 누르면 메시지함이에요. 새 공지 알림, 피드백 답장, 관리자가 보낸 알림이 와요. 숫자는 읽지 않은 메시지 수예요. 휴지통을 누르면 골라서 지울 수 있어요.</p><p>프로필에서 <b>폰 알림</b>을 켜 두면 메시지가 올 때 폰으로도 알려 줘요.</p>','g_inbox');
+ h+=S(11,'피드백 보내기','<p>정답이 이상하거나 불편한 점, 추가했으면 하는 과목이 있으면 프로필 오른쪽 위 <b>말풍선</b>으로 유형을 골라 보내 주세요. 고쳐지면 메시지함으로 답장이 와요.</p>');
  h+=S(12,'프로필','<p>아래 탭바의 <b>사람</b>(프로필)에서 닉네임·비밀번호를 바꾸고 폰 알림을 켤 수 있어요. 오른쪽 위 <b>말풍선</b>은 피드백 보내기, <b>책</b>은 이 사용법이에요.</p>','g_profile');
  h+=`<div class="row"><button class="b" onclick="subjects()">학습하러 가기</button></div>`;show(h)}
 
@@ -1127,18 +1240,19 @@ const FBR=[['qerr',/정답|오답|해설|답이|답을|채점|틀렸|틀린|오�
  ['ui',/디자인|색|글씨|글자|폰트|버튼|화면|불편|크기|작아|커서|안\s?보|보기\s?힘|레이아웃|배치|스크롤|다크|눈/],
  ['req',/추가|열어|만들어|생겼으면|있었으면|원해|해\s?주세요|해줘|늘려|더\s?많|과목|단원|기능|넣어/],
  ['good',/좋|최고|감사|고마|도움|짱|굿|편해|유용|재밌|재미|👍|❤|ㄱㅅ|잘\s?쓰/]];
-const fbCls=t=>{for(const [k,r] of FBR)if(r.test(t||''))return k;return 'etc'};
+const fbStrip=t=>(t||'').replace(/^\[\[k:\w+\]\]/,'');
+const fbCls=t=>{const m=/^\[\[k:(\w+)\]\]/.exec(t||'');if(m&&FBT.some(x=>x[0]==m[1]))return m[1];for(const [k,r] of FBR)if(r.test(t||''))return k;return 'etc'};
 const FT=k=>FBT.find(x=>x[0]==k);
 const allQ=()=>{const m=new Map();[].concat(...PASS.map(p=>p.Q)).concat(...Object.keys(CUR).map(n=>socQ(n))).forEach(q=>m.set(q.id,q));return [...m.values()]};
 function achX(n,X){const o=SUBJ.flat().find(x=>x[0]==n)[2];const qs=isSoc(n)?socQ(n):[];return qs.length?Math.round(st(qs,X).c/qs.length*100):0}
 async function admLoad(force){if(!force&&ADM.length+FB.length&&admLoad.ok)return true;
- if(SUBMODE){try{const [a,b]=await Promise.all([DB.rpc('sub_players',{p_key:SK()}),DB.rpc('sub_feedback',{p_key:SK()})]);if(a.error||!a.data)throw 0;ADM=a.data.map(x=>({nick:'',R:okDV(x),t:0}));FB=(b.data||[]).map(x=>({nick:x.nick||'익명',text:x.body,t:Date.parse(x.created_at),k:fbCls(x.body)}));admLoad.ok=true;return true}catch(e){return false}}
+ if(SUBMODE){try{const [a,b]=await Promise.all([DB.rpc('sub_players',{p_key:SK()}),DB.rpc('sub_feedback',{p_key:SK()})]);if(a.error||!a.data)throw 0;ADM=a.data.map(x=>({nick:'',R:okDV(x),t:0}));FB=(b.data||[]).map(x=>({nick:x.nick||'익명',text:fbStrip(x.body),t:Date.parse(x.created_at),k:fbCls(x.body)}));admLoad.ok=true;return true}catch(e){return false}}
  try{const [a,b]=await Promise.all([DB.rpc('admin_players',{p_key:AK()}),DB.rpc('admin_feedback',{p_key:AK()})]);if(a.error||!a.data)throw 0;
-  ADM=a.data.filter(x=>x.nick!==ADM_NICK).map(x=>({nick:x.nick,R:okDV(x.data),t:Date.parse(x.updated_at)}));FB=(b.data||[]).map(x=>({id:x.id,st:x.status||'new',nick:x.nick||'익명',text:x.body,t:Date.parse(x.created_at),k:fbCls(x.body)}));admLoad.ok=true;return true}catch(e){return false}}
+  ADM=a.data.filter(x=>x.nick!==ADM_NICK).map(x=>({nick:x.nick,R:okDV(x.data),t:Date.parse(x.updated_at)}));FB=(b.data||[]).map(x=>({id:x.id,st:x.status||'new',nick:x.nick||'익명',text:fbStrip(x.body),t:Date.parse(x.created_at),k:fbCls(x.body)}));admLoad.ok=true;return true}catch(e){return false}}
 const chip=k=>{const t=FT(k);return `<span class="chp" style="background:${t[2]}">${t[1]}</span>`};
 const fbCard=x=>`<div class="card fbc${x.st=='done'?' fdn':''}"><div class="fbh">${chip(x.k)}<b>${esc(x.nick)}</b>${x.id?`<span class="fid">#${x.id}</span>`:''}${x.st=='done'?'<span class="chp" style="background:#9bd3ae">답장 완료</span>':''}<span class="mut">${fd(x.t)}</span>${x.id&&OWNER?`<button class="fbrb" onclick="event.stopPropagation();fbReply(${x.id})">${x.st=='done'?'다시 답장':'답장'}</button>`:''}</div><div class="fbt">${esc(x.text||'')}</div></div>`;
 async function fbReply(id){if(!(await admLoad()))return admin();const x=FB.find(f=>f.id==id);if(!x)return admin();
- show(`<h2>피드백 답장</h2><p class="tag"><b>${esc(x.nick)}</b> 님의 메시지함으로 보내져요.</p><div class="card fbc"><div class="fbh">${chip(x.k)}<b>${esc(x.nick)}</b><span class="fid">#${x.id}</span><span class="mut">${fd(x.t)}</span></div><div class="fbt">${esc(x.text||'')}</div></div><div class="card"><textarea id="frt" maxlength="2000" placeholder="답장 내용" style="min-height:150px"></textarea></div><div class="row"><button class="b" id="frs" onclick="fbReplySend(${x.id})">답장 보내기</button></div>`)}
+ show(`<h2>피드백 답장</h2><div class="card fbc"><div class="fbh">${chip(x.k)}<b>${esc(x.nick)}</b><span class="fid">#${x.id}</span><span class="mut">${fd(x.t)}</span></div><div class="fbt">${esc(x.text||'')}</div></div><div class="card"><textarea id="frt" maxlength="2000" placeholder="답장 내용" style="min-height:150px"></textarea></div><div class="row"><button class="b" id="frs" onclick="fbReplySend(${x.id})">답장 보내기</button></div>`)}
 async function fbReplySend(id){const x=FB.find(f=>f.id==id),t=(document.getElementById('frt').value||'').trim();if(!x)return;if(!t)return soonMsg('답장 내용을 써 주세요.');
  if(x.nick=='익명')return soonMsg('익명 피드백이라 답장을 보낼 수 없어요.');
  if(!(await askBox('답장을 보낼까요?',`<b>${esc(x.nick)}</b> 님에게 보내져요.`,'보내기')))return;
@@ -1173,20 +1287,22 @@ async function noticeSend(){const t=document.getElementById('ntt').value.trim(),
  const sb=document.getElementById('nts');if(sb){sb.disabled=true;sb.textContent='보내는 중…'}
  try{let r=await DB.rpc('admin_notice_to',Object.assign({p_key:AK(),p_title:t,p_body:b,p_to:NTO,p_nicks:NTO=='some'?[...NTS]:null}));
   if(r.error&&NTO=='all')r=await DB.rpc('admin_notice',{p_key:AK(),p_title:t,p_body:b});
-  if(r.error||r.data<0)throw 0;soonMsg(`${r.data}명에게 보냈어요.`);admin()}catch(e){if(sb)ntBtn();soonMsg('보내지 못했어요. 서버 설정을 확인해 주세요.')}}
+  if(r.error||r.data<0)throw 0;soonMsg(`${r.data}명에게 보냈어요.`);goUp()}catch(e){if(sb)ntBtn();soonMsg('보내지 못했어요. 서버 설정을 확인해 주세요.')}}
 function wrongAna(){let h='';
  // ---- 오답 분석 ----
  const Q=allQ(),tg={};Q.forEach(q=>ADM.forEach(r=>{const x=(r.R||{})[q.id];if(x){const t=tg[q.g]=tg[q.g]||{n:0,w:0};t.n++;if(!x.ok)t.w++}}));
- const ar=Object.keys(tg).filter(k=>tg[k].w).sort((a,b)=>tg[b].w/tg[b].n-tg[a].w/tg[a].n||tg[b].w-tg[a].w).slice(0,6);
+ const ar=Object.keys(tg).filter(k=>tg[k].w).sort((a,b)=>tg[b].w/tg[b].n-tg[a].w/tg[a].n||tg[b].w-tg[a].w).slice(0,4);
  h+=`<h3 class="sec">오답 분석</h3><div class="sbt">많이 틀리는 영역</div>`;
  h+=ar.length?`<div class="card">${ar.map(k=>{const r=Math.round(tg[k].w/tg[k].n*100);return `<div class="arw"><div class="al"><span>${esc(k)}</span><b class="no-t">${r}%</b></div><div class="bar"><i data-w="${r}" style="width:0;background:#e9978f"></i></div><div class="mut" style="font-size:12px">${tg[k].w}/${tg[k].n}번 틀림</div></div>`}).join('')}</div>`:'<div class="card mut">아직 틀린 기록이 없어요.</div>';
- const ms=Q.map(q=>{let n=0,w=0;ADM.forEach(r=>{const x=(r.R||{})[q.id];if(x){n++;if(!x.ok)w++}});return{q,n,w}}).filter(x=>x.w).sort((a,b)=>b.w/b.n-a.w/a.n||b.w-a.w).slice(0,5);
+ const ms=Q.map(q=>{let n=0,w=0;ADM.forEach(r=>{const x=(r.R||{})[q.id];if(x){n++;if(!x.ok)w++}});return{q,n,w}}).filter(x=>x.w).sort((a,b)=>b.w/b.n-a.w/a.n||b.w-a.w).slice(0,4);
  if(ms.length){h+=`<div class="sbt">많이 틀린 문제</div>`;ms.forEach(x=>{h+=`<div class="card"><div class="tag">${esc(x.q.g||'')}</div><div style="white-space:pre-line;font-size:15px">${esc(x.q.q.slice(0,90))}${x.q.q.length>90?'…':''}</div><div class="no-t" style="margin-top:4px">오답률 ${Math.round(x.w/x.n*100)}% <span class="mut">(${x.w}/${x.n}명)</span></div></div>`})}
  return h}
-async function subAdmin(force){if(!(ADM.length+FB.length&&admLoad.ok))show(skAdmin());if(!(await admLoad(force)))return show('<h2>관리자</h2><p>불러오지 못했어요.</p>');
- let h=`<h2>관리자</h2><p class="tag">보조 관리자 · 피드백 ${FB.length}개</p>`;
- h+=`<h3 class="sec">피드백 보기</h3><div class="hub">${hbBtn('#c9a7e8',ICN_GRID,'유형별 보기','','fbTypes()')}${hbBtn('#9bd3ae',ICN_PPL,'개인별 보기','','fbPeople()')}</div>`;
- h+=wrongAna();show(h);animBars()}
+function subAdminBody(){return `<h3 class="sec">피드백 보기</h3><div class="hub">${hbBtn('#c9a7e8',ICN_GRID,'유형별 보기','','fbTypes()')}${hbBtn('#9bd3ae',ICN_PPL,'개인별 보기','','fbPeople()')}</div>`+wrongAna()}
+// 프로필 「관리자」 칩 화면: 처음엔 스켈레톤, 불러오면 다시 그림
+function admBody(){if(!DB)return '<div class="card kmt">서버에 연결되지 않았어요.</div>';
+ if(!admLoad.ok){if(!admBody.ld){admBody.ld=1;admLoad(admBody.f).then(ok=>{admBody.f=0;if(!ok)admBody.ld=2;if(CURR=='profile'&&!KNV&&kChips('pf')[KCH.pf]=='관리자'){show(pfHTML(),kKey('pf'));animBars()}})}
+  return admBody.ld==2?'<div class="card kmt">불러오지 못했어요.</div>':skAdmin(0)}
+ return SUBMODE?subAdminBody():ownAdminBody()}
 const ICN_GRID='<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><rect x="4" y="4" width="7" height="7" rx="1.6"/><rect x="13" y="4" width="7" height="7" rx="1.6"/><rect x="4" y="13" width="7" height="7" rx="1.6"/><rect x="13" y="13" width="7" height="7" rx="1.6"/></svg>',
  ICN_PPL='<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8.5" r="3.2"/><path d="M3.5 19c.6-3.2 2.8-5 5.5-5s4.9 1.8 5.5 5"/><circle cx="17" cy="9.5" r="2.5"/><path d="M15.8 14.3c2.4-.2 4.2 1.4 4.7 4.2"/></svg>',
  ICN_CLIP='<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"><rect x="6" y="5" width="12" height="15.5" rx="2"/><path d="M9.5 3.5h5v3h-5z"/><path d="M9 11h6M9 14.5h4"/></svg>';
@@ -1194,30 +1310,26 @@ const AVC=['#8fb8ec','#9bd3ae','#f3c969','#f0a35e','#c9a7e8','#e9978f','#7fcfc6'
 const avc=n=>AVC[[...n].reduce((a,c)=>a+c.charCodeAt(0),0)%AVC.length];
 const hbBtn=(c,ic,t,sm,on)=>`<button class="hb" style="--hc:${c}" onclick="${on}"><i class="hbi">${ic}</i><span><b>${t}</b>${sm?`<small>${sm}</small>`:''}</span><span class="chev">›</span></button>`;
 let SUBS=null;
-async function subList(){let ok=true;try{const {data,error}=await DB.rpc('admin_subs',{p_key:AK()});if(error||!Array.isArray(data))throw 0;const m={};data.forEach(x=>{if(x.nick)m[x.nick]=x.slot});SUBS=m}catch(e){ok=false}const w=document.getElementById('ppl');if(w){w.innerHTML=pplHTML();const n=document.getElementById('sbn');if(n)n.hidden=ok}}
+async function subList(){let ok=true;try{const {data,error}=await DB.rpc('admin_subs',{p_key:AK()});if(error||!Array.isArray(data))throw 0;const m={};data.forEach(x=>{if(x.nick)m[x.nick]=x.slot});SUBS=m}catch(e){ok=false}const w=document.getElementById('ppl');if(w){w.innerHTML=pplHTML();}}
 function pplHTML(){const sb=SUBS||{};return ADM.filter(r=>r.nick!==ADM_NICK).sort((a,b)=>((b.nick in sb)-(a.nick in sb))||(b.t-a.t)).map(r=>`<button onclick="adminOne(decodeURIComponent('${encodeURIComponent(r.nick)}'))"><i class="av" style="--avc:${avc(r.nick)}">${esc([...r.nick][0]||'?')}</i><span><b>${esc(r.nick)}${r.nick in sb?`<em class="rol">관리자·${sb[r.nick]}</em>`:''}</b><small>${r.t?fd(r.t):'기록 없음'}</small></span></button>`).join('')}
-async function admin(force){if(SUBMODE)return subAdmin(force);if(!(ADM.length+FB.length&&admLoad.ok))show(skAdmin());if(!(await admLoad(force)))return show('<h2>관리자</h2><p>불러오지 못했어요.</p>');if(!POSTS)postLoad().then(()=>{if(CURR=='admin'){const e=document.getElementById('apn');if(e)e.textContent=POSTS.length}});
+function admin(force){const i=kIdx('pf','관리자');if(i>=0)KCH.pf=i;if(force){admLoad.ok=false;admBody.ld=0;admBody.f=1}return profile()}
+function ownAdminBody(){if(!POSTS&&!ownAdminBody.pl){ownAdminBody.pl=1;postLoad()}
  const pend=FB.filter(x=>x.st!='done').length,AP=ADM.filter(r=>r.nick!==ADM_NICK),act=AP.filter(r=>Date.now()-r.t<7*864e5).length;
- let h=`<h2>관리자</h2><p class="tag">나만 볼 수 있는 화면이에요.</p>`;
- h+=`<div class="ast"><div><b>${AP.length}</b><span>참여자</span></div><div><b>${act}</b><span>이번 주 활동</span></div><div class="${pend?'hot':''}"><b>${pend}</b><span>답장 대기</span></div><div><b id="apn">${POSTS?POSTS.length:'-'}</b><span>공지</span></div></div>`;
- h+=`<h3 class="sec">소식 전하기</h3><div class="hub hub1">${hbBtn('#8fb8ec',ICN_BELL2,'알림 보내기','','noticeForm()')}${hbBtn('#e3b55a',ICN_MEGA,'공지 올리기','','postForm()')}</div>`;
- // ---- 의견 보기 ----
+ let h=`<div class="ast"><div><b>${AP.length}</b><span>참여자</span></div><div><b>${act}</b><span>이번 주 활동</span></div><div class="${pend?'hot':''}"><b>${pend}</b><span>답장 대기</span></div></div>`;
+ h+=`<h3 class="sec">소식 전하기</h3><div class="hub">${hbBtn('#8fb8ec',ICN_BELL2,'알림 보내기','','noticeForm()')}${hbBtn('#e3b55a',ICN_MEGA,'공지 올리기','','postForm()')}</div>`;
  const now=Date.now(),rec=FB.filter(x=>now-x.t<14*864e5),base=rec.length?rec:FB,cnt={};FBT.forEach(t=>cnt[t[0]]=0);base.forEach(x=>cnt[x.k]++);
  const urg=cnt.bug+cnt.qerr,imp=cnt.ui+cnt.req;
- const [sl,sc,sd]=!base.length?['의견 없음','#c9c2b3','아직 들어온 의견이 없어요.']:urg>=3?['수정 시급','#e05a4f',`오류 신고가 ${urg}건 있어요. 먼저 확인해 주세요.`]:urg>=1?['수정 의견 있음','#f0a35e',`오류 신고 ${urg}건을 확인해 보세요.`]:imp>=3?['개선 요청 많음','#e6b93f',`디자인·추가 요청이 ${imp}건 모였어요.`]:['양호','#5fb27c','큰 문제 없이 잘 쓰이고 있어요.'];
- h+=`<h3 class="sec">피드백 보기</h3><div class="card"><div class="evh"><span class="evd" style="background:${sc}"></span><b style="color:${sc}">${sl}</b><span class="mut" style="margin-left:auto;font-size:13px">${rec.length?'최근 2주':'전체'} ${base.length}건</span></div><div class="mut" style="font-size:14px;margin:4px 0 10px">${sd}</div>
-  <div class="seg">${base.length?FBT.filter(t=>cnt[t[0]]).map(t=>`<i style="flex:${cnt[t[0]]};background:${t[2]}"></i>`).join(''):'<i style="flex:1;background:var(--bd)"></i>'}</div>
+ const [sl,sc]=!base.length?['의견 없음','#c9c2b3']:urg>=3?['수정 시급','#e05a4f']:urg>=1?['수정 의견 있음','#f0a35e']:imp>=3?['개선 요청 많음','#e6b93f']:['양호','#5fb27c'];
+ h+=`<h3 class="sec">피드백 보기</h3><div class="card"><div class="evh"><span class="evd" style="background:${sc}"></span><b style="color:${sc}">${sl}</b><span class="mut" style="margin-left:auto;font-size:13px">${rec.length?'최근 2주':'전체'} ${base.length}건</span></div>
+  <div class="seg" style="margin-top:10px">${base.length?FBT.filter(t=>cnt[t[0]]).map(t=>`<i style="flex:${cnt[t[0]]};background:${t[2]}"></i>`).join(''):'<i style="flex:1;background:var(--bd)"></i>'}</div>
   <div class="lgd">${FBT.filter(t=>cnt[t[0]]).map(t=>`<span><i style="background:${t[2]}"></i>${t[1]} ${cnt[t[0]]}</span>`).join('')}</div></div>`;
  const top=FB.filter(x=>FT(x.k)[3]>=2).sort((a,b)=>FT(b.k)[3]-FT(a.k)[3]||b.t-a.t).slice(0,3);
  h+=`<div class="sbt">가장 시급한 것</div>`+(top.length?top.map(fbCard).join(''):'<div class="card mut">지금 급하게 고칠 의견은 없어요.</div>');
- h+=`<div class="hub">${hbBtn('#c9a7e8',ICN_GRID,'유형별 보기','','fbTypes()')}${hbBtn('#9bd3ae',ICN_PPL,'개인별 보기','','fbPeople()')}</div><div class="hub hub1">${hbBtn('#f0a35e',ICN_CLIP,'클로드에게 보낼 피드백 복사',pend?`답장하지 않은 피드백 ${pend}개`:'답장할 피드백이 없어요','fbCopy()')}</div>`;
- // ---- 개인별 통계 ----
- h+=`<h3 class="sec">개인별 통계</h3><p class="mut" id="sbn" hidden style="font-size:12.5px;margin:-4px 2px 8px">보조 관리자 표시(관리자·번호)는 「3_보조관리자_20명.sql」을 실행하면 나와요.</p>`+(ADM.length?`<div class="ppl" id="ppl">${pplHTML()}</div>`:'<div class="card mut">아직 참여한 사람이 없어요.</div>');subList();
- h+=wrongAna();
- h+=``;
- show(h);animBars()}
+ h+=`<div class="hub">${hbBtn('#c9a7e8',ICN_GRID,'유형별 보기','','fbTypes()')}${hbBtn('#9bd3ae',ICN_PPL,'개인별 보기','','fbPeople()')}</div><div class="hub hub1">${hbBtn('#f0a35e',ICN_CLIP,'클로드에게 보낼 피드백 복사','','fbCopy()')}</div>`;
+ h+=`<h3 class="sec">개인별 관리</h3>`+(ADM.length?`<div class="ppl" id="ppl">${pplHTML()}</div>`:'<div class="card mut">아직 참여한 사람이 없어요.</div>');if(!SUBS&&!ownAdminBody.sl){ownAdminBody.sl=1;setTimeout(subList)}
+ return h+wrongAna()}
 async function fbTypes(){if(!(await admLoad()))return admin();const cnt={};FBT.forEach(t=>cnt[t[0]]=0);FB.forEach(x=>cnt[x.k]++);const mx=Math.max(1,...Object.values(cnt));
- let h=`<h2>유형별 의견</h2><p class="tag">전체 ${FB.length}개 · 유형을 누르면 의견을 볼 수 있어요.</p>`;
+ let h=`<h2>유형별 의견</h2><p class="tag">전체 ${FB.length}개</p>`;
  FBT.forEach(t=>{h+=`<div class="card pc tyc" onclick="fbType('${t[0]}')"><div class="al"><span>${chip(t[0])}</span><b>${cnt[t[0]]}개</b></div><div class="bar"><i data-w="${Math.round(cnt[t[0]]/mx*100)}" style="width:0;background:${t[2]}"></i></div></div>`});
  h+=``;show(h);animBars()}
 async function fbType(k){if(!(await admLoad()))return admin();const t=FT(k)||FBT[5],L=FB.filter(x=>x.k==t[0]);
@@ -1439,7 +1551,7 @@ async function rsDo(k){if(!OWNER)return;rsToggle(false);
  try{const r=await DB.rpc(f,{p_key:AK()});if(r.error||r.data<0)throw 0;if(k=='fb'){FB=[];admLoad.ok=false}soonMsg(`${r.data}개를 지웠어요.`);rsToggle(false)}catch(e){soonMsg('초기화하지 못했어요. 서버 설정을 확인해 주세요.')}}
 let DLS=new Set();
 async function delPage(){if(!OWNER)return;show('<h2>개인별 계정 삭제</h2>'+skMsgs(6));if(!(await admLoad(true)))return show('<h2>개인별 계정 삭제</h2><p>불러오지 못했어요.</p>');DLS=new Set();
- show(`<h2>개인별 계정 삭제</h2><p class="tag">삭제할 계정을 눌러서 골라 주세요. 여러 명을 고를 수 있고, 기록과 메시지함이 함께 지워져요.</p><div class="card ntp"><input type="search" id="dlq" placeholder="닉네임 검색" oninput="delList()"><div class="dlt"><span id="dln">0명 선택</span><button onclick="delAll()" id="dla">보이는 계정 모두 선택</button></div><div class="dll" id="dll"></div></div><div class="row dlr"><button class="b g" onclick="goBack()">취소</button><button class="b dlb" id="dlb" disabled onclick="delGo()">계정을 골라 주세요</button></div>`);delList()}
+ show(`<h2>개인별 계정 삭제</h2><div class="card ntp"><input type="search" id="dlq" placeholder="닉네임 검색" oninput="delList()"><div class="dlt"><span id="dln">0명 선택</span><button onclick="delAll()" id="dla">보이는 계정 모두 선택</button></div><div class="dll" id="dll"></div></div><div class="row dlr"><button class="b g" onclick="goBack()">취소</button><button class="b dlb" id="dlb" disabled onclick="delGo()">계정을 골라 주세요</button></div>`);delList()}
 function delVis(){const q=((document.getElementById('dlq')||{}).value||'').trim();return ADM.filter(r=>r.nick&&r.nick!=ADM_NICK&&r.nick.includes(q)).sort((a,b)=>b.t-a.t)}
 function delList(){const L=delVis();
  document.getElementById('dll').innerHTML=L.length?L.map(r=>`<button class="${DLS.has(r.nick)?'on':''}" aria-pressed="${DLS.has(r.nick)}" onclick="delPick(decodeURIComponent('${encodeURIComponent(r.nick)}'))"><i class="dck"></i><b>${esc(r.nick)}</b><small>최근 활동 ${r.t?fd(r.t):'-'}</small></button>`).join(''):'<p class="mut" style="font-size:14px;margin:8px 2px">계정이 없어요.</p>';
@@ -1480,7 +1592,7 @@ async function installApp(){if(isApp())return closeInst();
   :isIOS?['화면 아래(또는 위)의 <b>공유 버튼</b>을 눌러요.','<b>홈 화면에 추가</b>를 눌러요.','오른쪽 위 <b>추가</b>를 누르면 끝이에요.']
   :['주소창 오른쪽의 <b>설치 아이콘</b>이나 메뉴(⋮)를 눌러요.','<b>앱 설치</b> 또는 <b>홈 화면에 추가</b>를 눌러요.','이미 설치했다면 홈 화면의 <b>풍산 학습</b> 앱으로 열어 주세요.'];
  instBox(`<img class="inic" src="logo-192.png" alt=""><h3>${isIOS&&!isInApp?'홈 화면에 추가해 주세요':'이렇게 설치해 주세요'}</h3><ol class="ins">${steps.map(x=>`<li>${x}</li>`).join('')}</ol><button class="b inb" onclick="closeInst()">확인</button>`)}
-function lockMsg(){askBox(`${LOCK} 앱 전용 기능이에요`,'앱으로 다운받으면 전체 통계가 활성화됩니다.','앱으로 다운받기').then(ok=>{if(ok)installApp()})}
+function lockMsg(){return askBox(`${LOCK} 앱 전용 기능이에요`,'앱으로 다운받으면 전체 통계가 활성화됩니다.','앱으로 다운받기').then(ok=>{if(ok)installApp()})}
 
 function wrongPage(n){const nm=n.split('|').join(' '),c=SUBJ.flat().find(x=>x[0]==n)[1],col=SC[c];
  const all=socQ(n),wr=all.filter(q=>R[q.id]&&!R[q.id].ok),un=wr.filter(isUnf);
@@ -1507,13 +1619,46 @@ function socGo(n,u,k,opt){const segs=[];const nm=n.split('|').join(' ');opt=opt|
 
 function subj(n){if(!hasC(n)&&!STAFF()&&CUR[n]){soon();return subjects()}if(NEWS(n))return learnHome(n);if(isSoc(n))return socPage(n);return subjects()}
 function sd2Strip(TT){let strip='';for(let i=13;i>=0;i--){const d=new Date(Date.now()-i*864e5),k=dkey(d),v=TT[k]||0,a=v>=1?Math.min(1,.25+v/3600):0;strip+=`<div class="sd2" title="${k}"><i style="background:${v>=1?`rgba(91,127,168,${a})`:'var(--bd)'}"></i><small>${d.getDate()}</small></div>`}return `<div class="card"><div class="mut" style="font-size:13px;margin-bottom:6px">최근 2주 공부</div><div class="strip">${strip}</div></div>`}
-function allStats(){if(!isApp()){setTimeout(lockMsg,50);return subjects()}const qs=[].concat(...PASS.map(p=>p.Q)),s=st(qs);
- const t=R._t||{},days=Object.keys(t).filter(k=>t[k]>=1),tot=days.reduce((a,k)=>a+t[k],0),td=t[dkey()]||0;
- let h=kHead('<h2>전체 통계</h2>',[['cal','공부 달력','cal()']],[['요약','kTop()',1],['과목별',"kGo('svh')"],['달력','cal()']])+`<div class="pg2"><div class="card st2"><span>총 공부 시간</span><b>${fmtT(tot)}</b><small>오늘 ${fmtT(td)}</small></div><div class="card st2 pc" onclick="cal()"><span>공부한 날</span><b>${days.length}일</b><small class="lku">달력으로 보기 ›</small></div></div>${sd2Strip(t)}<div class="card"><div class="tag">전체 정답률</div><div class="big">${s.r==null?'-':s.r+'%'}</div><div class="mut">${s.n}문제 풀이 · ${s.c}문제 정답</div></div><h3 id="svh">과목별 보기</h3><div class="svg">`;
- const L=SUBJ.flat();L.forEach(([n,c,o],ix)=>{const a=ach(n,o),col=SC[c];
-  h+=`<button class="svt" id="svt${ix}" style="--sc:${col}" onclick="svTog(${ix})" aria-expanded="false"><span class="svn">${esc(n.split('|').join(' '))}</span><span class="svr"><b>${a}%</b><span class="chev">›</span></span><span class="bar"><i style="width:${a}%;background:${col}"></i></span></button>`;
-  if(ix%2==1||ix==L.length-1)for(let k=ix-(ix%2);k<=ix;k++)h+=`<div class="svp" id="svp${k}"><div class="svi">${svBody(L[k][0],SC[L[k][1]])}</div></div>`});
- h+=`</div>`;show(h)}
+// 전체 통계: 요약 · 과목별 · 달력
+let SVMORE=false;
+function allWeak(){const out=[];SUBJ.flat().forEach(([n,c])=>{if(!CUR[n])return;const tg={};CUR[n].forEach(U=>U.m.forEach(M=>M.q.forEach(q=>{const x=R[q.id];if(!x)return;const k=q.g||((CUR[n].length>1?U.n+' · ':'')+M.n);const t=tg[k]=tg[k]||{n:0,c:0};t.n++;if(x.ok)t.c++})));
+ Object.keys(tg).forEach(k=>{if(tg[k].c<tg[k].n)out.push({s:n,col:SC[c],k,...tg[k]})})});
+ return out.sort((a,b)=>a.c/a.n-b.c/b.n||b.n-a.n).slice(0,6)}
+function svRow(n,c,o,ix){const col=SC[c],qs=CUR[n]?socQ(n):[],x=st(qs),a=ach(n,o),un=qs.filter(q=>R[q.id]&&!R[q.id].ok).filter(isUnf).length;
+ return `<button class="svt sv1" id="svt${ix}" style="--sc:${col}" onclick="svTog(${ix})" aria-expanded="false"><span class="svn">${esc(n.split('|').join(' '))}</span><span class="svr"><b>${a}%</b><span class="chev">›</span></span><span class="bar"><i style="width:${a}%;background:${col}"></i></span><small class="svq">${!qs.length?'문제 준비 중':x.n?`정답률 ${x.r}% · ${x.n}문제 풀이${un?` · 남은 오답 ${un}`:''}`:'아직 푼 문제가 없어요'}</small></button><div class="svp" id="svp${ix}"><div class="svi">${svBody(n,col)}</div></div>`}
+function svMore(b){SVMORE=!SVMORE;const w=document.getElementById('svm');if(w)w.hidden=!SVMORE;b.classList.toggle('on',SVMORE)}
+let CALH=0;
+function calHTML(dir){if(!CALM){const d=new Date();CALM=[d.getFullYear(),d.getMonth()]}const [y,mo]=CALM,t=R._t||{};
+ const first=new Date(y,mo,1).getDay(),n=new Date(y,mo+1,0).getDate(),tk=dkey(),rows=Math.ceil((first+n)/7);
+ const avail=CALH||Math.max(320,innerHeight-250),ch=Math.max(52,Math.floor((avail-74)/rows-4));
+ let g='';['일','월','화','수','목','금','토'].forEach((w,i)=>g+=`<div class="cw${i==0?' su':i==6?' sa2':''}">${w}</div>`);
+ for(let i=0;i<first;i++)g+='<div></div>';
+ for(let d=1;d<=n;d++){const k=y+'-'+String(mo+1).padStart(2,'0')+'-'+String(d).padStart(2,'0'),v=t[k]||0;
+  g+=`<div class="cd${v>=1?' on':''}${k==tk?' td':''}" style="min-height:${ch}px"><b>${d}</b>${v>=1?`<small>${fmtT(v,1)}</small>`:''}</div>`}
+ return `<div class="cal card kcal"><div class="ch"><button class="lk" aria-label="이전 달" onclick="calSlide(-1)">‹</button><b>${y}년 ${mo+1}월</b><button class="lk" aria-label="다음 달" onclick="calSlide(1)">›</button></div><div class="cgw"><div class="cg${dir>0?' pgn':dir<0?' pgp':''}" id="cg">${g}</div></div></div>`}
+function statsHTML(dir){const c=KCH.st;let b='';
+ if(c==0){const qs=allQ(),s=st(qs),t=R._t||{},days=Object.keys(t).filter(k=>t[k]>=1),tot=days.reduce((a,k)=>a+t[k],0),td=t[dkey()]||0,wk=allWeak();
+  b+=`<div class="pg2"><div class="card st2"><span>총 공부 시간</span><b>${fmtT(tot)}</b><small>오늘 ${fmtT(td)}</small></div><div class="card st2"><span>공부한 날</span><b>${days.length}일</b><small>최근 2주 ${Object.keys(t).filter(k=>t[k]>=1&&k>=dkey(new Date(Date.now()-13*864e5))).length}일</small></div></div>${sd2Strip(t)}<div class="card"><div class="tag">전체 정답률</div><div class="big">${s.r==null?'-':s.r+'%'}</div><div class="mut">${s.n}문제 풀이 · ${s.c}문제 정답</div></div>`;
+  b+=`<h3 class="sec">전체 약점 유형</h3><div class="card awk">${!wk.length?`<div class="mut svx">${s.n?'틀린 유형이 없어요.':'문제를 풀면 여기에 보여요.'}</div>`:wk.map(w=>`<div class="svk"><div class="awh"><span class="aws" style="--sc:${w.col}">${esc(w.s.split('|').join(' '))}</span><b class="no-t">${esc(w.k)}</b><span class="mut">${w.c}/${w.n} 정답</span></div>${TIPS[w.k]?`<div class="mut">${MX(esc(TIPS[w.k]))}</div>`:''}</div>`).join('')}</div>`}
+ else if(c==1){const ALL=SUBJ.flat(),SEL=Array.isArray(R._sel)?R._sel:[],my=x=>COMMON.includes(x[0])||SEL.includes(x[0]),M=ALL.filter(my),O=ALL.filter(x=>!my(x));
+  b+=`<div class="svg sv1g">`+M.map((x,i)=>svRow(x[0],x[1],x[2],i)).join('')+`</div>`;
+  if(O.length){b+=`<button class="sgmore${SVMORE?' on':''}" onclick="svMore(this)"><span>다른 과목 보기</span><small>${O.length}과목</small><span class="chev">›</span></button><div id="svm"${SVMORE?'':' hidden'}><div class="svg">`;
+   O.forEach(([n,cc,o],j)=>{const ix=M.length+j,a=ach(n,o),col=SC[cc];
+    b+=`<button class="svt" id="svt${ix}" style="--sc:${col}" onclick="svTog(${ix})" aria-expanded="false"><span class="svn">${esc(n.split('|').join(' '))}</span><span class="svr"><b>${a}%</b><span class="chev">›</span></span><span class="bar"><i style="width:${a}%;background:${col}"></i></span></button>`;
+    if(j%2==1||j==O.length-1)for(let k=j-(j%2);k<=j;k++)b+=`<div class="svp" id="svp${M.length+k}"><div class="svi">${svBody(O[k][0],SC[O[k][1]])}</div></div>`});
+   b+=`</div></div>`}}
+ else b+=calHTML(dir);
+ return kPage('st',kHead('<h2>전체 통계</h2>',[],'st'),b)}
+function allStats(dir){if(!isApp()){setTimeout(webSt,50);return subjects()}show(statsHTML(dir),kKey('st'));if(KCH.st==2)calBind()}
+function calBind(){const el=document.getElementById('cg');if(!el)return;
+ {const top=el.getBoundingClientRect().top+scrollY,tb=document.getElementById('tbr'),bot=tb&&tb.offsetParent!==null?innerHeight-tb.getBoundingClientRect().top:20,av=Math.round(innerHeight-top-bot-14);if(Math.abs(av-CALH)>8&&av>200){CALH=av;const rows=Math.ceil(el.querySelectorAll('.cd,.cg>div:not(.cw)').length/7)||5,ch=Math.max(52,Math.floor((CALH-74)/rows-4));el.querySelectorAll('.cd').forEach(d=>d.style.minHeight=ch+'px')}}
+ let sx=null,sy=0,dx=0,hz=null,busy=false;const W=()=>el.offsetWidth||300;
+ const out=d=>{busy=true;el.style.transition='transform .2s cubic-bezier(.4,0,.8,.6)';el.style.transform=`translateX(${d>0?-100:100}%)`;setTimeout(()=>calGo(d),190)};
+ window.calSlide=out;
+ el.addEventListener('touchstart',e=>{if(busy)return;sx=e.touches[0].clientX;sy=e.touches[0].clientY;dx=0;hz=null;el.style.transition='none'},{passive:true});
+ el.addEventListener('touchmove',e=>{if(sx==null)return;dx=e.touches[0].clientX-sx;const dy=e.touches[0].clientY-sy;if(hz===null&&(Math.abs(dx)>8||Math.abs(dy)>8))hz=Math.abs(dx)>Math.abs(dy);if(hz){e.preventDefault();el.style.transform=`translateX(${dx}px)`}},{passive:false});
+ el.addEventListener('touchend',()=>{if(sx==null)return;sx=null;if(!hz)return;if(Math.abs(dx)>Math.min(70,W()*.22))out(dx<0?1:-1);else{el.style.transition='transform .25s cubic-bezier(.22,.8,.3,1)';el.style.transform=''}});
+ el.addEventListener('touchcancel',()=>{sx=null;el.style.transition='transform .25s';el.style.transform=''})}
 function svWeak(n){const tg={},lab={};CUR[n].forEach(U=>U.m.forEach(M=>M.q.forEach(q=>{const x=R[q.id];if(!x)return;const k=q.g||((CUR[n].length>1?U.n+' · ':'')+M.n);const t=tg[k]=tg[k]||{n:0,c:0};t.n++;if(x.ok)t.c++})));
  return Object.keys(tg).filter(k=>tg[k].c<tg[k].n).sort((a,b)=>tg[a].c/tg[a].n-tg[b].c/tg[b].n).slice(0,3).map(k=>({k,...tg[k]}))}
 function svBody(n,col){const qs=CUR[n]?socQ(n):[];if(!qs.length)return `<div class="mut svx">아직 문제가 준비되지 않았어요.</div>`;
@@ -1692,40 +1837,26 @@ let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
 const APPV='v83';
-function profile(){if(NICK&&!selOK())return pickSel();if(ADMINMODE||SUBMODE)PFOK=true;
- show(kHead(`<h2>${esc(NICK)}</h2>`,[['fb','피드백 보내기','fbForm(1)'],['book','사용법','guide()']],[['내 정보','kTop()',1],...(STAFF()&&DB?[['관리자','admin()']]:[]),['선택과목',"kGo('pfsel')"],...(OWNER?[['초기화',"kGo('rsh')"]]:[])])+`${STAFF()&&DB?admBig():''}
- <div class="card pf"><div class="pr"><span>닉네임</span><b>${esc(NICK)}</b>${ADMINMODE||SUBMODE?`<span class="mut" style="font-size:13px;white-space:nowrap">${SUBMODE?'':'관리자 '}고정</span>`:'<button class="lk" onclick="pfNick()">변경하기</button>'}</div>
+function pfHTML(){const ch=kChips('pf');if(KCH.pf>=ch.length)KCH.pf=0;const nm=ch[KCH.pf],pend=STAFF()&&admLoad.ok?(FB||[]).filter(x=>x.st!='done').length:0;let b='';
+ if(nm=='관리자')b=admBody();
+ else if(nm=='초기화')b=rsList();
+ else b=`<div class="card pf"><div class="pr"><span>닉네임</span><b>${esc(NICK)}</b>${ADMINMODE||SUBMODE?`<span class="mut" style="font-size:13px;white-space:nowrap">${SUBMODE?'':'관리자 '}고정</span>`:'<button class="lk" onclick="pfNick()">변경하기</button>'}</div>
  ${ADMINMODE||SUBMODE?'':`<div class="pr"><span>비밀번호</span><b id="pv">${PFSHOW?(PFSHOW=false,esc(PIN)):'••••'}</b><button class="lk" onclick="if(!PFOK)return pfShow();const e=document.getElementById('pv');e.textContent=e.textContent=='••••'?PIN:'••••'">보기</button><button class="lk" onclick="pfPin()">변경하기</button></div>`}<div class="pr"><span>폰 알림</span><b>${notiState()}</b>${notiState()=='켜짐'?'':'<button class="lk" onclick="notiFromProfile()">켜기</button>'}</div></div>
  <div class="card pf" id="pfsel"><div class="pr"><span>선택과목</span><b class="pfsl">${Array.isArray(R._sel)?R._sel.map(n=>`<span>${n.split('|').join(' ')}</span>`).join('')||'없음':'아직 안 골랐어요'}</b><button class="lk" onclick="pickSel()">바꾸기</button></div></div>
- 
- ${OWNER?rsList():''}<p class="mut" style="text-align:center;font-size:12px;margin-top:18px">앱 버전 ${APPV}</p>`)}
+ <p class="mut" style="text-align:center;font-size:12px;margin-top:18px">앱 버전 ${APPV}</p>`;
+ return kPage('pf',kHead(`<h2>${esc(NICK)}</h2>`,[['fb','피드백 보내기','fbForm(1)'],['book','사용법','guide()']],'pf',ch.map(x=>x=='관리자'?pend:0)),b)}
+function profile(){if(NICK&&!selOK())return pickSel();if(ADMINMODE||SUBMODE)PFOK=true;show(pfHTML(),kKey('pf'));animBars()}
 const ICN_SH='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.2 7.5 9.5 4.3-1.3 7.5-4.9 7.5-9.5V6z"/><path d="m9 12 2.2 2.2L15.5 10"/></svg>';
 const RSI={chk:'<path d="M5 12.5 10 17l9-10"/>',re:'<path d="M4 12a8 8 0 1 0 2.4-5.7"/><path d="M4 4v4.5h4.5"/>',bell:'<path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2.2 2.2 0 0 0 4 0"/>',msg:'<path d="M4 5.5h16v10.5H9l-5 3.5z"/>',usr:'<circle cx="10" cy="8" r="3.6"/><path d="M3.5 19.5c.8-3.4 3.4-5.3 6.5-5.3 1.6 0 3 .5 4.1 1.3"/><path d="m16 15 5 5m0-5-5 5"/>'};
-// 프로필 맨 위 「관리자 화면」 버튼 (관리자·보조 관리자)
-function admBig(){if(!admBig.k&&DB){admBig.k=1;admLoad().then(ok=>{const e=document.querySelector('.admbig');if(ok&&e)e.outerHTML=admBig()}).catch(()=>{})}const pend=(FB||[]).filter(x=>x.st!='done').length;
- return `<button class="admbig" onclick="admin()"><span class="abi">${ICN_SH}</span><span class="abt"><b>관리자 화면</b></span>${pend?`<span class="abd">답장 대기 ${pend}</span>`:'<span class="chev">›</span>'}</button>`}
 // 프로필 아래 초기화 모음 (관리자만)
 function rsList(){const r=(ic,t,d,on,ch)=>`<button class="rsr" onclick="${on}"><span class="rsi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${RSI[ic]}</svg></span><span class="rst"><b>${t}</b></span>${ch?'<span class="chev">›</span>':''}</button>`;
- let h=`<h3 class="sec" id="rsh">초기화</h3><div class="rsh">내 기록</div><div class="rsl">${r('chk','모두 완료로 채우기','테스트용 · 모든 과목을 맞힌 것으로','myFill()')}${r('re','내 기록 초기화','풀이·오답·공부 시간 삭제 후 선택과목부터 다시','myReset()')}</div>`;
+ let h=`<div class="rsh">내 기록</div><div class="rsl">${r('chk','모두 완료로 채우기','테스트용 · 모든 과목을 맞힌 것으로','myFill()')}${r('re','내 기록 초기화','풀이·오답·공부 시간 삭제 후 선택과목부터 다시','myReset()')}</div>`;
  if(DB)h+=`<div class="rsh dz"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M12 4 2.5 20h19z"/><path d="M12 10v4.5M12 17.5v.1"/></svg>모든 사람에게 적용</div><div class="rsl dz">${r('bell','알림 정보 초기화','모든 사람의 메시지함 속 알림',"rsDo('nt')")}${r('msg','피드백 정보 초기화','받은 피드백과 답장 기록',"rsDo('fb')")}${r('usr','개인별 계정 삭제','계정을 골라서 삭제',"rsDo('del')",1)}</div>`;
  return h}
 function myProg(){const L=SUBJ.flat().filter(([n])=>CUR[n]&&socQ(n).length),qs=[].concat(...L.map(([n])=>socQ(n).concat(mkAll(n)))),d=qs.filter(q=>R[q.id]).length,pc=qs.length?Math.round(d/qs.length*100):0;
  return `<h3 class="sec">내 진행도</h3><div class="card"><div class="al"><span>열린 과목 ${L.length}개 · ${d} / ${qs.length}문제</span><b>${pc}%</b></div><div class="bar" style="height:9px;margin:6px 0 4px"><i style="width:${pc}%"></i></div></div>${rsList()}`}
 function calGo(d){const [y,mo]=CALM;let ny=y,nm=mo+d;if(nm<0){nm=11;ny--}if(nm>11){nm=0;ny++}cal([ny,nm],d)}
-function cal(m,dir){if(!isApp()){setTimeout(lockMsg,50);return subjects()}if(m)CALM=m;if(!CALM){const d=new Date();CALM=[d.getFullYear(),d.getMonth()]}const [y,mo]=CALM,t=R._t||{};
- const first=new Date(y,mo,1).getDay(),n=new Date(y,mo+1,0).getDate(),tk=dkey();let mt=0,md=0;
- let g='';['일','월','화','수','목','금','토'].forEach((w,i)=>g+=`<div class="cw${i==0?' su':i==6?' sa2':''}">${w}</div>`);
- for(let i=0;i<first;i++)g+='<div></div>';
- for(let d=1;d<=n;d++){const k=y+'-'+String(mo+1).padStart(2,'0')+'-'+String(d).padStart(2,'0'),v=t[k]||0;if(v>=1){mt+=v;md++}
-  g+=`<div class="cd${v>=1?' on':''}${k==tk?' td':''}"><b>${d}</b>${v>=1?`<small>${fmtT(v,1)}</small>`:''}</div>`}
- show(`<h2>공부 달력</h2><div class="cal card"><div class="ch"><button class="lk" aria-label="이전 달" onclick="calSlide(-1)">‹</button><b>${y}년 ${mo+1}월</b><button class="lk" aria-label="다음 달" onclick="calSlide(1)">›</button></div><div class="cgw"><div class="cg${dir>0?' pgn':dir<0?' pgp':''}" id="cg">${g}</div></div></div>`,'cal');
- const el=document.getElementById('cg');if(el){let sx=null,sy=0,dx=0,hz=null,busy=false;const W=()=>el.offsetWidth||300;
-  const out=d=>{busy=true;el.style.transition='transform .2s cubic-bezier(.4,0,.8,.6)';el.style.transform=`translateX(${d>0?-100:100}%)`;setTimeout(()=>calGo(d),190)};
-  window.calSlide=out;
-  el.addEventListener('touchstart',e=>{if(busy)return;sx=e.touches[0].clientX;sy=e.touches[0].clientY;dx=0;hz=null;el.style.transition='none'},{passive:true});
-  el.addEventListener('touchmove',e=>{if(sx==null)return;dx=e.touches[0].clientX-sx;const dy=e.touches[0].clientY-sy;if(hz===null&&(Math.abs(dx)>8||Math.abs(dy)>8))hz=Math.abs(dx)>Math.abs(dy);if(hz){e.preventDefault();el.style.transform=`translateX(${dx}px)`}},{passive:false});
-  el.addEventListener('touchend',()=>{if(sx==null)return;sx=null;if(!hz)return;if(Math.abs(dx)>Math.min(70,W()*.22))out(dx<0?1:-1);else{el.style.transition='transform .25s cubic-bezier(.22,.8,.3,1)';el.style.transform=''}});
-  el.addEventListener('touchcancel',()=>{sx=null;el.style.transition='transform .25s';el.style.transform=''})}}
+function cal(m,dir){if(m)CALM=m;KCH.st=2;return allStats(dir)}
 let NKT=null,NKOK=false;
 function pfShow(){pfGate('show')}
 function pfNick(){if(!PFOK)return pfGate('nick');NKOK=false;show(`<div class="fbw"><h2>닉네임 변경</h2><p class="tag">지금 닉네임: <b>${esc(NICK)}</b></p><div class="card" style="max-width:340px;margin:10px auto;width:100%;box-sizing:border-box"><input type="text" id="nn" maxlength="12" placeholder="새 닉네임 (최대 12자)" style="text-align:center" oninput="nkChk()"><div id="ns" class="mut" style="margin-top:8px;min-height:20px;font-size:14px"></div></div><div class="row" style="max-width:340px;margin:0 auto;width:100%"><button class="b" id="nb" disabled onclick="nkSave()">변경하기</button></div></div>`)}
@@ -1763,28 +1894,27 @@ function tbKey(){const r=CURR||'';if(/^board/.test(r))return 'noti';if(/^inbox/.
 const TBK=['home','noti','mail','st','pf'],TBL={home:'학습',noti:'공지',mail:'메시지함',st:'전체 통계',pf:'프로필'};
 const RDM=()=>{try{return matchMedia('(prefers-reduced-motion: reduce)').matches}catch(e){return false}};
 let TBDIR=0,TBDRAG=null,TBNOCLK=0;
-// 탭 이동: 이전 화면은 옆으로 밀려 나가고 새 화면이 반대쪽에서 들어옴
-function tbGo(k,off){off=off||0;if(k=='st'&&!isApp()){tbSnap();return lockMsg()}const cur=tbKey();if(k==cur&&!/^(subj|learn)/.test(CURR||'')){tbSnap();return scrollTo({top:0,behavior:RDM()?'auto':'smooth'})}
- TBSW=Date.now();const d=TBK.indexOf(k)-TBK.indexOf(cur);TBDIR=d>0?1:d<0?-1:0;const app=document.getElementById('app');
- document.body.classList.add('tbsw');clearTimeout(tbGo.t);tbGo.t=setTimeout(()=>document.body.classList.remove('tbsw'),900);
- const E='cubic-bezier(.22,.8,.24,1)',D=Math.round(330*(1-Math.min(.6,Math.abs(off)/innerWidth)));
- if(TBDIR&&!RDM()){try{const o=document.createElement('div');o.className='tbsl';const w=document.createElement('div');
-  w.style.transform=`translateY(${-scrollY}px)`;const cl=app.cloneNode(true);cl.style.transform='';w.appendChild(cl);w.querySelectorAll('[id]').forEach(e=>e.removeAttribute('id'));cl.removeAttribute('id');cl.classList.remove('in');o.appendChild(w);document.body.appendChild(o);
-  o.animate([{transform:`translateX(${off}px)`},{transform:`translateX(${-TBDIR*100}vw)`}],{duration:D,easing:E,fill:'forwards'}).onfinish=()=>o.remove();setTimeout(()=>o.remove(),900)}catch(e){}}
- app.style.transform='';app.style.transition='';
- if(k=='home')subjects();else if(k=='noti')board();else if(k=='mail')inbox();else if(k=='st')allStats();else if(k=='pf')profile();
- if(TBDIR&&!RDM())app.animate([{transform:`translateX(calc(${TBDIR*100}vw + ${off}px))`},{transform:'translateX(0)'}],{duration:D,easing:E});TBDIR=0}
-function tbSnap(){const app=document.getElementById('app');if(!app||!app.style.transform)return;app.style.transition='transform .28s cubic-bezier(.22,.8,.24,1)';app.style.transform='translateX(0)';setTimeout(()=>{app.style.transition='';app.style.transform=''},300)}
-// 탭 첫 화면에서 화면을 옆으로 밀면 옆 탭으로 넘어감 (과목·글 안에서는 안 됨)
-{let S=null;const hsc=el=>{for(;el&&el!==document.body;el=el.parentElement){if(el.matches&&el.matches('input,textarea,select,canvas,.mdw,#tbr,.tbsl'))return true;const cs=getComputedStyle(el);if(/(auto|scroll)/.test(cs.overflowX)&&el.scrollWidth>el.clientWidth+2)return true}return false};
- document.addEventListener('touchstart',e=>{S=null;if(e.touches.length!==1||!NICK||!TBR.includes(CURR)||!document.body.classList.contains('tbon')||document.querySelector('.mdw,.tbsl'))return;
-  const t=e.touches[0];if(t.clientX<14||t.clientX>innerWidth-14||hsc(e.target))return;S={x:t.clientX,y:t.clientY,t:Date.now(),ax:0,dx:0}},{passive:true});
+// 탭 누르기: 그 탭의 첫 칩으로
+function tbGo(k){if(KNV)return;const cur=tbKey();if(k==cur&&TBR.includes(CURR)){scrollTo({top:0,behavior:RDM()?'auto':'smooth'});return}kNav(k,0)}
+// 탭 첫 화면에서 화면을 옆으로 밀면: 칩 순서대로, 마지막 칩 다음은 옆 탭 (과목·글 안에서는 안 됨). 끝에서는 더 안 밀림
+{let S=null;const hsc=el=>{for(;el&&el!==document.body;el=el.parentElement){if(el.matches&&el.matches('input,textarea,select,canvas,.mdw,#tbr,.tbsl,.cgw,.bsh'))return true;const cs=getComputedStyle(el);if(/(auto|scroll)/.test(cs.overflowX)&&el.scrollWidth>el.clientWidth+2)return true}return false};
+ const mvEl=()=>{const A=document.getElementById('app');return S&&S.intra?(A.querySelector('.kb')||A):A};
+ const drop=()=>{if(S&&S.o){S.o.remove();S.o=null}};
+ document.addEventListener('touchstart',e=>{S=null;if(KNV||e.touches.length!==1||!NICK||!TBR.includes(CURR)||!document.body.classList.contains('tbon')||document.querySelector('.mdw,.tbsl,.bsw,.msx'))return;
+  const t=e.touches[0];if(t.clientX<14||t.clientX>innerWidth-14||hsc(e.target))return;S={x:t.clientX,y:t.clientY,t:Date.now(),ax:0,dx:0,dir:0,o:null}},{passive:true});
  document.addEventListener('touchmove',e=>{if(!S)return;const t=e.touches[0],dx=t.clientX-S.x,dy=t.clientY-S.y;
   if(!S.ax){if(Math.abs(dx)<10&&Math.abs(dy)<10)return;if(Math.abs(dx)>Math.abs(dy)*1.2)S.ax=1;else{S=null;return}}
-  e.preventDefault();const i=TBK.indexOf(tbKey()),edge=(dx>0&&i==0)||(dx<0&&i==TBK.length-1);S.dx=edge?dx*.25:dx;document.getElementById('app').style.transform=`translateX(${S.dx}px)`},{passive:false});
- const end=()=>{if(!S||!S.ax){S=null;return}const {dx}=S,v=Math.abs(dx)/(Date.now()-S.t),i=TBK.indexOf(tbKey()),j=i+(dx<0?1:-1);S=null;
-  if(j>=0&&j<TBK.length&&(Math.abs(dx)>innerWidth*.22||(Math.abs(dx)>40&&v>.45)))tbGo(TBK[j],dx);else tbSnap()};
- document.addEventListener('touchend',end);document.addEventListener('touchcancel',()=>{S=null;tbSnap()})}
+  e.preventDefault();const seq=kSeq(),cur=tbKey(),i=seq.indexOf(cur+':'+KCH[cur]),dir=dx<0?1:-1,nb=i<0?null:seq[i+dir];
+  if(!nb){if(S.o)drop();S.dir=0;S.dx=0;mvEl().style.transform='';return}
+  if(S.dir!==dir){drop();const [tt,cc]=nb.split(':');const A=document.getElementById('app'),kb=A.querySelector('.kb');S.t=tt;S.c=+cc;S.intra=tt==cur;
+   const kbTop=kb?kb.getBoundingClientRect().top+scrollY:0;S.tgt=S.intra?Math.min(scrollY,kbTop):0;document.getElementById('app').style.transform='';if(kb)kb.style.transform='';S.o=kPv(tt,+cc,S.intra,S.tgt);S.dir=dir}
+  S.dx=dx;mvEl().style.transform=`translateX(${dx}px)`;S.o.style.transform=`translateX(${dir*innerWidth+dx}px)`},{passive:false});
+ const back=()=>{if(!S)return;const el=mvEl(),o=S.o,d=S.dir,dx=S.dx;S=null;if(!o){el.style.transform='';return}
+  const E='cubic-bezier(.25,.8,.25,1)';el.animate([{transform:`translateX(${dx}px)`},{transform:'translateX(0)'}],{duration:220,easing:E}).onfinish=()=>{el.style.transform=''};el.style.transform='';
+  o.animate([{transform:`translateX(${d*innerWidth+dx}px)`},{transform:`translateX(${d*innerWidth}px)`}],{duration:220,easing:E,fill:'forwards'}).onfinish=()=>o.remove()};
+ const end=()=>{if(!S||!S.ax){S=null;return}const {dx,dir,o}=S,v=Math.abs(dx)/(Date.now()-S.t);
+  if(o&&dir&&(Math.abs(dx)>innerWidth*.22||(Math.abs(dx)>40&&v>.45))){const z=S;S=null;kNav(z.t,z.c,{off:dx,o})}else back()};
+ document.addEventListener('touchend',end);document.addEventListener('touchcancel',back)}
 // 흰 알약을 지금 탭(또는 손가락) 위치로 옮김
 function tbPill(x,lift){const t=document.getElementById('tbr');if(!t)return;const p=t.querySelector('.tbp'),on=t.querySelector('button.on');if(!p||!on)return;
  const tr=t.getBoundingClientRect(),bs=[...t.querySelectorAll('button')],G=2,P=6,cw=t.clientWidth,av=cw-P*2-G*(bs.length-1),fs=bs.map(b=>b.classList.contains('on')?1.45:1),sm=fs.reduce((x,y)=>x+y,0);
@@ -1810,7 +1940,7 @@ function tabBar(){let t=document.getElementById('tbr');const on=!!NICK&&TBR.incl
   t.hidden=false;tbSetIcons(a);t.querySelector('.tbp').classList.add('noa');requestAnimationFrame(()=>{tbPill();requestAnimationFrame(()=>t.querySelector('.tbp').classList.remove('noa'))})}
  else{const was=t.hidden;t.hidden=false;const prev=(t.querySelector('button.on')||{}).dataset;tbSetIcons(a);
   if(was){const p=t.querySelector('.tbp');p.classList.add('noa');tbPill();requestAnimationFrame(()=>p.classList.remove('noa'))}
-  else if(!prev||prev.k!==a){const ic=t.querySelector('button.on>svg');if(ic&&!RDM())ic.animate([{transform:'scale(.82)'},{transform:'scale(1.12)'},{transform:'scale(1)'}],{duration:380,easing:'ease-out'});requestAnimationFrame(()=>tbPill())}
+  else if(!prev||prev.k!==a){requestAnimationFrame(()=>tbPill())}
   else tbPill()}
  {const f=t.querySelector('button[data-k="pf"]');let sd=f.querySelector('.tbad');if(STAFF()&&!sd){f.insertAdjacentHTML('beforeend','<span class="tbad" aria-hidden="true">'+ICN_SH+'</span>')}else if(!STAFF()&&sd)sd.remove()}
  try{postBadge()}catch(e){}try{mailBadge()}catch(e){}}
@@ -1837,7 +1967,7 @@ async function askExit(){if(EXQ)return;EXQ=true;const ok=await askBox('앱을 �
  if(ok){try{window.close()}catch(e){}setTimeout(()=>soonMsg('뒤로 가기를 한 번 더 누르면 종료돼요.'),300)}else if(CWM){}else{IGN++;window._igt=setTimeout(()=>IGN=0,700);history.forward()}}
 function goUp(){if(CURR=='quiz'&&SS&&document.querySelector('.qz,.qpr'))return exitQuiz();
  if(HI>1){history.back();return}const par=parentOf(CURR);if(par===null)return;goR(par)}
-function setR(r){const prev=CURR;CURR=r;updBk();const t=curU(r);
+function setR(r){const prev=CURR;if(prev!==r){SCRS[pgKey(prev)]=scrollY;const m=r.match(/^admin\/([wnd])/);if(m&&!/^admin\/[wnd]/.test(prev)&&!ROUTING)BKO[m[1]]=prev}CURR=r;updBk();const t=curU(r);
  try{if(ROUTING||r===prev||HI<0||NAVT){if(HI>=0)HST[HI]=r;history.replaceState({r,i:HI},'',t)}
   else{NAVT=1;setTimeout(()=>NAVT=0);
    const j=HI>1?HST.lastIndexOf(r,HI-1):-1;
@@ -1856,8 +1986,8 @@ function parentOf(r){const [k,...rest]=r.split('/'),v=rest.join('/');
  if(k=='prob'||k=='notes')return 'subj/'+v;if(k=='note'){const ps=v.split('/');ps.pop();ps.pop();return 'notes/'+ps.join('/')}
  if(k=='sel')return Array.isArray(R._sel)?'subjects':null;
  if(k=='inbox')return v?'inbox':'subjects';if(k=='board')return v?'board':'subjects';if(k=='guide')return 'profile';
- if(k=='pick'||k=='menu'||k=='subj'||k=='profile'&&!v)return 'subjects';if(k=='stats')return 'subjects';if(k=='admin'&&!v)return 'profile';
- if(k=='cal')return 'stats';if(k=='profile')return 'profile';if(k=='admin'){if(/^t\/./.test(v))return 'admin/t';if(/^p\/./.test(v))return 'admin/p';return 'admin'}if(k=='fb')return v=='1'?'profile':'';
+ if(k=='pick'||k=='menu'||k=='subj'||k=='profile'&&!v)return 'subjects';if(k=='stats')return 'subjects';if(k=='admin'&&!v)return 'profile';if(k=='admin'&&/^[wnd](\/|$)/.test(v))return BKO[v[0]]||(v[0]=='w'?'board':'profile');
+ if(k=='profile')return 'profile';if(k=='admin'){if(/^t\/./.test(v))return 'admin/t';if(/^p\/./.test(v))return 'admin/p';return 'admin'}if(k=='fb')return v=='1'?'profile':'';
  if(k=='mock')return 'subj/'+v;
  if(k=='wrong')return (NEWS(v)?'prob/':'subj/')+v;if(k=='quiz'||k=='result'){if(SS&&SS.meta&&SS.meta.note)return 'note/'+SS.meta.note.join('/');if(SS&&SS.meta&&SS.meta.wp)return 'wrong/'+SS.meta.subj;if(SS&&SS.meta&&SS.meta.subj)return (NEWS(SS.meta.subj)?'prob/':'subj/')+SS.meta.subj;if(SS&&SS.pid&&!SS.meta)return 'menu/'+SS.pid;return 'subjects'}
  return 'subjects'}
@@ -1896,7 +2026,10 @@ function go2(r){
  if(k=='admin'&&STAFF()){const [a,...b]=v.split('/'),w=b.join('/');if(a=='t'&&w)return fbType(w);if(a=='t')return fbTypes();if(a=='p'&&w)return fbPerson(w);if(a=='p')return fbPeople();if(a=='u'&&w&&OWNER)return adminOne(w);return admin()}
  if((k=='quiz'||k=='result')&&(SS||loadSS()))return k=='quiz'?quiz():result();
  return subjects()}
-function goR(r){ROUTING=true;try{go2(r)}finally{ROUTING=false}updBk()}
+const BKO={},SCRS={};
+// 탭 첫 화면은 칩까지 묶어서 스크롤 위치를 기억
+function pgKey(r){const i=TBR.indexOf(r);return i>=0?r+':'+KCH[TBK[i]]:r}
+function goR(r){ROUTING=true;try{go2(r)}finally{ROUTING=false}updBk();const y=SCRS[pgKey(r)];if(y>0){scrollTo(0,y);setTimeout(()=>{if(CURR==r&&Math.abs(scrollY-y)>2&&!document.querySelector('.mdw'))scrollTo(0,y)},260)}}
 window.addEventListener('popstate',e=>{if(location.hash=='#admin')return;const s=e.state;
  if(IGN){IGN--;if(s&&typeof s.i=='number')HI=s.i;return}clearTimeout(window._igt);if(!s||typeof s.i!='number')return;
  if(LEAVE){LEAVE=0;HI=s.i;goR(s.r);return}
@@ -1907,8 +2040,8 @@ window.addEventListener('popstate',e=>{if(location.hash=='#admin')return;const s
 const H=(f,mk)=>function(...a){setR(mk(...a));return f.apply(this,a)};
 home=H(home,()=>'');subjects=H(subjects,()=>'subjects');
 subj=H(subj,n=>'subj/'+n);socPage=H(socPage,n=>NEWS(n)?'prob/'+n:'subj/'+n);noteList=H(noteList,n=>'notes/'+n);noteView=H(noteView,(n,u,k)=>'note/'+n+'/'+u+'/'+k);inbox=H(inbox,()=>'inbox');board=H(board,()=>'board');postView=H(postView,id=>'board/'+id);postForm=H(postForm,id=>'admin/w'+(id?'/'+id:''));guide=H(guide,()=>'guide');pickSel=H(pickSel,()=>'sel');msgOpen=H(msgOpen,id=>'inbox/'+id);noticeForm=H(noticeForm,()=>'admin/n');delPage=H(delPage,()=>'admin/d');allStats=H(allStats,()=>'stats');fbForm=H(fbForm,f=>'fb/'+(f||0));
-admin=H(admin,()=>'admin');adminOne=H(adminOne,n=>'admin/u/'+n);fbTypes=H(fbTypes,()=>'admin/t');fbType=H(fbType,k=>'admin/t/'+k);fbPeople=H(fbPeople,()=>'admin/p');fbPerson=H(fbPerson,n=>'admin/p/'+n);fbReply=H(fbReply,id=>'admin/r/'+id);
-wrongPage=H(wrongPage,n=>'wrong/'+n);mockPage=H(mockPage,n=>'mock/'+n);profile=H(profile,()=>'profile');cal=H(cal,()=>'cal');pfShow=H(pfShow,()=>'profile/pw');pfNick=H(pfNick,()=>'profile/nick');pfPin=H(pfPin,()=>'profile/pin');
+adminOne=H(adminOne,n=>'admin/u/'+n);fbTypes=H(fbTypes,()=>'admin/t');fbType=H(fbType,k=>'admin/t/'+k);fbPeople=H(fbPeople,()=>'admin/p');fbPerson=H(fbPerson,n=>'admin/p/'+n);fbReply=H(fbReply,id=>'admin/r/'+id);
+wrongPage=H(wrongPage,n=>'wrong/'+n);mockPage=H(mockPage,n=>'mock/'+n);profile=H(profile,()=>'profile');pfShow=H(pfShow,()=>'profile/pw');pfNick=H(pfNick,()=>'profile/nick');pfPin=H(pfPin,()=>'profile/pin');
 quiz=(f=>function(){setR('quiz');const x=f.apply(this,arguments);saveSS();return x})(quiz);
 result=(f=>function(){REPL=true;setR('result');const x=f.apply(this,arguments);saveSS();return x})(result);
 // 아이폰 홈 화면 앱: 왼쪽 가장자리에서 오른쪽으로 밀면 뒤로 가기
@@ -1928,6 +2061,38 @@ async function boot(){{const m=location.hash.match(/^#s=([A-Za-z0-9]{16,64})$/);
  if(DB){try{const {data,error}=await DB.rpc('player_login',{p_nick:lk,p_pin:pn});if(!error&&data){
   if(data.status=='ok'||data.status=='new'){const loc=R;R=mrg(okDV(data.data),loc);R._dv=DV;ls('rec:'+NICK,JSON.stringify(R));if(Object.keys(loc).length)sync();selRe()}
   else if(data.status=='wrong'){ls('last',null);ls('pin',null);NICK='';PIN='';REPL=true;home();soonMsg('비밀번호가 바뀌어 다시 입력해야 해요.')}}}catch(e){}}}
+
+// ===== 계정 전환 (관리자 본인 전용): 프로필 탭을 길게 누르면 아래에서 올라오는 창 =====
+const ACC=()=>{try{return JSON.parse(ls('acl'))||[]}catch(e){return []}};
+const accOK=()=>!!(AK()||ls('akp'));
+function accSheet(){if(!accOK()||document.querySelector('.bsw'))return;const L=ACC(),cur=OWNER?'@':NICK;
+ const av=(n,adm)=>`<i class="acv" style="--avc:${adm?'#2a2620':avc(n)}">${adm?ICN_SH:esc([...n][0]||'?')}</i>`;
+ const row=(k,n,sub,adm)=>`<button class="acr" onclick="accGo('${k}')">${av(n,adm)}<span><b>${esc(n)}</b><small>${sub}</small></span><span class="acc${k==cur?' on':''}"></span></button>`;
+ const w=document.createElement('div');w.className='bsw';
+ w.innerHTML=`<div class="bsh" role="dialog" aria-label="계정 전환"><span class="bsg"></span><h3>계정 전환</h3>${row('@',ADM_NICK,'관리자',1)}${L.map(a=>row(a.n,a.n,'일반 계정')).join('')}<button class="acr aca" onclick="accAdd()"><i class="acv acp">+</i><span><b>일반 계정 추가</b></span></button></div>`;
+ w.addEventListener('click',e=>{if(e.target===w)accClose()});document.body.appendChild(w);requestAnimationFrame(()=>w.classList.add('on'));
+ {const sh=w.querySelector('.bsh');let y0=null,dy=0;sh.addEventListener('touchstart',e=>{y0=e.touches[0].clientY;dy=0;sh.style.transition='none'},{passive:true});
+  sh.addEventListener('touchmove',e=>{if(y0==null)return;dy=Math.max(0,e.touches[0].clientY-y0);sh.style.transform=`translateY(${dy}px)`},{passive:true});
+  sh.addEventListener('touchend',()=>{y0=null;sh.style.transition='';sh.style.transform='';if(dy>80)accClose()})}}
+function accClose(){const w=document.querySelector('.bsw');if(!w)return;w.classList.remove('on');setTimeout(()=>w.remove(),260)}
+function accGo(k){const cur=OWNER?'@':NICK;if(k==cur)return accClose();
+ if(k=='@'){const a=ls('akp');if(!a)return;saveNow();ls('ak',a);ls('akp',null);ls('last',ADM_NICK);ls('pin',null)}
+ else{const a=ACC().find(x=>x.n==k);if(!a)return;saveNow();if(AK()){ls('akp',AK());ls('ak',null)}ls('last',a.n);ls('pin',a.p)}
+ try{sessionStorage.removeItem(KEY+'ss');sessionStorage.setItem(KEY+'alive','1')}catch(e){}location.replace(location.pathname+location.search+'#/profile');location.reload()}
+function saveNow(){try{if(NICK)ls('rec:'+NICK,JSON.stringify(R))}catch(e){}}
+function accAdd(){const sh=document.querySelector('.bsh');if(!sh)return;
+ sh.innerHTML=`<span class="bsg"></span><h3>일반 계정 추가</h3><input type="text" id="acn" maxlength="12" placeholder="닉네임 (최대 12자)" style="text-align:center"><input type="text" class="pw" autocomplete="off" id="acp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호 숫자 4자리" style="text-align:center;letter-spacing:4px;margin-top:8px" oninput="this.value=this.value.replace(/\\D/g,'')"><p class="mut acm" id="acs">처음 쓰는 닉네임이면 새로 만들어져요.</p><div class="row" style="margin:6px 0 0"><button class="b g" onclick="accClose()">취소</button><button class="b" id="acb" onclick="accSave()">추가하고 전환</button></div>`;
+ setTimeout(()=>{const e=document.getElementById('acn');if(e)e.focus()},60)}
+async function accSave(){const n=document.getElementById('acn').value.trim(),pw=document.getElementById('acp').value,st=document.getElementById('acs'),b=document.getElementById('acb');
+ if(!n)return st.textContent='닉네임을 써 주세요.';if(n==ADM_NICK)return st.textContent='관리자 닉네임은 쓸 수 없어요.';if(!/^\d{4}$/.test(pw))return st.textContent='비밀번호는 숫자 4자리예요.';
+ if(!DB)return st.textContent='서버에 연결되지 않았어요.';b.disabled=true;b.textContent='확인 중…';
+ let r='';try{const {data,error}=await DB.rpc('player_login',{p_nick:n,p_pin:pw});if(!error&&data)r=data.status}catch(e){}
+ if(r!='ok'&&r!='new'){b.disabled=false;b.textContent='추가하고 전환';st.textContent=r=='wrong'?'이미 있는 닉네임이고 비밀번호가 달라요.':r=='locked'?'잠긴 계정이에요. 잠시 뒤 다시 해 주세요.':'만들지 못했어요. 다시 해 주세요.';return}
+ const L=ACC().filter(x=>x.n!=n);L.push({n,p:pw});ls('acl',JSON.stringify(L));accGo(n)}
+// 프로필 탭 길게 누르기
+{let T=0,x0=0,y0=0;document.addEventListener('pointerdown',e=>{const b=e.target.closest&&e.target.closest('#tbr button[data-k="pf"]');if(!b||!accOK())return;x0=e.clientX;y0=e.clientY;clearTimeout(T);T=setTimeout(()=>{T=0;TBNOCLK=Date.now();TBDRAG=null;accSheet()},450)},true);
+ const cx=()=>{clearTimeout(T);T=0};document.addEventListener('pointermove',e=>{if(T&&Math.hypot(e.clientX-x0,e.clientY-y0)>10)cx()},true);document.addEventListener('pointerup',cx,true);document.addEventListener('pointercancel',cx,true);
+ document.addEventListener('contextmenu',e=>{if(e.target.closest&&e.target.closest('#tbr'))e.preventDefault()})}
 
 if('serviceWorker' in navigator)window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js',{updateViaCache:'none'}).then(r=>r.update()).catch(()=>{}));
 </script>
