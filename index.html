@@ -685,29 +685,16 @@ img,button,a{-webkit-user-drag:none;-webkit-touch-callout:none}
 .acp{background:none;border:1.8px dashed #c9bfae;color:#8f8676;font-size:24px;font-weight:500}
 .acc{flex:none;width:22px;height:22px;border-radius:50%;border:2px solid #c9bfae;box-sizing:border-box;display:grid;place-items:center}.acc.on{border-color:#2a2620;background:#2a2620}.acc.on::after{content:'';width:9px;height:5px;border:solid #fffdf8;border-width:0 0 2.2px 2.2px;transform:rotate(-45deg) translate(1px,-1px)}
 .acm{font-size:13px;text-align:center;margin:8px 0 6px}
-/*DRAFTS*/
-body.chA #app .kc{gap:22px;margin:0 0 14px;padding:0 2px;height:42px}
-body.chA #app .kc button{background:none;padding:0 1px;border-radius:0;color:#a39a88;font-size:16px;position:relative;isolation:isolate;height:42px}
-body.chA #app .kc button.on{background:none;color:#2a2620}
-body.chA #app .kc button.on::after{content:'';position:absolute;left:-4px;right:-4px;bottom:10px;height:11px;background:#f6d65f;opacity:.8;border-radius:4px 2px 5px 3px;z-index:-1;transform:rotate(-1deg)}
-body.chB #app .kc{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:4px;padding:4px;margin:0 0 16px;height:auto;border-radius:14px;background:color-mix(in srgb,#2a2620 6%,var(--card));border:1.5px solid color-mix(in srgb,#2a2620 10%,var(--bd))}
-body.chB #app .kc button{height:36px;justify-content:center;background:transparent;border-radius:10px;color:#7a7264;padding:0 6px}
-body.chB #app .kc button.on{background:var(--card);color:var(--tx);box-shadow:0 1px 6px rgba(90,70,40,.16)}
-body.chC #app .kc button{background:var(--card);border:1.5px solid var(--bd);color:#7a7264;height:38px;border-radius:12px;box-shadow:0 2px 0 rgba(110,90,60,.08)}
-body.chC #app .kc button.on{background:color-mix(in srgb,#f2cf6b 32%,var(--card));border-color:#2a2620;color:#2a2620;box-shadow:0 2px 0 #2a2620}
-body.abA .mdc .row{gap:8px}
-body.abA .mdc .b{border-radius:999px!important;padding:13px;font-weight:800;box-shadow:none!important;border:0}
-body.abA .mdc .b.g{background:color-mix(in srgb,#2a2620 7%,var(--card));color:#6f6656}
-body.abA .mdc .b:not(.g){background:#2a2620!important;color:#fffdf8}
-body.abB .mdc{padding:24px 0 0;overflow:hidden}
-body.abB .mdc h3,body.abB .mdc p{padding:0 20px}
-body.abB .mdc .row{flex-direction:column-reverse;gap:0}
-body.abB .mdc .b{background:none!important;box-shadow:none!important;border:0;border-top:1px solid var(--bd);border-radius:0;padding:15px;font-weight:800;color:#2a2620}
-body.abB .mdc .b.g{font-weight:600;color:var(--mut)}
-body.bkA .b:not(.g){background:#2a2620!important;color:#fffdf8!important;border-radius:14px!important;box-shadow:0 3px 0 rgba(42,38,32,.18)!important}
-body.bkB .b:not(.g){background:var(--card)!important;color:#2a2620!important;border:1.8px solid #2a2620!important;border-radius:14px!important;box-shadow:0 3px 0 #2a2620!important;font-weight:800}
-body.bkA .b:disabled,body.bkB .b:disabled{opacity:.4}
-/*/DRAFTS*/
+#app .kc{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:4px;padding:4px;margin:0 0 16px;height:auto;border-radius:14px;background:color-mix(in srgb,#2a2620 6%,var(--card));border:1.5px solid color-mix(in srgb,#2a2620 10%,var(--bd))}
+#app .kc button{height:36px;justify-content:center;background:transparent;border-radius:10px;color:#7a7264;padding:0 6px}
+#app .kc button.on{background:var(--card);color:var(--tx);box-shadow:0 1px 6px rgba(90,70,40,.16)}
+.mdc .row{gap:8px}
+.mdc .b.b{border-radius:999px!important;padding:13px;font-weight:800;box-shadow:none!important;border:0}
+.mdc .b.g{background:color-mix(in srgb,#2a2620 7%,var(--card));color:#6f6656}
+.mdc .b.b:not(.g){background:#2a2620!important;color:#fffdf8}
+.b:not(.g):not(.sbm):not(.dlb):not(.admb):not(.msd){background:#2a2620!important;color:#fffdf8!important;border-radius:14px!important;box-shadow:0 3px 0 rgba(42,38,32,.18)!important}
+.b:disabled{opacity:.4}
+.b.msd{background:#c94b40!important;border-radius:999px!important;box-shadow:0 3px 0 rgba(150,40,30,.2)!important}
 .kmt{color:var(--mut);text-align:center;padding:22px 16px!important;font-size:14.5px}
 .skl{display:block;background:linear-gradient(90deg,#ebe3d2 25%,#f6f1e7 50%,#ebe3d2 75%);background-size:220% 100%;animation:skl 1.25s ease-in-out infinite;border-radius:8px}
 @keyframes skl{0%{background-position:130% 0}100%{background-position:-30% 0}}
@@ -1836,7 +1823,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v83';
+const APPV='v84';
 function pfHTML(){const ch=kChips('pf');if(KCH.pf>=ch.length)KCH.pf=0;const nm=ch[KCH.pf],pend=STAFF()&&admLoad.ok?(FB||[]).filter(x=>x.st!='done').length:0;let b='';
  if(nm=='관리자')b=admBody();
  else if(nm=='초기화')b=rsList();
