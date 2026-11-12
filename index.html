@@ -1478,10 +1478,10 @@ function mkSc(q){const t=q.q||'',bl=t.split(/\n\s*\n/);let v=q.hd?20:0;if(q.tb)v
  if(/\(가\)|갑:|갑국|을국|A국|사례/.test(t))v+=1;if(t.length>160)v+=1;return v}
 function mkReform(){for(const n in MOCK){const sp=mkSpec(n);if(!MOCK[n].length){delete MOCK[n];continue}
  MOCK[n].forEach(r=>{const qs=r.q,N=qs.length,k=Math.round(N/5),o=qs.map((q,i)=>[q,i]).sort((a,b)=>mkSc(b[0])-mkSc(a[0])||a[1]-b[1]);
-  const pt=new Map();o.forEach(([q],i)=>pt.set(q,N==25&&sp.pts==100?(i<k?5:i>=N-k?3:4):Math.round(sp.pts/N*10)/10));
+  const pt=new Map();o.forEach(([q],i)=>pt.set(q,N==25&&sp.pts==100?(i<k?5:i>=N-k?3:4):Math.floor(sp.pts/N)+(i<sp.pts-Math.floor(sp.pts/N)*N?1:0)));
   r.q=qs.map(q=>Object.assign({},q,{pt:pt.get(q)}))});
  MOCK[n].spec=sp}}
-const mkPts=(n,r)=>mkR(n,r).reduce((a,q)=>a+(R[q.id]&&R[q.id].ok?(q.pt||0):0),0);
+const mkPts=(n,r)=>Math.round(mkR(n,r).reduce((a,q)=>a+(R[q.id]&&R[q.id].ok?(q.pt||0):0),0)*10)/10;
 const nDone=n=>{const nv=(R._nv&&R._nv[n])||{},has=[];CUR[n].forEach((U,u)=>U.m.forEach((M,k)=>{if(noteOf(n,u,k))has.push(u+'-'+k)}));return has.length>0&&has.every(x=>nv[x])};
 const ICN_MST='<svg class="lci" viewBox="0 0 48 48" fill="none" stroke="#1f1a15" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="30" height="30" rx="3.5"/><path d="M17.5 31.5v-6M24 31.5V17M30.5 31.5v-10"/></svg>';
 const ICN_RE='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19.5 12a7.5 7.5 0 1 1-2.2-5.3"/><path d="M19.5 4.5v4.2h-4.2"/></svg>';
@@ -1510,7 +1510,7 @@ function mockPage(n){if(!MOCK[n]){soonMsg('이 과목 모의고사는 아직 준
  h+=`<h3 class="sec">회차별 점수</h3><div class="mkr" style="--uc:${col}">`+MOCK[n].map((M,r)=>M.hd?'':mkRow(M,r,r==nxN,(r+1)+'회')).join('')+`</div>`;
  if(HX.length)h+=`<h3 class="sec">고난도 모의고사</h3><p class="tag" style="margin:-4px 2px 10px">학평·수능 4점급 위주 · 회차당 ${MKHS.qn}문항 · ${MKHS.min}분 · ${MKHS.pts}점 만점</p><div class="mkr" style="--uc:color-mix(in srgb,${col} 55%,#d9534a)">`+HX.map(r=>mkRow(MOCK[n][r],r,r===nxH,MOCK[n][r].n.replace('고난도 ',''))).join('')+`</div>`;
  if(!op)h+=`<div class="card mut" style="text-align:center">모든 문제를 풀고 오답까지 끝내면 모의고사가 열려요.</div>`;
- h+=`<h3 class="sec">모의고사 오답</h3><button class="mkrow mkwr${uq.length?'':' lk'}" onclick="mkWrong('${n}')"><b>오답</b><span class="mkst">${wq.length?(uq.length?`남은 오답 ${uq.length}문제 다시 풀기`:'오답을 모두 고쳤어요'):'아직 틀린 문제가 없어요'}</span>${uq.length?`<span class="wnc">${uq.length}</span>`:''}<span class="chev">${uq.length?'›':''}</span></button>`;
+ {const st=wq.length?(uq.length?`남은 오답 ${uq.length}문제`:'오답을 모두 고쳤어요'):'아직 틀린 문제가 없어요',go=wq.length;h+=`<button class="wnb"${go?` onclick="mkWrong('${n}')"`:' style="cursor:default"'}><span><b>모의고사 오답노트</b><small>${st}</small></span>${uq.length?`<span class="wnc">${uq.length}</span>`:''}${go?'<span class="chev">›</span>':''}</button>`}
  const wk=mkWeak(n);
  if(wk.length){h+=`<h3 class="sec">유형별 정답률</h3><div class="card">`+wk.slice(0,6).map(t=>`<div class="arw"><div class="al"><span>${esc(t.k)}${t.r<70?'<span class="wkb">취약</span>':''}</span><b>${t.c}/${t.n}</b></div><div class="bar"><i data-w="${t.r}" style="width:0;background:${t.r<70?'#d98b80':col}"></i></div></div>`).join('')+`</div>`}
  h+=`<h3 class="sec">시험 직전에 할 일</h3><div class="card mkt">`+mkTodo(n,wk,uq.length)+`</div>`;
@@ -1801,7 +1801,7 @@ function result(){QS0=0;const rs=(SS.graded||[]).filter(q=>SS.resp[q.id]&&SS.res
  const c=rs.filter(q=>SS.resp[q.id].ok).length,wr=rs.filter(q=>!SS.resp[q.id].ok),labs=SS.segs.slice(0,SS.si+1).map(x=>x.label);
  const tg={};rs.forEach(q=>{const t=tg[q.g]=tg[q.g]||{n:0,c:0};t.n++;if(SS.resp[q.id].ok)t.c++});
  const weak=Object.keys(tg).filter(k=>tg[k].c<tg[k].n).sort((a,b)=>tg[a].c/tg[a].n-tg[b].c/tg[b].n),pc=Math.round(c/rs.length*100);
- let h=`<div class="card"><div class="tag">${esc(ttl())} · ${labs.map(esc).join(', ')}</div><h2 style="margin:4px 0">결과</h2>${SS.meta.mock&&rs.some(q=>q.pt)?`<div class="big">${rs.filter(q=>SS.resp[q.id].ok).reduce((a,q)=>a+(q.pt||0),0)}<small style="font-size:.45em"> / ${rs.reduce((a,q)=>a+(q.pt||0),0)}점</small></div><div class="mut">${c} / ${rs.length}문항 정답${SS.meta.t0?` · ${Math.round((Date.now()-SS.meta.t0)/60000)}분 걸림`:''}</div>`:`<div class="big">${c} / ${rs.length}</div>`}<div class="mut">정답률 ${pc}%</div>${SS.meta.mode=='wrong'?`<div class="prn" style="background:#e3f0e6;color:#2f6a43">맞힌 ${c}문제는 오답 완료로 표시됐어요. 진행 상황(통계)에는 반영되지 않아요.</div>`:''}${SS.meta.mode!='wrong'&&(SS.meta.practice||rs.every(q=>SS.base&&SS.base[q.id]))?'<div class="prn">다시 푼 결과라서 진행 상황(통계)에는 반영되지 않았어요.</div>':rs.some(q=>SS.base&&SS.base[q.id])?'<div class="prn">전에 풀었던 문제는 처음 결과가 그대로 유지돼요.</div>':''}<div class="bar" style="height:9px;margin-top:10px"><i data-w="${pc}" style="width:0"></i></div></div>`;
+ let h=`<div class="card"><div class="tag">${esc(ttl())} · ${labs.map(esc).join(', ')}</div><h2 style="margin:4px 0">결과</h2>${SS.meta.mock&&rs.some(q=>q.pt)?`<div class="big">${Math.round(rs.filter(q=>SS.resp[q.id].ok).reduce((a,q)=>a+(q.pt||0),0)*10)/10}<small style="font-size:.45em"> / ${Math.round(rs.reduce((a,q)=>a+(q.pt||0),0)*10)/10}점</small></div><div class="mut">${c} / ${rs.length}문항 정답${SS.meta.t0?` · ${Math.round((Date.now()-SS.meta.t0)/60000)}분 걸림`:''}</div>`:`<div class="big">${c} / ${rs.length}</div>`}<div class="mut">정답률 ${pc}%</div>${SS.meta.mode=='wrong'?`<div class="prn" style="background:#e3f0e6;color:#2f6a43">맞힌 ${c}문제는 오답 완료로 표시됐어요. 진행 상황(통계)에는 반영되지 않아요.</div>`:''}${SS.meta.mode!='wrong'&&(SS.meta.practice||rs.every(q=>SS.base&&SS.base[q.id]))?'<div class="prn">다시 푼 결과라서 진행 상황(통계)에는 반영되지 않았어요.</div>':rs.some(q=>SS.base&&SS.base[q.id])?'<div class="prn">전에 풀었던 문제는 처음 결과가 그대로 유지돼요.</div>':''}<div class="bar" style="height:9px;margin-top:10px"><i data-w="${pc}" style="width:0"></i></div></div>`;
  h+=`<h3 class="sec">영역별 정답률</h3><div class="card">${Object.keys(tg).map(k=>{const t=tg[k],r=Math.round(t.c/t.n*100);return `<div class="arw"><div class="al"><span>${esc(k)}</span><b>${t.c}/${t.n}</b></div><div class="bar"><i data-w="${r}" style="width:0"></i></div></div>`}).join('')}</div>`;
  h+=`<h3 class="sec">보완해야 할 약점</h3>`+(weak.length?weak.map(k=>`<div class="card"><b class="no-t">${esc(k)}</b> <span class="mut">(${tg[k].n-tg[k].c}문제 틀림)</span>${TIPS[k]?`<div class="mut" style="margin-top:6px;font-size:14px">${MX(esc(TIPS[k]))}</div>`:''}</div>`).join(''):'<div class="card">약점이 없어요. 이 범위는 완벽해요! 🎉</div>');
  if(wr.length){h+=`<h3 class="sec">틀린 문제 해설</h3>`;wr.forEach(q=>{const r=SS.resp[q.id];
@@ -1837,7 +1837,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v89';
+const APPV='v90';
 function pfHTML(){const ch=kChips('pf');if(KCH.pf>=ch.length)KCH.pf=0;const nm=ch[KCH.pf],pend=STAFF()&&admLoad.ok?(FB||[]).filter(x=>x.st!='done').length:0;let b='';
  if(nm=='관리자')b=admBody();
  else if(nm=='초기화')b=rsList();
