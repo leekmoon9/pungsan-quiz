@@ -761,8 +761,8 @@ body.tbon #app{padding-bottom:104px}
 #ptr{position:fixed;left:0;right:0;top:0;height:0;overflow:hidden;z-index:40;pointer-events:none;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;color:#1a1712}
 #ptr .pi{box-sizing:border-box;display:flex;flex-direction:column;align-items:center;gap:6px;padding-bottom:14px;opacity:var(--po,1)}
 #ptr .pi,#ptr svg,#ptr .bd,#ptr .tx{flex:none}#ptr svg{display:block;overflow:visible}
-#ptr .rg{fill:none;stroke:#1a1712;stroke-width:5;stroke-linecap:round;transform-box:fill-box;transform-origin:center}
-#ptr .ar{fill:none;stroke:#1a1712;stroke-width:4.2;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s;transform-box:fill-box;transform-origin:center}
+#ptr .rg{fill:none;stroke:#1a1712;stroke-width:4.4;stroke-linecap:round;transform-box:fill-box;transform-origin:center}
+#ptr .ar{fill:none;stroke:#1a1712;stroke-width:3.7;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s;transform-box:fill-box;transform-origin:center}
 #ptr.rd .ar{transform:rotate(180deg)}
 #ptr.sp .rg{animation:ptsp .8s linear infinite}
 @keyframes ptsp{to{transform:rotate(360deg)}}
@@ -1837,7 +1837,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v88';
+const APPV='v89';
 function pfHTML(){const ch=kChips('pf');if(KCH.pf>=ch.length)KCH.pf=0;const nm=ch[KCH.pf],pend=STAFF()&&admLoad.ok?(FB||[]).filter(x=>x.st!='done').length:0;let b='';
  if(nm=='관리자')b=admBody();
  else if(nm=='초기화')b=rsList();
@@ -1924,7 +1924,7 @@ function ptrHTML(st,d){const p=Math.min(1,d/PT_TH),C=2*Math.PI*14,sp=st=='sp',ar
  arw=`<svg width="24" height="24" viewBox="0 0 24 24"><path class="ar" d="M12 3.5v16M5 12.5l7 7 7-7"/></svg>`;
  return `<div class="pi">${ring}${arw}</div>`}
 function ptrSet(d,st){let e=document.getElementById('ptr');if(!e){e=document.createElement('div');e.id='ptr';e.setAttribute('aria-hidden','true');document.body.appendChild(e)}
- const sig=st+(st=='pl'?Math.round(Math.min(1,d/PT_TH)*12):'');
+ const sig=st+(st=='pu'?Math.round(Math.min(1,d/PT_TH)*12):'');
  if(e._s!==sig){e._s=sig;e.className=st;e.innerHTML=ptrHTML(st,d)}
  e.style.height=d+'px';e.style.setProperty('--po',Math.min(1,d/36));document.getElementById('app').style.transform=d?`translateY(${d}px)`:'';return e}
 function ptrEnd(){const e=document.getElementById('ptr');if(e)e.remove();const A=document.getElementById('app');if(A)A.style.transform='';PTRB=0}
@@ -1939,7 +1939,7 @@ async function ptrDo(){const c=CURR;const t0=Date.now();
   if(scrollY>1||!okEl(e.target))return;const t=e.touches[0];P={x:t.clientX,y:t.clientY,on:0,d:0}},{passive:true});
  document.addEventListener('touchmove',e=>{if(!P)return;const t=e.touches[0],dx=t.clientX-P.x,dy=t.clientY-P.y;
   if(!P.on){if(Math.abs(dx)<10&&Math.abs(dy)<10)return;if(dy>0&&Math.abs(dy)>Math.abs(dx)*1.2&&scrollY<=1)P.on=1;else{P=null;return}}
-  e.preventDefault();const d=Math.min(120,dy*.5);P.d=Math.max(0,d);ptrSet(P.d,P.d>=PT_TH?'rd':'pl')},{passive:false});
+  e.preventDefault();const d=Math.min(120,dy*.5);P.d=Math.max(0,d);ptrSet(P.d,P.d>=PT_TH?'rd':'pu')},{passive:false});
  const fin=async()=>{if(!P)return;const z=P;P=null;if(!z.on)return;
   if(z.d>=PT_TH){PTRB=1;ptrSet(78,'sp');try{await ptrDo()}catch(e){}ptrBack(78)}else ptrBack(z.d)};
  document.addEventListener('touchend',fin);document.addEventListener('touchcancel',()=>{if(P&&P.on){const d=P.d;P=null;ptrBack(d)}else P=null})}
