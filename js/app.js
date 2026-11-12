@@ -458,15 +458,70 @@ function pvMenu(b,id){const w=b.parentElement,o=w.querySelector('.pvdd');if(o){o
  setTimeout(()=>document.addEventListener('click',function f(e){if(!e.target.closest('.pvdd,.pvm')){const d=document.querySelector('.pvdd');if(d)d.remove()}document.removeEventListener('click',f,true)},true))}
 async function postView(id){if(!POSTS)await postLoad();const x=(POSTS||[]).find(y=>y.id==id);if(!x){soonMsg('지워진 공지예요.');return board()}
  pMark(x.id);const pb=pBody(x),im=(x.imgs||[]).map(i=>`<figure class="mgi skl" data-i="${escA(i)}" aria-label="사진 불러오는 중"></figure>`).join('');
- show(`<div class="pvh"><h2>${esc(x.title)}</h2>${OWNER&&DB?`<button class="pvm" aria-label="더보기" onclick="pvMenu(this,${x.id})">${ICN_MORE}</button>`:''}</div>${pb||im?`<div class="card mgv pvw">${pb?`<div class="mgs"><p>${nl(pb)}</p></div>`:''}${im}</div>`:''}<p class="pvd">${pKind(x)?'업데이트':'공지'} · ${fdt(x.created_at)}${x.updated_at?' · 수정됨':''}</p>`);mgImgs()}
+ show(`<div class="pvh"><h2>${esc(x.title)}</h2>${OWNER&&DB?`<button class="pvm" aria-label="더보기" onclick="pvMenu(this,${x.id})">${ICN_MORE}</button>`:''}</div>${pb||im?`<div class="card mgv pvw">${pb?`<div class="mgs"><p>${pHtml(pb)}</p></div>`:''}${im}</div>`:''}<p class="pvd">${pKind(x)?'업데이트':'공지'} · ${fdt(x.created_at)}${x.updated_at?' · 수정됨':''}</p>`);mgImgs()}
 let PKIND=0;
+// ===== 공지 서식: 글자 크기·굵게·기울임·밑줄·글자색·형광펜 =====
+// 저장 형식: [b][/b] [i][/i] [u][/u] [c=#hex][/c] [h=#hex][/h] [s=NN][/s] (예전 글은 그냥 글자라 그대로 보여요)
+const RTC=['#2a2620','#e8493d','#e08a1e','#2f8a57','#3f6fb5','#8a5cc2','#8a8070'],RTH=['#ffe48a','#ffc9d6','#cfe6ff','#d6f0c2','#ffd8b0'];
+let RTS=16,RTR=null,RTL=0;
+function pHtml(t){let h=esc(t||'');
+ h=h.replace(/\[(\/?)(b|i|u)\]/g,(m,c,k)=>`<${c}${k=='b'?'b':k=='i'?'i':'u'}>`)
+  .replace(/\[c=(#[0-9a-fA-F]{6})\]/g,'<span style="color:$1">').replace(/\[h=(#[0-9a-fA-F]{6})\]/g,'<span class="phl" style="--ph:$1">')
+  .replace(/\[s=(\d{2})\]/g,(m,n)=>`<span style="font-size:${Math.max(10,Math.min(32,+n))}px">`).replace(/\[\/(c|h|s)\]/g,'</span>');
+ return h.replace(/\n/g,'<br>')}
+const RTI={b:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"><path d="M7 4.8h6a3.6 3.6 0 0 1 0 7.2H7zM7 12h7a3.6 3.6 0 0 1 0 7.2H7z"/></svg>',
+ i:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M10.5 4.8H18M6 19.2h7.5M14.6 4.8l-5.2 14.4"/></svg>',
+ u:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M7.5 4.5v6.5a4.5 4.5 0 0 0 9 0V4.5M6 20h12"/></svg>',
+ c:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7.2 16.5 12 4.5l4.8 12M9 12h6"/></svg>',
+ h:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m14.5 4.5 5 5-8.2 8.2-5-5zM6.3 12.7l-2.3 5.3 1.9 1.9 5.3-2.3"/></svg>'};
+function rteHTML(v){const B=(k,lab,x)=>`<button type="button" class="rtb" data-k="${k}" aria-label="${lab}" onpointerdown="event.preventDefault()" onclick="rteDo('${k}',this)">${RTI[k]}${x||''}</button>`;
+ return `<div class="rte"><div class="rtt" role="toolbar" aria-label="글자 꾸미기"><button type="button" class="rtb rtz" aria-label="글자 작게" onpointerdown="event.preventDefault()" onclick="rteSize(-1)">−</button><span class="rts" id="rts">${RTS}</span><button type="button" class="rtb rtz" aria-label="글자 크게" onpointerdown="event.preventDefault()" onclick="rteSize(1)">+</button><i class="rtd"></i>${B('b','굵게')}${B('i','기울임')}${B('u','밑줄')}${B('c','글자색','<b class="rtcb" id="rtcb"></b>')}${B('h','형광펜','<b class="rtcb rthb" id="rthb"></b>')}</div><div class="rtp" id="rtp" hidden></div>
+ <div class="rtx" id="pb" contenteditable="true" role="textbox" aria-multiline="true" data-ph="내용">${v}</div></div>`}
+let RTCC=RTC[1],RTHC=RTH[0];
+function rteMount(){const e=document.getElementById('pb');if(!e)return;try{document.execCommand('styleWithCSS',false,true)}catch(x){}
+ e.addEventListener('paste',ev=>{ev.preventDefault();const t=(ev.clipboardData||window.clipboardData).getData('text/plain');document.execCommand('insertText',false,t)});
+ const up=()=>{rteSave();rteSync()};['keyup','mouseup','touchend','input','focus'].forEach(k=>e.addEventListener(k,up));document.addEventListener('selectionchange',rteSel);
+ const cb=document.getElementById('rtcb'),hb=document.getElementById('rthb');if(cb)cb.style.background=RTCC;if(hb)hb.style.background=RTHC}
+function rteSel(){const e=document.getElementById('pb');if(!e){document.removeEventListener('selectionchange',rteSel);return}const s=getSelection();if(s.rangeCount&&e.contains(s.anchorNode)){rteSave();rteSync()}}
+function rteSave(){const e=document.getElementById('pb'),s=getSelection();if(e&&s.rangeCount&&e.contains(s.getRangeAt(0).commonAncestorContainer))RTR=s.getRangeAt(0).cloneRange()}
+function rteBack(){const e=document.getElementById('pb');if(!e)return;e.focus();if(RTR){const s=getSelection();s.removeAllRanges();s.addRange(RTR)}}
+function rteSync(){if(RTL)return;const s=getSelection();let n=s.anchorNode;if(!n)return;if(n.nodeType==3)n=n.parentElement;const e=document.getElementById('pb');if(!e||!e.contains(n))return;
+ const z=Math.round(parseFloat(getComputedStyle(n).fontSize));const t=document.getElementById('rts');if(t&&z)t.textContent=z;
+ [['b','bold'],['i','italic'],['u','underline']].forEach(([k,c])=>{const b=document.querySelector(`.rtb[data-k="${k}"]`);let on=false;try{on=document.queryCommandState(c)}catch(x){}if(b)b.classList.toggle('on',on)})}
+function rteDo(k,btn){rteBack();if(k=='b'||k=='i'||k=='u'){document.execCommand({b:'bold',i:'italic',u:'underline'}[k]);rteSave();rteSync();return}
+ const p=document.getElementById('rtp');if(!p.hidden&&p.dataset.k==k){p.hidden=true;return}const L=k=='c'?RTC:RTH;p.dataset.k=k;
+ p.innerHTML=`<span>${k=='c'?'글자색':'형광펜'}</span>`+L.map(c=>`<button type="button" class="rtw" style="background:${c}" aria-label="${c}" onpointerdown="event.preventDefault()" onclick="rteCol('${k}','${c}')"></button>`).join('')+(k=='h'?`<button type="button" class="rtw rtn" aria-label="형광펜 지우기" onpointerdown="event.preventDefault()" onclick="rteCol('h','')">×</button>`:'');p.hidden=false}
+function rteCol(k,c){rteBack();document.getElementById('rtp').hidden=true;
+ if(k=='c'){RTCC=c;document.execCommand('foreColor',false,c);document.getElementById('rtcb').style.background=c}
+ else{const s=getSelection();if(c){RTHC=c;document.execCommand('hiliteColor',false,c)||document.execCommand('backColor',false,c);document.getElementById('rthb').style.background=c}else{document.execCommand('hiliteColor',false,'transparent')||document.execCommand('backColor',false,'transparent')}}rteSave()}
+function rteSize(d){RTL=1;rteBack();const s=getSelection(),t=document.getElementById('rts'),cur=+(t&&t.textContent)||RTS,nz=Math.max(11,Math.min(30,cur+d));RTS=nz;if(t)t.textContent=nz;
+ const col=s.rangeCount&&s.isCollapsed;
+ if(col){let a=s.anchorNode;if(a&&a.nodeType==3)a=a.parentElement;const sp=a&&a.closest&&a.closest('#pb span[style*="font-size"]');if(sp&&!sp.textContent.replace(/\u200b/g,'')){sp.style.fontSize=nz+'px';if(t)t.textContent=nz;rteSave();setTimeout(()=>{RTL=0;rteSync()},80);return}}
+ document.execCommand('fontSize',false,7);
+ const tg=[...document.querySelectorAll('#pb font[size="7"],#pb [style*="xxx-large"]')].map(f=>{let el=f;if(f.tagName=='FONT'){el=document.createElement('span');while(f.firstChild)el.appendChild(f.firstChild);f.replaceWith(el)}el.style.fontSize=nz+'px';el.querySelectorAll('[style*="font-size"]').forEach(x=>x.style.fontSize='');return el});
+ if(col&&!tg.length){const sp=document.createElement('span');sp.style.fontSize=nz+'px';sp.textContent='\u200b';const r=s.getRangeAt(0);r.insertNode(sp);tg.push(sp)}
+ if(tg.length){const r=document.createRange(),a=tg[0],z=tg[tg.length-1];if(col){if(!a.textContent)a.textContent='\u200b';r.selectNodeContents(a);r.collapse(false)}else{r.setStart(a,0);r.setEnd(z,z.childNodes.length)}s.removeAllRanges();s.addRange(r)}
+ rteSave();if(t)t.textContent=nz;setTimeout(()=>{RTL=0;rteSync()},80)}
+// 편집기 내용 → 저장 형식
+function rteGet(){const e=document.getElementById('pb');if(!e)return '';const hex=c=>{if(!c)return '';const m=c.match(/rgba?\((\d+),\s*(\d+),\s*(\d+)(?:,\s*([\d.]+))?\)/);if(m){if(m[4]!==undefined&&+m[4]==0)return '';return '#'+[m[1],m[2],m[3]].map(v=>(+v).toString(16).padStart(2,'0')).join('')}return /^#[0-9a-f]{6}$/i.test(c)?c.toLowerCase():/^#[0-9a-f]{3}$/i.test(c)?'#'+c.slice(1).split('').map(x=>x+x).join('').toLowerCase():''};
+ const walk=n=>{if(n.nodeType==3)return n.nodeValue.replace(/[\u200b\u00a0]/g,m=>m=='\u00a0'?' ':'').replace(/\[(?=\/?[biuchs][\]=])/g,'［');if(n.nodeType!=1)return '';const t=n.tagName;if(t=='BR')return '\n';
+  let inner=[...n.childNodes].map(walk).join(''),o='',c='';const st=n.style||{};
+  const blk=(t=='DIV'||t=='P')&&n!==e;
+  if(t=='B'||t=='STRONG'||+st.fontWeight>=600||st.fontWeight=='bold'){o+='[b]';c='[/b]'+c}
+  if(t=='I'||t=='EM'||st.fontStyle=='italic'){o+='[i]';c='[/i]'+c}
+  if(t=='U'||/underline/.test(st.textDecoration||st.textDecorationLine||'')){o+='[u]';c='[/u]'+c}
+  const fc=hex(st.color||(t=='FONT'?n.getAttribute('color'):''));if(fc&&fc!='#2a2620'){o+=`[c=${fc}]`;c='[/c]'+c}
+  const bc=hex(st.backgroundColor||(n.classList&&n.classList.contains('phl')?n.style.getPropertyValue('--ph'):''));if(bc&&bc!='#ffffff'){o+=`[h=${bc}]`;c='[/h]'+c}
+  const fz=parseFloat(st.fontSize);if(fz&&Math.round(fz)!=16){o+=`[s=${Math.max(10,Math.min(32,Math.round(fz)))}]`;c='[/s]'+c}
+  if(!inner.replace(/\n/g,''))return blk?'\n':inner;return (blk?'\n':'')+o+inner+c};
+ let r=[...e.childNodes].map(walk).join('');return r.replace(/^\n+/,'').replace(/\n{3,}/g,'\n\n').replace(/\s+$/,'')}
 function pkTo(k){PKIND=k;document.querySelectorAll('.pkg button').forEach(b=>b.classList.toggle('on',+b.dataset.k==k))}
 function postForm(id){const x=id?(POSTS||[]).find(y=>y.id==id):null;PEDIT=x?x.id:null;PIMG=x?(x.imgs||[]).map(i=>({id:i})):[];PKIND=x?pKind(x):KCH.noti;
- show(`<h2>${x?'공지 고치기':'공지 올리기'}</h2><div class="ntg pkg" role="tablist">${[[0,'공지'],[1,'업데이트']].map(([k,l])=>`<button data-k="${k}" class="${k==PKIND?'on':''}" onclick="pkTo(${k})">${l}</button>`).join('')}</div><div class="card"><input type="text" id="pt" maxlength="80" placeholder="제목" value="${x?escA(x.title):''}"><textarea id="pb" maxlength="4000" placeholder="내용" style="margin-top:8px;min-height:180px">${x?esc(pBody(x)):''}</textarea><div class="nim2" id="pimg"></div><label class="nadd" for="pti">${ICN_PIC}<span>사진 추가</span><small>최대 ${PMAX}장</small></label><input type="file" id="pti" accept="image/*" multiple hidden onchange="pImgAdd(this)"></div><label class="pnt"><input type="checkbox" id="pnf"${x?'':' checked'}><span><b>모두에게 알림 보내기</b></span></label><div class="row"><button class="b" id="pts" onclick="postSave()">${x?'고친 내용 저장':'공지 올리기'}</button></div>`);pImgDraw()}
+ RTS=16;show(`<h2>${x?'공지 고치기':'공지 올리기'}</h2><div class="ntg pkg" role="tablist">${[[0,'공지'],[1,'업데이트']].map(([k,l])=>`<button data-k="${k}" class="${k==PKIND?'on':''}" onclick="pkTo(${k})">${l}</button>`).join('')}</div><div class="card"><input type="text" id="pt" maxlength="80" placeholder="제목" value="${x?escA(x.title):''}">${rteHTML(x?pHtml(pBody(x)):'')}<div class="nim2" id="pimg"></div><label class="nadd" for="pti">${ICN_PIC}<span>사진 추가</span><small>최대 ${PMAX}장</small></label><input type="file" id="pti" accept="image/*" multiple hidden onchange="pImgAdd(this)"></div><label class="pnt"><input type="checkbox" id="pnf"${x?'':' checked'}><span><b>모두에게 알림 보내기</b></span></label><div class="row"><button class="b" id="pts" onclick="postSave()">${x?'고친 내용 저장':'공지 올리기'}</button></div>`);pImgDraw();rteMount()}
 async function pImgAdd(inp){const fs=[...inp.files];inp.value='';for(const f of fs){if(PIMG.length>=PMAX){soonMsg(`사진은 ${PMAX}장까지 올릴 수 있어요.`);break}try{PIMG.push({d:await nImgShrink(f)})}catch(e){soonMsg('이 사진은 열 수 없어요.')}}pImgDraw()}
 function pImgDraw(){const w=document.getElementById('pimg');if(!w)return;w.innerHTML=PIMG.map((x,i)=>`<div><img ${x.d?`src="${x.d}"`:`data-pi="${escA(x.id)}"`} alt=""><button aria-label="사진 빼기" onclick="PIMG.splice(${i},1);pImgDraw()">×</button></div>`).join('');const a=document.querySelector('label[for=pti]');if(a)a.style.display=PIMG.length>=PMAX?'none':'';
  w.querySelectorAll('img[data-pi]').forEach(async im=>{const i=im.dataset.pi;try{let d=NIMC.get(i);if(!d){const r=await DB.rpc('notice_img',{p_id:i});if(r.error||!r.data)throw 0;d=r.data;NIMC.set(i,d)}im.src=d}catch(e){}})}
-async function postSave(){const t=document.getElementById('pt').value.trim(),b=document.getElementById('pb').value.trim(),nf=document.getElementById('pnf').checked;if(!t)return soonMsg('제목을 써 주세요.');
+async function postSave(){const t=document.getElementById('pt').value.trim(),b=rteGet(),nf=document.getElementById('pnf').checked;if(!t)return soonMsg('제목을 써 주세요.');if(b.length>6000)return soonMsg('내용이 너무 길어요. 조금 줄여 주세요.');
  if(!(await askBox(PEDIT?'고친 내용을 저장할까요?':(PKIND?'업데이트를':'공지를')+' 올릴까요?',`<b>${esc(t)}</b>${PIMG.length?` · 사진 ${PIMG.length}장`:''}<br>${nf?'모두에게 알림도 보내요.':'알림은 보내지 않아요.'}`,PEDIT?'저장':'올리기')))return;
  const sb=document.getElementById('pts'),lb=sb?sb.textContent:'',re=()=>{if(sb){sb.disabled=false;sb.textContent=lb}};if(sb){sb.disabled=true;sb.textContent=PIMG.some(x=>x.d)?'사진 올리는 중…':'올리는 중…'}
  const ids=[];try{for(const x of PIMG){if(x.id){ids.push(x.id);continue}const q=await DB.rpc('admin_notice_img',{p_key:AK(),p_data:x.d});if(q.error||!q.data)throw 0;x.id=q.data;NIMC.set(q.data,x.d);delete x.d;ids.push(q.data)}}catch(e){re();return soonMsg('사진을 올리지 못했어요. 「공지게시판.sql」을 먼저 실행해 주세요.')}
@@ -1240,7 +1295,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v137';
+const APPV='v138';
 function nagTog(){if(R._nagoff)delete R._nagoff;else R._nagoff=1;save();show(pfHTML(),kKey('pf'));soonMsg(R._nagoff?'공부 알림을 껐어요.':'공부를 안 한 날 저녁에 알림이 와요.')}
 function pfHTML(){const ch=kChips('pf');if(KCH.pf>=ch.length)KCH.pf=0;const nm=ch[KCH.pf],pend=STAFF()&&admLoad.ok?(FB||[]).filter(x=>x.st!='done').length:0;let b='';
  if(nm=='관리자')b=admBody();
