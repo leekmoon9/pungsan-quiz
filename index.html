@@ -757,6 +757,24 @@ body.tbon #app{padding-bottom:104px}
 .mlim>span{font-size:.62em}
 .hdn{display:flex;flex-direction:column;gap:2px;margin:4px 0 10px;padding:9px 12px;border-radius:12px;background:color-mix(in srgb,#e0372c 9%,var(--card));border:1.5px solid color-mix(in srgb,#e0372c 35%,var(--ln));color:#8a2a22;font-size:13px;text-align:left}
 .hdn b{font-size:14px}
+/* 당겨서 새로고침 */
+#ptr{position:fixed;left:0;right:0;top:0;height:0;overflow:hidden;z-index:40;pointer-events:none;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;color:#1a1712}
+#ptr .pi{box-sizing:border-box;display:flex;flex-direction:column;align-items:center;gap:6px;padding-bottom:14px;opacity:var(--po,1)}
+#ptr .pi,#ptr svg,#ptr .bd,#ptr .tx{flex:none}#ptr svg{display:block;overflow:visible}
+#ptr .rg{fill:none;stroke:#1a1712;stroke-width:5;stroke-linecap:round;transform-box:fill-box;transform-origin:center}
+#ptr .ar{fill:none;stroke:#1a1712;stroke-width:4.2;stroke-linecap:round;stroke-linejoin:round;transition:transform .2s;transform-box:fill-box;transform-origin:center}
+#ptr.rd .ar{transform:rotate(180deg)}
+#ptr.sp .rg{animation:ptsp .8s linear infinite}
+@keyframes ptsp{to{transform:rotate(360deg)}}
+#ptr .ln{position:absolute;left:16px;right:16px;bottom:0;height:0;border-top:3.5px dashed #1a1712;border-radius:2px}
+body.ptA #ptr .ln{opacity:.95}
+body.ptB #ptr .pi{flex-direction:row;gap:12px;padding-bottom:14px}
+body.ptB #ptr .bd{width:40px;height:40px;border-radius:50%;background:#1a1712;display:grid;place-items:center}
+body.ptB #ptr .bd svg .rg,body.ptB #ptr .bd svg .ar{stroke:#fffdf8}body.ptB #ptr .bd svg{width:24px;height:24px}body.ptB #ptr .bd .ar{stroke-width:3.6}
+body.ptB #ptr .tx{font-weight:800;font-size:17px;letter-spacing:-.2px}
+body.ptB #ptr .ln{border-top:4px solid #1a1712;border-radius:4px}
+body.ptB #ptr.sp .ln{background:linear-gradient(90deg,transparent,#fffdf8 50%,transparent) 0 0/200% 100%;animation:ptsh 1s linear infinite}
+@keyframes ptsh{to{background-position:-200% 0}}
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -1828,7 +1846,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v87';
+const APPV='v88';
 function pfHTML(){const ch=kChips('pf');if(KCH.pf>=ch.length)KCH.pf=0;const nm=ch[KCH.pf],pend=STAFF()&&admLoad.ok?(FB||[]).filter(x=>x.st!='done').length:0;let b='';
  if(nm=='관리자')b=admBody();
  else if(nm=='초기화')b=rsList();
@@ -1907,6 +1925,34 @@ function tbGo(k){if(KNV)return;const cur=tbKey();if(k==cur&&TBR.includes(CURR)){
  const end=()=>{if(!S||!S.ax){S=null;return}const {dx,dir,o}=S,v=Math.abs(dx)/(Date.now()-S.t);
   if(o&&dir&&(Math.abs(dx)>innerWidth*.22||(Math.abs(dx)>40&&v>.45))){const z=S;S=null;kNav(z.t,z.c,{off:dx,o})}else back()};
  document.addEventListener('touchend',end);document.addEventListener('touchcancel',back)}
+
+// 5개 탭 첫 화면에서 맨 위에서 아래로 당겨 새로고침
+let PTRB=0;const PT_TH=84;
+function ptrHTML(st,d){const p=Math.min(1,d/PT_TH),C=2*Math.PI*14,sp=st=='sp',arc=sp?C*.72:C*(.12+.76*p),
+ ring=`<svg width="36" height="36" viewBox="0 0 40 40"><circle class="rg" cx="20" cy="20" r="14" stroke-dasharray="${arc} ${C}" style="transform:rotate(${sp?-90:-110+p*50}deg)"/></svg>`,
+ arw=`<svg width="24" height="24" viewBox="0 0 24 24"><path class="ar" d="M12 3.5v16M5 12.5l7 7 7-7"/></svg>`;
+ if(document.body.classList.contains('ptB'))return `<div class="pi"><span class="bd">${sp?ring:arw}</span><span class="tx">${sp?'새로고침 중…':st=='rd'?'놓으면 새로고침':'당겨서 새로고침'}</span></div><i class="ln"></i>`;
+ return `<div class="pi">${ring}${arw}</div><i class="ln"></i>`}
+function ptrSet(d,st){let e=document.getElementById('ptr');if(!e){e=document.createElement('div');e.id='ptr';e.setAttribute('aria-hidden','true');document.body.appendChild(e)}
+ const sig=st+(document.body.className.match(/pt[AB]/)||[''])[0]+(st=='pl'?Math.round(Math.min(1,d/PT_TH)*12):'');
+ if(e._s!==sig){e._s=sig;e.className=st;e.innerHTML=ptrHTML(st,d)}
+ e.style.height=d+'px';e.style.setProperty('--po',Math.min(1,d/36));document.getElementById('app').style.transform=d?`translateY(${d}px)`:'';return e}
+function ptrEnd(){const e=document.getElementById('ptr');if(e)e.remove();const A=document.getElementById('app');if(A)A.style.transform='';PTRB=0}
+function ptrBack(from){const A=document.getElementById('app'),e=document.getElementById('ptr');if(!e){PTRB=0;return}if(RDM()||!from){ptrEnd();return}
+ const t0=performance.now();const f=t=>{const k=Math.min(1,(t-t0)/220),d=from*(1-(1-Math.pow(1-k,3)));e.style.height=d+'px';A.style.transform=`translateY(${d}px)`;e.style.setProperty('--po',Math.min(1,d/36));if(k<1)requestAnimationFrame(f);else ptrEnd()};requestAnimationFrame(f)}
+async function ptrDo(){const c=CURR;const t0=Date.now();
+ try{if(c=='subjects')await Promise.all([DB&&NICK?msgLoad():0,postLoad()]);else if(c=='stats'||c=='profile')await sync()}catch(e){}
+ const w=700-(Date.now()-t0);if(w>0)await new Promise(r=>setTimeout(r,w));
+ if(CURR!==c)return;try{const F={subjects,board,inbox,stats:allStats,profile}[c];if(F)await F()}catch(e){}}
+{let P=null;const okEl=el=>{for(;el&&el!==document.body;el=el.parentElement){if(el.matches&&el.matches('input,textarea,select,canvas,.mdw,#tbr,.tbsl,.cgw,.bsh'))return false;const cs=getComputedStyle(el);if(/(auto|scroll)/.test(cs.overflowY)&&el.scrollHeight>el.clientHeight+2)return false}return true};
+ document.addEventListener('touchstart',e=>{P=null;if(PTRB||KNV||e.touches.length!==1||!NICK||!TBR.includes(CURR)||!document.body.classList.contains('tbon')||document.querySelector('.mdw,.bsw,.msx,.tbsl'))return;
+  if(scrollY>1||!okEl(e.target))return;const t=e.touches[0];P={x:t.clientX,y:t.clientY,on:0,d:0}},{passive:true});
+ document.addEventListener('touchmove',e=>{if(!P)return;const t=e.touches[0],dx=t.clientX-P.x,dy=t.clientY-P.y;
+  if(!P.on){if(Math.abs(dx)<10&&Math.abs(dy)<10)return;if(dy>0&&Math.abs(dy)>Math.abs(dx)*1.2&&scrollY<=1)P.on=1;else{P=null;return}}
+  e.preventDefault();const d=Math.min(120,dy*.5);P.d=Math.max(0,d);ptrSet(P.d,P.d>=PT_TH?'rd':'pl')},{passive:false});
+ const fin=async()=>{if(!P)return;const z=P;P=null;if(!z.on)return;
+  if(z.d>=PT_TH){PTRB=1;ptrSet(78,'sp');try{await ptrDo()}catch(e){}ptrBack(78)}else ptrBack(z.d)};
+ document.addEventListener('touchend',fin);document.addEventListener('touchcancel',()=>{if(P&&P.on){const d=P.d;P=null;ptrBack(d)}else P=null})}
 // 흰 알약을 지금 탭(또는 손가락) 위치로 옮김
 function tbPill(x,lift){const t=document.getElementById('tbr');if(!t)return;const p=t.querySelector('.tbp'),on=t.querySelector('button.on');if(!p||!on)return;
  const tr=t.getBoundingClientRect(),bs=[...t.querySelectorAll('button')],G=2,P=6,cw=t.clientWidth,av=cw-P*2-G*(bs.length-1),fs=bs.map(b=>b.classList.contains('on')?1.45:1),sm=fs.reduce((x,y)=>x+y,0);
