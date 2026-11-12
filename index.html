@@ -693,6 +693,8 @@ img,button,a{-webkit-user-drag:none;-webkit-touch-callout:none}
 .mdc .b.g{background:color-mix(in srgb,#2a2620 7%,var(--card));color:#6f6656}
 .mdc .b.b:not(.g){background:#2a2620!important;color:#fffdf8}
 .b:not(.g):not(.sbm):not(.dlb):not(.admb):not(.msd){background:#2a2620!important;color:#fffdf8!important;border-radius:14px!important;box-shadow:0 3px 0 rgba(42,38,32,.18)!important}
+.bsh .b.g{background:color-mix(in srgb,#2a2620 7%,var(--card));color:#6f6656}
+.mdc .b.g,.bsh .b.g{border:0!important;border-radius:14px!important;box-shadow:0 3px 0 rgba(42,38,32,.18)!important;font-weight:800}
 .b:disabled{opacity:.4}
 .msb .lk{color:#c94b40;font-weight:700}
 .b.msd{background:#c94b40!important;border-radius:999px!important;box-shadow:0 3px 0 rgba(150,40,30,.2)!important}
@@ -1826,7 +1828,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v86';
+const APPV='v87';
 function pfHTML(){const ch=kChips('pf');if(KCH.pf>=ch.length)KCH.pf=0;const nm=ch[KCH.pf],pend=STAFF()&&admLoad.ok?(FB||[]).filter(x=>x.st!='done').length:0;let b='';
  if(nm=='관리자')b=admBody();
  else if(nm=='초기화')b=rsList();
@@ -2080,7 +2082,8 @@ async function accSave(){const n=document.getElementById('acn').value.trim(),pw=
  if(r!='ok'&&r!='new'){b.disabled=false;b.textContent='추가하고 전환';st.textContent=r=='wrong'?'이미 있는 닉네임이고 비밀번호가 달라요.':r=='locked'?'잠긴 계정이에요. 잠시 뒤 다시 해 주세요.':'만들지 못했어요. 다시 해 주세요.';return}
  const L=ACC().filter(x=>x.n!=n);L.push({n,p:pw});ls('acl',JSON.stringify(L));accGo(n)}
 // 프로필 탭 길게 누르기
-{let T=0,x0=0,y0=0;document.addEventListener('pointerdown',e=>{const b=e.target.closest&&e.target.closest('#tbr button[data-k="pf"]');if(!b||!accOK())return;x0=e.clientX;y0=e.clientY;clearTimeout(T);T=setTimeout(()=>{T=0;TBNOCLK=Date.now();TBDRAG=null;accSheet()},450)},true);
+let ACLK=0;{const rel=()=>{if(ACLK)setTimeout(()=>{ACLK=0},350)};['pointerup','pointercancel','touchend','touchcancel','mouseup'].forEach(n=>document.addEventListener(n,rel,true));['click','pointerdown','mousedown','touchstart'].forEach(n=>document.addEventListener(n,e=>{if(ACLK&&e.target.closest&&e.target.closest('.bsw')){e.stopPropagation();e.preventDefault()}},true))}
+{let T=0,x0=0,y0=0;document.addEventListener('pointerdown',e=>{const b=e.target.closest&&e.target.closest('#tbr button[data-k="pf"]');if(!b||!accOK())return;x0=e.clientX;y0=e.clientY;clearTimeout(T);T=setTimeout(()=>{T=0;TBNOCLK=Date.now();TBDRAG=null;ACLK=1;setTimeout(()=>{ACLK=0},3000);accSheet()},450)},true);
  const cx=()=>{clearTimeout(T);T=0};document.addEventListener('pointermove',e=>{if(T&&Math.hypot(e.clientX-x0,e.clientY-y0)>10)cx()},true);document.addEventListener('pointerup',cx,true);document.addEventListener('pointercancel',cx,true);
  document.addEventListener('contextmenu',e=>{if(e.target.closest&&e.target.closest('#tbr'))e.preventDefault()})}
 
