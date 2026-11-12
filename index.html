@@ -233,6 +233,10 @@ body.hasbk .fbw h2:first-child{padding-left:0}
 .nt .ngc em{display:block;font-style:normal;font-size:12px;font-weight:800;color:color-mix(in srgb,var(--nc) 85%,#000);margin-top:2px}
 .nt .ngc small{display:block;font-size:12.5px;line-height:1.5;color:#6b6252;margin-top:3px}
 .qim{margin:10px 0;border:1.3px solid #d5c9b2;border-radius:12px;overflow:hidden;background:#fff}.qim img{display:block;width:100%;height:auto;max-height:70vh;object-fit:contain}
+.pdfc{padding:14px 14px 8px}.pdfh{font-weight:800;font-size:16px;margin-bottom:8px}.pdfh small{display:block;font-weight:500;font-size:12px;color:#7a7264;margin-top:2px}
+.pdfl{display:flex;align-items:center;gap:10px;padding:11px 4px;border-top:1px solid #e6dcc6;color:inherit;text-decoration:none;font-size:15px;font-weight:600}.pdfl:first-of-type{border-top:none}
+.pdfl svg{width:20px;height:20px;flex:none}.pdfl span{flex:1;min-width:0}.pdfl em{font-style:normal;font-size:11px;font-weight:800;padding:3px 8px;border-radius:999px;background:#efe6d2;color:#6b6252}
+.pdfs{margin-top:12px;border:1.5px solid #d5c9b2;border-radius:14px;padding:13px 14px;background:#fffdf7}
 .ntw{overflow-x:auto;margin:12px 0}.ntb{width:100%;border-collapse:collapse;font-size:13.5px;line-height:1.5;background:#fff}
 .ntb th,.ntb td{border:1.3px solid #d5c9b2;padding:7px 8px;vertical-align:top;text-align:left}.ntb tr:first-child th{background:color-mix(in srgb,var(--nc) 32%,#fff);text-align:center}.ntb th{background:color-mix(in srgb,var(--nc) 12%,#fff);white-space:nowrap}
 .ntip{margin:16px 0 4px;padding:12px 14px;border:2px dashed #e07a6f;border-radius:14px;background:#fff7f5}.ntip>span{font-family:'Jua',sans-serif;font-weight:400;font-size:17px;color:#d4443a;display:block;line-height:1.2;margin-bottom:2px}.ntip p{margin:0}
@@ -1604,6 +1608,7 @@ function learnHome(n){const col=sCol(n),nm=n.split('|').join(' '),mids=[].concat
  h+=`<div class="lch two" style="--uc:${col}"><button class="lcb${nDone(n)?' cpl':''}" onclick="noteList('${n}')">${ICN_NOTE}<span><b>공부하기</b></span><span class="chev">›</span></button>`;
  h+=`<button class="lcb${qDone(n)?' cpl':''}" onclick="socPage('${n}')">${ICN_PEN}<span><b>문제 풀기</b></span><span class="chev">›</span></button></div>`;
  if(NEWS(n))h+=mockCard(n,col);
+ if(PDFN.includes(n))h+=`<a class="pdfl pdfs" href="${pdfU(n)}" download>${ICN_PDF}<span>필기 PDF 받기</span><em>PDF</em></a>`;
  show(h)}
 function noteList(n){if(!NEWS(n))return subj(n);const col=sCol(n),nm=n.split('|').join(' ');
  let h=`<div class="shd"><h2 style="--hlc:${col}">공부하기</h2><p class="tag">${esc(nm)}</p></div>`;
@@ -2113,14 +2118,20 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v124';
+const APPV='v125';
 function nagTog(){if(R._nagoff)delete R._nagoff;else R._nagoff=1;save();show(pfHTML(),kKey('pf'));soonMsg(R._nagoff?'공부 알림을 껐어요.':'공부를 안 한 날 저녁에 알림이 와요.')}
+const PDFN=['정치','경제','물질과|에너지','역학과|에너지','행성우주|과학','세포와|물질대사','현대사회와|윤리','한국지리|탐구','동아시아|역사기행','미적분'];
+const pdfU=n=>'pdf/'+encodeURIComponent(n.replace('|',''))+'_%ED%95%84%EA%B8%B0.pdf';
+const ICN_PDF='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v11"/><path d="m7.5 11 4.5 4.5 4.5-4.5"/><path d="M5 19.5h14"/></svg>';
+function pdfCard(){const L=PDFN.filter(n=>hasC(n));if(!L.length)return '';
+ return `<div class="card pdfc"><div class="pdfh">필기 PDF 받기<small>A4로 인쇄하기 좋은 정리 노트</small></div>${L.map(n=>`<a class="pdfl" href="${pdfU(n)}" download>${ICN_PDF}<span>${esc(n.split('|').join(' '))}</span><em>PDF</em></a>`).join('')}</div>`}
 function pfHTML(){const ch=kChips('pf');if(KCH.pf>=ch.length)KCH.pf=0;const nm=ch[KCH.pf],pend=STAFF()&&admLoad.ok?(FB||[]).filter(x=>x.st!='done').length:0;let b='';
  if(nm=='관리자')b=admBody();
  else if(nm=='초기화')b=rsList();
  else b=`<div class="card pf"><div class="pr"><span>닉네임</span><b>${esc(NICK)}</b>${ADMINMODE||SUBMODE?`<span class="mut" style="font-size:13px;white-space:nowrap">${SUBMODE?'':'관리자 '}고정</span>`:'<button class="lk" onclick="pfNick()">변경하기</button>'}</div>
  ${ADMINMODE||SUBMODE?'':`<div class="pr"><span>비밀번호</span><b id="pv">${PFSHOW?(PFSHOW=false,esc(PIN)):'••••'}</b><button class="lk" onclick="if(!PFOK)return pfShow();const e=document.getElementById('pv');e.textContent=e.textContent=='••••'?PIN:'••••'">보기</button><button class="lk" onclick="pfPin()">변경하기</button></div>`}<div class="pr"><span>폰 알림</span><b>${notiState()}</b>${notiState()=='켜짐'?'':'<button class="lk" onclick="notiFromProfile()">켜기</button>'}</div>${ADMINMODE?'':`<div class="pr"><span>공부 알림</span><b>${R._nagoff?'꺼짐':'켜짐'}</b><button class="lk" onclick="nagTog()">${R._nagoff?'켜기':'끄기'}</button></div>`}</div>
  <div class="card pf" id="pfsel"><div class="pr"><span>선택과목</span><b class="pfsl">${Array.isArray(R._sel)?R._sel.map(n=>`<span>${n.split('|').join(' ')}</span>`).join('')||'없음':'아직 안 골랐어요'}</b><button class="lk" onclick="pickSel()">바꾸기</button></div></div>
+ ${pdfCard()}
  <p class="mut" style="text-align:center;font-size:12px;margin-top:18px">앱 버전 ${APPV}</p>`;
  return kPage('pf',kHead(`<h2>${esc(NICK)}</h2>`,[['txt:피드백','피드백 보내기','fbForm(1)'],['txt:사용법','사용법','guide()']],'pf',ch.map(x=>x=='관리자'?pend:0)),b)}
 function profile(){if(NICK&&!selOK())return pickSel();if(ADMINMODE||SUBMODE)PFOK=true;show(pfHTML(),kKey('pf'));animBars()}
