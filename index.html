@@ -201,7 +201,24 @@ body.hasbk .fbw h2:first-child{padding-left:0}
 .nth small{display:block;color:var(--mut);font-size:13px;margin-bottom:2px}.nth h2{margin-top:0}
 #app .nth h2{font-size:23px;line-height:1.3;margin-right:48px;word-break:keep-all}@media (min-width:760px){#app .nth h2{margin-right:0}}
 .tbb{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;margin:10px 0 0;padding:12px;border:1.5px solid #cdbfa5;border-radius:12px;background:var(--card);color:var(--tx);font:inherit;font-weight:700;cursor:pointer}
-.tbb.off{opacity:.55}.tbi{width:20px;height:20px}
+.tbb.off{opacity:.55}
+.ntb{display:flex;gap:8px;margin:10px 0 0}.ntb:empty{display:none}.ntb .tbb{margin:0;flex:1;min-width:0;padding:12px 8px;font-size:14.5px;white-space:nowrap}.ntb .tbb svg{width:20px;height:20px;flex:none}
+.tbb.czb.on{background:#2a2620;color:#fffdf8;border-color:#2a2620}
+.nt.cz mark,.nt.cz .ntr{color:transparent!important;border-radius:5px;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:background .15s}
+.nt.cz mark{background:#f3d77c}.nt.cz .ntr{background:#f1c5bf}
+.nt.cz mark *,.nt.cz .ntr *{visibility:hidden}
+.nt.cz mark.rv{color:inherit!important;background:linear-gradient(transparent 50%,#ffe48a 50%)}.nt.cz .ntr.rv{color:#d4443a!important;background:none}
+.nt.cz mark .ntr{background:none}
+.nt.cz mark.rv *,.nt.cz .ntr.rv *{visibility:visible}
+.nt.cz{padding-bottom:64px}
+.czi{position:fixed;z-index:40;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom));display:flex;align-items:center;gap:6px;padding:7px 7px 7px 16px;border-radius:999px;background:#2a2620;color:#fffdf8;font-size:13.5px;box-shadow:0 8px 22px rgba(40,30,15,.28);white-space:nowrap}
+.czi b{font-size:15px;font-variant-numeric:tabular-nums}.czi span{opacity:.75;margin-right:6px}
+.czi button{border:0;border-radius:999px;padding:7px 13px;background:#f9df99;color:#2a2620;font:inherit;font-size:13px;font-weight:800;cursor:pointer}
+.qcd{position:relative}
+.stb{position:absolute;top:8px;right:8px;width:40px;height:40px;display:grid;place-items:center;border:0;border-radius:50%;background:none;color:#b9ae9b;cursor:pointer;-webkit-tap-highlight-color:transparent;padding:0}
+.stb svg{width:25px;height:25px;fill:none}.stb.on{color:#e5a91f}.stb.on svg{fill:#f9d86a}.stb:active{transform:scale(.9)}
+#app .wnb.snb{border-left-color:#f3c969!important;margin-top:4px!important}.snb .wnc{background:#e5a91f}
+.stg{display:flex;align-items:center;gap:10px;font-size:13.5px;color:var(--mut);line-height:1.5}.stg b{color:var(--tx)}.stg .sti{flex:none;width:34px;height:34px;border-radius:50%;background:#f9df99;display:grid;place-items:center;color:#2a2620}.stg .sti svg{width:19px;height:19px;fill:none}.tbi{width:20px;height:20px}
 .nt{position:relative;margin:14px 0;padding:20px 16px 22px 34px;border-radius:6px 16px 16px 6px;background-color:#fffdf8;box-shadow:0 4px 18px rgba(90,70,40,.14);font-size:15px;line-height:1.75;color:#2f2a22;word-break:keep-all;overflow-wrap:anywhere;
  background-image:linear-gradient(to right,transparent 22px,#f1b7ae 22px,#f1b7ae 23.5px,transparent 23.5px),repeating-linear-gradient(to bottom,transparent 0,transparent 27px,#e7eef6 27px,#e7eef6 28px)}
 .nt::before{content:'';position:absolute;left:6px;top:16px;bottom:16px;width:10px;background:radial-gradient(circle at 5px 5px,#e9e0cf 3.6px,transparent 4.2px) 0 0/10px 34px}
@@ -969,7 +986,7 @@ const norm=s=>s.replace(/[\s.,·]/g,'').toLowerCase();
 const grade=(q,v)=>{const n=norm(v);return n&&q.a.some(k=>q.ex?n===norm(k):k.split('&').every(p=>n.includes(norm(p))))};
 function st(qs,X){X=X||R;const d=qs.filter(q=>X[q.id]),c=d.filter(q=>X[q.id].ok).length;return{n:d.length,c,t:qs.length,r:d.length?Math.round(c/d.length*100):null}}
 const stTxt=s=>s.n?`${s.n}/${s.t}문제 풀이 · 정답률 ${s.r}%`:`${s.t}문제 · 아직 풀지 않음`;
-let LK=null,TBSW=0;const show=(h,k)=>{try{if(typeof kWarmSoon=='function')kWarmSoon()}catch(e){}document.body.classList.remove('pdw','pfx');const nw=k===undefined||k!==LK;LK=k===undefined?null:k;{const sd=document.getElementById('sides');if(sd)sd.remove();const so=document.getElementById('sporb');if(so)so.remove()}document.querySelectorAll('.tbv').forEach(e=>e.remove());A.innerHTML=h;if(nw){window.scrollTo(0,0);A.classList.remove('in');if(Date.now()-TBSW>900){void A.offsetWidth;A.classList.add('in')}}};
+let LK=null,TBSW=0;const show=(h,k)=>{try{if(typeof kWarmSoon=='function')kWarmSoon()}catch(e){}document.body.classList.remove('pdw','pfx');const nw=k===undefined||k!==LK;LK=k===undefined?null:k;{const sd=document.getElementById('sides');if(sd)sd.remove();const so=document.getElementById('sporb');if(so)so.remove()}document.querySelectorAll('.tbv,#czi').forEach(e=>e.remove());A.innerHTML=h;if(nw){window.scrollTo(0,0);A.classList.remove('in');if(Date.now()-TBSW>900){void A.offsetWidth;A.classList.add('in')}}};
 let SS=null,draft=null;
 const WIDE=()=>{try{return matchMedia('(min-width:860px) and (min-height:600px) and (min-aspect-ratio:1/1)').matches}catch(e){return false}};
 function stk(side){const col={};SUBJ.flat().forEach(([n,c])=>col[n]=c);
@@ -1550,6 +1567,7 @@ let OPEN=-1;
 function socPage(n){const c=SUBJ.flat().find(x=>x[0]==n)[1],col=SC[c],nm=n.split('|').join(' ');
  const [K1,K2]=kd(n);let h=`<div class="shd"><h2 style="--hlc:${col}">${nm}</h2>${NEWS(n)?'<p class="tag">문제 풀기</p>':''}${COVER[n]?`<img class="cvs" src="${COVER[n]}" alt="">`:''}</div>`;
  {const wq=socQ(n).filter(q=>R[q.id]&&!R[q.id].ok),uq=wq.filter(isUnf);h+=`<button class="wnb" onclick="wrongPage('${n}')"><span><b>오답노트</b><small>${wq.length?(uq.length?`남은 오답 ${uq.length}문제`:'오답을 모두 고쳤어요'):'아직 틀린 문제가 없어요'}</small></span>${uq.length?`<span class="wnc">${uq.length}</span>`:''}<span class="chev">›</span></button>`}
+ {const sn=starSegs(n).reduce((a,x)=>a+x.qs.length,0);h+=`<button class="wnb snb" onclick="starPage('${n}')"><span><b>별표 문제</b><small>${sn?`담아 둔 문제 ${sn}개`:'헷갈리는 문제에 별표를 눌러 모아요'}</small></span>${sn?`<span class="wnc">${sn}</span>`:''}<span class="chev">›</span></button>`}
  if(!CUR[n].length)h+=`<div class="card mut" style="text-align:center;padding:26px 16px">아직 ${K1}이 준비 중이에요.<br>곧 추가할게요!</div>`;
  if(PASSG(n)&&CUR[n].length)h+=`<p class="tag" style="margin:4px 2px 8px">풀 지문을 골라 주세요.</p>`;
  CUR[n].forEach((U,u)=>{const a=pct(bigQ(n,u));
@@ -1630,11 +1648,23 @@ function noteView(n,u,k){u=+u;k=+k;const U=CUR[n]&&CUR[n][u],M=U&&U.m[k];if(!M||
  if(noteOf(n,u,k)){R._ln=R._ln||{};R._ln[n]=[u,k];save()}
  const col=sCol(n),nm=n.split('|').join(' '),o=noteOf(n,u,k)||(STAFF()?NOTE_DEMO:null);if(!o)return noteList(n);const nx=nextNote(n,u,k),pg=o&&o.pg&&o.pg.length;
  let h=PASSG(n)?`<div class="nth"><h2 style="--hlc:${col}">${esc(U.n)}</h2><p class="tag">${esc(nm)} · 지문</p></div>`:`<div class="nth"><h2 style="--hlc:${col}">${esc(M.n)}</h2><p class="tag">${esc(nm)} · ${esc(U.n)}</p></div>`;
- if(pg)h+=`<button class="tbb" onclick="tbOpen('${n}',${u},${k})">${ICN_BOOK}<span>교과서 원문 보기</span></button>`;
+ const czN=o&&!o.demo?(o.b.map(ntBlock).join('').match(/<mark>|<b class="ntr">/g)||[]).length:0;
+ h+=`<div class="ntb">${pg?`<button class="tbb" onclick="tbOpen('${n}',${u},${k})">${ICN_BOOK}<span>교과서 원문 보기</span></button>`:''}${czN?`<button class="tbb czb${NCZ?' on':''}" id="czb" onclick="czTog()">${ICN_CZ}<span>${NCZ?'빈칸 암기 끄기':'빈칸 암기'}</span></button>`:''}</div>`;
  if(o&&o.demo)h+=`<div class="prn">디자인 미리보기예요. 관리자에게만 보이고, 교과서를 받으면 실제 필기로 바뀌어요.</div>`;
- h+=o?`<article class="nt" style="--nc:${col}">${o.b.map(ntBlock).join('')}</article>`:`<div class="card ntx">${ICN_NOTE}<p>이 단원 필기는 준비 중이에요.<br>곧 채워질 예정이에요.</p></div>`;
+ h+=o?`<article class="nt${NCZ&&czN?' cz':''}" style="--nc:${col}" onclick="czTap(event)">${o.b.map(ntBlock).join('')}</article>`:`<div class="card ntx">${ICN_NOTE}<p>이 단원 필기는 준비 중이에요.<br>곧 채워질 예정이에요.</p></div>`;
  h+=PASSG(n)?`<div class="ntf"><button class="b ntq" onclick="socGo('${n}',${u},undefined,{note:1})">이 지문 문제 풀기</button>${nx?`<button class="ntn" onclick="noteView('${n}',${nx[0]},${nx[1]})">다음 지문 공부하기<span>→</span></button>`:''}</div>`:`<div class="ntf"><button class="b ntq" onclick="socGo('${n}',${u},${k},{note:1})">문제 풀기</button>${k==U.m.length-1&&!o.demo?`<button class="ntn" onclick="endUnit('${n}',${u})">${uLab(U,u)} 학습 끝내기<span><i class="cki"></i></span></button>`:nx?`<button class="ntn" onclick="noteView('${n}',${nx[0]},${nx[1]})">다음 단원 학습하기<span>→</span></button>`:''}</div>`;
- show(h,'nt|'+n+'|'+u+'|'+k);ntSnap();requestAnimationFrame(ntSnap);try{document.fonts.ready.then(ntSnap)}catch(e){}document.querySelectorAll('.nt img').forEach(im=>im.addEventListener('load',ntSnap));ntEnd(n,u,k)}
+ show(h,'nt|'+n+'|'+u+'|'+k);ntSnap();requestAnimationFrame(ntSnap);try{document.fonts.ready.then(ntSnap)}catch(e){}document.querySelectorAll('.nt img').forEach(im=>im.addEventListener('load',ntSnap));ntEnd(n,u,k);czBar()}
+// ===== 빈칸 암기: 형광펜·빨간 글씨를 가리고 눌러서 확인 =====
+let NCZ=false;
+const ICN_CZ='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7.5h6M14 7.5h6M4 12h3M11 12h9M4 16.500h8M16 16.500h4"/><rect x="9.500" y="5.200" width="5" height="4.600" rx="1.200" fill="currentColor" stroke="none"/><rect x="6.500" y="9.700" width="5" height="4.600" rx="1.200" fill="currentColor" stroke="none"/></svg>';
+const czEls=()=>[...document.querySelectorAll('.nt mark,.nt .ntr')].filter(e=>!e.parentElement.closest('mark,.ntr'));
+function czBar(){const old=document.getElementById('czi');if(old)old.remove();const a=document.querySelector('.nt.cz');if(!a)return;const L=czEls(),d=L.filter(e=>e.classList.contains('rv')).length;
+ const w=document.createElement('div');w.id='czi';w.className='czi';w.innerHTML=`<b>${d} / ${L.length}</b><span>확인</span><button onclick="czAll(${d<L.length?1:0})">${d<L.length?'모두 보기':'다시 가리기'}</button>`;document.body.appendChild(w)}
+function czTog(){NCZ=!NCZ;const a=document.querySelector('.nt'),b=document.getElementById('czb');if(!a)return;a.classList.toggle('cz',NCZ);a.querySelectorAll('.rv').forEach(e=>e.classList.remove('rv'));
+ if(b){b.classList.toggle('on',NCZ);b.querySelector('span').textContent=NCZ?'빈칸 암기 끄기':'빈칸 암기'}czBar();if(NCZ)soonMsg('가려진 곳을 눌러서 확인해 보세요.')}
+function czTap(ev){const a=ev.currentTarget;if(!a.classList.contains('cz'))return;let e=ev.target.closest('mark,.ntr');if(!e||!a.contains(e))return;while(e.parentElement.closest('mark,.ntr'))e=e.parentElement.closest('mark,.ntr');
+ const on=!e.classList.contains('rv');e.classList.toggle('rv',on);e.querySelectorAll('mark,.ntr').forEach(x=>x.classList.toggle('rv',on));czBar()}
+function czAll(on){document.querySelectorAll('.nt.cz mark,.nt.cz .ntr').forEach(e=>e.classList.toggle('rv',!!on));czBar()}
 // 필기를 끝까지 내려 봤을 때만 '본 필기'로 셈
 function ntEnd(n,u,k){if(!noteOf(n,u,k)||(R._nv&&R._nv[n]&&R._nv[n][u+'-'+k]))return;const f=document.querySelector('.ntf');if(!f||!('IntersectionObserver' in window))return;
  const io=new IntersectionObserver(es=>{if(!es.some(e=>e.isIntersecting))return;io.disconnect();if(!document.body.contains(f))return;R._nv=R._nv||{};R._nv[n]=R._nv[n]||{};R._nv[n][u+'-'+k]=1;save()},{threshold:.6});setTimeout(()=>io.observe(f),400)}
@@ -1724,6 +1754,23 @@ const isUnf=q=>R[q.id]&&!R[q.id].ok&&!(R._fx&&R._fx[q.id]);
 function gInfo(qs){let a=0,w=0,u=0;qs.forEach(q=>{const x=R[q.id];if(x){a++;if(!x.ok){w++;if(isUnf(q))u++}}});return {a,w,u,weak:a>0&&w/a>=WEAK,fixed:w>0&&u==0}}
 const wkBadge=g=>(g.weak?'<span class="wkb">취약</span>':'')+(g.weak&&g.fixed?'<span class="okb">오답 완료</span>':'');
 function allSegs(n,u,k){const segs=[];CUR[n].forEach((U,ui)=>{if(u!==undefined&&ui!==u)return;U.m.forEach((M,ki)=>{if(k!==undefined&&ki<k)return;if(M.q.length)segs.push({label:(u===undefined||CUR[n].length>1&&KIND[n]?U.n+' · ':'')+M.n,qs:M.q})})});return segs}
+// ===== 별표 문제: 헷갈리는 문제를 모아 두고 다시 풀기 =====
+const ICN_STAR='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.600l2.500 5.300 5.700.7-4.200 4 1.100 5.700L12 16.500l-5.100 2.800 1.100-5.700-4.200-4 5.700-.7z" stroke="currentColor" stroke-width="1.900" stroke-linejoin="round"/></svg>';
+const isStar=id=>!!(R._star&&R._star[id]);
+const starBtn=id=>`<button class="stb${isStar(id)?' on':''}" aria-label="별표" aria-pressed="${isStar(id)}" onclick="starTog('${id}',this)">${ICN_STAR}</button>`;
+function starTog(id,el){R._star=R._star||{};const on=!R._star[id];if(on)R._star[id]=1;else delete R._star[id];save();if(el){el.classList.toggle('on',on);el.setAttribute('aria-pressed',on)}soonMsg(on?'별표 문제에 담았어요.':'별표를 뺐어요.')}
+function starSegs(n,u,k){const segs=[];CUR[n].forEach((U,ui)=>U.m.forEach((M,ki)=>{if(u!==undefined&&(ui!==u||ki!==k))return;const qs=M.q.filter(q=>isStar(q.id));if(qs.length)segs.push({label:(KIND[n]?U.n+' · ':'')+M.n,qs})}));
+ if(u===undefined&&MOCK[n]){const qs=mkAll(n).filter(q=>isStar(q.id));if(qs.length)segs.push({label:'모의고사',qs})}return segs}
+function starGo(n,u,k){const segs=starSegs(n,u,k);if(!segs.length){soonMsg('별표한 문제가 없어요.');return}startRun(n,segs,{title:n.split('|').join(' ')+' 별표 문제',practice:true,star:1})}
+function starPage(n){const nm=n.split('|').join(' '),c=SUBJ.flat().find(x=>x[0]==n)[1],col=SC[c],segs=starSegs(n),tot=segs.reduce((a,x)=>a+x.qs.length,0);
+ let h=`<div class="shd"><h2 style="--hlc:#f9df99">별표 문제</h2><p class="tag">${esc(nm)}</p></div>`;
+ h+=`<div class="card stg"><span class="sti">${ICN_STAR}</span><span>문제를 풀 때 오른쪽 위 <b>별</b>을 누르면 여기에 모여요. 맞혔지만 헷갈렸던 문제를 담아 두세요.</span></div>`;
+ if(!tot)h+=`<div class="card mut" style="text-align:center;padding:24px">아직 별표한 문제가 없어요.</div>`;
+ CUR[n].forEach((U,u)=>U.m.forEach((M,k)=>{const qs=M.q.filter(q=>isStar(q.id));if(!qs.length)return;
+  h+=`<div class="ub" style="--uc:${col}"><div class="uh" onclick="starGo('${n}',${u},${k})"><div class="ut"><b>${esc((KIND[n]?U.n+' · ':'')+M.n)}</b><div class="al"><span>별표</span><b>${qs.length}문제</b></div></div><span class="chev">›</span></div></div>`}));
+ {const mq=MOCK[n]?mkAll(n).filter(q=>isStar(q.id)):[];if(mq.length)h+=`<div class="ub" style="--uc:${col}"><div class="uh" onclick="startRun('${n}',[{label:'모의고사',qs:mkAll('${n}').filter(q=>isStar(q.id))}],{title:'${nm} 별표 문제',practice:true,star:1})"><div class="ut"><b>모의고사</b><div class="al"><span>별표</span><b>${mq.length}문제</b></div></div><span class="chev">›</span></div></div>`}
+ if(tot)h+=`<div class="row" style="margin-top:14px"><button class="b" onclick="starGo('${n}')">별표 전체 풀기 (${tot}문제)</button></div>`;
+ show(h)}
 function startWrong(n,segs,extra){const ws=segs.map(x=>({label:x.label,qs:x.qs.filter(isUnf)})).filter(x=>x.qs.length);if(!ws.length){soonMsg('고칠 오답이 없어요.');return}
  startRun(n,ws,Object.assign({title:n.split('|').join(' ')+' 오답노트',mode:'wrong',practice:true},extra||{}))}
 function RSP(){const it=[['nt','알림 정보 초기화','모든 사람의 메시지함 속 알림'],['fb','피드백 정보 초기화','받은 피드백과 답장 기록'],['del','개인별 계정 삭제','계정을 골라서 삭제']];
@@ -1972,7 +2019,7 @@ const exT=q=>MX(esc(q.e||'')).replace(/⟦(\d)⟧/g,(_,d)=>CIRC[q.t=='mc'?posOf(
 
 function startRun(n,segs,meta){OPEN=-1;SS={pid:'run',cat:'all',meta:Object.assign({subj:n,back:"socPage('"+n+"')",backLabel:kd(n)[1]+' 선택으로',kind:kd(n)[1]},meta||{}),segs,si:0,qs:segs[0].qs,i:0,resp:{},graded:[]};SS.base={};Object.keys(R).forEach(k=>{if(k[0]!='_')SS.base[k]=1});SS.perm={};segs.forEach(x=>Object.assign(SS.perm,mkPerm(x.qs)));draft=null;QS0=Date.now();SS.sg0=Date.now();quiz()}
 const ttl=()=>SS.meta?SS.meta.title:P(SS.pid).name;
-function goBack(){if(HI>1){LEAVE=1;history.back();return}if(SS&&SS.meta&&SS.meta.mock&&SS.meta.subj)return subj(SS.meta.subj);if(SS&&SS.meta&&SS.meta.mp)return mockPage(SS.meta.subj);if(SS&&SS.meta&&SS.meta.note)return noteView(...SS.meta.note);if(SS&&SS.meta&&SS.meta.nl)return noteList(SS.meta.subj);if(SS&&SS.meta&&SS.meta.wp)return wrongPage(SS.meta.subj);if(SS&&SS.meta&&SS.meta.subj)return NEWS(SS.meta.subj)?socPage(SS.meta.subj):subj(SS.meta.subj);subjects()}
+function goBack(){if(HI>1){LEAVE=1;history.back();return}if(SS&&SS.meta&&SS.meta.mock&&SS.meta.subj)return subj(SS.meta.subj);if(SS&&SS.meta&&SS.meta.mp)return mockPage(SS.meta.subj);if(SS&&SS.meta&&SS.meta.note)return noteView(...SS.meta.note);if(SS&&SS.meta&&SS.meta.nl)return noteList(SS.meta.subj);if(SS&&SS.meta&&SS.meta.star)return starPage(SS.meta.subj);if(SS&&SS.meta&&SS.meta.wp)return wrongPage(SS.meta.subj);if(SS&&SS.meta&&SS.meta.subj)return NEWS(SS.meta.subj)?socPage(SS.meta.subj):subj(SS.meta.subj);subjects()}
 const qbl=t=>esc(t).replace(/\[빈칸\]/g,'<span class="blk"></span>').replace(/&lt;(보기|자료|표|그림)&gt;/g,'<span style="white-space:nowrap">&lt;$1&gt;</span>');
 function qln(b){return b.split('\n').map(l=>{const m=l.match(/^((?:[ㄱㄴㄷㄹㅁ]\.)|(?:\([가-하A-Z0-9]\))|(?:[•])|(?:사례 ?\d+:))\s*(.*)$/);return m?`<div class="qli"><b>${esc(m[1])}</b><span>${qbl(m[2])}</span></div>`:`<div>${qbl(l)}</div>`}).join('')}
 function tbH(t){return `<div class="qtw"><table class="qtb">${t.h?`<tr>${t.h.map(x=>`<th>${qbl(x)}</th>`).join('')}</tr>`:''}${t.r.map(r=>`<tr>${r.map((x,i)=>i==0&&t.h?`<th>${qbl(x)}</th>`:`<td>${qbl(x)}</td>`).join('')}</tr>`).join('')}</table></div>`}
@@ -2046,7 +2093,7 @@ function qtx(t,q){q=q||{};const bl=String(t).replace(/\n(?=<보기>)/g,'\n\n').s
  return MX(`<div class="qbox">${o}</div>`)}
 function quiz(){const q=SS.qs[SS.i],N=SS.qs.length,seg=SS.segs[SS.si],r=SS.resp[q.id]||{};QID=q.id;if(!QS0)QS0=Date.now();
  const MS=SS.meta&&isPad(SS.meta.subj),tn={mc:'객관식',ox:'O/X',sh:MS?'단답형':'빈칸 채우기',es:'서술형'}[q.t];
- let h=`<div class="qz"><div class="tag">${SS.meta&&SS.meta.mode=='wrong'?'<span class="prc" style="background:#f3c9c4;color:#7a2e26">오답노트</span> ':SS.meta&&SS.meta.practice?'<span class="prc">다시 풀기</span> ':''}${esc(ttl())} · ${esc(seg.label)}${SS.segs.length>1?` <span class="sgn">${SS.si+1}/${SS.segs.length}</span>`:''}</div><div class="qpr"><b>${SS.i+1}</b><span>/ ${N}</span><div class="bar"><i style="width:${(SS.i+1)/N*100}%"></i></div></div><div class="card"><div class="tag" style="margin-bottom:2px">${tn}${q.pt?` · <b class="qpt">${q.pt}점</b>`:''}</div>${SS.meta&&SS.meta.t0?`<div class="mkt" id="mkt">${mkTime()}</div>`:''}${q.hd?'<div class="hdn"><b>고난도 문제</b>노트처럼 넓은 곳에 풀어 보는 걸 추천해요.</div>':''}<div class="q${q.q.length>70||q.q.includes('\n')?' ql':''}">${qtx(q.q,q)}</div>`;
+ let h=`<div class="qz"><div class="tag">${SS.meta&&SS.meta.star?'<span class="prc">별표 문제</span> ':SS.meta&&SS.meta.mode=='wrong'?'<span class="prc" style="background:#f3c9c4;color:#7a2e26">오답노트</span> ':SS.meta&&SS.meta.practice?'<span class="prc">다시 풀기</span> ':''}${esc(ttl())} · ${esc(seg.label)}${SS.segs.length>1?` <span class="sgn">${SS.si+1}/${SS.segs.length}</span>`:''}</div><div class="qpr"><b>${SS.i+1}</b><span>/ ${N}</span><div class="bar"><i style="width:${(SS.i+1)/N*100}%"></i></div></div><div class="card qcd">${starBtn(q.id)}<div class="tag" style="margin-bottom:2px">${tn}${q.pt?` · <b class="qpt">${q.pt}점</b>`:''}</div>${SS.meta&&SS.meta.t0?`<div class="mkt" id="mkt">${mkTime()}</div>`:''}${q.hd?'<div class="hdn"><b>고난도 문제</b>노트처럼 넓은 곳에 풀어 보는 걸 추천해요.</div>':''}<div class="q${q.q.length>70||q.q.includes('\n')?' ql':''}">${qtx(q.q,q)}</div>`;
  if(q.t=='mc')pmOf(q).forEach((k,pos)=>{h+=`<button class="opt${r.v===k?' sel':''}" onclick="pk(${k})"><span class="on">${pos+1}</span>${MX(esc(q.o[k]))}</button>`});
  else if(q.t=='ox')h+=`<div class="oxr">${[true,false].map(k=>`<button class="opt ox${r.v===k?' sel':''}" onclick="pk(${k})">${k?'O':'X'}</button>`).join('')}</div>`;
  else if(q.t=='sh')h+=`<input type="text" id="in" placeholder="${MS?'답 (숫자로)':'빈칸에 들어갈 말'}" value="${esc(r.v||'')}" autocomplete="off" onkeydown="if(event.key=='Enter'){event.preventDefault();${SS.i<N-1?'nav(1)':'submitSeg()'}}">`;
@@ -2097,11 +2144,11 @@ function result(){QS0=0;const rs=(SS.graded||[]).filter(q=>SS.resp[q.id]&&SS.res
  h+=`<h3 class="sec">영역별 정답률</h3><div class="card">${Object.keys(tg).map(k=>{const t=tg[k],r=Math.round(t.c/t.n*100);return `<div class="arw"><div class="al"><span>${esc(k)}</span><b>${t.c}/${t.n}</b></div><div class="bar"><i data-w="${r}" style="width:0"></i></div></div>`}).join('')}</div>`;
  h+=`<h3 class="sec">보완해야 할 약점</h3>`+(weak.length?weak.map(k=>`<div class="card"><b class="no-t">${esc(k)}</b> <span class="mut">(${tg[k].n-tg[k].c}문제 틀림)</span>${TIPS[k]?`<div class="mut" style="margin-top:6px;font-size:14px">${MX(esc(TIPS[k]))}</div>`:''}</div>`).join(''):'<div class="card">약점이 없어요. 이 범위는 완벽해요! 🎉</div>');
  if(wr.length){h+=`<h3 class="sec">틀린 문제 해설</h3>`;wr.forEach(q=>{const r=SS.resp[q.id];
-  h+=`<div class="card"><div class="tag">${esc(q.g||'')}</div><div class="q" style="font-weight:500;margin:4px 0 10px">${qtx(q.q,q)}</div><div>내 답: <span class="no-t">${r.blank?'(안 풂)':MX(esc(ans(q,r,0)))}</span></div><div>정답: <span class="ok-t">${MX(esc(ans(q,r,1)))}</span></div>`;
+  h+=`<div class="card qcd">${starBtn(q.id)}<div class="tag">${esc(q.g||'')}</div><div class="q" style="font-weight:500;margin:4px 0 10px">${qtx(q.q,q)}</div><div>내 답: <span class="no-t">${r.blank?'(안 풂)':MX(esc(ans(q,r,0)))}</span></div><div>정답: <span class="ok-t">${MX(esc(ans(q,r,1)))}</span></div>`;
   if(q.t=='es'){const miss=q.pts.filter((p,k)=>!(r.chk||[])[k]);h+=`<div class="fb no">빠진 요소:\n${miss.map(x=>'· '+esc(x)).join('\n')}</div>`}else h+=`<div class="fb ok">${exT(q)}</div>`;if(isPad(SS.meta.subj))h+=padThumb(q.id);
   if(q.t=='sh'&&!r.blank)h+=`<button class="lk" style="margin-top:6px" onclick="ovr2('${q.id}')">내 답도 맞는 표현이에요 (정답 처리)</button>`;h+=`</div>`})}
  h+=wr.length?`<div class="row"><button class="b" onclick="retryWrong()">틀린 문제만 다시</button></div>`:'';
- if(SS.meta.mp)h+=`<div class="row"><button class="b${wr.length?' g':''}" onclick="mockPage('${SS.meta.subj}')">모의고사 통계로</button></div>`;else if(SS.meta.note)h+=`<div class="row"><button class="b${wr.length?' g':''}" onclick="noteView(...SS.meta.note)">필기로 돌아가기</button></div>`;else if(SS.meta.nl)h+=`<div class="row"><button class="b${wr.length?' g':''}" onclick="noteList('${SS.meta.subj}')">공부하기로 돌아가기</button></div>`;else if(NEWS(SS.meta.subj)&&!SS.meta.wp)h+=`<div class="row"><button class="b g" onclick="socPage('${SS.meta.subj}')">단원 선택으로</button></div>`;
+ if(SS.meta.mp)h+=`<div class="row"><button class="b${wr.length?' g':''}" onclick="mockPage('${SS.meta.subj}')">모의고사 통계로</button></div>`;else if(SS.meta.note)h+=`<div class="row"><button class="b${wr.length?' g':''}" onclick="noteView(...SS.meta.note)">필기로 돌아가기</button></div>`;else if(SS.meta.nl)h+=`<div class="row"><button class="b${wr.length?' g':''}" onclick="noteList('${SS.meta.subj}')">공부하기로 돌아가기</button></div>`;else if(SS.meta.star)h+=`<div class="row"><button class="b g" onclick="starPage('${SS.meta.subj}')">별표 문제로</button></div>`;else if(NEWS(SS.meta.subj)&&!SS.meta.wp)h+=`<div class="row"><button class="b g" onclick="socPage('${SS.meta.subj}')">단원 선택으로</button></div>`;
  show(h);animBars()}
 function ovr2(id){SS.resp[id].ok=true;if(SS.meta&&SS.meta.mode=='wrong'){R._fx=R._fx||{};R._fx[id]=1;save()}else if(recOK(id)){R[id]={ok:1};save()}result()}
 function retryWrong(){const wr=(SS.graded||[]).filter(q=>SS.resp[q.id]&&!SS.resp[q.id].ok);startRun(SS.meta.subj,[{label:'틀린 문제 다시 풀기',qs:wr}],{title:SS.meta.title,mode:SS.meta.mode=='wrong'||wr.every(q=>R[q.id])?'wrong':undefined,practice:true,wp:SS.meta.wp,note:SS.meta.note})}
@@ -2311,7 +2358,7 @@ function parentOf(r){const [k,...rest]=r.split('/'),v=rest.join('/');
  if(k=='pick'||k=='menu'||k=='subj'||k=='profile'&&!v)return 'subjects';if(k=='stats')return 'subjects';if(k=='admin'&&!v)return 'profile';if(k=='admin'&&/^[wnd](\/|$)/.test(v))return BKO[v[0]]||(v[0]=='w'?'board':'profile');
  if(k=='profile')return 'profile';if(k=='admin'){if(/^t\/./.test(v))return 'admin/t';if(/^p\/./.test(v))return 'admin/p';return 'admin'}if(k=='fb')return v=='1'?'profile':'';
  if(k=='mock')return 'subj/'+v;
- if(k=='wrong')return (NEWS(v)?'prob/':'subj/')+v;if(k=='quiz'||k=='result'){if(SS&&SS.meta&&SS.meta.mock&&SS.meta.subj)return 'subj/'+SS.meta.subj;if(SS&&SS.meta&&SS.meta.note)return 'note/'+SS.meta.note.join('/');if(SS&&SS.meta&&SS.meta.wp)return 'wrong/'+SS.meta.subj;if(SS&&SS.meta&&SS.meta.subj)return (NEWS(SS.meta.subj)?'prob/':'subj/')+SS.meta.subj;if(SS&&SS.pid&&!SS.meta)return 'menu/'+SS.pid;return 'subjects'}
+ if(k=='wrong'||k=='star')return (NEWS(v)?'prob/':'subj/')+v;if(k=='quiz'||k=='result'){if(SS&&SS.meta&&SS.meta.mock&&SS.meta.subj)return 'subj/'+SS.meta.subj;if(SS&&SS.meta&&SS.meta.note)return 'note/'+SS.meta.note.join('/');if(SS&&SS.meta&&SS.meta.star)return 'star/'+SS.meta.subj;if(SS&&SS.meta&&SS.meta.wp)return 'wrong/'+SS.meta.subj;if(SS&&SS.meta&&SS.meta.subj)return (NEWS(SS.meta.subj)?'prob/':'subj/')+SS.meta.subj;if(SS&&SS.pid&&!SS.meta)return 'menu/'+SS.pid;return 'subjects'}
  return 'subjects'}
 const curR=()=>{const h=location.hash||'';if(!h.startsWith('#/'))return '';try{return decodeURIComponent(h.slice(2))}catch(e){return ''}};
 function findQ(id){for(const p of PASS)for(const q of p.Q)if(q.id==id)return q;for(const n in CUR)for(const U of CUR[n])for(const M of U.m)for(const q of M.q)if(q.id==id)return q;return null}
@@ -2340,7 +2387,7 @@ function go2(r){
  if(k=='admin'&&/^r\/\d+$/.test(v)&&OWNER)return fbReply(+v.slice(2));
  if(k=='admin'&&v=='d'&&OWNER)return delPage();
  if(k=='stats')return allStats();
- if(k=='wrong'&&v&&CUR[v])return wrongPage(v);
+ if(k=='wrong'&&v&&CUR[v])return wrongPage(v);if(k=='star'&&v&&CUR[v])return starPage(v);
  if(k=='mock'&&v&&MOCK[v])return mockPage(v);
  if(k=='cal')return cal();
  if(k=='profile'){if(v=='cal')return cal();if(v=='nick')return pfNick();if(v=='pin')return pfPin();return profile()}
@@ -2365,7 +2412,7 @@ const H=(f,mk)=>function(...a){setR(mk(...a));return f.apply(this,a)};
 home=H(home,()=>'');subjects=H(subjects,()=>'subjects');
 subj=H(subj,n=>'subj/'+n);socPage=H(socPage,n=>NEWS(n)?'prob/'+n:'subj/'+n);noteList=H(noteList,n=>'notes/'+n);noteView=H(noteView,(n,u,k)=>'note/'+n+'/'+u+'/'+k);inbox=H(inbox,()=>'inbox');board=H(board,()=>'board');leader=H(leader,()=>'leader');postView=H(postView,id=>'board/'+id);postForm=H(postForm,id=>'admin/w'+(id?'/'+id:''));guide=H(guide,()=>'guide');pickSel=H(pickSel,()=>'sel');msgOpen=H(msgOpen,id=>'inbox/'+id);noticeForm=H(noticeForm,()=>'admin/n');delPage=H(delPage,()=>'admin/d');allStats=H(allStats,()=>'stats');fbForm=H(fbForm,f=>'fb/'+(f||0));
 adminOne=H(adminOne,n=>'admin/u/'+n);fbTypes=H(fbTypes,()=>'admin/t');fbType=H(fbType,k=>'admin/t/'+k);fbPeople=H(fbPeople,()=>'admin/p');fbPerson=H(fbPerson,n=>'admin/p/'+n);fbReply=H(fbReply,id=>'admin/r/'+id);
-wrongPage=H(wrongPage,n=>'wrong/'+n);mockPage=H(mockPage,n=>'mock/'+n);profile=H(profile,()=>'profile');pfShow=H(pfShow,()=>'profile/pw');pfNick=H(pfNick,()=>'profile/nick');pfPin=H(pfPin,()=>'profile/pin');
+wrongPage=H(wrongPage,n=>'wrong/'+n);starPage=H(starPage,n=>'star/'+n);mockPage=H(mockPage,n=>'mock/'+n);profile=H(profile,()=>'profile');pfShow=H(pfShow,()=>'profile/pw');pfNick=H(pfNick,()=>'profile/nick');pfPin=H(pfPin,()=>'profile/pin');
 quiz=(f=>function(){setR('quiz');const x=f.apply(this,arguments);saveSS();return x})(quiz);
 result=(f=>function(){REPL=true;setR('result');const x=f.apply(this,arguments);saveSS();return x})(result);
 // 아이폰 홈 화면 앱: 왼쪽 가장자리에서 오른쪽으로 밀면 뒤로 가기
