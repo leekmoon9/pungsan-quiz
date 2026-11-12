@@ -834,7 +834,13 @@ try{DB=window.supabase.createClient(SB_URL,SB_KEY)}catch(e){DB=null}
 const AK=()=>ls('ak');
 async function chkAdmin(){OWNER=!!AK()}
 const ls=(k,v)=>{try{if(v===undefined)return localStorage.getItem(KEY+k)||'';if(v===null)localStorage.removeItem(KEY+k);else localStorage.setItem(KEY+k,v)}catch(e){return''}};
-const DV='v3';const okDV=d=>(d&&d._dv===DV)?d:{};
+const DV='v3';
+// 국어(독서와 작문) 풀이 기록 1회 초기화 (문제 자체는 그대로)
+const KN='독서와|작문';
+function korClr(d){const ch=[];Object.keys(d).forEach(k=>{if(/^(etc|str)\d+$/.test(k)){delete d[k]}});
+ if(d._fx)Object.keys(d._fx).forEach(k=>{if(/^(etc|str)\d+$/.test(k))delete d._fx[k]});
+ if(d._nv)delete d._nv[KN];if(d._ln)delete d._ln[KN];if(d._nd)Object.keys(d._nd).forEach(k=>{if(k.indexOf(KN+'|')==0)delete d._nd[k]});d._k1=1}
+const okDV=d=>{if(!(d&&d._dv===DV))return {};if(!d._k1){korClr(d);setTimeout(()=>{try{if(NICK&&R&&R._dv===DV)save()}catch(e){}},1500)}return d};
 function save(){KV++;try{R._lbs=streakN();R._lbsd=dkey()}catch(e){}R._dv=DV;ls('rec:'+NICK,JSON.stringify(R));clearTimeout(tm);tm=setTimeout(sync,700)}
 async function sync(){if(SUBMODE){if(DB&&NICK)try{await DB.rpc('sub_save',{p_key:SK(),p_data:R})}catch(e){}return}if(ADMINMODE){if(DB)try{await DB.rpc('admin_save',{p_key:AK(),p_data:R})}catch(e){}return}if(!DB||!NICK||!PIN)return;try{const {data,error}=await DB.rpc('player_save',{p_nick:NICK,p_pin:PIN,p_data:R});if(error||data!==true)throw 0}catch(e){}}
 const lastNick=()=>ls('last');
@@ -1917,7 +1923,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v105';
+const APPV='v106';
 function pfHTML(){const ch=kChips('pf');if(KCH.pf>=ch.length)KCH.pf=0;const nm=ch[KCH.pf],pend=STAFF()&&admLoad.ok?(FB||[]).filter(x=>x.st!='done').length:0;let b='';
  if(nm=='관리자')b=admBody();
  else if(nm=='초기화')b=rsList();
