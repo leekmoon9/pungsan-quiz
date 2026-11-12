@@ -801,6 +801,19 @@ body.tbon #app{padding-bottom:104px}
 .wdc .top i{background:var(--ac)}.wdc small{font-size:11px;color:var(--mut)}.wdc em{font-size:10px;color:var(--mut);font-style:normal}
 .rcd{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center}
 .rcd div{display:flex;flex-direction:column;gap:2px;padding:6px 0}.rcd i{font-style:normal;font-size:22px}.rcd b{font-size:17px}.rcd small{font-size:11.5px;color:var(--mut)}
+.stx .big{color:var(--ink)}
+.wdc i{background:color-mix(in srgb,var(--ink) 22%,var(--card))!important}.wdc .top i{background:var(--ink)!important}
+.gl{display:grid;grid-template-columns:1fr 1fr;gap:10px;align-items:center}
+.gr{display:flex;align-items:center;gap:10px}.gr svg{width:62px;height:62px;flex:none}
+.gr .gt{display:flex;flex-direction:column;gap:1px}.gr .gt span{font-size:12.5px;color:var(--mut)}.gr .gt b{font-size:16px;white-space:nowrap}.gr svg{width:56px;height:56px}.gl .gr{min-width:0}.gr .gt small{font-size:11.5px;color:var(--mut)}
+.ghd{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}.ghd span{font-size:13px;color:var(--mut)}.ghd .ok{color:var(--ok);font-weight:700}
+.gch{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0 12px;justify-content:center}.gch button{border:1.5px solid var(--bd);background:var(--card);border-radius:99px;padding:6px 12px;font:inherit;font-size:14px;color:var(--tx)}.gch button.on{background:var(--ink);color:#fbf8f1;border-color:var(--ink)}
+.gcl{font-size:13px;color:var(--mut);display:block;text-align:center}
+.avr{display:grid;grid-template-columns:52px 1fr auto;gap:8px;align-items:center;margin:5px 0;font-size:13px}.avr span{color:var(--mut)}.avr b{font-size:13px;min-width:62px;text-align:right}
+.avr .ab{height:10px;border-radius:5px;background:var(--bd);overflow:hidden}.avr .ab i{display:block;height:100%;border-radius:5px;background:var(--ink)}.avr.av .ab i{background:color-mix(in srgb,var(--ink) 35%,var(--card))}
+.avh{font-size:13px;font-weight:700;margin:10px 0 2px}.avh:first-child{margin-top:0}
+.mkg2{display:flex;flex-direction:column;gap:14px}.mkl{display:flex;flex-direction:column;gap:4px}.mkl .mh{display:flex;justify-content:space-between;align-items:baseline;font-size:13px}.mkl .mh b{font-size:14px}.mkl .mh span{color:var(--mut)}
+.mkl svg{width:100%;height:auto;overflow:visible;display:block}.mkl .mh span{white-space:nowrap}.mkl .mh em{display:inline!important;margin:0!important}
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -1769,11 +1782,45 @@ function wdayHTML(){const t=R._t||{},td=dkey(),sum=[0,0,0,0,0,0,0];let any=0;
 function recHTML(){const t=R._t||{},q=R._lbq||{};const bt=Object.keys(t).sort((a,b)=>t[b]-t[a])[0],bq=Object.keys(q).sort((a,b)=>q[b]-q[a])[0];
  const md=k=>{const [,m,d]=k.split('-').map(Number);return m+'월 '+d+'일'};
  return `<h3 class="sec">나의 기록</h3><div class="card rcd"><div><i>🔥</i><b>${bestRun()}일</b><small>최장 연속 학습</small></div><div><i>⏱️</i><b>${bt&&t[bt]>=60?fmtT(t[bt]):'-'}</b><small>${bt&&t[bt]>=60?md(bt)+' 최고 공부':'하루 최고 공부'}</small></div><div><i>✏️</i><b>${bq&&q[bq]?q[bq]+'문제':'-'}</b><small>${bq&&q[bq]?md(bq)+' 최다 풀이':'하루 최다 풀이'}</small></div></div>`}
-function statsHTML(dir){const c=KCH.st;let b='';
+// 하루 목표
+const GQ=[0,10,20,30,50],GM=[0,30,60,90,120];let GTMP=null;
+function ringSVG(p,lab){const r=26,c=2*Math.PI*r,v=Math.min(1,p);return `<svg viewBox="0 0 62 62" aria-hidden="true"><circle cx="31" cy="31" r="${r}" fill="none" stroke="var(--bd)" stroke-width="7"/><circle cx="31" cy="31" r="${r}" fill="none" stroke="${p>=1?'var(--ok)':'var(--ink)'}" stroke-width="7" stroke-linecap="round" stroke-dasharray="${(c*v).toFixed(1)} ${c.toFixed(1)}" transform="rotate(-90 31 31)"/><text x="31" y="36" text-anchor="middle" font-size="14" font-weight="800" fill="var(--tx)">${p>=1?'✓':Math.round(v*100)+'%'}</text></svg>`}
+function goalHTML(){const g=R._goal||{},k=dkey(),tq=(R._lbq||{})[k]||0,tm=Math.floor(((R._t||{})[k]||0)/60);
+ if(!g.q&&!g.m)return `<div class="card"><div class="ghd"><span>하루 목표</span><button class="lk" onclick="goalSet()">정하기</button></div><div class="mut" style="font-size:14px">하루에 풀 문제 수나 공부 시간을 정하면 오늘 얼마나 채웠는지 보여 줘요.</div></div>`;
+ const it=[];if(g.q)it.push([tq/g.q,'푼 문제',`${tq} / ${g.q}문제`,tq>=g.q?'달성!':`${g.q-tq}문제 남았어요`]);if(g.m)it.push([tm/g.m,'공부 시간',`${tm} / ${g.m}분`,tm>=g.m?'달성!':`${g.m-tm}분 남았어요`]);
+ const all=it.every(x=>x[0]>=1);
+ return `<div class="card"><div class="ghd"><span>오늘의 목표${all?' · <b class="ok">모두 달성 🎉</b>':''}</span><button class="lk" onclick="goalSet()">바꾸기</button></div><div class="gl"${it.length==1?' style="grid-template-columns:1fr"':''}>${it.map(([p,a,b,c])=>`<div class="gr">${ringSVG(p)}<div class="gt"><span>${a}</span><b>${b}</b><small>${c}</small></div></div>`).join('')}</div></div>`}
+function goalChip(t,v,el){GTMP[t]=v;el.parentNode.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b===el))}
+function goalSet(){const g=R._goal||{};GTMP={q:g.q||0,m:g.m||0};
+ const row=(t,L,u)=>`<span class="gcl">${t=='q'?'하루에 풀 문제':'하루 공부 시간'}</span><div class="gch">${L.map(v=>`<button class="${GTMP[t]==v?'on':''}" onclick="goalChip('${t}',${v},this)">${v?v+u:'안 정함'}</button>`).join('')}</div>`;
+ askBox('하루 목표 정하기',row('q',GQ,'문제')+row('m',GM,'분'),'저장').then(ok=>{if(!ok)return;if(GTMP.q||GTMP.m)R._goal={q:GTMP.q,m:GTMP.m};else delete R._goal;save();allStats()})}
+// 친구 평균과 비교 (서버: lb_avg)
+let AVGC=null,AVGT=0;
+function avgHTML(){const t=R._t||{},q=R._lbq||{},td=dkey(),wd=(new Date().getDay()+6)%7,mon=dAdd(td,-wd);let mt=0,mq=0;for(let i=0;i<=wd;i++){const a=dAdd(mon,i);mt+=t[a]||0;mq+=q[a]||0}
+ const A=AVGC;let body;
+ if(!A)body=`<div class="mut" style="font-size:13px">${DB?'불러오는 중…':'인터넷에 연결되면 보여요.'}</div>`;
+ else if(A.n<3)body=`<div class="mut" style="font-size:13px">이번 주 공부한 친구가 3명 이상이면 보여요.</div>`;
+ else{const row=(l,v,mx,f,cls)=>`<div class="avr${cls}"><span>${l}</span><div class="ab"><i style="width:${mx?Math.max(2,Math.round(v/mx*100)):0}%"></i></div><b>${f(v)}</b></div>`;
+  const xt=Math.max(mt,A.t,1),xq=Math.max(mq,A.q,1),rt=A.t?mt/A.t:0;
+  body=`<div class="mut" style="font-size:13px;margin-bottom:8px">이번 주 공부한 친구 ${A.n}명 평균 · ${mt>=A.t?`<b style="color:var(--ok)">평균보다 ${rt>=1.05?rt.toFixed(1)+'배 ':''}많이 했어요</b>`:`<b style="color:var(--no)">평균까지 ${fmtT(A.t-mt)} 남았어요</b>`}</div>`
+   +`<div class="avh">공부 시간</div>`+row('나',mt,xt,fmtT,'')+row('평균',A.t,xt,fmtT,' av')
+   +`<div class="avh">푼 문제</div>`+row('나',mq,xq,x=>x+'문제','')+row('평균',Math.round(A.q),xq,x=>Math.round(x)+'문제',' av')}
+ return `<h3 class="sec">친구들과 비교</h3><div class="card" id="avgc">${body}</div>`}
+async function avgLoad(){if(!DB||!NICK||Date.now()-AVGT<60000)return;AVGT=Date.now();const [a,b]=wkR(0);
+ try{const {data,error}=await DB.rpc('lb_avg',Object.assign(whoP(),{p_w0:a,p_w1:b}));if(error)throw 0;AVGC=data||{n:0,t:0,q:0}}catch(e){AVGC={n:0,t:0,q:0};AVGT=0}
+ const el=document.getElementById('avgc');if(el&&KCH.st==0){const w=document.createElement('div');w.innerHTML=avgHTML();el.replaceWith(w.querySelector('#avgc'))}}
+// 모의고사 점수 그래프
+function mkPct(n,r){const qs=mkR(n,r),pt=qs.some(q=>q.pt);if(pt){const T=qs.reduce((a,q)=>a+(q.pt||0),0);return T?Math.round(mkPts(n,r)/T*100):0}return Math.round(qs.filter(q=>R[q.id]&&R[q.id].ok).length/qs.length*100)}
+function mkGraphHTML(){const out=[];SUBJ.flat().forEach(([n,c])=>{if(!MOCK[n])return;const rs=MOCK[n].map((M,r)=>M.hd?null:r).filter(r=>r!=null);const pts=rs.map(r=>mkDone(n,r)?mkPct(n,r):null);if(!pts.some(v=>v!=null))return;
+  const W=300,H=60,N=rs.length,x=i=>N>1?8+i*(W-16)/(N-1):W/2,y=v=>6+(100-v)/100*(H-12),dn=pts.map((v,i)=>[v,i]).filter(a=>a[0]!=null),last=dn[dn.length-1][0],first=dn[0][0],d=last-first;
+  const path=dn.map(([v,i],j)=>(j?'L':'M')+x(i).toFixed(1)+' '+y(v).toFixed(1)).join(' ');
+  out.push(`<div class="mkl"><div class="mh"><b>${esc(n.split('|').join(' '))}</b><span>최근 ${last}점${dn.length>1&&d?` · <em class="dlt ${d>0?'up':'dn'}">${d>0?'▲':'▼'} ${Math.abs(d)}</em>`:''}</span></div><svg viewBox="0 0 ${W} ${H+16}"><line x1="0" x2="${W}" y1="${y(50)}" y2="${y(50)}" stroke="var(--bd)" stroke-dasharray="3 4"/><path d="${path}" fill="none" stroke="var(--ink)" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>${pts.map((v,i)=>`${v!=null?`<circle cx="${x(i)}" cy="${y(v)}" r="4" fill="var(--ink)"/><text x="${x(i)}" y="${y(v)-8}" text-anchor="middle" font-size="10" fill="var(--tx)">${v}</text>`:`<circle cx="${x(i)}" cy="${y(0)}" r="3" fill="none" stroke="var(--bd)"/>`}<text x="${x(i)}" y="${H+12}" text-anchor="middle" font-size="10" fill="var(--mut)">${i+1}회</text>`).join('')}</svg></div>`)});
+ if(!out.length)return '';return `<h3 class="sec">모의고사 점수</h3><div class="card mkg2">${out.join('')}</div>`}
+function statsHTML(dir){const c=KCH.st;let b='';if(c==0)setTimeout(avgLoad,30);
  if(c==0){const qs=allQ(),s=st(qs),t=R._t||{},days=Object.keys(t).filter(k=>t[k]>=1),tot=days.reduce((a,k)=>a+t[k],0),td=t[dkey()]||0,wk=allWeak();
-  b+=examHTML()+weekHTML();
-  b+=`<h3 class="sec">전체 공부</h3><div class="pg2"><div class="card st2"><span>총 공부 시간</span><b>${fmtT(tot)}</b><small>오늘 ${fmtT(td)}</small></div><div class="card st2"><span>공부한 날</span><b>${days.length}일</b><small>최근 2주 ${Object.keys(t).filter(k=>t[k]>=1&&k>=dkey(new Date(Date.now()-13*864e5))).length}일</small></div></div>${sd2Strip(t)}`+wdayHTML()+`<h3 class="sec">정답률</h3><div class="card"><div class="tag">전체 정답률</div><div class="big">${s.r==null?'-':s.r+'%'}</div><div class="mut">${s.n}문제 풀이 · ${s.c}문제 정답</div></div>`+recHTML();
-  b+=`<h3 class="sec">전체 약점 유형</h3><div class="card awk">${!wk.length?`<div class="mut svx">${s.n?'틀린 유형이 없어요.':'문제를 풀면 여기에 보여요.'}</div>`:wk.map(w=>`<div class="svk"><div class="awh"><span class="aws" style="--sc:${w.col}">${esc(w.s.split('|').join(' '))}</span><b class="no-t">${esc(w.k)}</b><span class="mut">${w.c}/${w.n} 정답</span></div>${TIPS[w.k]?`<div class="mut">${MX(esc(TIPS[w.k]))}</div>`:''}</div>`).join('')}</div>`}
+  b+=`<div class="stx">`+goalHTML()+examHTML()+weekHTML()+avgHTML();
+  b+=`<h3 class="sec">전체 공부</h3><div class="pg2"><div class="card st2"><span>총 공부 시간</span><b>${fmtT(tot)}</b><small>오늘 ${fmtT(td)}</small></div><div class="card st2"><span>공부한 날</span><b>${days.length}일</b><small>이번 달 ${Object.keys(t).filter(k=>t[k]>=1&&k.slice(0,7)==dkey().slice(0,7)).length}일</small></div></div>`+wdayHTML()+mkGraphHTML()+`<h3 class="sec">정답률</h3><div class="card"><div class="tag">전체 정답률</div><div class="big">${s.r==null?'-':s.r+'%'}</div><div class="mut">${s.n}문제 풀이 · ${s.c}문제 정답</div></div>`+recHTML();
+  b+=`<h3 class="sec">전체 약점 유형</h3><div class="card awk">${!wk.length?`<div class="mut svx">${s.n?'틀린 유형이 없어요.':'문제를 풀면 여기에 보여요.'}</div>`:wk.map(w=>`<div class="svk"><div class="awh"><span class="aws" style="--sc:${w.col}">${esc(w.s.split('|').join(' '))}</span><b class="no-t">${esc(w.k)}</b><span class="mut">${w.c}/${w.n} 정답</span></div>${TIPS[w.k]?`<div class="mut">${MX(esc(TIPS[w.k]))}</div>`:''}</div>`).join('')}</div></div>`}
  else if(c==1){const ALL=SUBJ.flat(),SEL=Array.isArray(R._sel)?R._sel:[],my=x=>COMMON.includes(x[0])||SEL.includes(x[0]),M=ALL.filter(my),O=ALL.filter(x=>!my(x));
   b+=`<div class="svg sv1g">`+M.map((x,i)=>svRow(x[0],x[1],x[2],i)).join('')+`</div>`;
   if(O.length){b+=`<button class="sgmore${SVMORE?' on':''}" onclick="svMore(this)"><span>다른 과목 보기</span><small>${O.length}과목</small><span class="chev">›</span></button><div id="svm"${SVMORE?'':' hidden'}><div class="svg">`;
@@ -1783,7 +1830,7 @@ function statsHTML(dir){const c=KCH.st;let b='';
    b+=`</div></div>`}}
  else b+=calHTML(dir);
  return kPage('st',kHead('<h2>전체 통계</h2>',[],'st'),b)}
-function allStats(dir){if(!isApp()){setTimeout(webSt,50);return subjects()}show(statsHTML(dir),kKey('st'));if(KCH.st==2)calBind()}
+function allStats(dir){if(!isApp()){setTimeout(webSt,50);return subjects()}show(statsHTML(dir),kKey('st'));if(KCH.st==2)calBind();if(KCH.st==0)avgLoad()}
 function calBind(){const el=document.getElementById('cg');if(!el)return;
  {const top=el.getBoundingClientRect().top+scrollY,tb=document.getElementById('tbr'),bot=tb&&tb.offsetParent!==null?innerHeight-tb.getBoundingClientRect().top:20,av=Math.round(innerHeight-top-bot-14);if(Math.abs(av-CALH)>8&&av>200){CALH=av;const rows=Math.ceil(el.querySelectorAll('.cd,.cg>div:not(.cw)').length/7)||5,ch=Math.max(52,Math.floor((CALH-74)/rows-4));el.querySelectorAll('.cd').forEach(d=>d.style.minHeight=ch+'px')}}
  let sx=null,sy=0,dx=0,hz=null,busy=false;const W=()=>el.offsetWidth||300;
