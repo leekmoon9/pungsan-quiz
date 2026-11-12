@@ -1712,7 +1712,7 @@ function delAll(){const L=delVis(),all=L.every(r=>DLS.has(r.nick));L.forEach(r=>
 async function delGo(){const L=[...DLS];if(!L.length)return;const nm=L.length==1?`<b>${esc(L[0])}</b> 님의`:`<b>${L.slice(0,3).map(esc).join(', ')}</b>${L.length>3?` 외 ${L.length-3}명`:''}, 모두 ${L.length}명의`;
  if(!(await askBox(`${L.length}명의 계정을 삭제할까요?`,`${nm} 계정, 풀이 기록, 메시지함이 모두 지워져요. 되돌릴 수 없어요.`,'삭제')))return;
  const b=document.getElementById('dlb');if(b){b.disabled=true;b.textContent='삭제하는 중…'}let ok=0,fail=0;
- for(const n of L){try{const r=await DB.rpc('admin_delete_player',{p_key:AK(),p_nick:n});if(r.error||r.data<0)throw 0;ok++;ADM=ADM.filter(x=>x.nick!=n);DLS.delete(n)}catch(e){fail++}}
+ for(const n of L){try{const r=await DB.rpc('admin_delete_player',{p_key:AK(),p_nick:n});if(r.error||r.data<0)throw 0;ok++;ADM=ADM.filter(x=>x.nick!=n);DLS.delete(n);accForget(n)}catch(e){fail++}}
  soonMsg(fail?(ok?`${ok}명은 삭제했고 ${fail}명은 실패했어요.`:'삭제하지 못했어요. 서버 설정을 확인해 주세요.'):`${ok}명의 계정을 삭제했어요.`);if(document.getElementById('dll'))delList()}
 async function myFill(){if(!OWNER)return;if(!(await askBox('내 진행도를 모두 완료할까요?','모든 과목의 <b>필기 읽음, 문제, 모의고사</b>가 전부 맞힌 것으로 처리돼요.<br>공부 시간은 그대로예요. 되돌리려면 「내 계정 전체 초기화」를 쓰세요.','완료 처리')))return;
  let c=0;R._nv=R._nv||{};R._nd=R._nd||{};SUBJ.flat().forEach(([n])=>{if(!CUR[n])return;socQ(n).concat(mkAll(n)).forEach(q=>{R[q.id]={ok:1};c++});R._nv[n]=R._nv[n]||{};CUR[n].forEach((U,u)=>{R._nd[n+'|'+u]=1;U.m.forEach((_,k)=>{R._nv[n][u+'-'+k]=1})})});
@@ -2089,7 +2089,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v116';
+const APPV='v117';
 function nagTog(){if(R._nagoff)delete R._nagoff;else R._nagoff=1;save();show(pfHTML(),kKey('pf'));soonMsg(R._nagoff?'공부 알림을 껐어요.':'공부를 안 한 날 저녁에 알림이 와요.')}
 function pfHTML(){const ch=kChips('pf');if(KCH.pf>=ch.length)KCH.pf=0;const nm=ch[KCH.pf],pend=STAFF()&&admLoad.ok?(FB||[]).filter(x=>x.st!='done').length:0;let b='';
  if(nm=='관리자')b=admBody();
@@ -2347,8 +2347,11 @@ async function boot(){{const m=location.hash.match(/^#s=([A-Za-z0-9]{16,64})$/);
 
 // ===== 계정 전환 (관리자 본인 전용): 프로필 탭을 길게 누르면 아래에서 올라오는 창 =====
 const ACC=()=>{try{return JSON.parse(ls('acl'))||[]}catch(e){return []}};
+let ACCLIVE=null;
+function accForget(n){try{ls('acl',JSON.stringify(ACC().filter(x=>x.n!=n)));ls('rec:'+n,null);if(ACCLIVE)ACCLIVE.delete(n)}catch(e){}}
+async function accPrune(){const k=AK()||ls('akp');if(!DB||!k||!ACC().length)return;try{const {data,error}=await DB.rpc('admin_players',{p_key:k});if(error||!Array.isArray(data))return;const live=new Set(data.map(x=>x.nick));ACCLIVE=live;ACC().filter(a=>!live.has(a.n)).forEach(a=>accForget(a.n))}catch(e){}}
 const accOK=()=>!!(AK()||ls('akp'));
-function accSheet(){if(!accOK()||document.querySelector('.bsw'))return;const L=ACC(),cur=OWNER?'@':NICK;
+async function accSheet(){if(!accOK()||document.querySelector('.bsw'))return;await accPrune();if(document.querySelector('.bsw'))return;const L=ACC(),cur=OWNER?'@':NICK;
  const av=(n,adm)=>`<i class="acv" style="--avc:${adm?'#2a2620':avc(n)}">${adm?ICN_SH:esc([...n][0]||'?')}</i>`;
  const row=(k,n,sub,adm)=>`<button class="acr" onclick="accGo('${k}')">${av(n,adm)}<span><b>${esc(n)}</b><small>${sub}</small></span><span class="acc${k==cur?' on':''}"></span></button>`;
  const w=document.createElement('div');w.className='bsw';
@@ -2368,7 +2371,7 @@ function partGo(n,u,k,p){accClose();setTimeout(()=>socGo(n,u,k,{part:p}),120)}
 function accClose(){const w=document.querySelector('.bsw');if(!w)return;w.classList.remove('on');setTimeout(()=>w.remove(),260)}
 function accGo(k){const cur=OWNER?'@':NICK;if(k==cur)return accClose();
  if(k=='@'){const a=ls('akp');if(!a)return;saveNow();ls('ak',a);ls('akp',null);ls('last',ADM_NICK);ls('pin',null)}
- else{const a=ACC().find(x=>x.n==k);if(!a)return;saveNow();if(AK()){ls('akp',AK());ls('ak',null)}ls('last',a.n);ls('pin',a.p)}
+ else{const a=ACC().find(x=>x.n==k);if(!a)return;if(ACCLIVE&&!ACCLIVE.has(k)){accForget(k);accClose();return soonMsg('삭제된 계정이에요.')}saveNow();if(AK()){ls('akp',AK());ls('ak',null)}ls('last',a.n);ls('pin',a.p)}
  try{sessionStorage.removeItem(KEY+'ss');sessionStorage.setItem(KEY+'alive','1')}catch(e){}location.replace(location.pathname+location.search+'#/profile');location.reload()}
 function saveNow(){try{if(NICK)ls('rec:'+NICK,JSON.stringify(R))}catch(e){}}
 function accAdd(){const sh=document.querySelector('.bsh');if(!sh)return;
@@ -2380,7 +2383,7 @@ async function accSave(){const n=document.getElementById('acn').value.trim(),pw=
  let r='';try{const {data,error}=await DB.rpc('player_login',{p_nick:n,p_pin:pw});if(!error&&data)r=data.status}catch(e){}
  if(r!='ok'&&r!='new'){b.disabled=false;b.textContent='추가하고 전환';st.textContent=r=='wrong'?'이미 있는 닉네임이고 비밀번호가 달라요.':r=='locked'?'잠긴 계정이에요. 잠시 뒤 다시 해 주세요.':'만들지 못했어요. 다시 해 주세요.';return}
  if(r=='new'){try{ls('rec:'+n,JSON.stringify({_dv:DV,_k1:1,_tour:1}))}catch(e){}}
- const L=ACC().filter(x=>x.n!=n);L.push({n,p:pw});ls('acl',JSON.stringify(L));accGo(n)}
+ const L=ACC().filter(x=>x.n!=n);L.push({n,p:pw});ls('acl',JSON.stringify(L));ACCLIVE=null;accGo(n)}
 // 프로필 탭 길게 누르기
 let ACLK=0;{const rel=()=>{if(ACLK)setTimeout(()=>{ACLK=0},350)};['pointerup','pointercancel','touchend','touchcancel','mouseup'].forEach(n=>document.addEventListener(n,rel,true));['click','pointerdown','mousedown','touchstart'].forEach(n=>document.addEventListener(n,e=>{if(ACLK&&e.target.closest&&e.target.closest('.bsw')){e.stopPropagation();e.preventDefault()}},true))}
 {let T=0,x0=0,y0=0;document.addEventListener('pointerdown',e=>{const b=e.target.closest&&e.target.closest('#tbr button[data-k="pf"]');if(!b||!accOK())return;x0=e.clientX;y0=e.clientY;clearTimeout(T);T=setTimeout(()=>{T=0;TBNOCLK=Date.now();TBDRAG=null;ACLK=1;setTimeout(()=>{ACLK=0},3000);accSheet()},450)},true);
