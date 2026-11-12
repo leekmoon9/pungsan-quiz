@@ -1407,7 +1407,7 @@ async function postSave(){const t=document.getElementById('pt').value.trim(),b=d
  const sb=document.getElementById('pts'),lb=sb?sb.textContent:'',re=()=>{if(sb){sb.disabled=false;sb.textContent=lb}};if(sb){sb.disabled=true;sb.textContent=PIMG.some(x=>x.d)?'사진 올리는 중…':'올리는 중…'}
  const ids=[];try{for(const x of PIMG){if(x.id){ids.push(x.id);continue}const q=await DB.rpc('admin_notice_img',{p_key:AK(),p_data:x.d});if(q.error||!q.data)throw 0;x.id=q.data;NIMC.set(q.data,x.d);delete x.d;ids.push(q.data)}}catch(e){re();return soonMsg('사진을 올리지 못했어요. 「공지게시판.sql」을 먼저 실행해 주세요.')}
  try{const r=await DB.rpc('admin_post_save',{p_key:AK(),p_id:PEDIT,p_title:t,p_body:(PKIND?'[[u]]':'[[n]]')+b,p_imgs:ids,p_notify:nf});if(r.error||!r.data)throw 0;
-  soonMsg(PEDIT?'고친 내용을 저장했어요.':'공지를 올렸어요.');await postLoad();pMark(r.data);KCH.noti=PKIND;if(PEDIT)postView(r.data);else board()}catch(e){re();soonMsg('올리지 못했어요. 「공지게시판.sql」을 먼저 실행해 주세요.')}}
+  soonMsg(PEDIT?'고친 내용을 저장했어요.':'공지를 올렸어요.');await postLoad();if(PEDIT||nf)pMark(r.data);KCH.noti=PKIND;if(PEDIT)postView(r.data);else board()}catch(e){re();soonMsg('올리지 못했어요. 「공지게시판.sql」을 먼저 실행해 주세요.')}}
 async function postDel(id){if(!(await askBox('공지를 지울까요?','지운 공지는 되돌릴 수 없어요. 사진도 함께 지워져요.','삭제')))return;
  try{const r=await DB.rpc('admin_post_del',{p_key:AK(),p_id:id});if(r.error||r.data!==true)throw 0;POSTS=(POSTS||[]).filter(x=>x.id!=id);soonMsg('공지를 지웠어요.');board()}catch(e){soonMsg('지우지 못했어요. 다시 시도해 주세요.')}}
 
