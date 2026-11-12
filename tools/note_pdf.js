@@ -22,7 +22,7 @@ await p.evaluate(subj=>{const n=subj,col=sCol(n),nm=n.split('|').join(' ');let h
  .pmid{break-before:page}.pmid:first-of-type{break-before:auto}
  .phd{border-bottom:2.5px solid ${col};padding-bottom:6px;margin-bottom:12px}.phd span{font-size:11.5px;color:#7a7264}.phd h2{margin:2px 0 0;font-size:22px;font-family:Jua,sans-serif}
  .nt{box-shadow:none!important;border:none!important;padding:0!important;background:none!important;margin:0!important}
- .nt h3,.nt .nkey,.nt .ntip,.nt .nvs,.nt .ntw,.nt .ndef,.nt .nfl,.nt figure{break-inside:avoid}.nt h3{break-after:avoid}
+ .nt h3,.nt .tli,.nt .ngc,.nt .nkey,.nt .ntip,.nt .nvs,.nt .ntw,.nt .ndef,.nt .nfl,.nt figure{break-inside:avoid}.nt h3{break-after:avoid}
  .capm{display:none!important}.nt::before,.nt::after{display:none!important}.nt{background-image:none!important}body.cap>*{filter:none!important}.ntw{overflow:visible!important}.ntb{width:100%!important}`;document.head.appendChild(st)},subj);
 await p.emulateMedia({media:'print'});await p.waitForTimeout(600);
 await p.pdf({path:out,format:'A4',printBackground:true,preferCSSPageSize:true});await b.close()})();

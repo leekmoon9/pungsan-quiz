@@ -220,6 +220,18 @@ body.hasbk .fbw h2:first-child{padding-left:0}
 .nvs>div{padding:10px 12px;border:1.5px solid color-mix(in srgb,var(--nc) 60%,#cdbfa5);border-radius:12px;background:#fff}.nvs>div>b{display:block;font-family:'Jua',sans-serif;font-weight:400;font-size:17px;line-height:1.25;margin-bottom:4px}
 .nvs>div p{margin:0;font-size:14px;line-height:1.6}.nvs>i{align-self:center;font-family:'Jua',sans-serif;font-weight:400;font-style:normal;font-size:18px;color:#d4443a}
 .nfl{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:12px 0}.nfl>span{padding:4px 12px;border:1.5px dashed color-mix(in srgb,var(--nc) 70%,#8a7a60);border-radius:999px;background:#fff;font-size:14px;font-weight:600}.nfl>i{font-style:normal;color:color-mix(in srgb,var(--nc) 70%,#6e5236);font-weight:800}
+/* 연표(tl)·유물 카드(gal) */
+.nt .ntline{position:relative;margin:12px 0 6px}.nt .ntline::before{content:'';position:absolute;left:92px;top:8px;bottom:8px;width:2px;background:color-mix(in srgb,var(--nc) 28%,#fff)}
+.nt .tli{display:grid;grid-template-columns:82px 1fr;column-gap:22px;margin:0 0 12px;position:relative}
+.nt .tli::before{content:'';position:absolute;left:86px;top:7px;width:10px;height:10px;border-radius:50%;background:var(--nc);box-shadow:0 0 0 3px #fff}
+.nt .tly{text-align:right;font-weight:800;font-size:14px;line-height:24px;color:color-mix(in srgb,var(--nc) 85%,#000);word-break:keep-all}
+.nt .tlt b{display:block;font-size:15px;line-height:24px}.nt .tlt small{display:block;font-size:13px;line-height:1.55;color:#6b6252;margin-top:1px}
+.nt .ngl{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.nt .ngc{background:#fff;border:1.3px solid #d5c9b2;border-radius:12px;overflow:hidden;min-width:0}
+.nt .ngc img{display:block;width:100%;height:128px;object-fit:contain;background:#faf6ec}
+.nt .ngc>div{padding:7px 9px 9px}.nt .ngc b{display:block;font-size:14px;line-height:1.35}
+.nt .ngc em{display:block;font-style:normal;font-size:12px;font-weight:800;color:color-mix(in srgb,var(--nc) 85%,#000);margin-top:2px}
+.nt .ngc small{display:block;font-size:12.5px;line-height:1.5;color:#6b6252;margin-top:3px}
 .ntw{overflow-x:auto;margin:12px 0}.ntb{width:100%;border-collapse:collapse;font-size:13.5px;line-height:1.5;background:#fff}
 .ntb th,.ntb td{border:1.3px solid #d5c9b2;padding:7px 8px;vertical-align:top;text-align:left}.ntb tr:first-child th{background:color-mix(in srgb,var(--nc) 32%,#fff);text-align:center}.ntb th{background:color-mix(in srgb,var(--nc) 12%,#fff);white-space:nowrap}
 .ntip{margin:16px 0 4px;padding:12px 14px;border:2px dashed #e07a6f;border-radius:14px;background:#fff7f5}.ntip>span{font-family:'Jua',sans-serif;font-weight:400;font-size:17px;color:#d4443a;display:block;line-height:1.2;margin-bottom:2px}.ntip p{margin:0}
@@ -1432,7 +1444,7 @@ function noticeForm(pre){if(pre){NTO='some';NTS=new Set([pre])}else{NTO='all';NT
 function ntTo(k){NTO=k;document.querySelectorAll('.ntg button').forEach(b=>b.classList.toggle('on',b.dataset.k==k));const w=document.getElementById('ntw');
  if(k=='all')w.innerHTML=`<p class="ntm">참여자 <b>${ADM.length}명</b> 모두에게 보내요.</p>`;
  else if(k=='staff')w.innerHTML=`<p class="ntm"><b>나와 보조 관리자</b>에게만 보내요.</p>`;
- else{w.innerHTML=`<div class="card ntp"><input type="search" id="ntq" placeholder="닉네임 검색" oninput="ntList()"><div class="ntl" id="ntl"></div></div><p class="ntm" id="ntn"></p>`;ntList()}
+ else{w.innerHTML=`<div class="card ntp"><input type="search" id="ntq" placeholder="닉네임 검색" oninput="ntList()"><div class="ntline" id="ntl"></div></div><p class="ntm" id="ntn"></p>`;ntList()}
  ntBtn()}
 function ntList(){const q=(document.getElementById('ntq')||{}).value||'',L=ADM.map(r=>r.nick).filter(n=>n.includes(q.trim())).sort((a,b)=>NTS.has(b)-NTS.has(a)||a.localeCompare(b));
  document.getElementById('ntl').innerHTML=L.length?L.map(n=>`<button class="${NTS.has(n)?'on':''}" onclick="ntPick(decodeURIComponent('${encodeURIComponent(n)}'))">${esc(n)}</button>`).join(''):'<p class="mut" style="font-size:14px;margin:6px 2px">찾는 사람이 없어요.</p>';ntBtn()}
@@ -1571,6 +1583,8 @@ function ntBlock(b){const [t,...a]=b;
  if(t=='flow')return `<div class="nfl">${a[0].map(x=>`<span>${ntIn(x)}</span>`).join('<i>→</i>')}</div>`;
  if(t=='tbl')return `<div class="ntw"><table class="ntb"><tr>${a[0].map(x=>`<th>${ntIn(x)}</th>`).join('')}</tr>${a[1].map(r=>`<tr>${r.map((x,i)=>i?`<td>${ntIn(x)}</td>`:`<th>${ntIn(x)}</th>`).join('')}</tr>`).join('')}</table></div>`;
  if(t=='tip')return `<div class="ntip"><span>★ 시험 포인트</span><p>${ntP(a[0])}</p></div>`;
+ if(t=='tl')return `<div class="ntline">${a[0].map(([y,h,d])=>`<div class="tli"><div class="tly">${ntIn(y)}</div><div class="tlt"><b>${ntIn(h)}</b>${d?`<small>${ntIn(d)}</small>`:''}</div></div>`).join('')}</div>`;
+ if(t=='gal')return `<div class="ngl">${a[0].map(([src,nm,d,pl])=>`<div class="ngc"><img src="${esc(src)}" alt="" loading="lazy"><div><b>${ntIn(nm)}</b>${pl?`<em>${ntIn(pl)}</em>`:''}${d?`<small>${ntIn(d)}</small>`:''}</div></div>`).join('')}</div>`;
  if(t=='img')return `<figure class="nim"><img src="${esc(a[0])}" alt="" loading="lazy">${a[1]?`<figcaption>${ntIn(a[1])}</figcaption>`:''}</figure>`;
  return ''}
 const ICN_NOTE='<svg class="lci" viewBox="0 0 48 48" fill="none" stroke="#1f1a15" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M24 13c-5-3.4-11-4-17-2.4v25c6-1.6 12-1 17 2.4 5-3.4 11-4 17-2.4v-25c-6-1.6-12-1-17 2.4z"/><path d="M24 13v25"/></svg>';
@@ -2097,7 +2111,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v122';
+const APPV='v123';
 function nagTog(){if(R._nagoff)delete R._nagoff;else R._nagoff=1;save();show(pfHTML(),kKey('pf'));soonMsg(R._nagoff?'공부 알림을 껐어요.':'공부를 안 한 날 저녁에 알림이 와요.')}
 function pfHTML(){const ch=kChips('pf');if(KCH.pf>=ch.length)KCH.pf=0;const nm=ch[KCH.pf],pend=STAFF()&&admLoad.ok?(FB||[]).filter(x=>x.st!='done').length:0;let b='';
  if(nm=='관리자')b=admBody();
