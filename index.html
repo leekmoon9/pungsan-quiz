@@ -815,6 +815,7 @@ body.tbon #app{padding-bottom:104px}
 .mkg2{display:flex;flex-direction:column;gap:14px}.mkl{display:flex;flex-direction:column;gap:4px}.mkl .mh{display:flex;justify-content:space-between;align-items:baseline;font-size:13px}.mkl .mh b{font-size:14px}.mkl .mh span{color:var(--mut)}
 .mkl svg{width:100%;height:auto;overflow:visible;display:block}.mkl .mh span{white-space:nowrap}.mkl .mh em{display:inline!important;margin:0!important}
 .glk{font-size:12px;color:var(--mut)}.mdc .b[disabled]{opacity:.35;pointer-events:none}.mdc .gcl{margin-top:10px}
+.mdc .gch{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}.mdc .gch button{grid-column:span 2;padding:8px 0;white-space:nowrap}.mdc .gch button:nth-child(4){grid-column:2/4}.mdc .gch button:nth-child(5){grid-column:4/6}
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -2038,7 +2039,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v111';
+const APPV='v112';
 function nagTog(){if(R._nagoff)delete R._nagoff;else R._nagoff=1;save();show(pfHTML(),kKey('pf'));soonMsg(R._nagoff?'공부 알림을 껐어요.':'공부를 안 한 날 저녁에 알림이 와요.')}
 function pfHTML(){const ch=kChips('pf');if(KCH.pf>=ch.length)KCH.pf=0;const nm=ch[KCH.pf],pend=STAFF()&&admLoad.ok?(FB||[]).filter(x=>x.st!='done').length:0;let b='';
  if(nm=='관리자')b=admBody();
