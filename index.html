@@ -686,6 +686,7 @@ img,button,a{-webkit-user-drag:none;-webkit-touch-callout:none}
 .stk .sdw i{width:20px;height:20px;border-radius:50%;border:2px solid var(--ln,#e3dccf);box-sizing:border-box}.stk .sdw .on i{background:#e8493d;border-color:#e8493d;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5.500 10.500l3 3 6-6.500' fill='none' stroke='%23fff' stroke-width='2.400' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")}.stk .sdw .td i{border-color:#5a4a46}.stk .sdw .td{color:var(--tx);font-weight:800}
 .kh .ki{position:relative}.lbsel{display:inline-flex;align-items:center;gap:3px;border:0;background:none;font:inherit;font-size:15px;font-weight:800;color:var(--tx);padding:8px 4px}.kh .ki .lbsel{width:auto;height:auto;white-space:nowrap;flex:none;padding:8px 2px;border-radius:0;box-shadow:none}.lbsel svg{width:16px;height:16px;flex:none}.lbdd{position:absolute;right:0;top:100%;z-index:20;min-width:104px;background:var(--card,#fffdf8);border:1.5px solid var(--ln,#e3dccf);border-radius:14px;padding:6px;box-shadow:0 8px 24px rgba(40,30,15,.16)}.lbdd button{display:block;width:100%;border:0;background:none;font:inherit;font-weight:700;font-size:14px;text-align:left;padding:9px 12px;border-radius:9px;color:var(--tx)}.lbdd button.on{background:color-mix(in srgb,#e8493d 12%,var(--card));color:#d8453a}
 #app .kh .ki .lbsel{display:inline-flex;flex-direction:row;align-items:center;gap:3px;width:auto;height:auto;border-radius:0;padding:8px 2px;font-size:15px;font-weight:800;white-space:nowrap}#app .kh .ki .lbsel svg{width:16px;height:16px;display:block;flex:none}#app .kh .ki .lbdd button{display:block;width:100%;height:auto;border-radius:9px;padding:9px 12px;text-align:left;font-size:14px;font-weight:700;white-space:nowrap}#app .kh .ki .lbdd button.on{background:color-mix(in srgb,#e8493d 12%,var(--card));color:#d8453a}
+.lbp .emp b,.lbr.emp .lbb b{color:var(--mut,#8a8070)}.lbv b.nb{color:var(--mut,#8a8070)}.lbm .lbv b.nb{color:#fff}
 .lbs{display:flex;gap:6px;margin:0 0 12px}.lbs button{flex:1;border:0;border-radius:99px;padding:7px 0;font:inherit;font-size:13px;font-weight:800;color:var(--mut,#8a8070);background:color-mix(in srgb,#2a2620 6%,var(--card))}
 .lbm{display:flex;align-items:center;gap:10px;padding:16px 18px;margin:0 0 20px;border-radius:16px;background:linear-gradient(135deg,#4a3532,#b8403a 75%,#e8695a);color:#fff}.lbm span{font-size:15px;font-weight:800}.lbm b{font-size:24px}.lbm em{margin-left:auto;font-style:normal}.lbm b{font-size:22px;font-weight:900}
 .lav{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:50%;background:var(--avc,#888);color:#fff;font-style:normal;font-weight:800;font-size:18px}.lav.sm{width:32px;height:32px;font-size:14px;flex:none}
@@ -1236,12 +1237,11 @@ const CROWN='<svg class="lcr" viewBox="0 0 24 16" aria-hidden="true"><path d="M2
 function leaderHTML(){const c=KCH.lb,L=LBC[lbKey()];let b='';
  if(!DB||!NICK)b+=`<div class="card kmt">서버에 연결되면 순위를 볼 수 있어요.</div>`;
  else if(L===undefined)b+=skMsgs(5);
- else if(!L.length)b+=`<div class="card kmt">아직 집계된 기록이 없어요.</div>`;
- else{const my=L.findIndex(x=>x.nick==NICK),mx=L[0].n||1;
-  if(my>=0)b+=`<div class="lbm"><span>내 순위</span><b>${my+1}위</b><em>${lbFmt(c,L[my].n)}</em></div>`;
-  const top=L.slice(0,3),ord=top.length==3?[1,0,2]:top.map((_,i)=>i);
-  b+=`<div class="lbp">${ord.map(i=>{const x=top[i];return `<div class="p${i+1}${x.nick==NICK?' me':''}"><u style="background:${MEDAL[i]}">${i+1}</u><i class="lav" style="--avc:${avc(x.nick)};box-shadow:0 0 0 3px ${MEDAL[i]}">${esc([...x.nick][0]||'?')}</i><b>${esc(x.nick)}</b><strong>${lbFmt(c,x.n)}</strong></div>`}).join('')}</div>`;
-  b+=L.slice(3).map((x,i)=>`<div class="lbr${x.nick==NICK?' me':''}"><i>${i+4}</i><i class="lav sm" style="--avc:${avc(x.nick)}">${esc([...x.nick][0]||'?')}</i><div class="lbb"><b>${esc(x.nick)}</b><s><u style="width:${Math.max(4,Math.round(x.n/mx*100))}%"></u></s></div><span>${lbFmt(c,x.n)}</span></div>`).join('');
+ else{const my=L.findIndex(x=>x.nick==NICK),mx=(L[0]&&L[0].n)||1,NB='<span class="lbv"><b class="nb">-</b></span>';
+  b+=`<div class="lbm"><span>내 순위</span><b>${my>=0?my+1+'위':'-'}</b><em>${my>=0?lbFmt(c,L[my].n):NB}</em></div>`;
+  b+=`<div class="lbp">${[1,0,2].map(i=>{const x=L[i];if(!x)return `<div class="p${i+1} emp"><u style="background:${MEDAL[i]}">${i+1}</u><i class="lav" style="--avc:#d9d1c3;box-shadow:0 0 0 3px ${MEDAL[i]}"></i><b>-</b><strong>${NB}</strong></div>`;return `<div class="p${i+1}${x.nick==NICK?' me':''}"><u style="background:${MEDAL[i]}">${i+1}</u><i class="lav" style="--avc:${avc(x.nick)};box-shadow:0 0 0 3px ${MEDAL[i]}">${esc([...x.nick][0]||'?')}</i><b>${esc(x.nick)}</b><strong>${lbFmt(c,x.n)}</strong></div>`}).join('')}</div>`;
+  const R4=L.slice(3);while(R4.length<2)R4.push(null);
+  b+=R4.map((x,i)=>x?`<div class="lbr${x.nick==NICK?' me':''}"><i>${i+4}</i><i class="lav sm" style="--avc:${avc(x.nick)}">${esc([...x.nick][0]||'?')}</i><div class="lbb"><b>${esc(x.nick)}</b><s><u style="width:${Math.max(4,Math.round(x.n/mx*100))}%"></u></s></div><span>${lbFmt(c,x.n)}</span></div>`:`<div class="lbr emp"><i>${i+4}</i><i class="lav sm" style="--avc:#d9d1c3"></i><div class="lbb"><b>-</b><s></s></div>${NB}</div>`).join('');
   if(!OWNER&&my<0)b+=`<div class="mut" style="text-align:center;font-size:13px;margin:8px 0">공부하면 순위에 올라요.</div>`}
  b+=`<p class="mut" style="font-size:12px;text-align:center;margin:12px 0 0">${['파트를 끝까지 풀면 문제 수가 반영돼요. 너무 빠르게 푼 파트는 제외돼요.','어제나 오늘 공부했을 때의 연속 일수만 보여요.','문제를 푼 시간만 모아요.'][c]}</p>`;
  let hd=kHead('<h2>리더보드</h2>',[],'lb');
@@ -1904,7 +1904,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v97';
+const APPV='v98';
 function pfHTML(){const ch=kChips('pf');if(KCH.pf>=ch.length)KCH.pf=0;const nm=ch[KCH.pf],pend=STAFF()&&admLoad.ok?(FB||[]).filter(x=>x.st!='done').length:0;let b='';
  if(nm=='관리자')b=admBody();
  else if(nm=='초기화')b=rsList();
