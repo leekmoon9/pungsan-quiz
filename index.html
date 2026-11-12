@@ -1795,18 +1795,18 @@ function goalHTML(){const g=goalToday(),k=dkey(),tq=(R._lbq||{})[k]||0,tm=Math.f
  const all=it.every(x=>x[0]>=1);
  return `<div class="card"><div class="ghd"><span>오늘의 목표${all?' · <b class="ok">모두 달성 🎉</b>':''}</span></div><div class="gl"${it.length==1?' style="grid-template-columns:1fr"':''}>${it.map(([p,a,b,c])=>`<div class="gr">${ringSVG(p)}<div class="gt"><span>${a}</span><b>${b}</b><small>${c}</small></div></div>`).join('')}</div></div>`}
 function goalAsk(){if(!NICK||goalToday()||document.querySelector('.mdw'))return;GTMP={q:0,m:0};
- const row=(t,L,u)=>`<span class="gcl">${t=='q'?'하루에 풀 문제':'하루 공부 시간'}</span><div class="gch" data-t="${t}">${[0,...L].map(v=>`<button data-v="${v}" class="${v?'':'on'}">${v?v+u:'안 정함'}</button>`).join('')}</div>`;
+ const row=(t,L,u)=>`<span class="gcl">${t=='q'?'하루에 풀 문제':'하루 공부 시간'}</span><div class="gch" data-t="${t}">${[0,...L].map(v=>`<button data-g="${v}" class="${v?'':'on'}">${v?v+u:'안 정함'}</button>`).join('')}</div>`;
  const w=document.createElement('div');w.className='mdw';
- w.innerHTML=`<div class="mdc"><h3>오늘의 목표를 정해 볼까요?</h3>${row('q',GQ,'문제')}${row('m',GM,'분')}<div class="row" style="margin:0"><button class="b g" data-a="x">나중에</button><button class="b" data-a="ok" disabled>정하기</button></div></div>`;
- w.onclick=e=>{const t=e.target;if(t===w||t.dataset.a==='x'){w.remove();return}
+ w.innerHTML=`<div class="mdc"><h3>오늘의 목표를 정해 볼까요?</h3>${row('q',GQ,'문제')}${row('m',GM,'분')}<div class="row" style="margin:0"><button class="b g" data-a="x" data-v="0">나중에</button><button class="b" data-a="ok" disabled>정하기</button></div></div>`;
+ w.onclick=e=>{const t=e.target;if(t===w||t.dataset.a==='x'){GASK=true;w.remove();return}
   if(t.dataset.a==='ok'){if(!(GTMP.q||GTMP.m)||goalToday())return;const td=dkey(),G=Object.assign({},R._goals||{}),old=dAdd(td,-90);for(const k in G)if(k<old)delete G[k];G[td]={q:GTMP.q,m:GTMP.m};R._goals=G;delete R._goal;save();w.remove();soonMsg('오늘 목표를 정했어요. 힘내요!');if(CURR=='stats')allStats();return}
-  const bt=t.closest&&t.closest('.gch button');if(bt){const k=bt.parentNode.dataset.t;GTMP[k]=+bt.dataset.v;bt.parentNode.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===bt));w.querySelector('[data-a=ok]').disabled=!(GTMP.q||GTMP.m)}};
+  const bt=t.closest&&t.closest('.gch button');if(bt){const k=bt.parentNode.dataset.t;GTMP[k]=+bt.dataset.g;bt.parentNode.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===bt));w.querySelector('[data-a=ok]').disabled=!(GTMP.q||GTMP.m)}};
  document.body.appendChild(w)}
 // 앱에 들어올 때(처음 켤 때·다시 돌아올 때) 오늘 목표가 없으면 한 번 물어봄. 문제 푸는 중에는 안 물어봄
 let GASK=false;
-function goalGate(n){n=n||0;if(GASK||!NICK||!isApp()||goalToday())return;
- if(document.querySelector('.mdw,.spl,#sporb,.bsw')&&n<300)return setTimeout(()=>goalGate(n+1),700);
- if(!TBR.includes(CURR)||document.querySelector('.mdw,.spl'))return;GASK=true;goalAsk()}
+function goalGate(){if(GASK||document.hidden||!NICK||!isApp()||goalToday())return;
+ if(document.querySelector('.mdw,.spl,#sporb,.bsw')||!TBR.includes(CURR))return;goalAsk()}
+setInterval(goalGate,2000);
 document.addEventListener('visibilitychange',()=>{if(!document.hidden){GASK=false;setTimeout(goalGate,700)}});
 // 친구 평균과 비교 (서버: lb_avg)
 let AVGC=null,AVGT=0;
@@ -2040,7 +2040,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v113';
+const APPV='v114';
 function nagTog(){if(R._nagoff)delete R._nagoff;else R._nagoff=1;save();show(pfHTML(),kKey('pf'));soonMsg(R._nagoff?'공부 알림을 껐어요.':'공부를 안 한 날 저녁에 알림이 와요.')}
 function pfHTML(){const ch=kChips('pf');if(KCH.pf>=ch.length)KCH.pf=0;const nm=ch[KCH.pf],pend=STAFF()&&admLoad.ok?(FB||[]).filter(x=>x.st!='done').length:0;let b='';
  if(nm=='관리자')b=admBody();
