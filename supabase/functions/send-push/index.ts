@@ -1,4 +1,5 @@
 // 메시지가 새로 생기면(데이터베이스 트리거가 호출) 그 사람 폰으로 알림을 보냄
+// 공부 알림(study_nag)도 이 함수로 보냄: tag·url을 따로 넘기면 그 값을 씀
 // 필요한 비밀 값(Edge Functions > Secrets): VAPID_PUBLIC, VAPID_PRIVATE, PUSH_SECRET
 // 함수 설정에서 "Verify JWT"는 끔 (대신 x-push-secret 으로 확인)
 import webpush from "npm:web-push@3.6.7";
@@ -15,14 +16,14 @@ Deno.serve(async (req) => {
   if (req.headers.get("x-push-secret") !== Deno.env.get("PUSH_SECRET")) {
     return new Response("unauthorized", { status: 401 });
   }
-  const { nick, title, body, id } = await req.json();
+  const { nick, title, body, id, tag, url } = await req.json();
   const { data } = await sb.from("push_subs").select("endpoint,sub").eq("nick", nick);
   let sent = 0;
   for (const r of data ?? []) {
     try {
       await webpush.sendNotification(
         r.sub,
-        JSON.stringify({ title, body, tag: "msg-" + id, url: "./#/inbox" }),
+        JSON.stringify({ title, body, tag: tag ?? "msg-" + id, url: url ?? "./#/inbox" }),
         { TTL: 60 * 60 * 24 * 3 },
       );
       sent++;

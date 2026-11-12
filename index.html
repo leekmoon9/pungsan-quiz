@@ -786,6 +786,21 @@ body.tbon #app{padding-bottom:104px}
 #ptr.rd .ar{transform:rotate(180deg)}
 #ptr.sp .rg{animation:ptsp .8s linear infinite}
 @keyframes ptsp{to{transform:rotate(360deg)}}
+.xcd{background:linear-gradient(135deg,#2a2620,#4a3f33);color:#fbf8f1;border:0}
+.xcd .xh{display:flex;align-items:baseline;justify-content:space-between;gap:8px}
+.xcd .xh span{font-size:13px;opacity:.8}.xcd .xh b{font-size:24px;font-family:'Jua',sans-serif;letter-spacing:.5px}
+.xcd .xp{font-size:30px;font-weight:800;margin:8px 0 2px}.xcd .xp small{font-size:14px;font-weight:600;opacity:.75;margin-left:6px}
+.xcd .xb{height:9px;border-radius:5px;background:rgba(255,255,255,.16);overflow:hidden;margin:8px 0 10px}.xcd .xb i{display:block;height:100%;border-radius:5px;background:linear-gradient(90deg,#f3c969,#ff8a5b);transition:width 1.05s cubic-bezier(.3,1.7,.5,1)}
+.xcd .xg{font-size:14px;line-height:1.5}.xcd .xg b{color:#f3c969}
+.wk4{display:grid;grid-template-columns:1fr 1fr;gap:10px}.wk4 .card{margin:0;display:flex;flex-direction:column;gap:3px}
+.wk4 span{font-size:13px;color:var(--mut)}.wk4 b{font-size:21px}.wk4 small{font-size:12px;color:var(--mut)}
+.dlt{font-weight:700;font-style:normal}.dlt.up{color:var(--ok)}.dlt.dn{color:var(--no)}
+.wdc{display:grid;grid-template-columns:repeat(7,1fr);gap:8px;align-items:end;height:118px;margin:8px 0 4px}
+.wdc div{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:4px}
+.wdc i{display:block;width:100%;max-width:30px;border-radius:6px 6px 3px 3px;background:color-mix(in srgb,var(--ac) 40%,var(--card));min-height:3px;transition:height .9s cubic-bezier(.3,1.5,.5,1)}
+.wdc .top i{background:var(--ac)}.wdc small{font-size:11px;color:var(--mut)}.wdc em{font-size:10px;color:var(--mut);font-style:normal}
+.rcd{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center}
+.rcd div{display:flex;flex-direction:column;gap:2px;padding:6px 0}.rcd i{font-style:normal;font-size:22px}.rcd b{font-size:17px}.rcd small{font-size:11.5px;color:var(--mut)}
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -1323,7 +1338,7 @@ function guide(){const S=(n,t,body,img)=>`<section class="gds" id="gd${n}"><div 
  h+=S(9,'공지','<p>아래 탭바의 <b>확성기</b>(공지)에서 시험 안내는 <b>공지</b> 칩, 앱 소식은 <b>업데이트</b> 칩에 모여 있어요. 아직 안 열어 본 글이 있으면 <b class="gdr">빨간 점</b>이 생겨요.</p>','g_board');
  h+=S(10,'메시지함 · 알림','<p><b>편지봉투</b>를 누르면 메시지함이에요. 새 공지 알림, 피드백 답장, 관리자가 보낸 알림이 와요. 숫자는 읽지 않은 메시지 수예요. 휴지통을 누르면 골라서 지울 수 있어요.</p><p>프로필에서 <b>폰 알림</b>을 켜 두면 메시지가 올 때 폰으로도 알려 줘요.</p>','g_inbox');
  h+=S(11,'피드백 보내기','<p>정답이 이상하거나 불편한 점, 추가했으면 하는 과목이 있으면 프로필 오른쪽 위 <b>피드백</b> 글자를 눌러 유형을 골라 보내 주세요. 고쳐지면 메시지함으로 답장이 와요.</p>');
- h+=S(12,'프로필','<p>아래 탭바의 <b>사람</b>(프로필)에서 닉네임·비밀번호를 바꾸고 폰 알림을 켤 수 있어요. 오른쪽 위 <b>피드백</b> 글자는 피드백 보내기, <b>사용법</b> 글자는 이 사용법이에요.</p>','g_profile');
+ h+=S(12,'프로필','<p>아래 탭바의 <b>사람</b>(프로필)에서 닉네임·비밀번호를 바꾸고 폰 알림을 켤 수 있어요. 그날 공부를 안 하면 저녁에 오는 <b>공부 알림</b>도 여기서 끄고 켤 수 있어요. 오른쪽 위 <b>피드백</b> 글자는 피드백 보내기, <b>사용법</b> 글자는 이 사용법이에요.</p>','g_profile');
  h+=`<div class="row"><button class="b" onclick="subjects()">학습하러 가기</button></div>`;show(h)}
 
 // ================= 관리자 =================
@@ -1731,9 +1746,33 @@ function calHTML(dir){if(!CALM){const d=new Date();CALM=[d.getFullYear(),d.getMo
  for(let d=1;d<=n;d++){const k=y+'-'+String(mo+1).padStart(2,'0')+'-'+String(d).padStart(2,'0'),v=t[k]||0;
   g+=`<div class="cd${v>=1?' on':''}${k==tk?' td':''}" style="min-height:${ch}px"><b>${d}</b>${v>=1?`<small>${fmtT(v,1)}</small>`:''}</div>`}
  return `<div class="cal card kcal"><div class="ch"><button class="lk" aria-label="이전 달" onclick="calSlide(-1)">‹</button><b>${y}년 ${mo+1}월</b><button class="lk" aria-label="다음 달" onclick="calSlide(1)">›</button></div><div class="cgw"><div class="cg${dir>0?' pgn':dir<0?' pgp':''}" id="cg">${g}</div></div></div>`}
+// 전체 통계 요약: 기말 진도 · 이번 주 · 요일 패턴 · 나의 기록
+const dAdd=(k,n)=>{const [y,m,d]=k.split('-').map(Number);return dkey(new Date(y,m-1,d+n))};
+const dDiff=(a,b)=>{const u=k=>{const [y,m,d]=k.split('-').map(Number);return Date.UTC(y,m-1,d)/864e5};return u(b)-u(a)};
+const WDN=['일','월','화','수','목','금','토'];
+function dltH(a,b,f){const d=a-b;if(!b&&!a)return '';if(Math.abs(d)<(f?60:1))return '<em class="dlt">지난주와 같아요</em>';return `<em class="dlt ${d>0?'up':'dn'}">${d>0?'▲':'▼'} ${f?f(Math.abs(d)):Math.abs(d)}</em> <small>지난주보다</small>`}
+function examHTML(){const td=dkey();if(td>DD_END)return '';const SEL=Array.isArray(R._sel)?R._sel:[];let tot=0,dn=0;
+ SUBJ.flat().forEach(([n])=>{if(!CUR[n]||!(COMMON.includes(n)||SEL.includes(n)))return;const qs=socQ(n);tot+=qs.length;dn+=qs.filter(q=>R[q.id]).length});
+ if(!tot)return '';const left=tot-dn,days=dDiff(td,DD_EX),pc=Math.round(dn/tot*100);
+ const g=left<=0?'내 과목 문제를 <b>모두 풀었어요!</b> 오답노트로 마무리해요.':days<=0?`오늘 시험이에요. 남은 <b>${left}문제</b>는 약점 위주로 봐요.`:`남은 <b>${left}문제</b> · 하루 <b>${Math.ceil(left/days)}문제</b>씩 풀면 시험 전에 끝나요.`;
+ return `<div class="card xcd"><div class="xh"><span>${DD_NAME}까지 · 내 과목 진도</span><b>${days>0?'D-'+days:'D-DAY'}</b></div><div class="xp">${pc}%<small>${dn} / ${tot}문제</small></div><div class="xb"><i style="width:${pc}%"></i></div><div class="xg">${g}</div></div>`}
+function weekHTML(){const t=R._t||{},q=R._lbq||{},td=dkey(),wd=(new Date().getDay()+6)%7,mon=dAdd(td,-wd),pm=dAdd(mon,-7);
+ let tw=0,lw=0,tq=0,lq=0,dd=0;for(let i=0;i<=wd;i++){const a=dAdd(mon,i),b=dAdd(pm,i);tw+=t[a]||0;lw+=t[b]||0;tq+=q[a]||0;lq+=q[b]||0;if(dayOK(a))dd++}
+ const cur=streakN(),best=bestRun();
+ return `<h3 class="sec">이번 주</h3><div class="wk4"><div class="card"><span>공부 시간</span><b>${fmtT(tw)}</b><small>${dltH(tw,lw,fmtT)}</small></div><div class="card"><span>푼 문제</span><b>${tq}문제</b><small>${dltH(tq,lq,x=>x+'문제')}</small></div><div class="card"><span>공부한 날</span><b>${dd} / ${wd+1}일</b><small>월요일부터 오늘까지</small></div><div class="card"><span>연속 학습</span><b>🔥 ${cur}일</b><small>최고 기록 ${best}일</small></div></div>`}
+function bestRun(){const ks=Object.keys(Object.assign({},R._t||{},R._lbq||{})).filter(dayOK).sort();let b=0,c=0,pv=null;ks.forEach(k=>{c=pv&&dDiff(pv,k)==1?c+1:1;b=Math.max(b,c);pv=k});return b}
+function wdayHTML(){const t=R._t||{},td=dkey(),sum=[0,0,0,0,0,0,0];let any=0;
+ for(let i=1;i<=28;i++){const k=dAdd(td,-i),[y,m,d]=k.split('-').map(Number),w=new Date(y,m-1,d).getDay();sum[w]+=t[k]||0;if(t[k])any=1}
+ if(!any)return '';const av=sum.map(x=>x/4),mx=Math.max(...av,1),top=av.indexOf(Math.max(...av)),ord=[1,2,3,4,5,6,0];
+ const we=(av[0]+av[6])/2,wk=(av[1]+av[2]+av[3]+av[4]+av[5])/5;
+ return `<h3 class="sec">요일별 공부 패턴</h3><div class="card"><div class="mut" style="font-size:13px">최근 4주 평균 · <b style="color:var(--tx)">${WDN[top]}요일</b>에 가장 많이 공부해요${we<wk*.5?' · 주말엔 쉬는 편이에요':''}</div><div class="wdc">${ord.map(w=>`<div class="${w==top?'top':''}"><em>${av[w]>=60?Math.round(av[w]/60)+'분':''}</em><i style="height:${Math.max(3,Math.round(av[w]/mx*100))}%"></i><small>${WDN[w]}</small></div>`).join('')}</div></div>`}
+function recHTML(){const t=R._t||{},q=R._lbq||{};const bt=Object.keys(t).sort((a,b)=>t[b]-t[a])[0],bq=Object.keys(q).sort((a,b)=>q[b]-q[a])[0];
+ const md=k=>{const [,m,d]=k.split('-').map(Number);return m+'월 '+d+'일'};
+ return `<h3 class="sec">나의 기록</h3><div class="card rcd"><div><i>🔥</i><b>${bestRun()}일</b><small>최장 연속 학습</small></div><div><i>⏱️</i><b>${bt&&t[bt]>=60?fmtT(t[bt]):'-'}</b><small>${bt&&t[bt]>=60?md(bt)+' 최고 공부':'하루 최고 공부'}</small></div><div><i>✏️</i><b>${bq&&q[bq]?q[bq]+'문제':'-'}</b><small>${bq&&q[bq]?md(bq)+' 최다 풀이':'하루 최다 풀이'}</small></div></div>`}
 function statsHTML(dir){const c=KCH.st;let b='';
  if(c==0){const qs=allQ(),s=st(qs),t=R._t||{},days=Object.keys(t).filter(k=>t[k]>=1),tot=days.reduce((a,k)=>a+t[k],0),td=t[dkey()]||0,wk=allWeak();
-  b+=`<div class="pg2"><div class="card st2"><span>총 공부 시간</span><b>${fmtT(tot)}</b><small>오늘 ${fmtT(td)}</small></div><div class="card st2"><span>공부한 날</span><b>${days.length}일</b><small>최근 2주 ${Object.keys(t).filter(k=>t[k]>=1&&k>=dkey(new Date(Date.now()-13*864e5))).length}일</small></div></div>${sd2Strip(t)}<div class="card"><div class="tag">전체 정답률</div><div class="big">${s.r==null?'-':s.r+'%'}</div><div class="mut">${s.n}문제 풀이 · ${s.c}문제 정답</div></div>`;
+  b+=examHTML()+weekHTML();
+  b+=`<h3 class="sec">전체 공부</h3><div class="pg2"><div class="card st2"><span>총 공부 시간</span><b>${fmtT(tot)}</b><small>오늘 ${fmtT(td)}</small></div><div class="card st2"><span>공부한 날</span><b>${days.length}일</b><small>최근 2주 ${Object.keys(t).filter(k=>t[k]>=1&&k>=dkey(new Date(Date.now()-13*864e5))).length}일</small></div></div>${sd2Strip(t)}`+wdayHTML()+`<h3 class="sec">정답률</h3><div class="card"><div class="tag">전체 정답률</div><div class="big">${s.r==null?'-':s.r+'%'}</div><div class="mut">${s.n}문제 풀이 · ${s.c}문제 정답</div></div>`+recHTML();
   b+=`<h3 class="sec">전체 약점 유형</h3><div class="card awk">${!wk.length?`<div class="mut svx">${s.n?'틀린 유형이 없어요.':'문제를 풀면 여기에 보여요.'}</div>`:wk.map(w=>`<div class="svk"><div class="awh"><span class="aws" style="--sc:${w.col}">${esc(w.s.split('|').join(' '))}</span><b class="no-t">${esc(w.k)}</b><span class="mut">${w.c}/${w.n} 정답</span></div>${TIPS[w.k]?`<div class="mut">${MX(esc(TIPS[w.k]))}</div>`:''}</div>`).join('')}</div>`}
  else if(c==1){const ALL=SUBJ.flat(),SEL=Array.isArray(R._sel)?R._sel:[],my=x=>COMMON.includes(x[0])||SEL.includes(x[0]),M=ALL.filter(my),O=ALL.filter(x=>!my(x));
   b+=`<div class="svg sv1g">`+M.map((x,i)=>svRow(x[0],x[1],x[2],i)).join('')+`</div>`;
@@ -1936,12 +1975,13 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v108';
+const APPV='v109';
+function nagTog(){if(R._nagoff)delete R._nagoff;else R._nagoff=1;save();show(pfHTML(),kKey('pf'));soonMsg(R._nagoff?'공부 알림을 껐어요.':'공부를 안 한 날 저녁에 알림이 와요.')}
 function pfHTML(){const ch=kChips('pf');if(KCH.pf>=ch.length)KCH.pf=0;const nm=ch[KCH.pf],pend=STAFF()&&admLoad.ok?(FB||[]).filter(x=>x.st!='done').length:0;let b='';
  if(nm=='관리자')b=admBody();
  else if(nm=='초기화')b=rsList();
  else b=`<div class="card pf"><div class="pr"><span>닉네임</span><b>${esc(NICK)}</b>${ADMINMODE||SUBMODE?`<span class="mut" style="font-size:13px;white-space:nowrap">${SUBMODE?'':'관리자 '}고정</span>`:'<button class="lk" onclick="pfNick()">변경하기</button>'}</div>
- ${ADMINMODE||SUBMODE?'':`<div class="pr"><span>비밀번호</span><b id="pv">${PFSHOW?(PFSHOW=false,esc(PIN)):'••••'}</b><button class="lk" onclick="if(!PFOK)return pfShow();const e=document.getElementById('pv');e.textContent=e.textContent=='••••'?PIN:'••••'">보기</button><button class="lk" onclick="pfPin()">변경하기</button></div>`}<div class="pr"><span>폰 알림</span><b>${notiState()}</b>${notiState()=='켜짐'?'':'<button class="lk" onclick="notiFromProfile()">켜기</button>'}</div></div>
+ ${ADMINMODE||SUBMODE?'':`<div class="pr"><span>비밀번호</span><b id="pv">${PFSHOW?(PFSHOW=false,esc(PIN)):'••••'}</b><button class="lk" onclick="if(!PFOK)return pfShow();const e=document.getElementById('pv');e.textContent=e.textContent=='••••'?PIN:'••••'">보기</button><button class="lk" onclick="pfPin()">변경하기</button></div>`}<div class="pr"><span>폰 알림</span><b>${notiState()}</b>${notiState()=='켜짐'?'':'<button class="lk" onclick="notiFromProfile()">켜기</button>'}</div>${ADMINMODE?'':`<div class="pr"><span>공부 알림</span><b>${R._nagoff?'꺼짐':'켜짐'}</b><button class="lk" onclick="nagTog()">${R._nagoff?'켜기':'끄기'}</button></div>`}</div>
  <div class="card pf" id="pfsel"><div class="pr"><span>선택과목</span><b class="pfsl">${Array.isArray(R._sel)?R._sel.map(n=>`<span>${n.split('|').join(' ')}</span>`).join('')||'없음':'아직 안 골랐어요'}</b><button class="lk" onclick="pickSel()">바꾸기</button></div></div>
  <p class="mut" style="text-align:center;font-size:12px;margin-top:18px">앱 버전 ${APPV}</p>`;
  return kPage('pf',kHead(`<h2>${esc(NICK)}</h2>`,[['txt:피드백','피드백 보내기','fbForm(1)'],['txt:사용법','사용법','guide()']],'pf',ch.map(x=>x=='관리자'?pend:0)),b)}
