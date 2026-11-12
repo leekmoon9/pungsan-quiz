@@ -817,6 +817,25 @@ body.tbon #app{padding-bottom:104px}
 .glk{font-size:12px;color:var(--mut)}.mdc .b[disabled]{opacity:.35;pointer-events:none}.mdc .gcl{margin-top:10px}
 .mdc .gch{display:grid;grid-template-columns:repeat(6,1fr);gap:8px}.mdc .gch button{grid-column:span 2;padding:8px 0;white-space:nowrap}.mdc .gch button:nth-child(4){grid-column:2/4}.mdc .gch button:nth-child(5){grid-column:4/6}
 .mdc .gch+.row{margin-top:24px!important}
+
+.mdw.tour{background-color:var(--bg);background-image:linear-gradient(rgba(122,106,80,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(122,106,80,.07) 1px,transparent 1px);background-size:24px 24px;padding:calc(18px + env(safe-area-inset-top,0px)) 22px calc(18px + env(safe-area-inset-bottom,0px));flex-direction:column;align-items:stretch;justify-content:space-between;animation:none;z-index:80}
+.tour .tdots{display:flex;gap:6px;justify-content:center;margin-top:6px}.tour .tdots i{width:7px;height:7px;border-radius:99px;background:var(--bd);transition:width .25s,background .25s}.tour .tdots i.on{width:22px;background:var(--ink)}
+.tour .tbd{flex:1;display:flex;flex-direction:column;justify-content:center;gap:20px;max-width:420px;width:100%;margin:0 auto}
+.tour .tbd.r{animation:tinr .28s ease-out both}.tour .tbd.l{animation:tinl .28s ease-out both}
+@keyframes tinr{from{opacity:0;transform:translateX(36px)}to{opacity:1;transform:none}}@keyframes tinl{from{opacity:0;transform:translateX(-36px)}to{opacity:1;transform:none}}
+.tour h2{margin:0;font-size:28px;text-align:center;line-height:1.25}
+.tour .tp{margin:0;text-align:center;color:var(--mut);font-size:15px;line-height:1.6}
+.tour .tsl{display:flex;flex-direction:column;gap:10px}
+.tour .tst{display:flex;align-items:center;gap:14px;background:var(--card);border:1.5px solid var(--bd);border-radius:18px;padding:14px 16px}
+.tour .tst>i{flex:none;width:38px;height:38px;border-radius:50%;background:var(--ink);color:#fffdf8;display:grid;place-items:center;font-style:normal;font-weight:800;font-size:16px}
+.tour .tst>i.em{background:color-mix(in srgb,var(--ink) 7%,var(--card));font-size:19px}
+.tour .tst>svg{flex:none;width:30px;height:30px;color:var(--ink)}
+.tour .tst .rgw{flex:none;display:block;width:56px;height:56px}.tour .tst .rgw svg{width:56px;height:56px;display:block}
+.tour .tst span{display:flex;flex-direction:column;gap:2px;text-align:left}.tour .tst b{font-size:16px}.tour .tst small{font-size:13px;color:var(--mut);line-height:1.4}
+.tour .tar{text-align:center;color:var(--mut);font-size:18px;line-height:1;margin:-2px 0}
+.tour .trow{display:flex;gap:10px;max-width:420px;width:100%;margin:0 auto}
+.tour .trow .b{flex:1;border-radius:999px;padding:15px;font-weight:800;border:0;box-shadow:none;font-size:16px}
+.tour .trow .b.g{background:color-mix(in srgb,#2a2620 7%,var(--card));color:#6f6656}.tour .trow .b:not(.g){background:#2a2620;color:#fffdf8}
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -904,7 +923,7 @@ async function enter(){if(SUBMODE){const go=document.getElementById('go');if(go)
   if(lk&&st=='wrong'){ls('last',null);ls('pin',null);home()}
   soonMsg(st=='locked'?'비밀번호를 여러 번 틀렸어요. 10분 뒤에 다시 해 주세요.':st=='wrong'?'비밀번호가 틀렸어요. 처음이면 다른 닉네임을 써 주세요.':'닉네임이나 비밀번호를 확인해 주세요.');return}
  NICK=v;PIN=p;ls('last',v);ls('pin',p);
- R=mrg(okDV(srv),loc);R._dv=DV;ls('rec:'+NICK,JSON.stringify(R));
+ R=mrg(okDV(srv),loc);R._dv=DV;if(st=='new')R._tour=1;ls('rec:'+NICK,JSON.stringify(R));
  if(st=='offline')soonMsg('서버에 연결되지 않아 이 기기에만 저장돼요.');else if(Object.keys(loc).length)sync();
  if(st=='new')soonMsg('새 닉네임으로 시작해요!');
  await chkAdmin();REPL=true;subjects()}
@@ -1057,7 +1076,7 @@ const selOK=()=>Array.isArray(R._sel);
 let SELF=false;
 function selRe(){if(SELF&&CURR=='sel'&&selOK()){SELF=false;SELT=null;document.body.classList.remove('selg');subjects()}}
 let SELT=null;
-function pickSel(){if(!SELT)SELT=new Set(Array.isArray(R._sel)?R._sel:[]);const first=!Array.isArray(R._sel);SELF=first;document.body.classList.toggle('selg',first);
+function pickSel(){if(R._tour===1&&!Array.isArray(R._sel))return tourOpen();if(!SELT)SELT=new Set(Array.isArray(R._sel)?R._sel:[]);const first=!Array.isArray(R._sel);SELF=first;document.body.classList.toggle('selg',first);
  let h=`<h2>선택과목 고르기</h2><p class="tag">${first?'처음 한 번만 하면 돼요. ':''}지금 듣고 있는 선택과목을 모두 골라 주세요.<br>공통과목(독서와 작문 · 영어 · 미적분)은 자동으로 들어가요.</p>`;
  SUBJ.forEach((row,ri)=>{const L=row.filter(([n])=>!COMMON.includes(n));if(!L.length)return;h+=`<h3 class="sec">${SECN[ri]}</h3><div class="slg">`+L.map(([n,c])=>`<button class="slc${SELT.has(n)?' on':''}" style="--sc:${SC[c]}" data-n="${encodeURIComponent(n)}" onclick="selTog(this)"><i>${ICN_OK2}</i><b>${n.split('|').join(' ')}</b></button>`).join('')+`</div>`});
  h+=`<div class="slbar"><button class="b" id="sls" ${SELT.size?'':'disabled'} onclick="selSave()">${SELT.size?`선택 완료 · ${SELT.size}과목`:'선택과목을 골라 주세요'}</button></div>`;show(h)}
@@ -1785,6 +1804,25 @@ function wdayHTML(){const t=R._t||{},td=dkey(),sum=[0,0,0,0,0,0,0];let any=0;
 function recHTML(){const t=R._t||{},q=R._lbq||{};const bt=Object.keys(t).sort((a,b)=>t[b]-t[a])[0],bq=Object.keys(q).sort((a,b)=>q[b]-q[a])[0];
  const md=k=>{const [,m,d]=k.split('-').map(Number);return m+'월 '+d+'일'};
  return `<h3 class="sec">나의 기록</h3><div class="card rcd"><div><i>🔥</i><b>${bestRun()}일</b><small>최장 연속 학습</small></div><div><i>⏱️</i><b>${bt&&t[bt]>=60?fmtT(t[bt]):'-'}</b><small>${bt&&t[bt]>=60?md(bt)+' 최고 공부':'하루 최고 공부'}</small></div><div><i>✏️</i><b>${bq&&q[bq]?q[bq]+'문제':'-'}</b><small>${bq&&q[bq]?md(bq)+' 최다 풀이':'하루 최다 풀이'}</small></div></div>`}
+// ===== 처음 시작 안내: 새 계정으로 처음 들어오면 한 번, 한 장씩 넘겨 보고 '시작하기'를 누르면 선택과목 고르기로 =====
+const TIC=k=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${TBI[k][0]}</svg>`;
+const TST=(ic,b,sm)=>`<div class="tst">${ic}<span><b>${b}</b><small>${sm}</small></span></div>`;
+const TOUR=[
+ {t:'이 순서로 공부해요',v:()=>`<div class="tsl">${TST('<i>1</i>','공부하기','교과서 핵심을 정리한 필기를 읽어요')}${TST('<i>2</i>','문제 풀기','단원마다 기본·실전 문제를 풀어요')}${TST('<i>3</i>','모의고사','학평 스타일 5회분으로 마무리해요')}</div>`,p:'과목을 고른 뒤 이 순서로 하면 돼요.'},
+ {t:'틀린 문제는 오답노트로',v:()=>`<div class="tsl">${TST('<i style="background:var(--no)">✕</i>','틀린 문제','오답노트에 자동으로 모여요')}<div class="tar">↓</div>${TST('<i style="background:var(--ok)">✓</i>','다시 풀어서 맞히면','고친 오답으로 바뀌어요')}</div>`,p:'‘취약’ 표시가 붙은 유형부터 고치면 점수가 빨리 올라요.'},
+ {t:'아래 탭으로 이동해요',v:()=>`<div class="tsl">${[['home','학습','과목을 고르고 공부해요'],['noti','소식','공지·업데이트·메시지'],['lb','리더보드','친구들과 순위를 비교해요'],['st','전체 통계','내 공부 기록 (앱 전용)'],['pf','프로필','닉네임·알림·사용법']].map(([k,a,b])=>TST(TIC(k),a,b)).join('')}</div>`,p:''},
+ {t:'오늘의 목표를 정해요',v:()=>`<div class="tsl">${TST(`<span class="rgw">${ringSVG(.6)}</span>`,'오늘의 목표','앱을 켜면 푼 문제·공부 시간을 정해요')}${TST(TIC('st'),'통계','이번 주 공부·약점·모의고사 점수')}${TST(TIC('noti'),'공부 알림','그날 공부를 안 했으면 저녁에 알려 줘요')}</div>`,p:''},
+ {t:'마지막으로 두 가지',v:()=>`<div class="tsl">${TST('<i class="em">📲</i>','앱으로 설치해 주세요','통계·알림은 앱에서만 돼요. 아이폰은 공유 → 홈 화면에 추가, 안드로이드는 ⋮ → 앱 설치')}${TST('<i class="em">🔑</i>','비밀번호 4자리를 기억해요','잊으면 기록을 찾을 수 없어요')}</div>`,p:'궁금한 점은 프로필의 피드백으로 보내 주세요.'}];
+let TIX=0;
+function tourOpen(){if(document.getElementById('tour'))return;TIX=0;const w=document.createElement('div');w.id='tour';w.className='mdw tour';
+ let x0=null;w.addEventListener('touchstart',e=>{x0=e.touches.length==1?e.touches[0].clientX:null},{passive:true});
+ w.addEventListener('touchend',e=>{if(x0==null)return;const dx=e.changedTouches[0].clientX-x0;x0=null;if(Math.abs(dx)>60)tourGo(dx<0?1:-1)},{passive:true});
+ w.onclick=e=>{const a=e.target.dataset&&e.target.dataset.a;if(a=='n')tourGo(1);else if(a=='p')tourGo(-1)};
+ document.body.appendChild(w);tourDraw(0)}
+function tourDraw(dir){const w=document.getElementById('tour');if(!w)return;const T=TOUR[TIX],last=TIX==TOUR.length-1;
+ w.innerHTML=`<div class="tdots">${TOUR.map((_,i)=>`<i class="${i==TIX?'on':''}"></i>`).join('')}</div><div class="tbd${dir>0?' r':dir<0?' l':''}"><h2>${T.t}</h2>${T.v()}${T.p?`<p class="tp">${T.p}</p>`:''}</div><div class="trow"><button class="b g" data-a="p" data-v="0"${TIX?'':' style="visibility:hidden"'}>이전</button><button class="b" data-a="n">${last?'시작하기':'다음'}</button></div>`}
+function tourGo(d){if(!document.getElementById('tour'))return;const n=TIX+d;if(n<0)return;if(n>=TOUR.length)return tourDone();TIX=n;tourDraw(d)}
+function tourDone(){const w=document.getElementById('tour');if(w)w.remove();R._tour=2;save();if(CURR=='sel'||!Array.isArray(R._sel))pickSel();else subjects()}
 // 하루 목표: 날짜마다 따로 저장(R._goals). 그날 정하면 잠겨서 바꿀 수 없고, 안 정했으면 접속할 때마다 물어봄
 const GQ=[10,20,30,50],GM=[30,60,90,120];let GTMP=null;
 const goalToday=()=>{const g=(R._goals||{})[dkey()];return g&&(g.q||g.m)?g:null};
@@ -2040,7 +2078,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v114';
+const APPV='v115';
 function nagTog(){if(R._nagoff)delete R._nagoff;else R._nagoff=1;save();show(pfHTML(),kKey('pf'));soonMsg(R._nagoff?'공부 알림을 껐어요.':'공부를 안 한 날 저녁에 알림이 와요.')}
 function pfHTML(){const ch=kChips('pf');if(KCH.pf>=ch.length)KCH.pf=0;const nm=ch[KCH.pf],pend=STAFF()&&admLoad.ok?(FB||[]).filter(x=>x.st!='done').length:0;let b='';
  if(nm=='관리자')b=admBody();
@@ -2330,6 +2368,7 @@ async function accSave(){const n=document.getElementById('acn').value.trim(),pw=
  if(!DB)return st.textContent='서버에 연결되지 않았어요.';b.disabled=true;b.textContent='확인 중…';
  let r='';try{const {data,error}=await DB.rpc('player_login',{p_nick:n,p_pin:pw});if(!error&&data)r=data.status}catch(e){}
  if(r!='ok'&&r!='new'){b.disabled=false;b.textContent='추가하고 전환';st.textContent=r=='wrong'?'이미 있는 닉네임이고 비밀번호가 달라요.':r=='locked'?'잠긴 계정이에요. 잠시 뒤 다시 해 주세요.':'만들지 못했어요. 다시 해 주세요.';return}
+ if(r=='new'){try{ls('rec:'+n,JSON.stringify({_dv:DV,_k1:1,_tour:1}))}catch(e){}}
  const L=ACC().filter(x=>x.n!=n);L.push({n,p:pw});ls('acl',JSON.stringify(L));accGo(n)}
 // 프로필 탭 길게 누르기
 let ACLK=0;{const rel=()=>{if(ACLK)setTimeout(()=>{ACLK=0},350)};['pointerup','pointercancel','touchend','touchcancel','mouseup'].forEach(n=>document.addEventListener(n,rel,true));['click','pointerdown','mousedown','touchstart'].forEach(n=>document.addEventListener(n,e=>{if(ACLK&&e.target.closest&&e.target.closest('.bsw')){e.stopPropagation();e.preventDefault()}},true))}
