@@ -912,20 +912,22 @@ function kPv(t,c,intra,tgt){const k0=KCH[t];KCH[t]=c;let h='';try{h=KHTML[t]()}c
  if(tgt)m.style.transform=`translateY(${-tgt}px)`;o.appendChild(m);document.body.appendChild(o);
  m.querySelectorAll('[data-w]').forEach(e=>{e.style.width=e.dataset.w+'%'});return o}
 // 이번 칩/탭 → (t,c) 로 옆으로 밀어서 넘어감. st: 손가락으로 끌던 중이면 {off,o}
-function kNav(t,c,st){if(KNV)return;st=st||{};
+function kNav(t,c,st){st=st||{};if(KNV){if(st.o)st.o.remove();return}
  if(t=='st'&&!isApp()){if(st.o)st.o.remove();return webSt()}
  const cur=tbKey(),cc=KCH[cur],onRoot=TBR.includes(CURR),seq=kSeq(),i0=seq.indexOf(cur+':'+cc),i1=seq.indexOf(t+':'+c),A=document.getElementById('app');
  const intra=onRoot&&t==cur,dir=onRoot&&i0>=0&&i1>=0?(i1>i0?1:-1):0;
  if(!dir||RDM()){if(st.o)st.o.remove();KCH[t]=c;TABF[t]();return}
- KNV=1;TBSW=Date.now();document.body.classList.add('tbsw');clearTimeout(kNav.t);
+ const tok={};KNV=tok;TBSW=Date.now();document.body.classList.add('tbsw');clearTimeout(kNav.t);
  const kb=A.querySelector('.kb'),mv=intra&&kb?kb:A,kbTop=kb?kb.getBoundingClientRect().top+scrollY:0,tgt=intra?Math.min(scrollY,kbTop):0,W=innerWidth,off=st.off||0;
  const o=st.o||kPv(t,c,intra,tgt);
  if(intra)kChipOn(c);else{tbSetIcons(t);tbPill()}
  const D=Math.max(150,Math.round(300*(1-Math.min(.85,Math.abs(off)/W)))),E='cubic-bezier(.25,.8,.25,1)';
  mv.animate([{transform:`translateX(${off}px)`},{transform:`translateX(${-dir*W}px)`}],{duration:D,easing:E,fill:'forwards'});
  const an=o.animate([{transform:`translateX(${dir*W+off}px)`},{transform:'translateX(0)'}],{duration:D,easing:E,fill:'forwards'});
- const fin=()=>{if(!KNV)return;mv.getAnimations().forEach(a=>a.cancel());mv.style.transform='';KCH[t]=c;try{TABF[t]()}catch(e){}scrollTo(0,tgt);o.remove();KNV=null;kNav.t=setTimeout(()=>document.body.classList.remove('tbsw'),400)};
+ const fin=()=>{if(KNV!==tok){o.remove();return}mv.getAnimations().forEach(a=>a.cancel());mv.style.transform='';KCH[t]=c;try{TABF[t]()}catch(e){}scrollTo(0,tgt);o.remove();KNV=null;kNav.t=setTimeout(()=>document.body.classList.remove('tbsw'),400)};
  an.onfinish=fin;setTimeout(fin,D+400)}
+// 남아 있는 미리보기·밀린 화면 정리
+function kClean(){document.querySelectorAll('.tbsl').forEach(o=>o.remove());const A=document.getElementById('app');if(A){A.getAnimations().forEach(a=>a.cancel());A.style.transform='';const kb=A.querySelector('.kb');if(kb){kb.getAnimations().forEach(a=>a.cancel());kb.style.transform=''}}}
 // 웹에서 전체 통계: 알약은 끝까지 가고, 안내 창을 닫으면 원래 탭으로
 function webSt(){tbSetIcons('st');tbPill();lockMsg().then(()=>{tbSetIcons(tbKey());tbPill()})}
 // 로딩 스켈레톤:// 로딩 스켈레톤: 기다리는 동안 화면 모양을 미리 보여 줌
@@ -1175,8 +1177,8 @@ const pNew=x=>pT(x)>pBase()&&!pRd().includes(x.id);
 function pMark(id){const a=pRd();if(!a.includes(id)){a.push(id);ls('pread',JSON.stringify(a.slice(-300)))}postBadge()}
 function postBadge(){const n=(POSTS||[]).filter(pNew).length;document.querySelectorAll('.ntb .ntd').forEach(d=>d.hidden=!n)}
 function boardHTML(){const c=KCH.noti,A0=POSTS||[],L=A0.filter(x=>pKind(x)==c),nn=[0,1].map(k=>A0.filter(x=>pKind(x)==k&&pNew(x)).length);
- let b='';if(POSTS==null)b=skPosts();else if(!L.length)b=`<div class="card kmt">${c?'올라온 업데이트가 없어요.':'올라온 공지가 없어요.'}</div>`;
- else b=L.map(x=>{const nw=pNew(x),ni=(x.imgs||[]).length;return `<button class="pst${nw?' nw':''}" onclick="postView(${x.id})"><b>${esc(x.title)}</b><span class="psm">${nw?'<span class="chp pnw">NEW</span>':''}<small>${fdt(x.created_at)}</small>${ni?`<span class="psi">${ICN_PIC}${ni}</span>`:''}</span></button>`}).join('');
+ let b='';if(POSTS==null)b=skMsgs(4);else if(!L.length)b=`<div class="card kmt">${c?'올라온 업데이트가 없어요.':'올라온 공지가 없어요.'}</div>`;
+ else b=L.map(x=>{const nw=pNew(x);return `<button class="mgc${nw?'':' rd'}" onclick="postView(${x.id})"><span class="mgd"></span><span class="mgb"><b>${esc(x.title)}</b><small>${fdt(x.created_at)}</small></span><span class="chev">›</span></button>`}).join('');
  return kPage('noti',kHead('<h2>공지</h2>',OWNER&&DB?[['plus','공지 올리기','postForm()']]:[],'noti',nn),b)}
 async function board(){show(boardHTML(),kKey('noti'));await postLoad();if(CURR!='board'||KNV)return;show(boardHTML(),kKey('noti'));postBadge()}
 const ICN_MORE='<svg viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><circle cx="5.5" cy="12" r="1.9"/><circle cx="12" cy="12" r="1.9"/><circle cx="18.5" cy="12" r="1.9"/></svg>';
@@ -1824,7 +1826,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v84';
+const APPV='v85';
 function pfHTML(){const ch=kChips('pf');if(KCH.pf>=ch.length)KCH.pf=0;const nm=ch[KCH.pf],pend=STAFF()&&admLoad.ok?(FB||[]).filter(x=>x.st!='done').length:0;let b='';
  if(nm=='관리자')b=admBody();
  else if(nm=='초기화')b=rsList();
@@ -1888,7 +1890,7 @@ function tbGo(k){if(KNV)return;const cur=tbKey();if(k==cur&&TBR.includes(CURR)){
 {let S=null;const hsc=el=>{for(;el&&el!==document.body;el=el.parentElement){if(el.matches&&el.matches('input,textarea,select,canvas,.mdw,#tbr,.tbsl,.cgw,.bsh'))return true;const cs=getComputedStyle(el);if(/(auto|scroll)/.test(cs.overflowX)&&el.scrollWidth>el.clientWidth+2)return true}return false};
  const mvEl=()=>{const A=document.getElementById('app');return S&&S.intra?(A.querySelector('.kb')||A):A};
  const drop=()=>{if(S&&S.o){S.o.remove();S.o=null}};
- document.addEventListener('touchstart',e=>{S=null;if(KNV||e.touches.length!==1||!NICK||!TBR.includes(CURR)||!document.body.classList.contains('tbon')||document.querySelector('.mdw,.tbsl,.bsw,.msx'))return;
+ document.addEventListener('touchstart',e=>{if(S&&S.o&&!KNV)S.o.remove();S=null;if(!KNV)kClean();if(KNV||e.touches.length!==1||!NICK||!TBR.includes(CURR)||!document.body.classList.contains('tbon')||document.querySelector('.mdw,.bsw,.msx'))return;
   const t=e.touches[0];if(t.clientX<14||t.clientX>innerWidth-14||hsc(e.target))return;S={x:t.clientX,y:t.clientY,t:Date.now(),ax:0,dx:0,dir:0,o:null}},{passive:true});
  document.addEventListener('touchmove',e=>{if(!S)return;const t=e.touches[0],dx=t.clientX-S.x,dy=t.clientY-S.y;
   if(!S.ax){if(Math.abs(dx)<10&&Math.abs(dy)<10)return;if(Math.abs(dx)>Math.abs(dy)*1.2)S.ax=1;else{S=null;return}}
