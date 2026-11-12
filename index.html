@@ -687,6 +687,9 @@ img,button,a{-webkit-user-drag:none;-webkit-touch-callout:none}
 .kh .ki{position:relative}.lbsel{display:inline-flex;align-items:center;gap:3px;border:0;background:none;font:inherit;font-size:15px;font-weight:800;color:var(--tx);padding:8px 4px}.kh .ki .lbsel{width:auto;height:auto;white-space:nowrap;flex:none;padding:8px 2px;border-radius:0;box-shadow:none}.lbsel svg{width:16px;height:16px;flex:none}.lbdd{position:absolute;right:0;top:100%;z-index:20;min-width:104px;background:var(--card,#fffdf8);border:1.5px solid var(--ln,#e3dccf);border-radius:14px;padding:6px;box-shadow:0 8px 24px rgba(40,30,15,.16)}.lbdd button{display:block;width:100%;border:0;background:none;font:inherit;font-weight:700;font-size:14px;text-align:left;padding:9px 12px;border-radius:9px;color:var(--tx)}.lbdd button.on{background:color-mix(in srgb,#e8493d 12%,var(--card));color:#d8453a}
 #app .kh .ki .lbsel{display:inline-flex;flex-direction:row;align-items:center;gap:3px;width:auto;height:auto;border-radius:0;padding:8px 2px;font-size:15px;font-weight:800;white-space:nowrap}#app .kh .ki .lbsel svg{width:16px;height:16px;display:block;flex:none}#app .kh .ki .lbdd button{display:block;width:100%;height:auto;border-radius:9px;padding:9px 12px;text-align:left;font-size:14px;font-weight:700;white-space:nowrap}#app .kh .ki .lbdd button.on{background:color-mix(in srgb,#e8493d 12%,var(--card));color:#d8453a}
 .lbp .emp b,.lbr.emp .lbb b{color:var(--mut,#8a8070)}.lbv b.nb{color:var(--mut,#8a8070)}.lbm .lbv b.nb{color:#fff}
+.dd{margin-left:12px;flex:none;display:flex;flex-direction:column;align-items:center;line-height:1;padding:6px 12px 7px;border-radius:15px;background:linear-gradient(160deg,#fff6f1,#ffe2d8);border:1.5px solid #f2b8aa;box-shadow:0 3px 0 rgba(232,73,61,.18)}
+.dd small{font-size:10.5px;font-weight:800;color:#b8483b;margin-bottom:3px;letter-spacing:.02em}.dd b{font-family:'Jua',sans-serif;font-weight:400;font-size:20px;color:#d8453a;letter-spacing:.01em}
+.dd.dy{background:linear-gradient(160deg,#ff8a6b,#e8493d);border-color:#e8493d}.dd.dy small{color:#ffe9e1}.dd.dy b{color:#fff}
 .lbs{display:flex;gap:6px;margin:0 0 12px}.lbs button{flex:1;border:0;border-radius:99px;padding:7px 0;font:inherit;font-size:13px;font-weight:800;color:var(--mut,#8a8070);background:color-mix(in srgb,#2a2620 6%,var(--card))}
 .lbm{display:flex;align-items:center;gap:10px;padding:16px 18px;margin:0 0 20px;border-radius:16px;background:linear-gradient(135deg,#4a3532,#b8403a 75%,#e8695a);color:#fff}.lbm span{font-size:15px;font-weight:800}.lbm b{font-size:24px}.lbm em{margin-left:auto;font-style:normal}.lbm b{font-size:22px;font-weight:900}
 .lav{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:50%;background:var(--avc,#888);color:#fff;font-style:normal;font-weight:800;font-size:18px}.lav.sm{width:32px;height:32px;font-size:14px;flex:none}
@@ -1037,12 +1040,16 @@ function streakHTML(){const lr=lastRun(),now=new Date(),td=dayOK(dkey(now)),yd=n
  const wk=['월','화','수','목','금','토','일'].map((l,i)=>{const d=new Date(mo);d.setDate(mo.getDate()+i);const k=dkey(d);return `<span class="${dayOK(k)?'on':''}${k==dkey()?' td':''}"><i></i>${l}</span>`}).join('');
  const head=td?`<em>${lr.n}</em><span>일 연속 학습 중</span>`:esc(stkMsg(pend?STK_KEEP:STK_GO)),sub='';
  return `<div class="card stk"><div class="fl${td?' on':''}">${flameSVG(lr.n,td)}</div><div class="stw"><b>${head}</b>${sub}<div class="sdw">${wk}</div></div></div>`}
+const DD_EX='2026-12-07',DD_END='2026-12-11',DD_NAME='기말고사';
+function ddayHTML(t=dkey()){const u=k=>{const [y,m,d]=k.split('-').map(Number);return Date.UTC(y,m-1,d)/864e5};
+ if(t>DD_END)return '';const n=u(DD_EX)-u(t),day=n<=0;
+ return `<div class="dd${day?' dy':''}" role="img" aria-label="${DD_NAME} ${day?'당일':n+'일 남음'}"><small>${DD_NAME}</small><b>${day?'D-DAY':'D-'+n}</b></div>`}
 function homeHTML(){const ALL=SUBJ.flat(),SEL=Array.isArray(R._sel)?R._sel:[],mine=ALL.filter(([n])=>COMMON.includes(n)||SEL.includes(n)),c=KCH.home,grid=L=>`<div class="sg c2">${L.map(x=>sgCard(...x)).join('')}</div>`;
  let b=c==0?streakHTML():'';
  if(c==0){b+=`<h3 class="sec">공통과목</h3>`+grid(ALL.filter(([n])=>COMMON.includes(n)));b+=`<h3 class="sec">선택과목</h3>`+(SEL.length?grid(ALL.filter(([n])=>SEL.includes(n))):`<div class="card kmt">고른 선택과목이 없어요.</div>`)}
  else{const rows=c==1?SUBJ.map(row=>row.filter(([n])=>!mine.some(m=>m[0]==n))):SUBJ;let any=0;
   rows.forEach((row,ri)=>{if(!row.length)return;any=1;b+=`<h3 class="sec">${SECN[ri]}</h3>`+grid(row)});if(!any)b+=`<div class="card kmt">다른 과목이 없어요.</div>`}
- return kPage('home',kHead(`<h2 class="hwt" aria-label="풍산 학습">${HW_TITLE}</h2>`,[['sel','선택과목 바꾸기','pickSel()']],'home'),b)}
+ return kPage('home',kHead(`<h2 class="hwt" aria-label="풍산 학습">${HW_TITLE}</h2>${ddayHTML()}`,[['sel','선택과목 바꾸기','pickSel()']],'home'),b)}
 function subjects(){if(NICK&&!selOK())return pickSel();document.body.classList.remove('selg');SELF=false;show(homeHTML(),kKey('home'));animBars();mailBadge();afterHome()}
 let FBF=0;
 let FBK='';
@@ -1904,7 +1911,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v102';
+const APPV='v103';
 function pfHTML(){const ch=kChips('pf');if(KCH.pf>=ch.length)KCH.pf=0;const nm=ch[KCH.pf],pend=STAFF()&&admLoad.ok?(FB||[]).filter(x=>x.st!='done').length:0;let b='';
  if(nm=='관리자')b=admBody();
  else if(nm=='초기화')b=rsList();
