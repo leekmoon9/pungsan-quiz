@@ -683,7 +683,7 @@ const bigQ=(n,u)=>[].concat(...CUR[n][u].m.map(x=>x.q));
 const socQ=n=>[].concat(...CUR[n].map((_,u)=>bigQ(n,u)));
 const pct=qs=>qs.length?Math.round(st(qs).c/qs.length*100):0;
 let OPEN=-1;
-function socPage(n){const c=SUBJ.flat().find(x=>x[0]==n)[1],col=SC[c],nm=n.split('|').join(' ');
+function socPage(n){if(!PASSG(n)&&CUR[n].length)return socPage2(n);const c=SUBJ.flat().find(x=>x[0]==n)[1],col=SC[c],nm=n.split('|').join(' ');
  const [K1,K2]=kd(n);let h=`<div class="shd"><h2 style="--hlc:${col}">${nm}</h2>${NEWS(n)?'<p class="tag">문제 풀기</p>':''}${COVER[n]?`<img class="cvs" src="${COVER[n]}" alt="">`:''}</div>`;
  if(!PASSG(n))h+=`<h3 class="sec sec1">복습</h3>`;
  {const wq=socQ(n).filter(q=>R[q.id]&&!R[q.id].ok),uq=wq.filter(isUnf);h+=`<button class="wnb" onclick="wrongPage('${n}')"><span><b>오답노트</b><small>${wq.length?(uq.length?`남은 오답 ${uq.length}문제`:'오답을 모두 고쳤어요'):'아직 틀린 문제가 없어요'}</small></span>${uq.length?`<span class="wnc">${uq.length}</span>`:''}<span class="chev">›</span></button>`}
@@ -700,6 +700,24 @@ function socPage(n){const c=SUBJ.flat().find(x=>x[0]==n)[1],col=SC[c],nm=n.split
  if(CUR[n].length&&!PASSG(n))h+=`<h3 class="sec">한 번에 풀기</h3>`;
  if(CUR[n].length)h+=`<div class="ub ua" style="--uc:${col}" onclick="socGo('${n}')"><div class="uh"><div class="ut"><b>전체 풀기</b><div class="al"><span>전체 진행도 · ${socQ(n).length}문제</span><b>${pct(socQ(n))}%</b></div><div class="bar"><i data-w="${pct(socQ(n))}" style="width:0;background:${col}"></i></div></div><span class="chev">›</span></div></div>`;h+=``;
  SOCCUR=n;show(h);animBars()}
+function socPage2(n){const col=sCol(n),nm=n.split('|').join(' '),D=lhData(n),[K1]=kd(n);
+ let h=`<div class="shd"><h2 style="--hlc:${col}">${NEWS(n)?'문제 풀기':nm}</h2>${NEWS(n)?`<p class="tag">${esc(nm)}</p>`:''}${COVER[n]?`<img class="cvs" src="${COVER[n]}" alt="">`:''}</div>`;
+ const qp=pct(D.qs);
+ h+=`<div class="lh1" style="--uc:${col}"><div class="lh1r">${ring(qp,col)}<div class="lh1p"><b>${qp}<small>%</small></b><span>문제 진행도</span></div></div><div class="lh1s"><div><small>푼 문제</small><b>${D.sol}<i>/${D.qs.length}</i></b></div><div><small>정답률</small><b>${D.acc==null?'-':D.acc+'<i>%</i>'}</b></div><div><small>남은 오답</small><b>${D.uq}<i>개</i></b></div></div></div>`;
+ const bar=p=>`<div class="lbar"><i style="width:${p}%"></i></div>`;
+ h+=`<h3 class="sec">복습</h3><div class="lrows" style="--uc:${col}"><button class="lrow lrw" onclick="wrongPage('${n}')"><span class="lic">${ICN_WR}</span><span class="lrt"><b>오답노트</b><small>${D.uq?`남은 오답 ${D.uq}문제`:'남은 오답이 없어요'}</small></span>${D.uq?`<span class="wnc">${D.uq}</span>`:''}<span class="chev">›</span></button><button class="lrow lrs" onclick="starPage('${n}')"><span class="lic">${ICN_ST}</span><span class="lrt"><b>별표 문제</b><small>${D.stn?`담아 둔 문제 ${D.stn}개`:'헷갈리는 문제에 별표를 눌러요'}</small></span>${D.stn?`<span class="wnc wst">${D.stn}</span>`:''}<span class="chev">›</span></button></div>`;
+ const UNX=CUR[n].findIndex((U,u)=>bigQ(n,u).length&&bigQ(n,u).some(q=>!R[q.id]||isUnf(q)));
+ h+=`<h3 class="sec">${K1}별 문제</h3>`;
+ const RN=['Ⅰ','Ⅱ','Ⅲ','Ⅳ','Ⅴ','Ⅵ','Ⅶ','Ⅷ'];
+ CUR[n].forEach((U,u)=>{const qs=bigQ(n,u),a=pct(qs),so=qs.filter(q=>R[q.id]),ac=so.length?Math.round(so.filter(q=>R[q.id].ok).length/so.length*100):null,wr=qs.filter(isUnf).length,nx=u==UNX,dn=NEWS(n)&&uDone(n,u);
+  h+=`<div class="ub2${OPEN==u?' op':''}${nx?' unx':''}${dn?' udn':''}" id="ub${u}" style="--uc:${col}"><button class="lrow" onclick="tgl2(${u})"><span class="lic lnu">${RN[u]||u+1}</span><span class="lrt"><b>${esc(U.n.replace(/^[ⅠⅡⅢⅣⅤⅥ]+\.\s*/,''))}${nx?'<span class="unxb">이어서</span>':''}${dn?DNB:''}</b><small>${so.length}/${qs.length}문제${ac!=null?' · 정답률 '+ac+'%':''}${wr?' · 오답 '+wr:''}</small>${bar(a)}</span><span class="chev">›</span></button><div class="um"><div class="umi">`;
+  h+=`<button class="mb mball" onclick="socGo('${n}',${u})"><span><b>이 ${K1} 전체 풀기</b></span><span class="mut">${qs.length}문제</span></button>`;
+  U.m.forEach((M,k)=>{const b=pct(M.q),w=M.q.filter(isUnf).length;h+=`<button class="mb" onclick="${NEWS(n)?`partPick('${n}',${u},${k})`:`socGo('${n}',${u},${k})`}"><span>${esc(M.n)}${wkBadge(gInfo(M.q))}</span><span class="mut">${M.q.length?M.q.length+'문제 · '+b+'%'+(w?' · 오답 '+w:''):'준비 중'}</span></button>`});
+  h+=`</div></div></div>`});
+ h+=`<h3 class="sec">한 번에 풀기</h3><div class="lrows" style="--uc:${col}"><button class="lrow" onclick="socGo('${n}')"><span class="lic">${ICN_PN}</span><span class="lrt"><b>전체 풀기</b><small>${D.qs.length}문제 · 진행도 ${qp}%</small>${bar(qp)}</span><span class="chev">›</span></button></div>`;
+ if(UNX>=0){const U=CUR[n][UNX],so=bigQ(n,UNX).filter(q=>R[q.id]).length;h+=ctaB(col,so?'이어서 문제 풀기':'문제 풀기 시작',U.n,`socGo('${n}',${UNX})`)}
+ SOCCUR=n;show(h);ctaMv()}
+function tgl2(u){document.querySelectorAll('.ub2').forEach(e=>{if(e.id=='ub'+u)e.classList.toggle('op');else e.classList.remove('op')});const e=document.getElementById('ub'+u);OPEN=e&&e.classList.contains('op')?u:-1}
 let SOCCUR='';
 function tgl(u){document.querySelectorAll('.ub').forEach((e,i)=>{if(i==u)e.classList.toggle('op');else e.classList.remove('op')});const e=document.getElementById('ub'+u);OPEN=e&&e.classList.contains('op')?u:-1}
 
@@ -778,12 +796,14 @@ const ICN_BK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-
 const ICN_PN='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="13" height="15" rx="2"/><path d="M6.5 11l2 2 3.5-4"/><path d="M14 19l6.5-11a1.4 1.4 0 0 0-2.4-1.4L11.6 17.6"/></svg>';
 const ICN_TM='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9.5 2.5h5"/></svg>';
 const ICN_LK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
+const ctaB=(col,lab,t,on)=>`<div class="ctab" style="--uc:${col}"><button onclick="${on}"><span><small>${lab}</small><b>${esc(t)}</b></span><span class="chev">›</span></button></div><div class="ctasp"></div>`;
+const ctaMv=()=>{const c=A.querySelector('.ctab');if(c)document.body.appendChild(c)};
 function lhData(n){const mids=[].concat(...CUR[n].map((U,u)=>U.m.map((M,k)=>[u,k]))),has=mids.filter(([u,k])=>noteOf(n,u,k)),nv=(R._nv&&R._nv[n])||{},seen=has.filter(([u,k])=>nv[u+'-'+k]).length,qs=socQ(n),sol=qs.filter(q=>R[q.id]),ok=sol.filter(q=>R[q.id].ok).length,uq=qs.filter(isUnf).length,stn=starSegs(n).reduce((a,x)=>a+x.qs.length,0),l=mkLeft(n);
  return {mids,has,nv,seen,nn:has.length,qs,sol:sol.length,acc:sol.length?Math.round(ok/sol.length*100):null,uq,stn,mk:mkCnt(n),mN:mkN(n),op:!!MOCK[n]&&mkOpen(n),hasMk:!!MOCK[n],rt:MOCK[n]?mkRate(n):null,left:l,
   prog:Math.round(((has.length?seen/has.length:0)+(qs.length?sol.length/qs.length:0))/2*100)}}
 const ring=(p,col,sz=86,sw=9)=>{const r=(sz-sw)/2,c=2*Math.PI*r;return `<svg class="rng" viewBox="0 0 ${sz} ${sz}" width="${sz}" height="${sz}"><circle cx="${sz/2}" cy="${sz/2}" r="${r}" fill="none" stroke="var(--ln)" stroke-width="${sw}"/><circle cx="${sz/2}" cy="${sz/2}" r="${r}" fill="none" stroke="${col}" stroke-width="${sw}" stroke-linecap="round" stroke-dasharray="${c*p/100} ${c}" transform="rotate(-90 ${sz/2} ${sz/2})"/></svg>`};
 function lhMockSub(n,D){return !D.hasMk?'준비 중':D.op?`${D.mk}/${D.mN}회 완료${D.rt!=null?' · 평균 '+D.rt+'%':''}`:`문제를 다 풀면 열려요 · ${D.left.un?'안 푼 문제 '+D.left.un+'개':'남은 오답 '+D.left.wr+'개'}`}
-function learnHome(n){let v='0';try{v=localStorage.getItem('lhv')||'0'}catch(e){}if(v=='0')return learnHome0(n);
+function learnHome(n){let v='0';try{v=localStorage.getItem('lhv')||'1'}catch(e){}if(v=='0')return learnHome0(n);
  const col=sCol(n),nm=n.split('|').join(' '),D=lhData(n),[,lbt]=lhSum(n,col,D.mids,D.qs);
  let h=`<div class="shd"><h2 style="--hlc:${col}">${nm}</h2>${COVER[n]?`<img class="cvs" src="${COVER[n]}" alt="">`:''}</div>`;
  const bar=p=>`<div class="lbar"><i style="width:${p}%"></i></div>`;
@@ -816,11 +836,24 @@ function learnHome(n){let v='0';try{v=localStorage.getItem('lhv')||'0'}catch(e){
   h+=`<button class="lmk${D.op?'':' off'}" style="--uc:${col}" onclick="${D.op?`mockGo('${n}')`:`mockGo('${n}')`}"><span class="lic">${D.op?ICN_TM:ICN_LK}</span><span class="lrt"><b>${D.op?`모의고사 · ${Math.min(D.mk+1,D.mN)}회`:'모의고사'}</b><small>${lhMockSub(n,D)}</small></span><span class="lmkd">${Array.from({length:D.mN},(_,r)=>`<i class="${D.hasMk&&MOCK[n][r]&&mkDone(n,r)?'on':''}"></i>`).join('')}</span></button>`;
  }
  if(v!='3')h+=lbt;show(h);{const c=A.querySelector('.ctab');if(c)document.body.appendChild(c)}}
-function noteList(n){if(!NEWS(n))return subj(n);const col=sCol(n),nm=n.split('|').join(' ');
+function noteList0(n){if(!NEWS(n))return subj(n);const col=sCol(n),nm=n.split('|').join(' ');
  let h=`<div class="shd"><h2 style="--hlc:${col}">공부하기</h2><p class="tag">${esc(nm)}</p></div>`;
  if(PASSG(n)){h+=CUR[n].length?`<p class="tag" style="margin:4px 2px 8px">공부할 지문을 골라 주세요.</p><div class="nlg" style="--uc:${col}">${CUR[n].map((U,u)=>{const o=noteOf(n,u,0),ok=o||STAFF();return `<button class="nlb${o?'':' nlx'}"${ok?` onclick="noteView('${n}',${u},0)"`:' disabled'}><span>${esc(U.n)}</span><span class="mut">${o?'필기 보기':'준비 중'}</span>${ok?'<span class="chev">›</span>':''}</button>`}).join('')}</div>`:`<div class="card mut" style="text-align:center;padding:26px 16px">아직 지문이 준비 중이에요.<br>곧 추가할게요!</div>`;return show(h)}
  CUR[n].forEach((U,u)=>{const dn=uDone(n,u);h+=`<div class="nlg${dn?' dn':''}" style="--uc:${col}"><div class="nlh">${esc(U.n)}${dn?DNB:''}</div>${U.m.map((M,k)=>{const o=noteOf(n,u,k);const ok=o||STAFF();return `<button class="nlb${o?'':' nlx'}"${ok?` onclick="noteView('${n}',${u},${k})"`:' disabled'}><span>${esc(M.n)}</span><span class="mut">${o?'필기 보기':'준비 중'}</span>${ok?'<span class="chev">›</span>':''}</button>`}).join('')}</div>`});
  show(h)}
+function noteList(n){if(!NEWS(n))return subj(n);if(PASSG(n))return noteList0(n);const col=sCol(n),nm=n.split('|').join(' '),D=lhData(n),ln=R._ln&&R._ln[n];
+ let h=`<div class="shd"><h2 style="--hlc:${col}">공부하기</h2><p class="tag">${esc(nm)}</p></div>`;
+ const rp=D.nn?Math.round(D.seen/D.nn*100):0;
+ h+=`<div class="lh1" style="--uc:${col}"><div class="lh1r">${ring(rp,col)}<div class="lh1p"><b>${D.seen}<small>/${D.nn}</small></b><span>필기 읽음</span></div></div><div class="lh1s"><div><small>대단원</small><b>${CUR[n].length}<i>개</i></b></div><div><small>남은 필기</small><b>${D.nn-D.seen}<i>개</i></b></div><div><small>완료 단원</small><b>${CUR[n].filter((U,u)=>uDone(n,u)).length}<i>개</i></b></div></div></div>`;
+ let i=0;
+ CUR[n].forEach((U,u)=>{const ms=U.m.map((M,k)=>[M,k]),sn=ms.filter(([M,k])=>D.nv[u+'-'+k]).length,dn=uDone(n,u);
+  h+=`<div class="lsec" style="--uc:${col}"><div class="lsh"><b>${esc(U.n)}</b>${dn?DNB:''}<span>${sn}/${U.m.length} 읽음</span></div><div class="lbar"><i style="width:${Math.round(sn/U.m.length*100)}%"></i></div></div><div class="lrows" style="--uc:${col}">`;
+  ms.forEach(([M,k])=>{i++;const o=noteOf(n,u,k),ok=o||STAFF(),sn1=D.nv[u+'-'+k],cu=ln&&ln[0]==u&&ln[1]==k,qp=pct(M.q),wr=M.q.filter(isUnf).length;
+   h+=`<button class="lrow lnr${sn1?' sn':''}${cu?' cu':''}${o?'':' lrl'}"${ok?` onclick="noteView('${n}',${u},${k})"`:' disabled'}><span class="lnum">${sn1?'✓':String(i).padStart(2,'0')}</span><span class="lrt"><b>${esc(M.n.replace(/^\d+\s*/,''))}</b><small>${o?(sn1?'읽음':'아직 안 읽음')+(M.q.length?` · 문제 ${qp}%`:'')+(wr?` · 오답 ${wr}`:''):'준비 중'}</small></span>${cu?'<span class="lmnow">지금</span>':''}${ok?'<span class="chev">›</span>':''}</button>`});
+  h+=`</div>`});
+ const go=ln&&noteOf(n,ln[0],ln[1])?ln:D.has[0];
+ if(go)h+=ctaB(col,ln?'이어서 공부하기':'처음부터 공부하기',CUR[n][go[0]].m[go[1]].n,`noteView('${n}',${go[0]},${go[1]})`);
+ show(h);ctaMv()}
 function noteView(n,u,k){u=+u;k=+k;const U=CUR[n]&&CUR[n][u],M=U&&U.m[k];if(!M||!NEWS(n))return subjects();
  if(noteOf(n,u,k)){R._ln=R._ln||{};R._ln[n]=[u,k];save()}
  const col=sCol(n),nm=n.split('|').join(' '),o=noteOf(n,u,k)||(STAFF()?NOTE_DEMO:null);if(!o)return noteList(n);const nx=nextNote(n,u,k),pg=o&&o.pg&&o.pg.length;

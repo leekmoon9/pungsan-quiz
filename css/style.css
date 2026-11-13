@@ -975,3 +975,24 @@ body.tbon #app{padding-bottom:104px}
 .lmk{display:flex;align-items:center;gap:12px;width:100%;margin-top:10px;padding:14px;border:1.5px solid var(--ln);border-radius:16px;background:var(--card);font:inherit;color:var(--tx);text-align:left;cursor:pointer}
 .lmk.off{background:transparent;border-style:dashed}.lmk.off .lic{background:#efe8da;color:#8a8172}
 .lmkd{display:flex;gap:4px}.lmkd i{width:14px;height:8px;border-radius:4px;background:var(--ln)}.lmkd i.on{background:var(--uc)}
+/* 이어서 버튼 크게 */
+.ctab button{min-height:78px;padding:12px 20px;border-radius:20px}.ctab small{font-size:13.5px}.ctab b{font-size:19.5px}.ctab .chev{font-size:28px}
+.ctasp{height:110px}
+/* 공부하기 목록 */
+.lsec{margin:18px 2px 8px}.lsh{display:flex;align-items:baseline;gap:6px}.lsh b{font-size:16px}.lsh span{margin-left:auto;font-size:12.5px;font-weight:700;color:var(--mut)}
+.lsec .lbar{margin-top:6px;height:5px}
+.lnum{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font-size:13px;font-weight:800;background:var(--bg);border:1.5px solid var(--ln);color:#7a7264}
+.lnr.sn .lnum{background:var(--uc);border-color:var(--uc);color:#2a2620}
+.lnr.cu{border-color:var(--uc);box-shadow:0 0 0 2px color-mix(in srgb,var(--uc) 40%,transparent)}.lnr.cu .lnum{background:#2a2620;border-color:#2a2620;color:#fffdf7}
+.lnr .lrt b{font-size:15px}
+/* 문제 풀기 단원 카드 */
+.ub2{margin-bottom:8px;border-radius:14px}.ub2>.lrow{position:relative;z-index:1}
+.lic.lnu{font-weight:900;font-size:16px;background:color-mix(in srgb,var(--uc) 30%,#fff)}
+.ub2 .chev{transition:transform .2s}.ub2.op .chev{transform:rotate(90deg)}
+.ub2 .um{display:grid;grid-template-rows:0fr;transition:grid-template-rows .25s}.ub2.op .um{grid-template-rows:1fr}.ub2 .umi{overflow:hidden;padding:0 4px 0 14px}
+.ub2.op .umi{padding-top:4px;padding-bottom:6px}
+.ub2 .mb{display:flex;justify-content:space-between;align-items:center;width:100%;margin:6px 0 0;padding:12px 14px;border-radius:12px;background:var(--card);border:1.5px solid var(--ln);font:inherit;color:var(--tx);cursor:pointer;opacity:1;transform:none}
+.ub2 .mb.mball{background:#2a2620;border-color:#2a2620;color:#fffdf7}.ub2 .mb.mball .mut{color:#d9d0bf}
+.ub2.unx>.lrow{border-color:var(--uc);box-shadow:0 0 0 2px color-mix(in srgb,var(--uc) 40%,transparent)}
+.ub2.udn>.lrow{background:color-mix(in srgb,var(--uc) 22%,var(--card))}
+.lrt b .unxb{font-size:11px}
