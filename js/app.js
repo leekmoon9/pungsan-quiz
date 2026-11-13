@@ -1347,6 +1347,12 @@ function mrg(srv,loc){if(srv&&srv._force){const o=Object.assign({},srv);delete o
 function mergeR(a,b){const o=Object.assign({},a,b);o._fx=Object.assign({},a._fx||{},b._fx||{});const t={},A=a._t||{},B=b._t||{};for(const k in A)t[k]=A[k];for(const k in B)t[k]=Math.max(t[k]||0,B[k]);o._t=t;o._goals=Object.assign({},b._goals||{},a._goals||{});return o}
 function fmtT(sec,short){sec=Math.round(sec||0);if(sec<60)return sec>0?'1분 미만':'0분';const h=Math.floor(sec/3600),m=Math.round(sec%3600/60);return h?(short?h+'시간'+(m?'<br>'+m+'분':''):h+'시간'+(m?' '+m+'분':'')):m+'분'}
 let QID=null,QS0=0;
+// 필기를 보는 시간도 공부 시간에 반영: 필기 화면이 열려 있고 최근 90초 안에 만지거나 스크롤했을 때만 5초씩 더함
+let NACT=Date.now(),NDIRTY=0;
+['touchstart','scroll','click','keydown','pointerdown'].forEach(ev=>addEventListener(ev,()=>{NACT=Date.now()},{passive:true,capture:true}));
+setInterval(()=>{try{if(typeof R==='undefined'||!R||!NICK)return;const on=typeof CURR==='string'&&CURR.startsWith('note/')&&!document.hidden&&Date.now()-NACT<90000;
+ if(on){R._t=R._t||{};const k=dkey();R._t[k]=(R._t[k]||0)+5;NDIRTY++;if(NDIRTY>=6){NDIRTY=0;save()}}
+ else if(NDIRTY){NDIRTY=0;save()}}catch(e){}},5000);
 document.addEventListener('visibilitychange',()=>{if(document.hidden){if(SS&&document.getElementById('in')!==undefined&&QID)tick();QS0=0}else if(QID&&SS){const r=SS.resp[QID];if(!(r&&(r.done||r.rev)))QS0=Date.now()}});
 
 // ---------- 프로필 ----------
@@ -1362,7 +1368,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v152';
+const APPV='v153';
 function nagTog(){if(R._nagoff)delete R._nagoff;else R._nagoff=1;save();show(pfHTML(),kKey('pf'));soonMsg(R._nagoff?'공부 알림을 껐어요.':'공부를 안 한 날 저녁에 알림이 와요.')}
 function pfHTML(){const ch=kChips('pf');if(KCH.pf>=ch.length)KCH.pf=0;const nm=ch[KCH.pf],pend=STAFF()&&admLoad.ok?(FB||[]).filter(x=>x.st!='done').length:0;let b='';
  if(nm=='관리자')b=admBody();
