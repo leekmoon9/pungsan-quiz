@@ -992,3 +992,7 @@ body.tbon #app{padding-bottom:104px}
 .lnum{width:40px;height:40px;font-size:13px;letter-spacing:-.3px}
 .ctab button{box-shadow:0 0 0 3px var(--bg),0 10px 28px rgba(30,22,14,.42),0 3px 8px rgba(30,22,14,.25)}
 .ctab button{box-shadow:0 12px 30px rgba(0,0,0,.55),0 4px 10px rgba(0,0,0,.35)!important}
+/* 완료한 단원: 배경과 아이콘 구분 */
+.ub2.udn>.lrow{background:color-mix(in srgb,var(--uc) 30%,var(--card));border-color:color-mix(in srgb,var(--uc) 70%,var(--ln))}
+.ub2.udn .lic.lnu{background:#fffdf8;border:2px solid color-mix(in srgb,var(--uc) 80%,#5a4f40);box-shadow:0 1px 3px rgba(60,45,25,.18)}
+.ub2.udn .lbar{background:rgba(255,255,255,.7)}
