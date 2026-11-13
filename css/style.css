@@ -975,3 +975,17 @@ body.tbon #app{padding-bottom:104px}
 .lnr.cu .lnum{background:var(--bg);border-color:var(--ln);color:#7a7264}.lnr.cu.sn .lnum{background:var(--uc);border-color:var(--uc);color:#2a2620}
 .lnr{min-height:58px}
 .lmnow{flex:none;font-size:11.5px;font-weight:800;padding:2px 8px;border-radius:999px;background:#2a2620;color:#fffdf7}
+/* 모의고사 카드 (홈) */
+.lmock{display:flex;align-items:center;gap:12px;width:100%;padding:16px;border:1.5px solid color-mix(in srgb,var(--uc) 55%,var(--ln));border-radius:16px;background:var(--card);font:inherit;color:var(--tx);text-align:left;cursor:pointer;box-shadow:0 0 0 3px color-mix(in srgb,var(--uc) 22%,transparent)}
+.lmock .lic{width:46px;height:46px;background:var(--uc)}.lmock .lic svg{width:24px;height:24px}
+.lmock .lrt b{font-size:17px}.lmock .lmkd{margin-top:7px}
+.lmock .chev{color:#a39b8f;font-size:20px}
+.lmock.off{box-shadow:none;border:1.5px dashed var(--ln);background:transparent}.lmock.off .lic{background:#efe8da;color:#8a8172}.lmock.off b{color:#6b6252}
+.lmkd{display:flex;gap:4px}.lmkd i{width:18px;height:7px;border-radius:4px;background:var(--ln)}.lmkd i.on{background:var(--uc)}
+.lmkr{flex:none;display:flex;flex-direction:column;align-items:center;line-height:1.1}.lmkr b{font-size:20px}.lmkr b small{font-size:12px}.lmkr>small{font-size:11px;color:var(--mut)}
+/* 공부하기: 지금 보는 단원은 색 바탕 + 숫자 */
+.lnr.cu .lnum{background:var(--uc)!important;border-color:var(--uc)!important;color:#2a2620!important}
+/* 모의고사 페이지 회차 */
+.mkrw.lk{background:transparent;border-style:dashed;cursor:default}.mkrw.lk .lic{background:#efe8da;color:#8a8172}.mkrw.lk b{color:#6b6252}
+.mkrw.nx{border-color:var(--uc);box-shadow:0 0 0 2px color-mix(in srgb,var(--uc) 40%,transparent)}
+.mkrw .lnu{font-size:15px}.mkrw .mkre{margin-left:2px}
