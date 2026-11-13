@@ -763,13 +763,59 @@ function lhSum(n,col,mids,qs){const nv=(R._nv&&R._nv[n])||{},has=mids.filter(([u
  const st=`<div class="sumc sumc2" style="--uc:${col}"><div class="sumst"><div><b>${qs.filter(isUnf).length}개</b><small>남은 오답</small></div><div><b>${pct(qs)}%</b><small>문제 진행도</small></div><div><b>${mkCnt(n)}/${mkN(n)}</b><small>모의고사</small></div></div></div>`;
  const bt=cta?`<div class="ctab" style="--uc:${col}"><button onclick="${cta[2]}"><span><small>${cta[0]}</small><b>${esc(cta[1])}</b></span><span class="chev">›</span></button></div><div class="ctasp"></div>`:'';
  return [st,bt]}
-function learnHome(n){const col=sCol(n),nm=n.split('|').join(' '),mids=[].concat(...CUR[n].map((U,u)=>U.m.map((M,k)=>[u,k]))),nn=mids.filter(([u,k])=>noteOf(n,u,k)).length,qs=socQ(n);
+function learnHome0(n){const col=sCol(n),nm=n.split('|').join(' '),mids=[].concat(...CUR[n].map((U,u)=>U.m.map((M,k)=>[u,k]))),nn=mids.filter(([u,k])=>noteOf(n,u,k)).length,qs=socQ(n);
  let h=`<div class="shd"><h2 style="--hlc:${col}">${nm}</h2>${COVER[n]?`<img class="cvs" src="${COVER[n]}" alt="">`:''}</div>`;
  const [lst,lbt]=lhSum(n,col,mids,qs);h+=lst;
  h+=`<div class="lch two" style="--uc:${col}"><button class="lcb${nDone(n)?' cpl':''}" onclick="noteList('${n}')">${ICN_NOTE}<span><b>공부하기</b></span><span class="chev">›</span></button>`;
  h+=`<button class="lcb${qDone(n)?' cpl':''}" onclick="socPage('${n}')">${ICN_PEN}<span><b>문제 풀기</b></span><span class="chev">›</span></button></div>`;
  if(NEWS(n))h+=mockCard(n,col);
  h+=lbt;show(h);{const c=A.querySelector('.ctab');if(c)document.body.appendChild(c)}}
+
+// ===== 과목 홈 시안 (lhv: 0 현재 · 1 리스트 대시보드 · 2 로드맵 · 3 히어로+타일) =====
+const ICN_WR='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h11l3 3v13H5z"/><path d="M9 10l6 6M15 10l-6 6"/></svg>';
+const ICN_ST='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 3.5l2.6 5.3 5.8.8-4.2 4.1 1 5.8L12 16.8l-5.2 2.7 1-5.8-4.2-4.1 5.8-.8z"/></svg>';
+const ICN_BK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M3 5.5C5.5 4.3 8.6 4.3 12 6c3.4-1.7 6.5-1.7 9-.5V19c-2.5-1.2-5.6-1.2-9 .5-3.4-1.7-6.5-1.7-9-.5z"/><path d="M12 6v13.5"/></svg>';
+const ICN_PN='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="13" height="15" rx="2"/><path d="M6.5 11l2 2 3.5-4"/><path d="M14 19l6.5-11a1.4 1.4 0 0 0-2.4-1.4L11.6 17.6"/></svg>';
+const ICN_TM='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9.5 2.5h5"/></svg>';
+const ICN_LK='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></svg>';
+function lhData(n){const mids=[].concat(...CUR[n].map((U,u)=>U.m.map((M,k)=>[u,k]))),has=mids.filter(([u,k])=>noteOf(n,u,k)),nv=(R._nv&&R._nv[n])||{},seen=has.filter(([u,k])=>nv[u+'-'+k]).length,qs=socQ(n),sol=qs.filter(q=>R[q.id]),ok=sol.filter(q=>R[q.id].ok).length,uq=qs.filter(isUnf).length,stn=starSegs(n).reduce((a,x)=>a+x.qs.length,0),l=mkLeft(n);
+ return {mids,has,nv,seen,nn:has.length,qs,sol:sol.length,acc:sol.length?Math.round(ok/sol.length*100):null,uq,stn,mk:mkCnt(n),mN:mkN(n),op:!!MOCK[n]&&mkOpen(n),hasMk:!!MOCK[n],rt:MOCK[n]?mkRate(n):null,left:l,
+  prog:Math.round(((has.length?seen/has.length:0)+(qs.length?sol.length/qs.length:0))/2*100)}}
+const ring=(p,col,sz=86,sw=9)=>{const r=(sz-sw)/2,c=2*Math.PI*r;return `<svg class="rng" viewBox="0 0 ${sz} ${sz}" width="${sz}" height="${sz}"><circle cx="${sz/2}" cy="${sz/2}" r="${r}" fill="none" stroke="var(--ln)" stroke-width="${sw}"/><circle cx="${sz/2}" cy="${sz/2}" r="${r}" fill="none" stroke="${col}" stroke-width="${sw}" stroke-linecap="round" stroke-dasharray="${c*p/100} ${c}" transform="rotate(-90 ${sz/2} ${sz/2})"/></svg>`};
+function lhMockSub(n,D){return !D.hasMk?'준비 중':D.op?`${D.mk}/${D.mN}회 완료${D.rt!=null?' · 평균 '+D.rt+'%':''}`:`문제를 다 풀면 열려요 · ${D.left.un?'안 푼 문제 '+D.left.un+'개':'남은 오답 '+D.left.wr+'개'}`}
+function learnHome(n){let v='0';try{v=localStorage.getItem('lhv')||'0'}catch(e){}if(v=='0')return learnHome0(n);
+ const col=sCol(n),nm=n.split('|').join(' '),D=lhData(n),[,lbt]=lhSum(n,col,D.mids,D.qs);
+ let h=`<div class="shd"><h2 style="--hlc:${col}">${nm}</h2>${COVER[n]?`<img class="cvs" src="${COVER[n]}" alt="">`:''}</div>`;
+ const bar=p=>`<div class="lbar"><i style="width:${p}%"></i></div>`;
+ const row=(ic,t,sub,on,right,p,cls='')=>`<button class="lrow${cls}" onclick="${on}"><span class="lic">${ic}</span><span class="lrt"><b>${t}</b><small>${sub}</small>${p!=null?bar(p):''}</span>${right||''}<span class="chev">›</span></button>`;
+ if(v=='1'){
+  h+=`<div class="lh1" style="--uc:${col}"><div class="lh1r">${ring(D.prog,col)}<div class="lh1p"><b>${D.prog}<small>%</small></b><span>학습 진도</span></div></div><div class="lh1s"><div><small>필기</small><b>${D.seen}<i>/${D.nn}</i></b></div><div><small>푼 문제</small><b>${D.sol}<i>/${D.qs.length}</i></b></div><div><small>정답률</small><b>${D.acc==null?'-':D.acc+'<i>%</i>'}</b></div></div></div>`;
+  h+=`<div class="lrows" style="--uc:${col}">`+row(ICN_BK,'공부하기',`필기 ${D.seen}/${D.nn} 읽음`,`noteList('${n}')`,'',D.nn?Math.round(D.seen/D.nn*100):0)
+   +row(ICN_PN,'문제 풀기',`${D.sol}/${D.qs.length}문제${D.acc!=null?' · 정답률 '+D.acc+'%':''}`,`socPage('${n}')`,'',pct(D.qs))+`</div>`;
+  h+=`<h3 class="sec">복습</h3><div class="lrows lr2" style="--uc:${col}">`+row(ICN_WR,'오답노트',D.uq?`남은 오답 ${D.uq}문제`:'남은 오답이 없어요',`wrongPage('${n}')`,D.uq?`<span class="wnc">${D.uq}</span>`:'',null,' lrw')
+   +row(ICN_ST,'별표 문제',D.stn?`담아 둔 문제 ${D.stn}개`:'헷갈리는 문제에 별표를 눌러요',`starPage('${n}')`,D.stn?`<span class="wnc wst">${D.stn}</span>`:'',null,' lrs')+`</div>`;
+  h+=`<h3 class="sec">모의고사</h3><div class="lrows" style="--uc:${col}">`+row(D.op?ICN_TM:ICN_LK,D.op?'모의고사':'모의고사 (잠김)',lhMockSub(n,D),D.op?`mockGo('${n}')`:`mockGo('${n}')`,'',D.op?Math.round(D.mk/D.mN*100):null,D.op?'':' lrl')+(D.op?row(ICN_MST.replace(/class="[^"]*"/,''),'모의고사 통계','회차별 점수 · 유형별 약점',`mockPage('${n}')`,'',null):'')+`</div>`;
+ }
+ if(v=='2'){
+  h+=`<div class="lh2s" style="--uc:${col}"><div><b>${D.prog}%</b><small>학습 진도</small></div><div><b>${D.uq}</b><small>남은 오답</small></div><div><b>${D.stn}</b><small>별표</small></div><div><b>${D.mk}/${D.mN}</b><small>모의고사</small></div></div>`;
+  h+=`<div class="lh2q" style="--uc:${col}"><button onclick="noteList('${n}')">${ICN_BK}<span>필기 목록</span></button><button onclick="socPage('${n}')">${ICN_PN}<span>문제 풀기</span></button><button onclick="wrongPage('${n}')">${ICN_WR}<span>오답노트</span></button><button onclick="${D.op?`mockPage('${n}')`:`mockGo('${n}')`}">${D.op?ICN_TM:ICN_LK}<span>모의고사</span></button></div>`;
+  const ln=R._ln&&R._ln[n];
+  h+=`<h3 class="sec">학습 로드맵</h3><div class="lmap" style="--uc:${col}">`;
+  CUR[n].forEach((U,u)=>{h+=`<div class="lmu"><div class="lmh"><b>${esc(U.n)}</b><span>${pct(bigQ(n,u))}%</span></div>`;
+   U.m.forEach((M,k)=>{const hasN=noteOf(n,u,k),sn=D.nv[u+'-'+k],qp=pct(M.q),done=sn&&M.q.length&&qp==100&&!M.q.some(isUnf),cur=ln&&ln[0]==u&&ln[1]==k;
+    h+=`<button class="lmm${done?' dn':cur?' cu':''}" onclick="${hasN?`noteView('${n}',${u},${k})`:`socGo('${n}',${u},${k})`}"><i class="lmd"></i><span class="lmt"><b>${esc(M.n.replace(/^\d+\s*/,''))}</b><span class="lmc"><em class="${sn?'on':''}">필기 ${sn?'✓':'—'}</em><em class="${qp?'on':''}">문제 ${qp}%</em>${M.q.some(isUnf)?`<em class="wr">오답 ${M.q.filter(isUnf).length}</em>`:''}</span></span>${cur?'<span class="lmnow">지금</span>':''}</button>`});
+   h+=`</div>`});
+  h+=`</div>`;
+ }
+ if(v=='3'){
+  const ln=R._ln&&R._ln[n],go=ln&&noteOf(n,ln[0],ln[1])?ln:D.has[0],M=go&&CUR[n][go[0]].m[go[1]];
+  h+=`<div class="lh3" style="--uc:${col}"><div class="lh3t"><span class="lh3k">${ln?'이어서 공부하기':'처음부터 공부하기'}</span><b>${M?esc(M.n):'필기 준비 중'}</b><span class="lh3u">${go?esc(CUR[n][go[0]].n):''}</span></div><div class="lh3r">${ring(D.prog,'#2a2620',74,8)}<span><b>${D.prog}%</b></span></div>${go?`<button class="lh3b" onclick="noteView('${n}',${go[0]},${go[1]})">바로 이어서 보기 ›</button>`:''}</div>`;
+  const tile=(ic,t,big,sub,on,cls='')=>`<button class="ltl${cls}" onclick="${on}"><span class="lic">${ic}</span><b class="ltb">${big}</b><span class="ltt">${t}</span><small>${sub}</small></button>`;
+  h+=`<div class="ltg" style="--uc:${col}">`+tile(ICN_BK,'공부하기',`${D.seen}<i>/${D.nn}</i>`,'필기 읽음',`noteList('${n}')`)+tile(ICN_PN,'문제 풀기',`${pct(D.qs)}<i>%</i>`,D.acc!=null?`정답률 ${D.acc}%`:'아직 안 풀었어요',`socPage('${n}')`)
+   +tile(ICN_WR,'오답노트',`${D.uq}<i>개</i>`,D.uq?'고칠 문제':'깔끔해요',`wrongPage('${n}')`,D.uq?' ltw':'')+tile(ICN_ST,'별표 문제',`${D.stn}<i>개</i>`,'담아 둔 문제',`starPage('${n}')`)+`</div>`;
+  h+=`<button class="lmk${D.op?'':' off'}" style="--uc:${col}" onclick="${D.op?`mockGo('${n}')`:`mockGo('${n}')`}"><span class="lic">${D.op?ICN_TM:ICN_LK}</span><span class="lrt"><b>${D.op?`모의고사 · ${Math.min(D.mk+1,D.mN)}회`:'모의고사'}</b><small>${lhMockSub(n,D)}</small></span><span class="lmkd">${Array.from({length:D.mN},(_,r)=>`<i class="${D.hasMk&&MOCK[n][r]&&mkDone(n,r)?'on':''}"></i>`).join('')}</span></button>`;
+ }
+ if(v!='3')h+=lbt;show(h);{const c=A.querySelector('.ctab');if(c)document.body.appendChild(c)}}
 function noteList(n){if(!NEWS(n))return subj(n);const col=sCol(n),nm=n.split('|').join(' ');
  let h=`<div class="shd"><h2 style="--hlc:${col}">공부하기</h2><p class="tag">${esc(nm)}</p></div>`;
  if(PASSG(n)){h+=CUR[n].length?`<p class="tag" style="margin:4px 2px 8px">공부할 지문을 골라 주세요.</p><div class="nlg" style="--uc:${col}">${CUR[n].map((U,u)=>{const o=noteOf(n,u,0),ok=o||STAFF();return `<button class="nlb${o?'':' nlx'}"${ok?` onclick="noteView('${n}',${u},0)"`:' disabled'}><span>${esc(U.n)}</span><span class="mut">${o?'필기 보기':'준비 중'}</span>${ok?'<span class="chev">›</span>':''}</button>`}).join('')}</div>`:`<div class="card mut" style="text-align:center;padding:26px 16px">아직 지문이 준비 중이에요.<br>곧 추가할게요!</div>`;return show(h)}
