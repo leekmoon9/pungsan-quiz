@@ -901,3 +901,39 @@ body.tbon #app{padding-bottom:104px}
 .tour .tpill span{flex:1;height:46px;border-radius:999px;display:grid;place-items:center;color:#7a7264}.tour .tpill span.on{background:var(--pbg);color:var(--ink);box-shadow:0 1px 6px rgba(90,70,40,.16)}.tour .tpill svg{width:26px;height:26px}
 .tour .tin{display:flex;flex-direction:column;gap:10px}.tour .tin .card{margin:0;padding:14px 16px}.tour .tin h4{margin:0 0 10px;font-size:15px}.tour .tin ol{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:9px}.tour .tin li{display:flex;align-items:center;gap:10px;font-size:14px}.tour .tin li>i{flex:none;width:22px;height:22px;border-radius:50%;background:var(--ink);color:#fffdf8;font:800 12px/22px inherit;font-style:normal;text-align:center}.tour .tin .ic{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:8px;background:var(--pbg);vertical-align:middle;margin:0 2px}.tour .tin .ic svg{width:17px;height:17px}.tour .tin .dots{font-size:17px;line-height:1}.tour .tfb{display:flex;flex-direction:column;align-items:center}.tour .tfb .ki{display:flex}.tour .tfb .kt{font-size:17px;padding:10px 20px;border-radius:999px;background:var(--ink);color:#fffdf8;border:0;font-weight:800;pointer-events:none}
 .tour .tbd{gap:16px}.tour .kc{margin:0}.tour .lch,.tour .mkw{margin:0}
+/* ===== UX 법칙 반영 (v144) ===== */
+/* 근접성: 현황 숫자는 따로, 누르는 곳은 따로 */
+.sumc2{background:transparent!important;border:1.5px dashed var(--ln)!important;margin:2px 0 10px!important}
+.sumc2 .sumst>div{padding:9px 4px}.sumc2 .sumst b{font-size:16px}
+/* 피츠·폰 레스토프: 다음에 할 일 하나를 아래에 크게 */
+.ctasp{height:96px}
+.ctab{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(14px + env(safe-area-inset-bottom,0px));width:min(calc(100% - 28px),492px);z-index:30}
+.ctab button{display:flex;align-items:center;gap:10px;width:100%;min-height:64px;padding:10px 18px;border:none;border-radius:16px;background:#2a2620;color:#fffdf7;font:inherit;text-align:left;cursor:pointer;box-shadow:0 6px 18px rgba(40,30,20,.28);-webkit-tap-highlight-color:transparent}
+.ctab button:active{transform:scale(.985)}
+.ctab button>span:first-child{flex:1;display:flex;flex-direction:column;min-width:0}
+.ctab small{font-size:12.5px;font-weight:700;color:color-mix(in srgb,var(--uc) 70%,#fff)}
+.ctab b{font-size:17px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ctab .chev{font-size:24px;color:#fffdf7}
+/* 폰 레스토프: 잠긴 모의고사는 눈에 덜 띄게 */
+.mklk>button{filter:grayscale(1)!important;opacity:.42}
+.mklk .mkov{background:transparent!important;color:#5f5749!important;flex-direction:row!important;gap:10px!important}
+.mklk .mklc{width:34px;height:34px;margin:0;box-shadow:none;background:#efe8da}.mklk .mklc svg{width:18px;height:18px;color:#6b6252}
+.mklk .mkov>span:last-child{display:flex;flex-direction:column;align-items:flex-start;text-align:left}
+.mklk .mkov b{font-size:15px;margin:0}.mklk .mkov small{font-size:12.5px;color:#7a7264;opacity:1}
+/* 근접성: 복습 / 단원별 / 한 번에 구역 나누기 */
+.sec.sec1{margin-top:6px}
+.ub.ua{margin-top:6px}
+/* 폰 레스토프: 이어서 풀 단원 하나만 강조 */
+.ub.unx{border-color:var(--uc)!important;box-shadow:0 0 0 2px color-mix(in srgb,var(--uc) 40%,transparent)!important}
+.unxb{display:inline-block;margin-left:6px;padding:1px 8px;border-radius:999px;background:#2a2620;color:#fffdf7;font-size:11.5px;font-weight:800;vertical-align:2px}
+/* 힉스: 줄마다 동작 하나 — 단원 전체 풀기는 펼친 안쪽에 */
+.ub .mb.mball{background:#2a2620!important;border-color:#2a2620!important;color:#fffdf7}.ub .mb.mball .mut{color:#d9d0bf!important}
+/* 제이콥: 누를 수 없는 회차는 버튼처럼 보이지 않게 */
+.mkrow.lk{background:transparent!important;border-style:dashed!important;box-shadow:none!important}
+.mkopn{text-align:center;margin-bottom:4px}
+/* 피츠: 뒤로가기 터치 영역 넓히기 */
+.qback{width:44px;height:44px}.qback::after{content:"";position:absolute;inset:-8px}
+.mklk>button{background:transparent!important;border:1.5px dashed var(--ln)!important;box-shadow:none!important;opacity:1!important;filter:none!important}
+.mklk>button>*{visibility:hidden}
+.mklk>button{display:none!important}
+.mklk .mkov{position:static!important;border:1.5px dashed var(--ln);border-radius:14px!important;padding:14px 16px!important;justify-content:flex-start!important;margin-top:12px}
