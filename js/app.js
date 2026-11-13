@@ -823,7 +823,7 @@ function noteList(n){if(!NEWS(n))return subj(n);if(PASSG(n))return noteList0(n);
  CUR[n].forEach((U,u)=>{const ms=U.m.map((M,k)=>[M,k]),sn=ms.filter(([M,k])=>D.nv[u+'-'+k]).length,dn=uDone(n,u);
   h+=`<div class="lsec" style="--uc:${col}"><div class="lsh"><b>${esc(U.n)}</b>${dn?DNB:''}<span>${sn}/${U.m.length} 읽음</span></div></div><div class="lrows" style="--uc:${col}">`;
   ms.forEach(([M,k])=>{i++;const o=noteOf(n,u,k),ok=o||STAFF(),sn1=D.nv[u+'-'+k],cu=ln&&ln[0]==u&&ln[1]==k,qp=pct(M.q),wr=M.q.filter(isUnf).length;
-   h+=`<button class="lrow lnr${sn1?' sn':''}${cu?' cu':''}${o?'':' lrl'}"${ok?` onclick="noteView('${n}',${u},${k})"`:' disabled'}><span class="lnum">${sn1&&!cu?'✓':String(i).padStart(2,'0')}</span><span class="lrt"><b>${esc(M.n.replace(/^\d+\s*/,''))}</b>${o?'':'<small>준비 중</small>'}</span>${cu?'<span class="lmnow">지금</span>':''}${ok?'<span class="chev">›</span>':''}</button>`});
+   h+=`<button class="lrow lnr${sn1?' sn':''}${cu?' cu':''}${o?'':' lrl'}"${ok?` onclick="noteView('${n}',${u},${k})"`:' disabled'}><span class="lnum">${u+1}-${k+1}</span><span class="lrt"><b>${esc(M.n.replace(/^\d+(-\d+)?\s*/,''))}</b>${o?'':'<small>준비 중</small>'}</span>${cu?'<span class="lmnow">지금</span>':''}${ok?'<span class="chev">›</span>':''}</button>`});
   h+=`</div>`});
  const go=ln&&noteOf(n,ln[0],ln[1])?ln:D.has[0];
  if(go)h+=ctaB(col,ln?'이어서 공부하기':'처음부터 공부하기',CUR[n][go[0]].m[go[1]].n,`noteView('${n}',${go[0]},${go[1]})`);
@@ -1362,7 +1362,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v145';
+const APPV='v146';
 function nagTog(){if(R._nagoff)delete R._nagoff;else R._nagoff=1;save();show(pfHTML(),kKey('pf'));soonMsg(R._nagoff?'공부 알림을 껐어요.':'공부를 안 한 날 저녁에 알림이 와요.')}
 function pfHTML(){const ch=kChips('pf');if(KCH.pf>=ch.length)KCH.pf=0;const nm=ch[KCH.pf],pend=STAFF()&&admLoad.ok?(FB||[]).filter(x=>x.st!='done').length:0;let b='';
  if(nm=='관리자')b=admBody();

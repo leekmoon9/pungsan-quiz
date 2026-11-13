@@ -989,3 +989,5 @@ body.tbon #app{padding-bottom:104px}
 .mkrw.lk{background:transparent;border-style:dashed;cursor:default}.mkrw.lk .lic{background:#efe8da;color:#8a8172}.mkrw.lk b{color:#6b6252}
 .mkrw.nx{border-color:var(--uc);box-shadow:0 0 0 2px color-mix(in srgb,var(--uc) 40%,transparent)}
 .mkrw .lnu{font-size:15px}.mkrw .mkre{margin-left:2px}
+.lnum{width:40px;height:40px;font-size:13px;letter-spacing:-.3px}
+.ctab button{box-shadow:0 0 0 3px var(--bg),0 10px 28px rgba(30,22,14,.42),0 3px 8px rgba(30,22,14,.25)}
