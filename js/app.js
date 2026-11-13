@@ -279,7 +279,7 @@ async function msDel(){const ids=[...MSEL];if(!ids.length)return;if(!(await askB
  MSEL=null;mailBadge();soonMsg(`${n}개를 지웠어요.`);msDraw()}
 const ICN_OK2='<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',ICN_EYE='<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><path d="M2.5 12s3.5-6.5 9.5-6.5S21.5 12 21.5 12s-3.5 6.5-9.5 6.5S2.5 12 2.5 12z"/><circle cx="12" cy="12" r="2.8"/></svg>';
 const mgK=(c,ic,lab,t,q)=>`<div class="mgk${q?' q':''}" style="--hc:${c}"><div class="mgkh"><span class="hbi">${ic}</span><b>${lab}</b></div><p>${nl(t||'')}</p></div>`;
-async function msgOpen(id){if(!MSGS)await msgLoad();const m=(MSGS||[]).find(x=>x.id==id);if(!m){soonMsg('지워진 메시지예요.');return inbox()}
+async function msgOpen(id){KCH.noti=3;if(!MSGS)await msgLoad();const m=(MSGS||[]).find(x=>x.id==id);if(!m){soonMsg('지워진 메시지예요.');return inbox()}
  if(!m.read){m.read=true;mailBadge();if(DB)DB.rpc('msg_read',Object.assign(whoP(),{p_id:id})).then(()=>{},()=>{})}
  const k=m.meta&&m.meta.kind;let b='';
  if(k=='fb_reply')b=mgK('#c9bfae',HB_FB,'보내신 피드백',fbStrip(m.meta.q),1)+mgK('#9bd3ae',ICN_OK2,m.meta.answer?'답장':'수정한 내용',m.meta.answer||m.meta.changes)+(m.meta.howto?mgK('#8fb8ec',ICN_EYE,'확인하는 방법',m.meta.howto):'');
@@ -425,7 +425,7 @@ function boardHTML(){const c=KCH.noti,L=nsList(c),A=nsItems(),nn=[0,1,2,3].map(k
 const nsAt=()=>/^(board|inbox)/.test(CURR||'');
 async function boardRaw(){MSEL=null;show(boardHTML(),kKey('noti'));await Promise.all([postLoad(),DB&&NICK?msgLoad():0]);if(!nsAt()||KNV)return;show(boardHTML(),kKey('noti'));postBadge()}
 function board(){return boardRaw()}
-function inbox(){KCH.noti=3;return boardRaw()}
+function inbox(){KCH.noti=3;return board()}
 let LBC={},LBP=0;
 const wkR=(off)=>{const n=new Date(),m=new Date(n);m.setDate(n.getDate()-((n.getDay()+6)%7)+off*7);const e=new Date(m);e.setDate(m.getDate()+6);return [dkey(m),dkey(e)]};
 const lbRange=p=>p==0?wkR(0):p==1?wkR(-1):['0000-00-00','9999-99-99'];
@@ -1362,7 +1362,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v151';
+const APPV='v152';
 function nagTog(){if(R._nagoff)delete R._nagoff;else R._nagoff=1;save();show(pfHTML(),kKey('pf'));soonMsg(R._nagoff?'공부 알림을 껐어요.':'공부를 안 한 날 저녁에 알림이 와요.')}
 function pfHTML(){const ch=kChips('pf');if(KCH.pf>=ch.length)KCH.pf=0;const nm=ch[KCH.pf],pend=STAFF()&&admLoad.ok?(FB||[]).filter(x=>x.st!='done').length:0;let b='';
  if(nm=='관리자')b=admBody();
@@ -1540,7 +1540,7 @@ function parentOf(r){const [k,...rest]=r.split('/'),v=rest.join('/');
  if(!r)return null;if(k=='subjects')return null;
  if(k=='prob'||k=='notes')return 'subj/'+v;if(k=='note'){const ps=v.split('/');ps.pop();ps.pop();return 'notes/'+ps.join('/')}
  if(k=='sel')return Array.isArray(R._sel)?'subjects':null;
- if(k=='leader')return 'subjects';if(k=='inbox')return v?'inbox':'subjects';if(k=='board')return v?'board':'subjects';if(k=='guide')return 'profile';
+ if(k=='leader')return 'subjects';if(k=='inbox')return 'board';if(k=='board')return v?'board':'subjects';if(k=='guide')return 'profile';
  if(k=='pick'||k=='menu'||k=='subj'||k=='profile'&&!v)return 'subjects';if(k=='stats')return 'subjects';if(k=='admin'&&!v)return 'profile';if(k=='admin'&&/^[wnd](\/|$)/.test(v))return BKO[v[0]]||(v[0]=='w'?'board':'profile');
  if(k=='profile')return 'profile';if(k=='admin'){if(/^t\/./.test(v))return 'admin/t';if(/^p\/./.test(v))return 'admin/p';return 'admin'}if(k=='fb')return v=='1'?'profile':'';
  if(k=='mock')return 'subj/'+v;
@@ -1596,7 +1596,7 @@ window.addEventListener('popstate',e=>{if(location.hash=='#admin')return;const s
  HI=s.i;if(s.r==='__x'){askExit();return}if(!NICK){history.back();return}goR(s.r)});
 const H=(f,mk)=>function(...a){setR(mk(...a));return f.apply(this,a)};
 home=H(home,()=>'');subjects=H(subjects,()=>'subjects');
-subj=H(subj,n=>'subj/'+n);socPage=H(socPage,n=>NEWS(n)?'prob/'+n:'subj/'+n);noteList=H(noteList,n=>'notes/'+n);noteView=H(noteView,(n,u,k)=>'note/'+n+'/'+u+'/'+k);inbox=H(inbox,()=>'inbox');board=H(board,()=>'board');leader=H(leader,()=>'leader');postView=H(postView,id=>'board/'+id);postForm=H(postForm,id=>'admin/w'+(id?'/'+id:''));guide=H(guide,()=>'guide');pickSel=H(pickSel,()=>'sel');msgOpen=H(msgOpen,id=>'inbox/'+id);noticeForm=H(noticeForm,()=>'admin/n');delPage=H(delPage,()=>'admin/d');allStats=H(allStats,()=>'stats');fbForm=H(fbForm,f=>'fb/'+(f||0));
+subj=H(subj,n=>'subj/'+n);socPage=H(socPage,n=>NEWS(n)?'prob/'+n:'subj/'+n);noteList=H(noteList,n=>'notes/'+n);noteView=H(noteView,(n,u,k)=>'note/'+n+'/'+u+'/'+k);board=H(board,()=>'board');leader=H(leader,()=>'leader');postView=H(postView,id=>'board/'+id);postForm=H(postForm,id=>'admin/w'+(id?'/'+id:''));guide=H(guide,()=>'guide');pickSel=H(pickSel,()=>'sel');msgOpen=H(msgOpen,id=>'inbox/'+id);noticeForm=H(noticeForm,()=>'admin/n');delPage=H(delPage,()=>'admin/d');allStats=H(allStats,()=>'stats');fbForm=H(fbForm,f=>'fb/'+(f||0));
 adminOne=H(adminOne,n=>'admin/u/'+n);fbTypes=H(fbTypes,()=>'admin/t');fbType=H(fbType,k=>'admin/t/'+k);fbPeople=H(fbPeople,()=>'admin/p');fbPerson=H(fbPerson,n=>'admin/p/'+n);fbReply=H(fbReply,id=>'admin/r/'+id);
 wrongPage=H(wrongPage,n=>'wrong/'+n);starPage=H(starPage,n=>'star/'+n);mockPage=H(mockPage,n=>'mock/'+n);profile=H(profile,()=>'profile');pfShow=H(pfShow,()=>'profile/pw');pfNick=H(pfNick,()=>'profile/nick');pfPin=H(pfPin,()=>'profile/pin');
 quiz=(f=>function(){setR('quiz');const x=f.apply(this,arguments);saveSS();return x})(quiz);
