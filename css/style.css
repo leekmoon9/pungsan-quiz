@@ -996,3 +996,6 @@ body.tbon #app{padding-bottom:104px}
 .ub2.udn>.lrow{background:color-mix(in srgb,var(--uc) 30%,var(--card));border-color:color-mix(in srgb,var(--uc) 70%,var(--ln))}
 .ub2.udn .lic.lnu{background:#fffdf8;border:2px solid color-mix(in srgb,var(--uc) 80%,#5a4f40);box-shadow:0 1px 3px rgba(60,45,25,.18)}
 .ub2.udn .lbar{background:rgba(255,255,255,.7)}
+
+.lsh .dnb{margin-left:4px;align-self:center;vertical-align:0}
+.lsh>span:last-child{margin-left:auto}
