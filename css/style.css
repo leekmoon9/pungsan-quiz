@@ -999,3 +999,9 @@ body.tbon #app{padding-bottom:104px}
 
 .lsh .dnb{margin-left:4px;align-self:center;vertical-align:0}
 .lsh>span:last-child{margin-left:auto}
+/* 과목 홈: 공부·문제·모의고사는 크게, 복습은 작게 */
+.lrows:not(.lr2) .lrow{padding:19px 16px;gap:14px;border-radius:16px;border-color:color-mix(in srgb,var(--uc) 45%,var(--ln))}
+.lrows:not(.lr2) .lrow .lic{width:52px;height:52px;border-radius:15px;background:var(--uc)}.lrows:not(.lr2) .lrow .lic svg{width:27px;height:27px}
+.lrows:not(.lr2) .lrow .lrt b{font-size:19px}.lrows:not(.lr2) .lrow .lrt small{font-size:13.5px;margin-top:2px}.lrows:not(.lr2) .lrow .lbar{height:8px;margin-top:9px}
+.lmock{padding:19px 16px}.lmock .lic{width:52px;height:52px;border-radius:15px}.lmock .lic svg{width:27px;height:27px}.lmock .lrt b{font-size:19px}
+.lrows.lr2 .lrow{padding:9px 12px;border-radius:12px}.lrows.lr2 .lrow .lic{width:34px;height:34px;border-radius:10px}.lrows.lr2 .lrow .lic svg{width:19px;height:19px}.lrows.lr2 .lrow .lrt b{font-size:14.5px}.lrows.lr2 .lrow .lrt small{font-size:12px}
