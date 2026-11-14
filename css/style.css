@@ -1005,3 +1005,26 @@ body.tbon #app{padding-bottom:104px}
 .lrows:not(.lr2) .lrow .lrt b{font-size:19px}.lrows:not(.lr2) .lrow .lrt small{font-size:13.5px;margin-top:2px}.lrows:not(.lr2) .lrow .lbar{height:8px;margin-top:9px}
 .lmock{padding:19px 16px}.lmock .lic{width:52px;height:52px;border-radius:15px}.lmock .lic svg{width:27px;height:27px}.lmock .lrt b{font-size:19px}
 .lrows.lr2 .lrow{padding:9px 12px;border-radius:12px}.lrows.lr2 .lrow .lic{width:34px;height:34px;border-radius:10px}.lrows.lr2 .lrow .lic svg{width:19px;height:19px}.lrows.lr2 .lrow .lrt b{font-size:14.5px}.lrows.lr2 .lrow .lrt small{font-size:12px}
+/* ===== 필기 새 블록: 사상가 카드 · 원전 인용 · 사례 카드 ===== */
+.nt .nwho{display:flex;flex-direction:column;gap:10px;margin:14px 0}
+.nt .nwc{display:flex;gap:12px;align-items:flex-start;padding:12px 12px 12px 10px;background:#fff;border:1.5px solid color-mix(in srgb,var(--nc) 45%,#d8ccb4);border-radius:14px;box-shadow:0 2px 0 color-mix(in srgb,var(--nc) 30%,#e8dcc4);line-height:1.6}
+.nt .nwa{flex:none;width:42px;height:42px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-family:'Jua',sans-serif;font-size:21px;line-height:1;color:#fff;background:color-mix(in srgb,var(--nc) 88%,#3a2f22);box-shadow:inset 0 -3px 0 rgba(0,0,0,.14)}
+.nt .nwb{flex:1;min-width:0}
+.nt .nwh{display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 8px}
+.nt .nwh b{font-family:'Jua',sans-serif;font-weight:400;font-size:18px;line-height:1.3}
+.nt .nwh em{font-style:normal;font-size:12px;font-weight:700;color:color-mix(in srgb,var(--nc) 80%,#3a2f22);padding:0 7px;border-radius:999px;background:color-mix(in srgb,var(--nc) 16%,#fff);line-height:20px}
+.nt .nwb>p{margin:3px 0 0;font-size:14.5px;line-height:1.6;font-weight:600}
+.nt .nwk{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
+.nt .nwk>span{font-size:12.5px;line-height:1.3;padding:3px 9px;border-radius:999px;border:1.2px solid color-mix(in srgb,var(--nc) 55%,#cdbfa5);background:color-mix(in srgb,var(--nc) 7%,#fff);font-weight:700;color:#3a3226}
+.nt .nwb>q{display:block;margin-top:8px;padding:6px 10px;border-radius:8px;background:#faf6ec;font-size:13.5px;line-height:1.6;color:#5a5044;quotes:'“' '”'}
+.nt .nwb>q::before{content:open-quote;font-weight:800;color:color-mix(in srgb,var(--nc) 80%,#3a2f22)}.nt .nwb>q::after{content:close-quote;font-weight:800;color:color-mix(in srgb,var(--nc) 80%,#3a2f22)}
+.nt .nqt{position:relative;margin:14px 0;padding:14px 14px 10px 40px;border-radius:12px;background:color-mix(in srgb,var(--nc) 9%,#fff);border:1.3px solid color-mix(in srgb,var(--nc) 35%,#ddd0b8);line-height:1.7}
+.nt .nqt::before{content:'“';position:absolute;left:10px;top:2px;font-family:Georgia,'Times New Roman',serif;font-size:46px;line-height:1;color:color-mix(in srgb,var(--nc) 75%,#3a2f22);opacity:.75}
+.nt .nqt p{margin:0;font-size:14.5px}
+.nt .nqt cite{display:block;margin-top:6px;text-align:right;font-style:normal;font-size:12.5px;font-weight:700;color:#7a7060}
+.nt .ncs{position:relative;margin:16px 0 12px;padding:22px 13px 11px;background:#fff;border:1.5px dashed color-mix(in srgb,var(--nc) 60%,#b8a98c);border-radius:12px;line-height:1.65}
+.nt .ncl{position:absolute;top:-11px;left:12px;padding:1px 10px;border-radius:6px;background:#2f2a22;color:#fff;font-size:12px;font-weight:800;letter-spacing:.5px;line-height:20px;transform:rotate(-2deg)}
+.nt .ncs>b{display:block;font-family:'Jua',sans-serif;font-weight:400;font-size:17px;line-height:1.35;margin-bottom:3px}
+.nt .ncs>p{margin:0;font-size:14px}
+.nt .ncs>p.ncp{margin-top:7px;padding:6px 9px;border-radius:8px;background:#fff3f1;color:#8a2e25;font-weight:700;font-size:13.5px}
+.nt .ntb tr>th:first-child{min-width:5.4em}

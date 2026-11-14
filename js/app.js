@@ -7,11 +7,14 @@ const ls=(k,v)=>{try{if(v===undefined)return localStorage.getItem(KEY+k)||'';if(
 const DV='v3';
 // 국어(독서와 작문) 풀이 기록 1회 초기화 (문제 자체는 그대로)
 const KN='독서와|작문';
+function ethMig(d){const E='현대사회와|윤리',M={'0-0':['1-0'],'0-1':['1-1'],'0-2':['1-2'],'2-2':['2-0','2-1'],'4-2':['3-0']};
+ if(d._nv&&d._nv[E]){const o=d._nv[E],nn={};for(const k in M)if(o[k])M[k].forEach(x=>nn[x]=o[k]);d._nv[E]=nn}
+ if(d._ln)delete d._ln[E];if(d._nd)Object.keys(d._nd).forEach(k=>{if(k.indexOf(E+'|')==0)delete d._nd[k]});d._e2=1}
 function korClr(d){const ch=[];Object.keys(d).forEach(k=>{if(/^(etc|str)\d+$/.test(k)){delete d[k]}});
  if(d._fx)Object.keys(d._fx).forEach(k=>{if(/^(etc|str)\d+$/.test(k))delete d._fx[k]});
  if(d._nv)delete d._nv[KN];if(d._ln)delete d._ln[KN];if(d._nd)Object.keys(d._nd).forEach(k=>{if(k.indexOf(KN+'|')==0)delete d._nd[k]});d._k1=1}
-const okDV=d=>{if(!(d&&d._dv===DV))return {};if(!d._k1){korClr(d);setTimeout(()=>{try{if(NICK&&R&&R._dv===DV)save()}catch(e){}},1500)}return d};
-function save(){KV++;try{R._lbs=streakN();R._lbsd=dkey()}catch(e){}R._dv=DV;ls('rec:'+NICK,JSON.stringify(R));clearTimeout(tm);tm=setTimeout(sync,700)}
+const okDV=d=>{if(!(d&&d._dv===DV))return {};if(!d._e2)ethMig(d);if(!d._k1){korClr(d);setTimeout(()=>{try{if(NICK&&R&&R._dv===DV)save()}catch(e){}},1500)}return d};
+function save(){KV++;R._e2=1;try{R._lbs=streakN();R._lbsd=dkey()}catch(e){}R._dv=DV;ls('rec:'+NICK,JSON.stringify(R));clearTimeout(tm);tm=setTimeout(sync,700)}
 async function sync(){if(SUBMODE){if(DB&&NICK)try{await DB.rpc('sub_save',{p_key:SK(),p_data:R})}catch(e){}return}if(ADMINMODE){if(DB)try{await DB.rpc('admin_save',{p_key:AK(),p_data:R})}catch(e){}return}if(!DB||!NICK||!PIN)return;try{const {data,error}=await DB.rpc('player_save',{p_nick:NICK,p_pin:PIN,p_data:R});if(error||data!==true)throw 0}catch(e){}}
 const lastNick=()=>ls('last');
 const ADM_NICK='풍산동신라면',ADM_RV='r1';let ADMINMODE=false,SUBMODE=false;const SK=()=>ls('sk');const STAFF=()=>OWNER||SUBMODE;
@@ -725,7 +728,7 @@ function tgl(u){document.querySelectorAll('.ub').forEach((e,i)=>{if(i==u)e.class
 // 국어(독서와 작문)·영어는 그대로, 나머지 과목은 과목 → [공부하기 | 문제 풀기]
 const NEWS=n=>!!CUR[n];const PASSG=n=>!!KIND[n];
 // 필기: NOTE[과목]['대단원번호-중단원번호'(0부터)] = {pg:['tb/과목/쪽.jpg',...], b:[블록...]}
-// 블록: ['h',제목] ['h2',소제목] ['p',글] ['ul',[항목]] ['key',이름,글] ['def',용어,뜻] ['vs',[제목,글],[제목,글]] ['flow',[단계]] ['tbl',[머리],[[행]]] ['tip',글] ['img',주소,설명]
+// 블록: ['h',제목] ['h2',소제목] ['p',글] ['ul',[항목]] ['key',이름,글] ['def',용어,뜻] ['vs',[제목,글],[제목,글]] ['flow',[단계]] ['tbl',[머리],[[행]]] ['tip',글] ['img',주소,설명] ['who',[[이름,태그,한줄,[키워드],인용,아이콘글자]]] ['qt',원전글,출처] ['case',라벨,제목,상황,짚을점]
 // 글 안에서: ==형광펜== **빨간펜** __밑줄__
 // 문제: CUR[과목][대단원].m[중단원].q 에서 lv:'x' 는 실전 문제, 나머지는 기본 개념 문제
 const NOTE={},MOCK={};
@@ -761,6 +764,9 @@ function ntBlock(b){const [t,...a]=b;
  if(t=='tip')return `<div class="ntip"><span>★ 시험 포인트</span><p>${ntP(a[0])}</p></div>`;
  if(t=='tl')return `<div class="ntline">${a[0].map(([y,h,d])=>`<div class="tli"><div class="tly">${ntIn(y)}</div><div class="tlt"><b>${ntIn(h)}</b>${d?`<small>${ntIn(d)}</small>`:''}</div></div>`).join('')}</div>`;
  if(t=='gal')return `<div class="ngl">${a[0].map(([src,nm,d,pl])=>`<div class="ngc"><img src="${esc(src)}" alt="" loading="lazy"><div><b>${ntIn(nm)}</b>${pl?`<em>${ntIn(pl)}</em>`:''}${d?`<small>${ntIn(d)}</small>`:''}</div></div>`).join('')}</div>`;
+ if(t=='who')return `<div class="nwho">${a[0].map(([nm,tg,ln,kw,qt,ic])=>`<div class="nwc"><i class="nwa">${esc(ic||String(nm).charAt(0))}</i><div class="nwb"><div class="nwh"><b>${ntIn(nm)}</b>${tg?`<em>${ntIn(tg)}</em>`:''}</div>${ln?`<p>${ntIn(ln)}</p>`:''}${kw&&kw.length?`<span class="nwk">${kw.map(k=>`<span>${ntIn(k)}</span>`).join('')}</span>`:''}${qt?`<q>${ntIn(qt)}</q>`:''}</div></div>`).join('')}</div>`;
+ if(t=='qt')return `<blockquote class="nqt"><p>${ntP(a[0])}</p>${a[1]?`<cite>${ntIn(a[1])}</cite>`:''}</blockquote>`;
+ if(t=='case')return `<div class="ncs"><span class="ncl">${ntIn(a[0])}</span><b>${ntIn(a[1])}</b><p>${ntP(a[2])}</p>${a[3]?`<p class="ncp">${ntP(a[3])}</p>`:''}</div>`;
  if(t=='img')return `<figure class="nim"><img src="${esc(a[0])}" alt="" loading="lazy">${a[1]?`<figcaption>${ntIn(a[1])}</figcaption>`:''}</figure>`;
  return ''}
 const ICN_NOTE='<svg class="lci" viewBox="0 0 48 48" fill="none" stroke="#1f1a15" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M24 13c-5-3.4-11-4-17-2.4v25c6-1.6 12-1 17 2.4 5-3.4 11-4 17-2.4v-25c-6-1.6-12-1-17 2.4z"/><path d="M24 13v25"/></svg>';
@@ -1368,7 +1374,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v153';
+const APPV='v154';
 function nagTog(){if(R._nagoff)delete R._nagoff;else R._nagoff=1;save();show(pfHTML(),kKey('pf'));soonMsg(R._nagoff?'공부 알림을 껐어요.':'공부를 안 한 날 저녁에 알림이 와요.')}
 function pfHTML(){const ch=kChips('pf');if(KCH.pf>=ch.length)KCH.pf=0;const nm=ch[KCH.pf],pend=STAFF()&&admLoad.ok?(FB||[]).filter(x=>x.st!='done').length:0;let b='';
  if(nm=='관리자')b=admBody();
