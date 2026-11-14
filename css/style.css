@@ -1028,3 +1028,15 @@ body.tbon #app{padding-bottom:104px}
 .nt .ncs>p{margin:0;font-size:14px}
 .nt .ncs>p.ncp{margin-top:7px;padding:6px 9px;border-radius:8px;background:#fff3f1;color:#8a2e25;font-weight:700;font-size:13.5px}
 .nt .ntb tr>th:first-child{min-width:5.4em}
+/* 공지 하트 */
+.pvlw{display:flex;justify-content:center;margin:18px 0 6px;min-height:44px}
+.pvl{display:inline-flex;align-items:center;gap:7px;padding:9px 20px;border-radius:999px;border:1.5px solid var(--ln,#e0d8c7);background:var(--card,#fff);font:inherit;font-weight:800;font-size:15px;color:#7a7264;cursor:pointer;transition:transform .15s,background .2s,border-color .2s}
+.pvl svg{width:21px;height:21px;fill:none;stroke:currentColor;stroke-width:2}
+.pvl.on{color:#e0453a;border-color:#f3b4ad;background:#fff3f1}.pvl.on svg{fill:#e0453a;stroke:#e0453a}
+.pvl:active{transform:scale(.94)}.pvl.pop svg{animation:lkpop .4s ease}
+@keyframes lkpop{0%{transform:scale(1)}40%{transform:scale(1.35)}100%{transform:scale(1)}}
+.lkn{display:inline-flex;align-items:center;gap:2px;margin-left:8px;font-style:normal;font-weight:700;color:#9a8f7c;vertical-align:-1px}.lkn svg{width:12px;height:12px;fill:currentColor}.lkn.on{color:#e0453a}
+.pvwh{display:flex;align-items:baseline;gap:6px}.pvwh b{color:#e0453a}.pvwh small{font-size:12px;font-weight:600;color:var(--mut,#7a7264);margin-left:auto}
+.pvwl{padding:6px 14px}.pvwl>div{display:flex;align-items:center;gap:10px;padding:9px 0;border-bottom:1px solid var(--ln,#eee)}.pvwl>div:last-child{border-bottom:0}
+.pvwa{flex:none;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:#fff3f1;color:#e0453a;font-weight:800;font-size:13px}
+.pvwl b{flex:1;min-width:0;font-size:15px}.pvwl small{font-size:12px;color:var(--mut,#7a7264)}
