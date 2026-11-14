@@ -445,7 +445,7 @@ function leaderHTML(){const c=KCH.lb,L=LBC[lbKey()];let b='';
   const R4=L.slice(3);while(R4.length<2)R4.push(null);
   b+=R4.map((x,i)=>x?`<div class="lbr${x.nick==NICK?' me':''}"><i>${i+4}</i><i class="lav sm" style="--avc:${avc(x.nick)}">${esc([...x.nick][0]||'?')}</i><div class="lbb"><b>${esc(x.nick)}</b><s><u style="width:${Math.max(4,Math.round(x.n/mx*100))}%"></u></s></div><span>${lbFmt(c,x.n)}</span></div>`:`<div class="lbr emp"><i>${i+4}</i><i class="lav sm" style="--avc:#d9d1c3"></i><div class="lbb"><b>-</b><s></s></div>${NB}</div>`).join('');
   if(!OWNER&&my<0)b+=`<div class="mut" style="text-align:center;font-size:13px;margin:8px 0">공부하면 순위에 올라요.</div>`}
- b+=`<p class="mut" style="font-size:12px;text-align:center;margin:12px 0 0">${['문제를 푼 시간만 모아요.','어제나 오늘 공부했을 때의 연속 일수만 보여요.','파트를 끝까지 풀면 문제 수가 반영돼요. 너무 빠르게 푼 파트는 제외돼요.'][c]}</p>`;
+ b+=`<p class="mut" style="font-size:12px;text-align:center;margin:12px 0 0">${['문제를 푼 시간만 모아요.','지금까지 가장 길게 이어 간 연속 학습일(최고 기록)로 순위를 매겨요.','파트를 끝까지 풀면 문제 수가 반영돼요. 너무 빠르게 푼 파트는 제외돼요.'][c]}</p>`;
  let hd=kHead('<h2>리더보드</h2>',[],'lb');
  if(c!=1)hd=hd.replace('<div class="ki"></div>',`<div class="ki"><button class="lbsel" onclick="lbMenu(this)" aria-haspopup="menu">${['이번 주','지난주','전체'][LBP]}<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.600" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>`);
  return kPage('lb',hd,b)}
@@ -1397,7 +1397,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v158';
+const APPV='v159';
 function nagTog(){if(R._nagoff)delete R._nagoff;else R._nagoff=1;save();show(pfHTML(),kKey('pf'));soonMsg(R._nagoff?'공부 알림을 껐어요.':'공부를 안 한 날 저녁에 알림이 와요.')}
 function pfHTML(){const ch=kChips('pf');if(KCH.pf>=ch.length)KCH.pf=0;const nm=ch[KCH.pf],pend=STAFF()&&admLoad.ok?(FB||[]).filter(x=>x.st!='done').length:0;let b='';
  if(nm=='관리자')b=admBody();
