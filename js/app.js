@@ -461,7 +461,7 @@ function pvMenu(b,id){const w=b.parentElement,o=w.querySelector('.pvdd');if(o){o
  setTimeout(()=>document.addEventListener('click',function f(e){if(!e.target.closest('.pvdd,.pvm')){const d=document.querySelector('.pvdd');if(d)d.remove()}document.removeEventListener('click',f,true)},true))}
 async function postView(id){if(!POSTS)await postLoad();const x=(POSTS||[]).find(y=>y.id==id);if(!x){soonMsg('지워진 공지예요.');return board()}
  pMark(x.id);const pb=pBody(x),im=(x.imgs||[]).map(i=>`<figure class="mgi skl" data-i="${escA(i)}" aria-label="사진 불러오는 중"></figure>`).join('');
- show(`<div class="pvh"><h2>${esc(x.title)}</h2>${OWNER&&DB?`<button class="pvm" aria-label="더보기" onclick="pvMenu(this,${x.id})">${ICN_MORE}</button>`:''}</div>${pb||im?`<div class="card mgv pvw">${pb?`<div class="mgs"><p>${pHtml(pb)}</p></div>`:''}${im}</div>`:''}<div class="pvdr"><p class="pvd">${pKind(x)?'업데이트':'공지'} · ${fdt(x.created_at)}${x.updated_at?' · 수정됨':''}</p><span class="pvlw" id="pvlw${x.id}">${HRT.ok?lkBtn(x.id):''}</span></div>`);mgImgs();lkLoad().then(()=>{const w=document.getElementById('pvlw'+x.id);if(w)w.innerHTML=HRT.ok?lkBtn(x.id):''})}
+ show(`<div class="pvh"><h2>${esc(x.title)}</h2>${OWNER&&DB?`<button class="pvm" aria-label="더보기" onclick="pvMenu(this,${x.id})">${ICN_MORE}</button>`:''}</div>${pb?`<div class="card mgv pvw"><div class="mgs"><p>${pHtml(pb)}</p></div></div>`:''}<div class="pvdr${im?' pvdi':''}"><p class="pvd">${pKind(x)?'업데이트':'공지'} · ${fdt(x.created_at)}${x.updated_at?' · 수정됨':''}</p><span class="pvlw" id="pvlw${x.id}">${HRT.ok?lkBtn(x.id):''}</span></div>${im?`<div class="card mgv pvw pvim">${im}</div>`:''}`);mgImgs();lkLoad().then(()=>{const w=document.getElementById('pvlw'+x.id);if(w)w.innerHTML=HRT.ok?lkBtn(x.id):''})}
 // ===== 공지·업데이트 하트 =====
 const ICN_HEART='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.3s-7.6-4.6-9.2-9.4C1.7 7.6 3.7 4.3 7.1 4.3c2 0 3.6 1.1 4.9 2.9 1.3-1.8 2.9-2.9 4.9-2.9 3.4 0 5.4 3.3 4.3 6.6-1.6 4.8-9.2 9.4-9.2 9.4z"/></svg>';
 let HRT={c:{},m:new Set(),ok:null};
@@ -1393,7 +1393,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v156';
+const APPV='v157';
 function nagTog(){if(R._nagoff)delete R._nagoff;else R._nagoff=1;save();show(pfHTML(),kKey('pf'));soonMsg(R._nagoff?'공부 알림을 껐어요.':'공부를 안 한 날 저녁에 알림이 와요.')}
 function pfHTML(){const ch=kChips('pf');if(KCH.pf>=ch.length)KCH.pf=0;const nm=ch[KCH.pf],pend=STAFF()&&admLoad.ok?(FB||[]).filter(x=>x.st!='done').length:0;let b='';
  if(nm=='관리자')b=admBody();
