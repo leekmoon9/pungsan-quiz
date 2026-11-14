@@ -461,20 +461,26 @@ function pvMenu(b,id){const w=b.parentElement,o=w.querySelector('.pvdd');if(o){o
  setTimeout(()=>document.addEventListener('click',function f(e){if(!e.target.closest('.pvdd,.pvm')){const d=document.querySelector('.pvdd');if(d)d.remove()}document.removeEventListener('click',f,true)},true))}
 async function postView(id){if(!POSTS)await postLoad();const x=(POSTS||[]).find(y=>y.id==id);if(!x){soonMsg('지워진 공지예요.');return board()}
  pMark(x.id);const pb=pBody(x),im=(x.imgs||[]).map(i=>`<figure class="mgi skl" data-i="${escA(i)}" aria-label="사진 불러오는 중"></figure>`).join('');
- show(`<div class="pvh"><h2>${esc(x.title)}</h2>${OWNER&&DB?`<button class="pvm" aria-label="더보기" onclick="pvMenu(this,${x.id})">${ICN_MORE}</button>`:''}</div>${pb||im?`<div class="card mgv pvw">${pb?`<div class="mgs"><p>${pHtml(pb)}</p></div>`:''}${im}</div>`:''}<p class="pvd">${pKind(x)?'업데이트':'공지'} · ${fdt(x.created_at)}${x.updated_at?' · 수정됨':''}</p><div class="pvlw" id="pvlw${x.id}">${HRT.ok?lkBtn(x.id):''}</div>${OWNER&&DB?`<div id="pvw${x.id}"></div>`:''}`);mgImgs();lkLoad().then(()=>{const w=document.getElementById('pvlw'+x.id);if(w)w.innerHTML=HRT.ok?lkBtn(x.id):'';if(OWNER)lkWho(x.id)})}
+ show(`<div class="pvh"><h2>${esc(x.title)}</h2>${OWNER&&DB?`<button class="pvm" aria-label="더보기" onclick="pvMenu(this,${x.id})">${ICN_MORE}</button>`:''}</div>${pb||im?`<div class="card mgv pvw">${pb?`<div class="mgs"><p>${pHtml(pb)}</p></div>`:''}${im}</div>`:''}<div class="pvdr"><p class="pvd">${pKind(x)?'업데이트':'공지'} · ${fdt(x.created_at)}${x.updated_at?' · 수정됨':''}</p><span class="pvlw" id="pvlw${x.id}">${HRT.ok?lkBtn(x.id):''}</span></div>`);mgImgs();lkLoad().then(()=>{const w=document.getElementById('pvlw'+x.id);if(w)w.innerHTML=HRT.ok?lkBtn(x.id):''})}
 // ===== 공지·업데이트 하트 =====
 const ICN_HEART='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.3s-7.6-4.6-9.2-9.4C1.7 7.6 3.7 4.3 7.1 4.3c2 0 3.6 1.1 4.9 2.9 1.3-1.8 2.9-2.9 4.9-2.9 3.4 0 5.4 3.3 4.3 6.6-1.6 4.8-9.2 9.4-9.2 9.4z"/></svg>';
 let HRT={c:{},m:new Set(),ok:null};
 async function lkLoad(){if(!DB)return;try{const {data,error}=await DB.rpc('post_like_info',whoP());if(error||!data)throw 0;HRT.c=data.c||{};HRT.m=new Set((data.m||[]).map(Number));HRT.ok=true}catch(e){HRT.ok=false}}
-function lkBtn(id){const on=HRT.m.has(+id),n=+HRT.c[id]||0;return `<button class="pvl${on?' on':''}" id="pvl${id}" aria-pressed="${on}" aria-label="하트" onclick="pLike(${id})">${ICN_HEART}<span>${n||'좋아요'}</span></button>`}
+function lkBtn(id){const on=HRT.m.has(+id),n=+HRT.c[id]||0;return `<button class="pvl${on?' on':''}" id="pvl${id}" aria-pressed="${on}" aria-label="하트${OWNER?' (길게 누르면 누른 사람 목록)':''}" onclick="if(LKLP){LKLP=0;return}pLike(${id})" onpointerdown="lkDown(${id})" onpointerup="lkUp()" onpointerleave="lkUp()" onpointercancel="lkUp()" oncontextmenu="return false">${ICN_HEART}<span>${n||'좋아요'}</span></button>`}
 function lkPaint(id){const b=document.getElementById('pvl'+id);if(b)b.outerHTML=lkBtn(id)}
 async function pLike(id){if(!HRT.ok||!DB)return;if(!NICK&&!ADMINMODE&&!SUBMODE)return soonMsg('로그인하면 하트를 누를 수 있어요.');
  const on=!HRT.m.has(id),fix=d=>{d?HRT.m.add(id):HRT.m.delete(id);HRT.c[id]=Math.max(0,(+HRT.c[id]||0)+(d?1:-1))};fix(on);lkPaint(id);
  if(on){const b=document.getElementById('pvl'+id);if(b){b.classList.add('pop');setTimeout(()=>b.classList.remove('pop'),400)}}
- try{const {data,error}=await DB.rpc('post_like',Object.assign(whoP(),{p_id:id,p_on:on}));if(error||!data)throw 0;HRT.c[id]=data.n;lkPaint(id);if(OWNER)lkWho(id)}
+ try{const {data,error}=await DB.rpc('post_like',Object.assign(whoP(),{p_id:id,p_on:on}));if(error||!data)throw 0;HRT.c[id]=data.n;lkPaint(id)}
  catch(e){fix(!on);lkPaint(id);soonMsg('하트를 누르지 못했어요. 잠시 후 다시 해 주세요.')}}
-async function lkWho(id){const w=document.getElementById('pvw'+id);if(!w||!DB)return;try{const {data,error}=await DB.rpc('admin_post_likes',{p_key:AK(),p_id:id});if(error)throw 0;const L=data||[];
- w.innerHTML=`<h3 class="sec pvwh">하트 누른 사람 <b>${L.length}</b>명 <small>관리자만 보여요</small></h3>`+(L.length?`<div class="card pvwl">${L.map(x=>`<div><span class="pvwa">${esc(String(x.nick).charAt(0))}</span><b>${esc(x.nick)}</b><small>${fdt(x.at)}</small></div>`).join('')}</div>`:'<div class="card kmt">아직 하트를 누른 사람이 없어요.</div>')}catch(e){w.innerHTML=''}}
+let LKLP=0,LKT=null;
+function lkDown(id){clearTimeout(LKT);if(!OWNER||!DB)return;LKT=setTimeout(()=>{LKLP=1;try{navigator.vibrate&&navigator.vibrate(15)}catch(e){}lkWho(id)},500)}
+function lkUp(){clearTimeout(LKT)}
+async function lkWho(id){const w=document.createElement('div');w.className='mdw';w.innerHTML=`<div class="mdc lkw"><h3>하트 누른 사람</h3><div class="pvwl"><div class="kmt">불러오는 중…</div></div><div class="row" style="margin:0"><button class="b" data-v="1">닫기</button></div></div>`;
+ w.onclick=e=>{if(e.target===w||(e.target.dataset&&e.target.dataset.v))w.remove()};document.body.appendChild(w);const box=w.querySelector('.pvwl');
+ try{const {data,error}=await DB.rpc('admin_post_likes',{p_key:AK(),p_id:id});if(error)throw 0;const L=data||[];w.querySelector('h3').innerHTML=`하트 누른 사람 <b class="lkc">${L.length}</b>명`;
+  box.innerHTML=L.length?L.map(x=>`<div><span class="pvwa">${esc(String(x.nick).charAt(0))}</span><b>${esc(x.nick)}</b><small>${fdt(x.at)}</small></div>`).join(''):'<div class="kmt">아직 하트를 누른 사람이 없어요.</div>'}
+ catch(e){box.innerHTML='<div class="kmt">목록을 불러오지 못했어요.</div>'}}
 let PKIND=0;
 // ===== 공지 서식: 글자 크기·굵게·기울임·밑줄·글자색·형광펜 =====
 // 저장 형식: [b][/b] [i][/i] [u][/u] [c=#hex][/c] [h=#hex][/h] [s=NN][/s] (예전 글은 그냥 글자라 그대로 보여요)
@@ -1387,7 +1393,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v155';
+const APPV='v156';
 function nagTog(){if(R._nagoff)delete R._nagoff;else R._nagoff=1;save();show(pfHTML(),kKey('pf'));soonMsg(R._nagoff?'공부 알림을 껐어요.':'공부를 안 한 날 저녁에 알림이 와요.')}
 function pfHTML(){const ch=kChips('pf');if(KCH.pf>=ch.length)KCH.pf=0;const nm=ch[KCH.pf],pend=STAFF()&&admLoad.ok?(FB||[]).filter(x=>x.st!='done').length:0;let b='';
  if(nm=='관리자')b=admBody();
