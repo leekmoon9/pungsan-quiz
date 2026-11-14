@@ -1046,3 +1046,7 @@ body.tbon #app{padding-bottom:104px}
 .lkw h3 .lkc{color:#e0453a}.lkw .pvwl{max-height:55vh;overflow:auto;margin:6px 0 14px;padding:0 2px}.lkw .kmt{padding:14px 0;text-align:center;color:var(--mut,#7a7264);font-size:14px}
 .lkw .pvwl b{text-align:left}
 .pvdr.pvdi{margin-bottom:10px}
+/* 처음 안내: 과목 홈 미리보기 */
+.tour .tsh{display:flex;flex-direction:column;gap:8px;pointer-events:none}.tour .tsh .lh1{margin:0}
+.tour .lrow,.tour .lmock{pointer-events:none}
+.tour .ntg.fbk{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0;background:none;border:0;margin:0}
