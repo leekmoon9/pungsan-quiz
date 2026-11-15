@@ -1161,3 +1161,8 @@ button.mkrw.lk,button.mkrw.lk:disabled{opacity:1;border:1.5px dashed #d6ccb8;bac
 .lbr>.lbv{flex:none;width:96px;justify-content:flex-end}
 .lbr .lbv b{font-size:17px}
 .lbr .lbv i{font-size:11.5px}
+/* v165b: 남은 시간 문구와 막대 사이 간격 좁히기 */
+.lbmg{padding-top:10px}
+.lbmg>span{display:block;line-height:1.4}
+.lbmbr{margin-top:2px}
+.lbmbr .lbv{line-height:1}
