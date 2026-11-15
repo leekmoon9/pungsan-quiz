@@ -1166,15 +1166,4 @@ button.mkrw.lk,button.mkrw.lk:disabled{opacity:1;border:1.5px dashed #d6ccb8;bac
 .lbmg>span{display:block;line-height:1.4}
 .lbmbr{margin-top:2px}
 .lbmbr .lbv{line-height:1}
-
-/* ===== v168: 펼친 단원 안의 중단원 줄을 또렷하게 ===== */
-.ub2 .mb.mbr{justify-content:flex-start;gap:12px;padding:12px 12px 12px 12px;background:#fffdf8;border:1.5px solid color-mix(in srgb,var(--uc) 45%,var(--ln));border-left:5px solid var(--uc);box-shadow:0 2px 0 rgba(120,100,70,.08);text-align:left}
-.ub2 .mb.mbr:active{transform:scale(.98)}
-.mbn{flex:none;min-width:40px;padding:4px 0;border-radius:8px;background:color-mix(in srgb,var(--uc) 30%,#fff);color:#2a2620;font-weight:800;font-size:13.5px;text-align:center}
-.mbt{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
-.mbt b{font-size:15px;font-weight:700;line-height:1.35;word-break:keep-all}
-.mbt small{font-size:12.5px;color:#6f675a}
-.mbb{display:block;height:5px;margin-top:5px;border-radius:99px;background:color-mix(in srgb,#2a2620 8%,var(--card));overflow:hidden}
-.mbb i{display:block;height:100%;border-radius:99px;background:var(--uc)}
-.ub2 .mb.mbr .chev{flex:none;color:var(--mut)}
-.ub2 .mb.mbr .chev{transform:none!important}
+.ub2 .mb:not(.mball)>span:first-child{font-weight:800}
