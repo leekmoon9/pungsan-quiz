@@ -1124,3 +1124,23 @@ button.mkrw.lk,button.mkrw.lk:disabled{opacity:1;border:1.5px dashed #d6ccb8;bac
 /* 관리자 */
 .hb span b{word-break:keep-all}
 .zn{font-size:12.5px;text-align:center;margin-top:8px}
+
+/* ===== v164: 관리자 화면 색 정리 — 기본은 먹색·크림, 자주 쓰는 중요한 곳만 색 ===== */
+#app:has(.admx) .ast>div{background:var(--card)!important;border:1.5px solid var(--ln)!important}
+#app:has(.admx) .ast>div.hot{border-color:#e7b3ab!important;background:color-mix(in srgb,#e05a4f 7%,var(--card))!important}
+#app:has(.admx) .ast>div.hot b{color:#c0392b!important}
+/* 허브: 알림 보내기·공지 올리기만 색 */
+#app:has(.admx) .hb:not([style*="#8fb8ec"]):not([style*="#e3b55a"]) .hbi{background:color-mix(in srgb,#2a2620 7%,var(--card))!important;color:#2a2620!important}
+#app:has(.admx) .hb[style*="#8fb8ec"] .hbi{background:color-mix(in srgb,#8fb8ec 45%,#fff)!important}
+#app:has(.admx) .hb[style*="#e3b55a"] .hbi{background:color-mix(in srgb,#e3b55a 50%,#fff)!important}
+/* 피드백 종류: 급한 것(버그·정답 오류)만 색 칩 */
+#app:has(.admx) .chp:not([style*="#e57c72"]):not([style*="#f0a35e"]){background:transparent!important;border:1.2px solid #d8cfbf;color:#5f574a!important}
+#app:has(.admx) .fbc.fdn .chp{background:transparent!important;border:1.2px solid #e2dacb;color:#8a8070!important}
+/* 요약 막대·범례: 급한 두 종류만 색, 나머지는 회색 */
+#app:has(.admx) .seg i:not([style*="#e57c72"]):not([style*="#f0a35e"]),#app:has(.admx) .lgd i:not([style*="#e57c72"]):not([style*="#f0a35e"]){background:#d6cdbd!important}
+/* 답장 버튼: 파랑 */
+#app:has(.admx) .fbrb{border-color:#5b7fa8!important;background:#5b7fa8!important;color:#fff!important}
+#app:has(.admx) .fdn .fbrb{border-color:#d6cdbd!important;background:#fff!important;color:var(--mut)!important}
+/* 나머지는 차분하게 */
+#app:has(.admx) .av,#app:has(.admx) .lav.sm{background:#ece6da!important;color:#5f574a!important}
+#app:has(.admx) .arw .bar i,#app:has(.admx) .bar i[style*="e9978f"]{background:#8f8574!important}

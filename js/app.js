@@ -56,7 +56,7 @@ const norm=s=>s.replace(/[\s.,·]/g,'').toLowerCase();
 const grade=(q,v)=>{const n=norm(v);return n&&q.a.some(k=>q.ex?n===norm(k):k.split('&').every(p=>n.includes(norm(p))))};
 function st(qs,X){X=X||R;const d=qs.filter(q=>X[q.id]),c=d.filter(q=>X[q.id].ok).length;return{n:d.length,c,t:qs.length,r:d.length?Math.round(c/d.length*100):null}}
 const stTxt=s=>s.n?`${s.n}/${s.t}문제 풀이 · 정답률 ${s.r}%`:`${s.t}문제 · 아직 풀지 않음`;
-let LK=null,TBSW=0;const show=(h,k)=>{try{if(typeof kWarmSoon=='function')kWarmSoon()}catch(e){}document.body.classList.remove('pdw','pfx');const nw=k===undefined||k!==LK;LK=k===undefined?null:k;{const sd=document.getElementById('sides');if(sd)sd.remove();const so=document.getElementById('sporb');if(so)so.remove()}document.querySelectorAll('.tbv,#czi,body>.ctab').forEach(e=>e.remove());A.innerHTML=h;if(nw){window.scrollTo(0,0);A.classList.remove('in');if(Date.now()-TBSW>900){void A.offsetWidth;A.classList.add('in')}}};
+let LK=null,TBSW=0;const show=(h,k)=>{if(typeof h=='string'&&h.startsWith(ADMX))h=h.slice(ADMX.length)+ADMX;try{if(typeof kWarmSoon=='function')kWarmSoon()}catch(e){}document.body.classList.remove('pdw','pfx');const nw=k===undefined||k!==LK;LK=k===undefined?null:k;{const sd=document.getElementById('sides');if(sd)sd.remove();const so=document.getElementById('sporb');if(so)so.remove()}document.querySelectorAll('.tbv,#czi,body>.ctab').forEach(e=>e.remove());A.innerHTML=h;if(nw){window.scrollTo(0,0);A.classList.remove('in');if(Date.now()-TBSW>900){void A.offsetWidth;A.classList.add('in')}}};
 let SS=null,draft=null;
 const WIDE=()=>{try{return matchMedia('(min-width:860px) and (min-height:600px) and (min-aspect-ratio:1/1)').matches}catch(e){return false}};
 function stk(side){const col={};SUBJ.flat().forEach(([n,c])=>col[n]=c);
@@ -435,6 +435,7 @@ const lbRange=p=>p==0?wkR(0):p==1?wkR(-1):['0000-00-00','9999-99-99'];
 const LBK=['time','streak','q'],lbKey=()=>KCH.lb+'_'+(KCH.lb==1?0:LBP);
 const lbFmt=(c,n)=>{if(c==0){const h=Math.floor(n/3600),m=Math.round(n%3600/60);return `<span class="lbv">${h?`<b>${h}</b><i>시간</i>`:''}${m||!h?`<b>${m}</b><i>분</i>`:''}</span>`}return `<span class="lbv"><b>${n}</b><i>${c==1?'일':'문제'}</i></span>`};
 const MEDAL=['#e8b923','#aeb4bd','#c98a4b'];
+const ADMX='<i class="admx" hidden></i>'; // 관리자 화면 표시 (관리자 전용 색 규칙의 범위)
 const MKLOCK='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2" fill="currentColor"/><path d="M8 11V8a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="2.2"/></svg>';
 const CROWN='<svg class="lcr" viewBox="0 0 24 16" aria-hidden="true"><path d="M2 14 1 4l6 5 5-8 5 8 6-5-1 10z" fill="#e8b923" stroke="#8a6a00" stroke-width="1.200" stroke-linejoin="round"/></svg>';
 const lbTx=(c,n)=>{if(c==0){const h=Math.floor(n/3600),m=Math.round(n%3600/60);return (h?h+'시간 ':'')+(m||!h?m+'분':'')}return n+(c==1?'일':'문제')};
@@ -605,7 +606,7 @@ async function admLoad(force){if(!force&&ADM.length+FB.length&&admLoad.ok)return
 const chip=k=>{const t=FT(k);return `<span class="chp" style="background:${t[2]}">${t[1]}</span>`};
 const fbCard=x=>`<div class="card fbc${x.st=='done'?' fdn':''}"><div class="fbh">${chip(x.k)}<b>${esc(x.nick)}</b>${x.id?`<span class="fid">#${x.id}</span>`:''}${x.st=='done'?'<span class="chp" style="background:#9bd3ae">답장 완료</span>':''}<span class="mut">${fd(x.t)}</span>${x.id&&OWNER?`<button class="fbrb" onclick="event.stopPropagation();fbReply(${x.id})">${x.st=='done'?'다시 답장':'답장'}</button>`:''}</div><div class="fbt">${esc(x.text||'')}</div></div>`;
 async function fbReply(id){if(!(await admLoad()))return admin();const x=FB.find(f=>f.id==id);if(!x)return admin();
- show(`<h2>피드백 답장</h2><div class="card fbc"><div class="fbh">${chip(x.k)}<b>${esc(x.nick)}</b><span class="fid">#${x.id}</span><span class="mut">${fd(x.t)}</span></div><div class="fbt">${esc(x.text||'')}</div></div><div class="card"><textarea id="frt" maxlength="2000" placeholder="답장 내용" style="min-height:150px"></textarea></div><div class="row"><button class="b" id="frs" onclick="fbReplySend(${x.id})">답장 보내기</button></div>`)}
+ show(ADMX+`<h2>피드백 답장</h2><div class="card fbc"><div class="fbh">${chip(x.k)}<b>${esc(x.nick)}</b><span class="fid">#${x.id}</span><span class="mut">${fd(x.t)}</span></div><div class="fbt">${esc(x.text||'')}</div></div><div class="card"><textarea id="frt" maxlength="2000" placeholder="답장 내용" style="min-height:150px"></textarea></div><div class="row"><button class="b" id="frs" onclick="fbReplySend(${x.id})">답장 보내기</button></div>`)}
 async function fbReplySend(id){const x=FB.find(f=>f.id==id),t=(document.getElementById('frt').value||'').trim();if(!x)return;if(!t)return soonMsg('답장 내용을 써 주세요.');
  if(x.nick=='익명')return soonMsg('익명 피드백이라 답장을 보낼 수 없어요.');
  if(!(await askBox('답장을 보낼까요?',`<b>${esc(x.nick)}</b> 님에게 보내져요.`,'보내기')))return;
@@ -655,7 +656,7 @@ function subAdminBody(){return `<h3 class="sec">피드백 보기</h3><div class=
 function admBody(){if(!DB)return '<div class="card kmt">서버에 연결되지 않았어요.</div>';
  if(!admLoad.ok){if(!admBody.ld){admBody.ld=1;admLoad(admBody.f).then(ok=>{admBody.f=0;if(!ok)admBody.ld=2;if(CURR=='profile'&&!KNV&&kChips('pf')[KCH.pf]=='관리자'){show(pfHTML(),kKey('pf'));animBars()}})}
   return admBody.ld==2?'<div class="card kmt">불러오지 못했어요.</div>':skAdmin(0)}
- return SUBMODE?subAdminBody():ownAdminBody()}
+ return ADMX+(SUBMODE?subAdminBody():ownAdminBody())}
 const ICN_GRID='<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><rect x="4" y="4" width="7" height="7" rx="1.6"/><rect x="13" y="4" width="7" height="7" rx="1.6"/><rect x="4" y="13" width="7" height="7" rx="1.6"/><rect x="13" y="13" width="7" height="7" rx="1.6"/></svg>',
  ICN_PPL='<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8.5" r="3.2"/><path d="M3.5 19c.6-3.2 2.8-5 5.5-5s4.9 1.8 5.5 5"/><circle cx="17" cy="9.5" r="2.5"/><path d="M15.8 14.3c2.4-.2 4.2 1.4 4.7 4.2"/></svg>',
  ICN_CLIP='<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"><rect x="6" y="5" width="12" height="15.5" rx="2"/><path d="M9.5 3.5h5v3h-5z"/><path d="M9 11h6M9 14.5h4"/></svg>';
@@ -684,15 +685,15 @@ function ownAdminBody(){if(!POSTS&&!ownAdminBody.pl){ownAdminBody.pl=1;postLoad(
 async function fbTypes(){if(!(await admLoad()))return admin();const cnt={};FBT.forEach(t=>cnt[t[0]]=0);FB.forEach(x=>cnt[x.k]++);const mx=Math.max(1,...Object.values(cnt));
  let h=`<h2>유형별 의견</h2><p class="tag">전체 ${FB.length}개</p>`;
  FBT.forEach(t=>{h+=`<div class="card pc tyc" onclick="fbType('${t[0]}')"><div class="al"><span>${chip(t[0])}</span><b>${cnt[t[0]]}개</b></div><div class="bar"><i data-w="${Math.round(cnt[t[0]]/mx*100)}" style="width:0;background:${t[2]}"></i></div></div>`});
- h+=``;show(h);animBars()}
+ h+=``;show(ADMX+h);animBars()}
 async function fbType(k){if(!(await admLoad()))return admin();const t=FT(k)||FBT[5],L=FB.filter(x=>x.k==t[0]);
- show(`<h2>${t[1]}</h2><p class="tag">${L.length}개 · 최신순</p>`+(L.length?L.map(fbCard).join(''):'<div class="card mut">이 유형의 의견은 없어요.</div>')+``)}
+ show(ADMX+`<h2>${t[1]}</h2><p class="tag">${L.length}개 · 최신순</p>`+(L.length?L.map(fbCard).join(''):'<div class="card mut">이 유형의 의견은 없어요.</div>')+``)}
 async function fbPeople(){if(!(await admLoad()))return admin();const g={};FB.forEach(x=>{(g[x.nick]=g[x.nick]||[]).push(x)});const ns=Object.keys(g).sort((a,b)=>g[b].length-g[a].length);
  let h=`<h2>개인별 의견</h2><p class="tag">${ns.length}명이 의견을 남겼어요.</p>`;
  h+=ns.length?ns.map(n=>`<div class="card pc" onclick="fbPerson(decodeURIComponent('${encodeURIComponent(n)}'))"><div class="al"><b>${esc(n)}</b><span class="mut">${g[n].length}개 · 최근 ${fd(g[n][0].t)}</span></div><div style="margin-top:6px;display:flex;gap:4px;flex-wrap:wrap">${[...new Set(g[n].map(x=>x.k))].map(chip).join('')}</div></div>`).join(''):'<div class="card mut">아직 의견이 없어요.</div>';
- h+=``;show(h)}
+ h+=``;show(ADMX+h)}
 async function fbPerson(n){if(!(await admLoad()))return admin();const L=FB.filter(x=>x.nick==n);
- show(`<h2>${esc(n)}</h2><p class="tag">의견 ${L.length}개 · 최신순</p>`+L.map(fbCard).join('')+``)}
+ show(ADMX+`<h2>${esc(n)}</h2><p class="tag">의견 ${L.length}개 · 최신순</p>`+L.map(fbCard).join('')+``)}
 async function adminOne(n){if(!(await admLoad()))return admin();const r=ADM.find(x=>x.nick==n);if(!r)return admin();const X=r.R||{},TT=X._t||{},TD=Object.keys(TT).filter(k=>TT[k]>=1),tot=TD.reduce((a,k)=>a+TT[k],0);
  let h=`<h2>${esc(r.nick)}</h2><p class="tag">최근 활동 ${fd(r.t)}</p>${SUBMODE?'':`<div class="row" style="margin:0 0 12px"><button class="b" onclick="noticeForm(decodeURIComponent('${encodeURIComponent(r.nick)}'))">${esc(r.nick)} 님에게 알림 보내기</button></div>`}`;
  h+=`<div class="pg2"><div class="card st2"><span>총 공부 시간</span><b>${fmtT(tot)}</b><small>오늘 ${fmtT(TT[dkey()]||0)}</small></div><div class="card st2"><span>공부한 날</span><b>${TD.length}일</b><small>${TD.length?'마지막 '+TD.sort().slice(-1)[0].slice(5).replace('-','/'):'기록 없음'}</small></div></div>`;
@@ -701,7 +702,7 @@ async function adminOne(n){if(!(await admLoad()))return admin();const r=ADM.find
  const PZ=SUBJ.flat().filter(([n])=>!achX(n,X)).length;h+=`<h3 class="sec">과목별 진행도</h3><div class="card">${SUBJ.flat().filter(([n])=>achX(n,X)).map(([n,c,o])=>{const a=achX(n,X);return `<div class="arw"><div class="al"><span>${n.split('|').join(' ')}</span><b>${a}%</b></div><div class="bar"><i data-w="${a}" style="width:0;background:${SC[c]}"></i></div></div>`}).join('')}${PZ?`<div class="mut zn">${PZ==SUBJ.flat().length?'아직 시작한 과목이 없어요.':`시작 안 한 과목 ${PZ}개는 접어 뒀어요.`}</div>`:''}</div>`;
  const tg={};allQ().forEach(q=>{const x=X[q.id];if(x){const t=tg[q.g]=tg[q.g]||{n:0,w:0};t.n++;if(!x.ok)t.w++}});const wk=Object.keys(tg).filter(k=>tg[k].w).sort((a,b)=>tg[b].w/tg[b].n-tg[a].w/tg[a].n);
  h+=`<h3 class="sec">오답 유형 분석</h3>`+(wk.length?wk.map(k=>{const rr=Math.round(tg[k].w/tg[k].n*100);return `<div class="card"><div class="al"><b>${esc(k)}</b><span class="no-t">${tg[k].w}/${tg[k].n} 틀림</span></div><div class="bar"><i data-w="${rr}" style="width:0;background:#e9978f"></i></div>${TIPS[k]?`<div class="mut" style="font-size:13px;margin-top:6px">${MX(esc(TIPS[k]))}</div>`:''}</div>`}).join(''):`<div class="card mut">${Object.keys(tg).length?'틀린 영역이 없어요.':'아직 푼 문제가 없어요.'}</div>`);
- h+=``;show(h);animBars()}
+ h+=``;show(ADMX+h);animBars()}
 
 const SOCN=['정치','경제','동아시아|역사기행','현대사회와|윤리','한국지리|탐구'];
 const isSoc=n=>!!CUR[n];
@@ -1405,7 +1406,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v163';
+const APPV='v164';
 function nagTog(){if(R._nagoff)delete R._nagoff;else R._nagoff=1;save();show(pfHTML(),kKey('pf'));soonMsg(R._nagoff?'공부 알림을 껐어요.':'공부를 안 한 날 저녁에 알림이 와요.')}
 // 내 정보 맨 위 카드: 아바타·닉네임·연속 학습·이번 주 공부·푼 문제
 function pfTop(){const t=R._t||{},td=dkey(),wd=(new Date().getDay()+6)%7;let wk=0;for(let i=0;i<=wd;i++)wk+=t[dAdd(td,-i)]||0;
