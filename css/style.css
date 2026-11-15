@@ -1144,3 +1144,20 @@ button.mkrw.lk,button.mkrw.lk:disabled{opacity:1;border:1.5px dashed #d6ccb8;bac
 /* 나머지는 차분하게 */
 #app:has(.admx) .av,#app:has(.admx) .lav.sm{background:#ece6da!important;color:#5f574a!important}
 #app:has(.admx) .arw .bar i,#app:has(.admx) .bar i[style*="e9978f"]{background:#8f8574!important}
+
+/* ===== v165: 리더보드 크기 조정 ===== */
+/* 내 순위 카드: 기록은 아래 막대 오른쪽에 크게 */
+.lbmbr{display:flex;align-items:center;gap:12px;margin-top:8px}
+.lbmbr .lbmb{flex:1;margin-top:0}
+.lbmbr .lbv b{font-size:22px}
+.lbmbr .lbv i{font-size:13px}
+.lbmn .lbv b{font-size:18px}.lbmn .lbv i{font-size:12px}
+.lbmr b{font-size:40px}
+/* 시상대: 이름·기록 키우기 */
+.lbp b{font-size:15px}
+.lbp .lbv b{font-size:20px}
+.lbp .lbv i{font-size:12px}
+/* 4위부터: 기록 칸 폭 고정 → 막대 길이 통일, 숫자 조금 키우기 */
+.lbr>.lbv{flex:none;width:96px;justify-content:flex-end}
+.lbr .lbv b{font-size:17px}
+.lbr .lbv i{font-size:11.5px}
