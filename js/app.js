@@ -619,7 +619,7 @@ function noticeForm(pre){if(pre){NTO='some';NTS=new Set([pre])}else{NTO='all';NT
 function ntTo(k){NTO=k;document.querySelectorAll('.ntg button').forEach(b=>b.classList.toggle('on',b.dataset.k==k));const w=document.getElementById('ntw');
  if(k=='all')w.innerHTML=`<p class="ntm">참여자 <b>${ADM.length}명</b> 모두에게 보내요.</p>`;
  else if(k=='staff')w.innerHTML=`<p class="ntm"><b>나와 보조 관리자</b>에게만 보내요.</p>`;
- else{w.innerHTML=`<div class="card ntp"><input type="search" id="ntq" placeholder="닉네임 검색" oninput="ntList()"><div class="ntline" id="ntl"></div></div><p class="ntm" id="ntn"></p>`;ntList()}
+ else{w.innerHTML=`<div class="card ntp"><input type="search" id="ntq" placeholder="닉네임 검색" oninput="ntList()"><div class="ntl" id="ntl"></div></div><p class="ntm" id="ntn"></p>`;ntList()}
  ntBtn()}
 function ntList(){const q=(document.getElementById('ntq')||{}).value||'',L=ADM.map(r=>r.nick).filter(n=>n.includes(q.trim())).sort((a,b)=>NTS.has(b)-NTS.has(a)||a.localeCompare(b));
  document.getElementById('ntl').innerHTML=L.length?L.map(n=>`<button class="${NTS.has(n)?'on':''}" onclick="ntPick(decodeURIComponent('${encodeURIComponent(n)}'))">${esc(n)}</button>`).join(''):'<p class="mut" style="font-size:14px;margin:6px 2px">찾는 사람이 없어요.</p>';ntBtn()}
