@@ -439,12 +439,12 @@ const ADMX='<i class="admx" hidden></i>'; // 관리자 화면 표시 (관리자 
 const MKLOCK='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2" fill="currentColor"/><path d="M8 11V8a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="2.2"/></svg>';
 const CROWN='<svg class="lcr" viewBox="0 0 24 16" aria-hidden="true"><path d="M2 14 1 4l6 5 5-8 5 8 6-5-1 10z" fill="#e8b923" stroke="#8a6a00" stroke-width="1.200" stroke-linejoin="round"/></svg>';
 const lbTx=(c,n)=>{if(c==0){const h=Math.floor(n/3600),m=Math.round(n%3600/60);return (h?h+'시간 ':'')+(m||!h?m+'분':'')}return n+(c==1?'일':'문제')};
-// 내 순위 카드: 공부 시간 탭만 '다음 순위까지 남은 양'을 보여 줌
+// 내 순위 카드: 공부 시간 탭의 '이번 주'만 '다음 순위까지 남은 양'을 보여 줌. 기록이 없으면 0으로 표시
 function lbMe(c,L,my){
- if(my<0)return OWNER?'':`<div class="lbn"><div><b>아직 순위가 없어요</b><small>${c==1?'오늘 공부하면 연속 학습이 시작돼요':'문제를 풀면 바로 순위에 올라요'}</small></div><button onclick="subjects()">공부하러 가기</button></div>`;
+ if(my<0)return `<div class="lbm2"><div class="lbmh"><i class="lav" style="--avc:${avc(NICK)}">${esc([...NICK][0]||'?')}</i><div class="lbmn"><small>내 순위</small><b>${esc(NICK)}</b>${lbFmt(c,0)}</div><div class="lbmr"><b>-</b></div></div></div>`;
  const me=L[my],up=my>0?L[my-1]:null,dn=L[my+1];
  let g='';
- if(c==0&&(up||dn)){const tx=up?`<b>${my}위</b>까지 <b>${lbTx(c,Math.max(1,up.n-me.n))}</b> 남았어요`:`2위보다 <b>${lbTx(c,me.n-dn.n)}</b> 앞서요`;
+ if(c==0&&LBP==0&&(up||dn)){const tx=up?`<b>${my}위</b>까지 <b>${lbTx(c,Math.max(1,up.n-me.n))}</b> 남았어요`:`2위보다 <b>${lbTx(c,me.n-dn.n)}</b> 앞서요`;
   g=`<div class="lbmg"><span>${tx}</span><div class="lbmbr"><div class="lbmb"><i style="width:${up?Math.max(6,Math.min(100,Math.round(me.n/up.n*100))):100}%"></i></div>${lbFmt(c,me.n)}</div></div>`}
  return `<div class="lbm2"><div class="lbmh"><i class="lav" style="--avc:${avc(me.nick)}">${esc([...me.nick][0]||'?')}</i><div class="lbmn"><small>내 순위</small><b>${esc(me.nick)}</b>${g?'':lbFmt(c,me.n)}</div><div class="lbmr"><b>${my+1}<i>위</i></b></div></div>${g}</div>`}
 function leaderHTML(){const c=KCH.lb,L=LBC[lbKey()];let b='';
