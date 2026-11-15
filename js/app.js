@@ -435,17 +435,25 @@ const lbRange=p=>p==0?wkR(0):p==1?wkR(-1):['0000-00-00','9999-99-99'];
 const LBK=['time','streak','q'],lbKey=()=>KCH.lb+'_'+(KCH.lb==1?0:LBP);
 const lbFmt=(c,n)=>{if(c==0){const h=Math.floor(n/3600),m=Math.round(n%3600/60);return `<span class="lbv">${h?`<b>${h}</b><i>시간</i>`:''}${m||!h?`<b>${m}</b><i>분</i>`:''}</span>`}return `<span class="lbv"><b>${n}</b><i>${c==1?'일':'문제'}</i></span>`};
 const MEDAL=['#e8b923','#aeb4bd','#c98a4b'];
+const MKLOCK='<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2" fill="currentColor"/><path d="M8 11V8a4 4 0 0 1 8 0v3" fill="none" stroke="currentColor" stroke-width="2.2"/></svg>';
 const CROWN='<svg class="lcr" viewBox="0 0 24 16" aria-hidden="true"><path d="M2 14 1 4l6 5 5-8 5 8 6-5-1 10z" fill="#e8b923" stroke="#8a6a00" stroke-width="1.200" stroke-linejoin="round"/></svg>';
+const lbTx=(c,n)=>{if(c==0){const h=Math.floor(n/3600),m=Math.round(n%3600/60);return (h?h+'시간 ':'')+(m||!h?m+'분':'')}return n+(c==1?'일':'문제')};
+// 내 순위 카드: 공부 시간 탭만 '다음 순위까지 남은 양'을 보여 줌
+function lbMe(c,L,my){
+ if(my<0)return OWNER?'':`<div class="lbn"><div><b>아직 순위가 없어요</b><small>${c==1?'오늘 공부하면 연속 학습이 시작돼요':'문제를 풀면 바로 순위에 올라요'}</small></div><button onclick="subjects()">공부하러 가기</button></div>`;
+ const me=L[my],up=my>0?L[my-1]:null,dn=L[my+1];
+ let g='';
+ if(c==0&&(up||dn)){const tx=up?`<b>${my}위</b>까지 <b>${lbTx(c,Math.max(1,up.n-me.n))}</b> 남았어요`:`2위보다 <b>${lbTx(c,me.n-dn.n)}</b> 앞서요`;
+  g=`<div class="lbmg"><span>${tx}</span><div class="lbmb"><i style="width:${up?Math.max(6,Math.min(100,Math.round(me.n/up.n*100))):100}%"></i></div></div>`}
+ return `<div class="lbm2"><div class="lbmh"><i class="lav" style="--avc:${avc(me.nick)}">${esc([...me.nick][0]||'?')}</i><div class="lbmn"><small>내 순위</small><b>${esc(me.nick)}</b>${lbFmt(c,me.n)}</div><div class="lbmr"><b>${my+1}<i>위</i></b><small>${L.length}명 중</small></div></div>${g}</div>`}
 function leaderHTML(){const c=KCH.lb,L=LBC[lbKey()];let b='';
  if(!DB||!NICK)b+=`<div class="card kmt">서버에 연결되면 순위를 볼 수 있어요.</div>`;
  else if(L===undefined)b+=skMsgs(5);
- else{const my=L.findIndex(x=>x.nick==NICK),mx=(L[0]&&L[0].n)||1,NB='<span class="lbv"><b class="nb">-</b></span>';
-  b+=`<div class="lbm"><span>내 순위</span><b>${my>=0?my+1+'위':'-'}</b><em>${my>=0?lbFmt(c,L[my].n):NB}</em></div>`;
-  b+=`<div class="lbp">${[1,0,2].map(i=>{const x=L[i];if(!x)return `<div class="p${i+1} emp"><u style="background:${MEDAL[i]}">${i+1}</u><i class="lav" style="--avc:#d9d1c3;box-shadow:0 0 0 3px ${MEDAL[i]}"></i><b>-</b><strong>${NB}</strong></div>`;return `<div class="p${i+1}${x.nick==NICK?' me':''}"><u style="background:${MEDAL[i]}">${i+1}</u><i class="lav" style="--avc:${avc(x.nick)};box-shadow:0 0 0 3px ${MEDAL[i]}">${esc([...x.nick][0]||'?')}</i><b>${esc(x.nick)}</b><strong>${lbFmt(c,x.n)}</strong></div>`}).join('')}</div>`;
-  const R4=L.slice(3);while(R4.length<2)R4.push(null);
-  b+=R4.map((x,i)=>x?`<div class="lbr${x.nick==NICK?' me':''}"><i>${i+4}</i><i class="lav sm" style="--avc:${avc(x.nick)}">${esc([...x.nick][0]||'?')}</i><div class="lbb"><b>${esc(x.nick)}</b><s><u style="width:${Math.max(4,Math.round(x.n/mx*100))}%"></u></s></div><span>${lbFmt(c,x.n)}</span></div>`:`<div class="lbr emp"><i>${i+4}</i><i class="lav sm" style="--avc:#d9d1c3"></i><div class="lbb"><b>-</b><s></s></div>${NB}</div>`).join('');
-  if(!OWNER&&my<0)b+=`<div class="mut" style="text-align:center;font-size:13px;margin:8px 0">공부하면 순위에 올라요.</div>`}
- b+=`<p class="mut" style="font-size:12px;text-align:center;margin:12px 0 0">${['문제를 푼 시간만 모아요.','지금까지 가장 길게 이어 간 연속 학습일(최고 기록)로 순위를 매겨요.','파트를 끝까지 풀면 문제 수가 반영돼요. 너무 빠르게 푼 파트는 제외돼요.'][c]}</p>`;
+ else{const my=L.findIndex(x=>x.nick==NICK),mx=(L[0]&&L[0].n)||1,ME=' <em class="lbme">나</em>';
+  b+=lbMe(c,L,my);
+  b+=`<div class="lbp">${[1,0,2].map(i=>{const x=L[i];if(!x)return `<div class="p${i+1} emp"><u style="background:${MEDAL[i]}">${i+1}</u><i class="lav"></i><b>빈 자리</b></div>`;return `<div class="p${i+1}${x.nick==NICK?' me':''}"><u style="background:${MEDAL[i]}">${i+1}</u><i class="lav" style="--avc:${avc(x.nick)};box-shadow:0 0 0 3px ${MEDAL[i]}">${esc([...x.nick][0]||'?')}</i><b>${esc(x.nick)}${x.nick==NICK?ME:''}</b><strong>${lbFmt(c,x.n)}</strong></div>`}).join('')}</div>`;
+  b+=L.slice(3).map((x,i)=>`<div class="lbr${x.nick==NICK?' me':''}"><i>${i+4}</i><i class="lav sm" style="--avc:${avc(x.nick)}">${esc([...x.nick][0]||'?')}</i><div class="lbb"><b>${esc(x.nick)}${x.nick==NICK?ME:''}</b><s><u style="width:${Math.max(4,Math.round(x.n/mx*100))}%"></u></s></div>${lbFmt(c,x.n)}</div>`).join('');
+  if(L.length&&L.length<4)b+=`<p class="lbfew">아직 ${L.length}명이 참여했어요. 공부할수록 순위가 채워져요.</p>`}
  let hd=kHead('<h2>리더보드</h2>',[],'lb');
  if(c!=1)hd=hd.replace('<div class="ki"></div>',`<div class="ki"><button class="lbsel" onclick="lbMenu(this)" aria-haspopup="menu">${['이번 주','지난주','전체'][LBP]}<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.600" stroke-linecap="round" stroke-linejoin="round"/></svg></button></div>`);
  return kPage('lb',hd,b)}
@@ -933,7 +941,7 @@ function mockPage(n){if(!MOCK[n]){soonMsg('이 과목 모의고사는 아직 준
  {const dn=MOCK[n].map((M,r)=>!M.hd&&mkDone(n,r)?r:-1).filter(r=>r>=0),pts=dn.map(r=>MOCK[n][r].q.some(q=>q.pt)?mkPts(n,r):null).filter(x=>x!=null),best=pts.length?Math.max(...pts):null,N=mkN(n),rp=Math.round(c/N*100);
   h+=`<div class="lh1" style="--uc:${col}"><div class="lh1r">${ring(rp,col)}<div class="lh1p"><b>${c}<small>/${N}</small></b><span>회 완료</span></div></div><div class="lh1s"><div><small>평균 정답률</small><b>${rt==null?'-':rt+'<i>%</i>'}</b></div><div><small>최고 점수</small><b>${best==null?'-':best+'<i>점</i>'}</b></div><div><small>남은 오답</small><b>${uq.length}<i>개</i></b></div></div></div>`}
  const mkRow=(M,r,nx,lab)=>{const d=mkDone(n,r),qs=M.q,cc=qs.filter(q=>R[q.id]&&R[q.id].ok).length,p=Math.round(cc/qs.length*100),pt=qs.some(q=>q.pt)?mkPts(n,r):null,go=d||nx&&op;
-  return `<button class="lrow mkrw${d?' dn':nx&&op?' nx':' lk'}" ${go?`onclick="mockGo('${n}',${r})"`:'disabled'}><span class="lic lnu">${lab.replace('회','')}</span><span class="lrt"><b>${lab}${nx&&op?'<span class="unxb">다음</span>':''}</b><small>${d?`${cc}/${qs.length} 정답 · ${p}%`:nx&&op?`${qs.length}문항 · 풀러 가기`:'앞 회차를 먼저 풀어요'}</small>${d?`<div class="lbar"><i style="width:${p}%"></i></div>`:''}</span>${d&&pt!=null?`<span class="lmkr"><b>${pt}<small>점</small></b></span>`:''}${d?`<span class="mkre" title="다시 풀기">${ICN_RE}</span>`:go?'<span class="chev">›</span>':''}</button>`};
+  return `<button class="lrow mkrw${d?' dn':nx&&op?' nx':' lk'}" ${go?`onclick="mockGo('${n}',${r})"`:'disabled'}><span class="lic lnu">${!d&&!(nx&&op)?MKLOCK:lab.replace('회','')}</span><span class="lrt"><b>${lab}${nx&&op?'<span class="unxb">다음</span>':''}</b><small>${d?`${cc}/${qs.length} 정답 · ${p}%`:nx&&op?`${qs.length}문항 · 풀러 가기`:op?'앞 회차를 먼저 풀어요':'잠겨 있어요 · 위 조건을 채우면 열려요'}</small>${d?`<div class="lbar"><i style="width:${p}%"></i></div>`:''}</span>${d&&pt!=null?`<span class="lmkr"><b>${pt}<small>점</small></b></span>`:''}${d?`<span class="mkre" title="다시 풀기">${ICN_RE}</span>`:go?'<span class="chev">›</span>':''}</button>`};
  const nxN=MOCK[n].findIndex((M,i)=>!M.hd&&!mkDone(n,i)),HX=mkHx(n),nxH=HX.find(i=>!mkDone(n,i));
  if(!op)h+=`<div class="card mut mkopn">모든 문제를 풀고 오답까지 끝내면 모의고사가 열려요.</div>`;
  h+=`<h3 class="sec">회차</h3><div class="lrows" style="--uc:${col}">`+MOCK[n].map((M,r)=>M.hd?'':mkRow(M,r,r==nxN,(r+1)+'회')).join('')+`</div>`;

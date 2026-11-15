@@ -1050,3 +1050,51 @@ body.tbon #app{padding-bottom:104px}
 .tour .tsh{display:flex;flex-direction:column;gap:8px;pointer-events:none}.tour .tsh .lh1{margin:0}
 .tour .lrow,.tour .lmock{pointer-events:none}
 .tour .ntg.fbk{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0;background:none;border:0;margin:0}
+
+/* ===== 리더보드 v162: 내 순위 카드(A안), 빨강 대신 먹색·파랑, 내 표시는 형광펜 노랑 ===== */
+.lbv b{color:var(--tx);font-size:14px}
+.lbv i{font-size:10.5px}
+.lbp .lbv b{font-size:15px}
+.lbr>.lbv{background:none;padding:0}
+.lbb u{background:var(--ac)}
+.lbr.me{border-color:#e9c862;background:color-mix(in srgb,#f9df99 30%,var(--card))}
+.lbp .me{outline:none}
+.lbme{display:inline-block;font-style:normal;font-size:10.5px;font-weight:800;padding:1px 6px;border-radius:99px;background:#f9df99;color:#5a4a1a;vertical-align:1px;margin-left:2px}
+.lbp .emp{border-style:dashed;background:transparent}
+.lbp .emp .lav{background:none;border:1.5px dashed #cfc5b2;box-sizing:border-box}
+.lbp .emp b{color:var(--mut);font-weight:600}
+.lbfew{text-align:center;color:var(--mut);font-size:13px;margin:4px 0 0}
+#app .kh .ki button.lbsel{display:inline-flex;width:auto;height:auto;gap:3px;padding:6px 10px 6px 12px;border:1.5px solid var(--ln);border-radius:99px;background:var(--card);font-size:14px}
+#app .kh .ki .lbdd button.on{background:color-mix(in srgb,var(--ac) 12%,var(--card));color:var(--tx)}
+/* 내 순위 카드 */
+.lbm2{margin:0 0 22px;padding:16px;border-radius:18px;background:color-mix(in srgb,#f9df99 26%,var(--card));border:2px solid #e9c862;box-shadow:0 3px 0 rgba(200,160,50,.22)}
+.lbmh{display:flex;align-items:center;gap:12px}
+.lbmh>.lav{width:48px;height:48px;font-size:20px;box-shadow:0 0 0 3px #fff}
+.lbmn{flex:1;min-width:0;display:flex;flex-direction:column;line-height:1.3}
+.lbmn small{font-size:12.5px;font-weight:700;color:#8a6a1a}
+.lbmn>b{font-size:17px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lbmn .lbv{margin-top:1px}.lbmn .lbv b{font-size:14px}
+.lbmr{display:flex;flex-direction:column;align-items:flex-end;line-height:1.05}
+.lbmr b{font-size:36px;font-weight:900;letter-spacing:-1px}
+.lbmr b i{font-style:normal;font-size:17px;margin-left:2px;letter-spacing:0}
+.lbmr small{font-size:12px;color:var(--mut);margin-top:3px}
+.lbmg{margin-top:14px;padding-top:12px;border-top:1.5px dashed #e6cf8a;font-size:13.5px;color:#5f574a}
+.lbmg b{color:var(--tx)}
+.lbmb{height:8px;border-radius:99px;background:rgba(255,255,255,.75);margin-top:8px;overflow:hidden}
+.lbmb i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#e9c862,#d99a1e)}
+/* 순위 없음 */
+.lbn{display:flex;align-items:center;gap:12px;margin:0 0 22px;padding:16px;border-radius:18px;border:2px dashed #e0cf9a;background:color-mix(in srgb,#f9df99 14%,var(--card))}
+.lbn>div{flex:1;display:flex;flex-direction:column;gap:2px}.lbn b{font-size:16px}.lbn small{color:var(--mut);font-size:13px}
+.lbn button{flex:none;border:0;border-radius:12px;padding:10px 14px;background:#2a2620;color:#fffdf8;font:inherit;font-weight:700;font-size:14px;cursor:pointer}
+
+/* ===== 소식: 읽은 글은 흐리게 대신 굵기·색만 낮춤 (v162) ===== */
+.mgc.rd{opacity:1}
+.mgc.rd .mgb b{font-weight:500;color:#5f574a}
+.mgc.rd .tg{opacity:.75}
+
+/* ===== 모의고사: 잠긴 회차도 또렷하게 + 자물쇠 (v162) ===== */
+button.mkrw.lk,button.mkrw.lk:disabled{opacity:1;border:1.5px dashed #d6ccb8;background:color-mix(in srgb,var(--card) 55%,transparent)}
+.mkrw.lk .lnu{background:#ece5d6!important;color:#8a8070!important;border-color:#e0d6c2!important}
+.mkrw.lk .lnu svg{width:15px;height:15px}
+.mkrw.lk .lrt b{color:#6f675a}
+.mkrw.lk .lrt small{color:#8a8070}
