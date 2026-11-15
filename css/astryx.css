@@ -1,0 +1,57 @@
+/*
+ * Astryx 다듬기 — 색은 앱 원래 색 그대로, 모양·상태 규칙만 Astryx 방식으로
+ * 참고: @astryxdesign/core·theme 0.7.16 (Copyright (c) Meta Platforms, Inc. and affiliates. MIT License)
+ *
+ * 가져온 것
+ *  - 모서리 단계: inner 6 / element 10 / container 14 / page 24
+ *  - 움직임 시간: fast 125ms / medium 300ms
+ *  - 그림자 단계: low / med / high (두 겹 그림자, 앱의 갈색 톤으로)
+ *  - 상태 규칙: 초점 링, 눌림, 비활성, 선택, 정답·오답 바탕
+ * style.css 뒤에 불러와야 덮어씁니다.
+ */
+:root{
+  --radius-inner:6px;
+  --radius-element:10px;
+  --radius-container:14px;
+  --radius-page:24px;
+  --duration-fast:125ms;
+  --duration-medium:300ms;
+  --shadow-low:0 1px 2px rgba(60,45,20,.06),0 2px 6px rgba(60,45,20,.08);
+  --shadow-med:0 2px 4px rgba(60,45,20,.06),0 6px 14px rgba(60,45,20,.10);
+  --shadow-high:0 4px 8px rgba(60,45,20,.10),0 14px 32px rgba(60,45,20,.18);
+  --focus:#8fb8ec;
+  --focus-ring:0 0 0 3px color-mix(in srgb,var(--focus) 40%,transparent);
+  --disabled-bg:#e6dfd0;
+  --disabled-tx:#a59c8b;
+}
+
+/* 키보드로 움직일 때만 보이는 초점 테두리 */
+:where(button,a,[tabindex]):focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+
+/* 입력칸: 누르면 강조색 테두리 + 연한 링 */
+input[type=text],input[type=email],textarea{transition:border-color var(--duration-fast),box-shadow var(--duration-fast)}
+input:focus,textarea:focus,.hc input[type=text]:focus{border-color:var(--focus);box-shadow:var(--focus-ring)}
+
+/* 버튼: 눌림 반응, 비활성은 흐리게가 아니라 '꺼진 색'으로 */
+.b,.qk button,.ppl button,.mb,.ctab button{transition:transform var(--duration-fast),background var(--duration-fast),box-shadow var(--duration-fast)}
+.b:active:not(:disabled),.qk button:active,.ppl button:active,.ctab button:active{transform:scale(.98)}
+.b:disabled,.b:not(.g):not(.sbm):not(.dlb):not(.admb):not(.msd):disabled{background:var(--disabled-bg)!important;color:var(--disabled-tx)!important;box-shadow:none!important;opacity:1;cursor:default}
+
+/* 객관식 보기: 고른 보기를 더 또렷하게 */
+#app .opt{transition:box-shadow var(--duration-fast),background var(--duration-fast)}
+#app .opt.sel{background:color-mix(in srgb,var(--ac) 16%,var(--card))!important;box-shadow:inset 0 0 0 2px var(--ac);font-weight:600}
+#app .opt.right{box-shadow:inset 0 0 0 2px var(--ok);background:color-mix(in srgb,var(--ok) 10%,var(--card))!important}
+#app .opt.wrong{box-shadow:inset 0 0 0 2px var(--no);background:color-mix(in srgb,var(--no) 8%,var(--card))!important}
+
+/* 정답·오답 안내: 테두리 한 줄 + 옅은 바탕 */
+.fb{border-radius:var(--radius-element)}
+.fb.ok{background:color-mix(in srgb,var(--ok) 9%,var(--card))}
+.fb.no{background:color-mix(in srgb,var(--no) 8%,var(--card))}
+
+/* 모서리 단계 통일 */
+.opt,input[type=text],input[type=email],textarea{border-radius:var(--radius-element)}
+.nav span{border-radius:var(--radius-inner)}
+
+/* 팝업: 겹 그림자 + 큰 모서리 */
+.mdc{border-radius:var(--radius-page);box-shadow:var(--shadow-high)}
+.toast{border-radius:var(--radius-container);box-shadow:var(--shadow-med)}
