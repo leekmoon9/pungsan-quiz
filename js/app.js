@@ -570,7 +570,7 @@ function guide(){const S=(n,t,body,img)=>`<section class="gds" id="gd${n}"><div 
  h+=S(3,'과목 고르기','<p>풍산 학습 첫 화면에서 과목을 눌러요. 진행도 막대가 있는 과목이 열린 과목이고, <b>준비 중</b> 과목은 곧 열려요.</p><p>화면 맨 아래 탭바: <b>집</b>(학습) · <b>종</b>(소식) · <b>트로피</b>(리더보드) · <b>막대</b>(전체 통계) · <b>사람</b>(프로필)</p><p><b>트로피</b>(리더보드)에서는 친구들과 공부 시간·연속 학습·문제 수 순위를 비교하고, 맨 위 카드에서 내 순위를 볼 수 있어요.</p><p>탭마다 위에 칩(내 과목·다른 과목·전체 등)이 있어요. 칩을 누르거나 화면을 옆으로 밀면 다음 칩으로, 마지막 칩에서 더 밀면 옆 탭으로 넘어가요.</p>','g_subj');
  h+=S(4,'공부하기 (필기)','<p>과목에 들어가 <b>공부하기</b>를 누르면 교과서 핵심을 정리한 필기가 나와요. <b>형광펜</b>은 꼭 외울 내용, 그림·지도·표는 교과서 자료를 다시 정리한 거예요.</p><ul><li><b>교과서 원문 보기</b>: 그 단원의 교과서 쪽을 바로 볼 수 있어요.</li><li>필기 맨 아래 버튼으로 <b>그 단원 문제</b>를 바로 풀 수 있어요.</li><li>화면 아래 <b>이어서 공부하기</b> 버튼을 누르면 하던 곳부터 이어서 볼 수 있어요.</li></ul>',['g_learn','g_note']);
  h+=S(5,'문제 풀기','<p><b>문제 풀기</b>의 <b>단원별 문제</b>에서 단원을 펼쳐 골라요. 중단원마다 <b>기본 문제</b>와 자료를 읽고 푸는 <b>실전 문제</b>가 있어요.</p><p>다 풀고 <b>제출</b>하면 정답과 해설이 나와요. <b>처음 푼 결과만</b> 진행도와 통계에 들어가요.</p>','g_quiz');
- h+=S(6,'모의고사','<p>과목마다 <b>5회분</b>이 있어요. 회차당 <b>25문항 내외 · 50분 · 100점 만점</b>이고, 학력평가처럼 자료·사례·&lt;보기&gt;를 분석하는 문제예요.</p><ul><li>그 과목 <b>문제를 모두 풀면</b> 열려요. (11월 23일부터는 모두 열려요.)</li><li>위쪽에 <b>남은 시간</b>이 나오고, 50분을 넘기면 초과 시간이 표시돼요. 제출하면 점수와 오답이 바로 나와요.</li><li>모의고사 화면에서 회차 목록과 평균·최고 점수·유형별 정답률을 함께 볼 수 있어요. 공부와 문제를 다 끝내 열리면 과목 홈 맨 위로 올라와요.</li></ul>','g_mock');
+ h+=S(6,'모의고사','<p>과목마다 <b>5회분</b>이 있어요. 회차당 <b>25문항 내외 · 50분 · 100점 만점</b>이고, 학력평가처럼 자료·사례·&lt;보기&gt;를 분석하는 문제예요.</p><ul><li>그 과목 <b>문제를 60% 이상 풀면</b> 열려요. 맞혔는지는 상관없어요. (11월 23일부터는 모두 열려요.)</li><li>위쪽에 <b>남은 시간</b>이 나오고, 50분을 넘기면 초과 시간이 표시돼요. 제출하면 점수와 오답이 바로 나와요.</li><li>모의고사 화면에서 회차 목록과 평균·최고 점수·유형별 정답률을 함께 볼 수 있어요. 공부와 문제를 다 끝내 열리면 과목 홈 맨 위로 올라와요.</li></ul>','g_mock');
  h+=S(7,'오답노트','<p>틀린 문제는 과목 홈 <b>복습</b>의 <b>오답노트</b>에 모이고, 헷갈려서 별표를 누른 문제는 <b>별표 문제</b>에 모여요. 다시 풀어서 맞히면 <b>고친 오답</b>으로 바뀌어요. <b>취약</b> 표시가 붙은 유형은 오답부터 고치는 게 좋아요.</p>','g_wrong');
  h+=S(8,'전체 통계 · 공부 달력','<p>아래 탭바의 <b>막대</b>(전체 통계)는 칩으로 나뉘어 있어요. <b>요약</b>은 오늘의 목표·기말 진도·이번 주 공부, <b>기록</b>은 친구들과 비교·요일별 패턴·나의 기록, <b>성적</b>은 정답률·모의고사 점수·약점 유형, <b>과목별</b>은 과목마다 자세히, <b>달력</b>은 날짜별 공부 시간이에요. (앱 전용)</p><p><b>오늘의 목표</b>는 하루 첫 접속 때 정해요. 정하면 그날은 바꿀 수 없고, 안 정했으면 다시 들어올 때마다 물어봐요.</p>','g_stats');
  h+=S(9,'공지','<p>아래 탭바의 <b>종</b>(소식)에서 시험 안내는 <b>공지</b> 칩, 앱 소식은 <b>업데이트</b> 칩에 모여 있어요. 아직 안 열어 본 글이 있으면 <b class="gdr">빨간 점</b>이 생겨요. 글이 마음에 들면 날짜 옆 <b>하트</b>를 눌러 주세요.</p>','g_board');
@@ -828,7 +828,7 @@ function lhData(n){const mids=[].concat(...CUR[n].map((U,u)=>U.m.map((M,k)=>[u,k
  return {mids,has,nv,seen,nn:has.length,qs,sol:sol.length,acc:sol.length?Math.round(ok/sol.length*100):null,uq,stn,mk:mkCnt(n),mN:mkN(n),op:!!MOCK[n]&&mkOpen(n),hasMk:!!MOCK[n],rt:MOCK[n]?mkRate(n):null,left:l,
   prog:Math.round(((has.length?seen/has.length:0)+(qs.length?sol.length/qs.length:0))/2*100)}}
 const ring=(p,col,sz=86,sw=9)=>{const r=(sz-sw)/2,c=2*Math.PI*r;return `<svg class="rng" viewBox="0 0 ${sz} ${sz}" width="${sz}" height="${sz}"><circle cx="${sz/2}" cy="${sz/2}" r="${r}" fill="none" stroke="var(--ln)" stroke-width="${sw}"/><circle cx="${sz/2}" cy="${sz/2}" r="${r}" fill="none" stroke="${col}" stroke-width="${sw}" stroke-linecap="round" stroke-dasharray="${c*p/100} ${c}" transform="rotate(-90 ${sz/2} ${sz/2})"/></svg>`};
-function lhMockSub(n,D){return !D.hasMk?'준비 중':D.op?`${D.mk}/${D.mN}회 완료${D.rt!=null?' · 평균 '+D.rt+'%':''}`:`문제를 다 풀면 열려요 · ${D.left.un?'안 푼 문제 '+D.left.un+'개':'남은 오답 '+D.left.wr+'개'}`}
+function lhMockSub(n,D){return !D.hasMk?'준비 중':D.op?`${D.mk}/${D.mN}회 완료${D.rt!=null?' · 평균 '+D.rt+'%':''}`:`문제를 ${MK_PCT}% 풀면 열려요 · ${D.left.need}문제 남음`}
 function learnHome(n){
  const col=sCol(n),nm=n.split('|').join(' '),D=lhData(n),[,lbt]=lhSum(n,col,D.mids,D.qs);
  let h=`<div class="shd"><h2 style="--hlc:${col}">${nm}</h2>${COVER[n]?`<img class="cvs" src="${COVER[n]}" alt="">`:''}</div>`;
@@ -899,8 +899,10 @@ const mkR=(n,r)=>MOCK[n][r].q,mkDone=(n,r)=>mkR(n,r).every(q=>R[q.id]),mkCnt=n=>
 const mkAll=n=>MOCK[n]?[].concat(...MOCK[n].map(x=>x.q)):[],mkAns=n=>mkAll(n).filter(q=>R[q.id]);
 const qDone=n=>{const qs=socQ(n);return qs.length>0&&qs.every(q=>R[q.id])&&!qs.some(isUnf)};
 const MK_OPEN_AT=Date.parse('2026-11-23T00:00:00+09:00'),mkEvent=()=>Date.now()>=MK_OPEN_AT;
-function mkOpen(n){return STAFF()||qDone(n)||mkEvent()}
-function mkLeft(n){const qs=socQ(n);return {un:qs.filter(q=>!R[q.id]).length,wr:qs.filter(isUnf).length}}
+// 모의고사는 그 과목 문제를 MK_PCT% 이상 풀면 열림 (맞혔는지는 상관없음)
+const MK_PCT=60;
+function mkOpen(n){const l=mkLeft(n);return STAFF()||(l.tot>0&&l.need==0)||mkEvent()}
+function mkLeft(n){const qs=socQ(n),sol=qs.filter(q=>R[q.id]).length;return {un:qs.length-sol,wr:qs.filter(isUnf).length,tot:qs.length,sol,pct:qs.length?Math.floor(sol/qs.length*100):0,need:Math.max(0,Math.ceil(qs.length*MK_PCT/100)-sol)}}
 const mkRate=n=>{const a=mkAns(n);return a.length?Math.round(a.filter(q=>R[q.id].ok).length/a.length*100):null};
 const mkN=n=>MOCK[n]&&MOCK[n].length?MOCK[n].filter(M=>!M.hd).length:5;
 const sDone=n=>!!MOCK[n]&&MOCK[n].length>0&&mkCnt(n)>=mkN(n);
@@ -928,9 +930,9 @@ function mockCard(n,col){const has=!!MOCK[n],op=has&&mkOpen(n),c=mkCnt(n),N=mkN(
  let h=`<div class="mkw${op?'':' mklk'}" style="--uc:${col}"><button class="lcb mkc${sDone(n)?' cpl':''}" onclick="mockGo('${n}')"${op?'':' tabindex="-1"'}>${ICN_EXAM}<span><b>${c>=N?'모의고사 완료':`모의고사 · ${c+1}회`}</b><span class="mkd">${Array.from({length:N},(_,r)=>`<i class="${has&&MOCK[n][r]&&mkDone(n,r)?'on':''}"></i>`).join('')}</span></span></button>`;
  if(HX.length)h+=`<button class="lcb mkc mkch${hc>=HX.length?' cpl':''}" onclick="mockGoH('${n}')"${op?'':' tabindex="-1"'}>${ICN_EXAM}<span><b>${hc>=HX.length?'고난도 모의고사 완료':`고난도 모의고사 · ${hc+1}회`}</b><span class="mkd">${HX.map(r=>`<i class="${mkDone(n,r)?'on':''}"></i>`).join('')}</span></span></button>`;
  h+=`<button class="mks${nd?' nud':''}" onclick="mockPage('${n}')">${ICN_MST}<span><b>모의고사 통계${nd?'<i class="mkdot">약점 분석 도착</i>':''}</b></span></button>`;
- h+=op?'':`<div class="mkov" onclick="mockGo('${n}')"><span class="mklc">${LOCK.replace('lki','')}</span><span><b>${has?'문제를 다 풀면 열려요':'모의고사 준비 중'}</b>${has?(()=>{const l=mkLeft(n);return `<small>${l.un?`안 푼 문제 ${l.un}개`:''}${l.un&&l.wr?' · ':''}${l.wr?`남은 오답 ${l.wr}개`:''}</small>`})():''}</span></div>`;
+ h+=op?'':`<div class="mkov" onclick="mockGo('${n}')"><span class="mklc">${LOCK.replace('lki','')}</span><span><b>${has?`문제를 ${MK_PCT}% 풀면 열려요`:'모의고사 준비 중'}</b>${has?(()=>{const l=mkLeft(n);return `<small>지금 ${l.pct}% · ${l.need}문제 더 풀면 열려요</small>`})():''}</span></div>`;
  return h+`</div>`}
-function mockGo(n,r){if(!MOCK[n]){soonMsg('이 과목 모의고사는 아직 준비 중이에요.');return}if(!mkOpen(n)){const l=mkLeft(n);askBox('아직 잠겨 있어요',`모든 문제를 풀고 오답까지 끝내면 모의고사가 열려요.<small class="mdn">${l.un?`안 푼 문제 ${l.un}개`:''}${l.un&&l.wr?', ':''}${l.wr?`남은 오답 ${l.wr}개`:''}가 남았어요.</small>`,'문제 풀러 가기').then(ok=>{if(ok)socPage(n)});return}
+function mockGo(n,r){if(!MOCK[n]){soonMsg('이 과목 모의고사는 아직 준비 중이에요.');return}if(!mkOpen(n)){const l=mkLeft(n);askBox('아직 잠겨 있어요',`이 과목 문제를 ${MK_PCT}% 이상 풀면 모의고사가 열려요.<small class="mdn">지금 ${l.pct}% · ${l.need}문제 더 풀면 돼요.</small>`,'문제 풀러 가기').then(ok=>{if(ok)socPage(n)});return}
  if(r===undefined){r=MOCK[n].findIndex((M,i)=>!M.hd&&!mkDone(n,i));if(r<0)return mockPage(n)}
  const HD=!!MOCK[n][r].hd,rn=HD?MOCK[n][r].n:(r+1)+'회',nm=n.split('|').join(' '),qs=mkR(n,r),seg=[{label:`모의고사 ${rn}`,qs}],sp=HD?MKHS:(MOCK[n].spec||mkSpec(n)),m={title:nm+' 모의고사',mock:r+1,kind:'모의고사',mp:1,min:sp.min,back:"mockPage('"+n+"')"};
  if(mkDone(n,r)){askBox(`${rn}를 다시 풀까요?`,'다시 푼 결과는 통계에 반영되지 않아요.','다시 풀기').then(ok=>{if(ok)startRun(n,seg,Object.assign(m,{practice:true,t0:Date.now()}))});return}
@@ -944,7 +946,7 @@ function mockPage(n){if(!MOCK[n]){soonMsg('이 과목 모의고사는 아직 준
  const mkRow=(M,r,nx,lab)=>{const d=mkDone(n,r),qs=M.q,cc=qs.filter(q=>R[q.id]&&R[q.id].ok).length,p=Math.round(cc/qs.length*100),pt=qs.some(q=>q.pt)?mkPts(n,r):null,go=d||nx&&op;
   return `<button class="lrow mkrw${d?' dn':nx&&op?' nx':' lk'}" ${go?`onclick="mockGo('${n}',${r})"`:'disabled'}><span class="lic lnu">${!d&&!(nx&&op)?MKLOCK:lab.replace('회','')}</span><span class="lrt"><b>${lab}${nx&&op?'<span class="unxb">다음</span>':''}</b><small>${d?`${cc}/${qs.length} 정답 · ${p}%`:nx&&op?`${qs.length}문항 · 풀러 가기`:op?'앞 회차를 먼저 풀어요':'잠겨 있어요 · 위 조건을 채우면 열려요'}</small>${d?`<div class="lbar"><i style="width:${p}%"></i></div>`:''}</span>${d&&pt!=null?`<span class="lmkr"><b>${pt}<small>점</small></b></span>`:''}${d?`<span class="mkre" title="다시 풀기">${ICN_RE}</span>`:go?'<span class="chev">›</span>':''}</button>`};
  const nxN=MOCK[n].findIndex((M,i)=>!M.hd&&!mkDone(n,i)),HX=mkHx(n),nxH=HX.find(i=>!mkDone(n,i));
- if(!op)h+=`<div class="card mut mkopn">모든 문제를 풀고 오답까지 끝내면 모의고사가 열려요.</div>`;
+ if(!op){const l=mkLeft(n);h+=`<div class="card mut mkopn">이 과목 문제를 ${MK_PCT}% 이상 풀면 모의고사가 열려요.<br>지금 ${l.pct}% · ${l.need}문제 더 풀면 돼요.</div>`}
  h+=`<h3 class="sec">회차</h3><div class="lrows" style="--uc:${col}">`+MOCK[n].map((M,r)=>M.hd?'':mkRow(M,r,r==nxN,(r+1)+'회')).join('')+`</div>`;
  if(HX.length)h+=`<h3 class="sec">고난도 모의고사</h3><p class="tag" style="margin:-4px 2px 10px">학평·수능 4점급 위주 · 회차당 ${MKHS.qn}문항 · ${MKHS.min}분 · ${MKHS.pts}점 만점</p><div class="lrows" style="--uc:color-mix(in srgb,${col} 55%,#d9534a)">`+HX.map(r=>mkRow(MOCK[n][r],r,r===nxH,MOCK[n][r].n.replace('고난도 ',''))).join('')+`</div>`;
  {const st=wq.length?(uq.length?`남은 오답 ${uq.length}문제`:'오답을 모두 고쳤어요'):'아직 틀린 문제가 없어요',go=wq.length;h+=`<button class="lrow lrw" style="--uc:${col};margin-top:14px"${go?` onclick="mkWrong('${n}')"`:' style="cursor:default"'}><span class="lic">${ICN_WR}</span><span class="lrt"><b>모의고사 오답노트</b><small>${st}</small></span>${uq.length?`<span class="wnc">${uq.length}</span>`:''}${go?'<span class="chev">›</span>':''}</button>`}
@@ -1406,7 +1408,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v165b';
+const APPV='v166';
 function nagTog(){if(R._nagoff)delete R._nagoff;else R._nagoff=1;save();show(pfHTML(),kKey('pf'));soonMsg(R._nagoff?'공부 알림을 껐어요.':'공부를 안 한 날 저녁에 알림이 와요.')}
 // 내 정보 맨 위 카드: 아바타·닉네임·연속 학습·이번 주 공부·푼 문제
 function pfTop(){const t=R._t||{},td=dkey(),wd=(new Date().getDay()+6)%7;let wk=0;for(let i=0;i<=wd;i++)wk+=t[dAdd(td,-i)]||0;
