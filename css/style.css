@@ -1098,3 +1098,29 @@ button.mkrw.lk,button.mkrw.lk:disabled{opacity:1;border:1.5px dashed #d6ccb8;bac
 .mkrw.lk .lnu svg{width:15px;height:15px}
 .mkrw.lk .lrt b{color:#6f675a}
 .mkrw.lk .lrt small{color:#8a8070}
+
+/* ===== v163: 내 정보 카드·알림 스위치 / 결과 한마디·답 나란히 / 해설 글자 간격 / 관리자 ===== */
+#app .kc.kc1{display:none}
+.pfh2{display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:center;margin:4px 0 12px;padding:16px;border-radius:18px;background:var(--card);border:1.5px solid var(--ln);box-shadow:0 2px 0 rgba(120,100,70,.10)}
+.pfh2>.lav{width:52px;height:52px;font-size:22px}
+.pfn{display:flex;flex-direction:column;min-width:0}.pfn b{font-size:19px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.pfn small{font-size:12.5px;color:var(--mut)}
+.pfs{grid-column:1/-1;display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.pfs>div{display:flex;flex-direction:column;align-items:center;padding:10px 4px;border-radius:12px;background:color-mix(in srgb,#2a2620 4%,var(--card))}
+.pfs b{font-size:18px;font-weight:900;white-space:nowrap}.pfs b i{font-style:normal;font-size:11.5px;font-weight:700;color:var(--mut);margin-left:1px}
+.pfs small{font-size:11.5px;color:var(--mut);margin-top:2px}
+.pr b.swt{font-size:13.5px;color:var(--mut);font-weight:600;letter-spacing:0}
+.sw2{position:relative;flex:none;width:46px;height:28px;border:0;border-radius:99px;background:#d9d1c3;cursor:pointer;margin-left:auto;padding:0;transition:background .15s}
+.sw2::after{content:'';position:absolute;top:3px;left:3px;width:22px;height:22px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.25);transition:transform .15s}
+.sw2.on{background:#4f8a63}.sw2.on::after{transform:translateX(18px)}
+.sw2:disabled{opacity:1;cursor:default}
+/* 결과 */
+.fb,.prn{text-align:left}
+.rsc{text-align:center}
+.rsmsg{display:table;margin:10px auto 0;padding:4px 12px;border-radius:99px;background:#f9df99;color:#8a6a1a;font-size:15px;font-weight:800}
+.rsc .big{font-size:52px;color:var(--tx)}
+.ansr{display:flex;gap:8px;margin:2px 0 4px}
+.ansc{flex:1;min-width:0;padding:8px 10px;border-radius:10px;background:color-mix(in srgb,#b3392f 7%,var(--card));font-size:14px}
+.ansc+.ansc{background:color-mix(in srgb,#2e7d4f 9%,var(--card))}
+/* 관리자 */
+.hb span b{word-break:keep-all}
+.zn{font-size:12.5px;text-align:center;margin-top:8px}
