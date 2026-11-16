@@ -665,6 +665,7 @@ body.hasbk #app>.pvh{margin-left:48px}@media (min-width:760px){body.hasbk #app>.
 .pib.on .psw{box-shadow:0 0 0 2.5px var(--ac)}
 .pdt{border-radius:50%;background:var(--tx)}
 .psw2{position:relative;background:var(--pbg)}
+#pcS,#pcO{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}
 #pcS{display:block;width:100%;touch-action:none;cursor:crosshair}
 .phint{position:absolute;inset:auto 0 14px;text-align:center;font-size:13px;color:var(--mut);pointer-events:none;transition:opacity .3s}
 .pgrow{display:block;width:100%;padding:9px;border:0;border-top:1.5px dashed var(--ln);background:var(--card);font:inherit;font-size:13px;font-weight:700;color:var(--mut);cursor:pointer}
