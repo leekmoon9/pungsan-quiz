@@ -349,8 +349,8 @@ function padMount(q){if(!ls('padhint')){ls('padhint','1');setTimeout(()=>soonMsg
  card.classList.toggle('pwr',PST.mode=='over');card.classList.toggle('pen',PST.pen);
  requestAnimationFrame(()=>{padSize();padDraw('s');padDraw('o')});pPull(q.id)}
 const pC=L=>document.getElementById(L=='s'?'pcS':'pcO');
-function padSize(){if(!PD)return;const dpr=Math.min(devicePixelRatio||1,3),s=pC('s'),o=pC('o');if(!s||!o)return;const w=document.getElementById('psw').clientWidth;
- const ph=matchMedia('(min-width:900px) and (orientation:landscape)').matches?Math.max(PD.d.h,innerHeight-200):PD.d.h;PD.ph=ph;s.style.height=ph+'px';s.width=w*dpr;s.height=ph*dpr;const c=o.parentNode;o.width=c.clientWidth*dpr;o.height=c.clientHeight*dpr}
+function padSize(){if(!PD)return;let dpr=Math.min(devicePixelRatio||1,3);const s=pC('s'),o=pC('o');if(!s||!o)return;const w=document.getElementById('psw').clientWidth;
+ const ph=matchMedia('(min-width:900px) and (orientation:landscape)').matches?Math.max(PD.d.h,innerHeight-200):PD.d.h;PD.ph=ph;s.style.height=ph+'px';if(w*ph*dpr*dpr>8e6)dpr=Math.max(1,Math.sqrt(8e6/(w*ph)));s.width=w*dpr;s.height=ph*dpr;const c=o.parentNode;o.width=c.clientWidth*dpr;o.height=c.clientHeight*dpr}
 const cssv=k=>getComputedStyle(document.documentElement).getPropertyValue(k).trim();
 function pBg(x,W,H){x.fillStyle=cssv('--pbg');x.fillRect(0,0,W,H);if(PST.bg==2)return;x.strokeStyle=cssv('--pln');x.lineWidth=1;x.beginPath();const g=24;if(PST.bg==0)for(let i=g;i<W;i+=g){x.moveTo(i+.5,0);x.lineTo(i+.5,H)}for(let y=g;y<H;y+=g*(PST.bg==1?1.4:1)){x.moveTo(0,Math.round(y)+.5);x.lineTo(W,Math.round(y)+.5)}x.stroke()}
 function pStroke(x,st,W){const p=st.p,n=p.length/2;if(!n)return;x.save();if(st.k=='h'){x.globalAlpha=.32;x.strokeStyle=cssv('--phi');x.lineWidth=st.w*4.2*W/360}else{x.strokeStyle=cssv('--pk'+st.c);x.lineWidth=st.w*W/360}
@@ -373,12 +373,12 @@ function padDown(e,L){if(e.pointerType=='touch'&&!PST.pen){PTS.set(e.pointerId,{
  if(e.pointerType=='pen'&&!PST.pen){PST.pen=true;padPenApply();soonMsg('펜이 감지됐어요. 손가락으로는 화면을 넘길 수 있어요.')}
  e.preventDefault();try{pC(L).setPointerCapture(e.pointerId)}catch(_){}const p=pPos(e,L);
  if(PST.tool=='e'){PACT={L,er:1,pen:e.pointerType=='pen',rc:pC(L).getBoundingClientRect()};padErase(L,p);return}
- PACT={L,pen:e.pointerType=='pen',rc:pC(L).getBoundingClientRect(),st:{k:PST.tool,c:PST.col,w:PST.wid,p:p.slice()},t:Date.now(),x:e.clientX,y:e.clientY,mv:0};PD.d[L].push(PACT.st);PD.redo[L]=[];padDraw(L)}
-function padMove(e){if(e.pointerType=='pen')PENT=Date.now();if(FP&&e.pointerId==FP.id){const now=Date.now(),dx=e.clientX-FP.x,dy=e.clientY-FP.y,dt=Math.max(1,now-FP.lt);FP.vx=dx/dt;FP.vy=dy/dt;FP.x=e.clientX;FP.y=e.clientY;FP.lt=now;pPanBy(FP.el,dx,dy);return}
+ PACT={L,pen:e.pointerType=='pen',rc:pC(L).getBoundingClientRect(),st:{k:PST.tool,c:PST.col,w:PST.wid,p:p.slice()},t:Date.now(),x:e.clientX,y:e.clientY,mv:0};PACT.thr=Math.max(6,Math.round(1.6*PS/(PACT.rc.width||360)));PD.d[L].push(PACT.st);PD.redo[L]=[];padDraw(L)}
+function padMove(e){if(e.pointerType=='pen'&&PACT)PENT=Date.now();if(FP&&e.pointerId==FP.id){const now=Date.now(),dx=e.clientX-FP.x,dy=e.clientY-FP.y,dt=Math.max(1,now-FP.lt);FP.vx=dx/dt;FP.vy=dy/dt;FP.x=e.clientX;FP.y=e.clientY;FP.lt=now;pPanBy(FP.el,dx,dy);return}
  if(e.pointerType=='touch'&&!PST.pen&&PTS.has(e.pointerId)){PTS.set(e.pointerId,{x:e.clientX,y:e.clientY});if(PAN&&PTS.size>=2){e.preventDefault();const m=pMid(),dx=m.x-PAN.m.x,dy=m.y-PAN.m.y;PAN.m=m;PAN.el.scrollBy(-dx,-dy);if(PAN.el!==document.scrollingElement&&PAN.el!==document.documentElement&&((dy>0&&PAN.el.scrollTop<=0)||(dy<0&&PAN.el.scrollTop+PAN.el.clientHeight>=PAN.el.scrollHeight-1)))scrollBy(0,-dy);return}}
  if(!PACT)return;const L=PACT.L,p=pPos(e,L);if(PACT.er)return padErase(L,p);PACT.mv=Math.max(PACT.mv,Math.hypot(e.clientX-PACT.x,e.clientY-PACT.y));
- (()=>{const l=e.getCoalescedEvents?e.getCoalescedEvents():[];return l&&l.length?l:[e]})().forEach(v=>{const q=pPos(v,L),a=PACT.st.p,n=a.length;if(Math.abs(a[n-2]-q[0])+Math.abs(a[n-1]-q[1])>=6)a.push(q[0],q[1])});
- if(L=='s'){const y=p[1]/PS*PACT.rc.width;if(y>(PD.ph||PD.d.h)-60){PD.d.h=(PD.ph||PD.d.h)+240;padSize();PACT.rc=pC('s').getBoundingClientRect();return padDraw(L)}}pSched(L)}
+ (()=>{const l=e.getCoalescedEvents?e.getCoalescedEvents():[];return l&&l.length?l:[e]})().forEach(v=>{const q=pPos(v,L),a=PACT.st.p,n=a.length;if(Math.abs(a[n-2]-q[0])+Math.abs(a[n-1]-q[1])>=PACT.thr)a.push(q[0],q[1])});
+ if(L=='s'){const y=p[1]/PS*PACT.rc.width;if(y>(PD.ph||PD.d.h)-60&&(PD.ph||PD.d.h)<10000){PD.d.h=(PD.ph||PD.d.h)+240;padSize();PACT.rc=pC('s').getBoundingClientRect();return padDraw(L)}}pSched(L)}
 let PRAF=0;function pSched(L){if(PRAF)return;PRAF=requestAnimationFrame(()=>{PRAF=0;padDraw(L)})}
 function padUp(e){if(FP&&e&&e.pointerId==FP.id){const f=FP;FP=null;if(Math.hypot(f.x-f.sx,f.y-f.sy)<6&&Date.now()-f.t<300){if(f.L=='o'){const o=pC('o');o.style.pointerEvents='none';const el=document.elementFromPoint(e.clientX,e.clientY);o.style.pointerEvents='';const t=el&&el.closest('button,input,textarea,a,label');if(t){if(/INPUT|TEXTAREA/.test(t.tagName))t.focus();else t.click()}}}else if(Math.abs(f.vy)>.3||Math.abs(f.vx)>.3)pFling(f.el,f.vx,f.vy);return}
  if(e&&e.pointerType=='touch'){PTS.delete(e.pointerId);if(PAN){if(PTS.size<2)PAN=null;return}}
@@ -397,7 +397,7 @@ function padBg(){PST.bg=(PST.bg+1)%3;padDraw('s');soonMsg('배경: '+['모눈','
 function padPenApply(){const b=document.getElementById('pPen');if(b)b.classList.toggle('on',PST.pen);const w=document.getElementById('psw');if(w)w.classList.toggle('pen',PST.pen);const c=document.querySelector('.pqc');if(c)c.classList.toggle('pen',PST.pen)}
 function padPen(){PST.pen=!PST.pen;padPenApply();soonMsg(PST.pen?'펜으로만 써요. 손가락은 화면 넘기기예요.':'손가락으로도 쓸 수 있어요.')}
 function padFull(){PST.full=!PST.full;const p=document.getElementById('pad');if(!p)return;p.classList.toggle('pfull',PST.full);document.body.classList.toggle('pfx',PST.full);if(PST.full&&PST.mode=='over')padMode('sheet');requestAnimationFrame(()=>{padSize();padDraw('s')})}
-function padGrow(){PD.d.h+=300;padSize();padDraw('s');pPut(PD.id)}
+function padGrow(){PD.d.h=Math.min(10000,PD.d.h+300);padSize();padDraw('s');pPut(PD.id)}
 function padMode(m){PST.mode=m;const s=document.getElementById('pmS'),o=document.getElementById('pmO');if(s)s.classList.toggle('on',m=='sheet');if(o)o.classList.toggle('on',m=='over');const c=document.querySelector('.pqc');if(c)c.classList.toggle('pwr',m=='over');padBtns();
  if(m=='over'){if(PST.full)padFull();soonMsg('문제 카드 위에 바로 쓸 수 있어요. 보기는 톡 누르면 골라져요.')}}
 function padFold(){const p=document.getElementById('pad'),cl=p.classList.toggle('pcl');ls('padopen',cl?'0':'1');if(cl&&PST.mode=='over')padMode('sheet');requestAnimationFrame(()=>{padSize();padDraw('s');padDraw('o')})}
@@ -1417,7 +1417,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v182';
+const APPV='v183';
 function nagTog(){if(R._nagoff)delete R._nagoff;else R._nagoff=1;save();show(pfHTML(),kKey('pf'));soonMsg(R._nagoff?'공부 알림을 껐어요.':'공부를 안 한 날 저녁에 알림이 와요.')}
 // 내 정보 맨 위 카드: 아바타·닉네임·연속 학습·이번 주 공부·푼 문제
 function pfTop(){const t=R._t||{},td=dkey(),wd=(new Date().getDay()+6)%7;let wk=0;for(let i=0;i<=wd;i++)wk+=t[dAdd(td,-i)]||0;
