@@ -670,6 +670,8 @@ body.hasbk #app>.pvh{margin-left:48px}@media (min-width:760px){body.hasbk #app>.
 .pgrow{display:block;width:100%;padding:9px;border:0;border-top:1.5px dashed var(--ln);background:var(--card);font:inherit;font-size:13px;font-weight:700;color:var(--mut);cursor:pointer}
 .pad.pcl .ptb,.pad.pcl .psw2,.pad.pcl .pgrow,.pad.pcl .pmini{display:none}
 .pad.pcl .padh{border-bottom:0}
+.padnote{margin:0;padding:6px 14px 2px;font-size:12px;line-height:1.4;color:var(--mut)}
+.pad.pcl .padnote{display:none}
 .pmini{display:none;padding:8px 12px;font-size:13.5px;font-weight:600;border-bottom:1.5px solid var(--ln);background:var(--pbg);max-height:28vh;overflow:auto}
 .pad.pfull{position:fixed;inset:0;z-index:60;margin:0;border-radius:0!important;border:0;display:flex;flex-direction:column;padding:env(safe-area-inset-top,0px) env(safe-area-inset-right,0px) env(safe-area-inset-bottom,0px) env(safe-area-inset-left,0px)!important}
 .pad.pfull .pmini{display:block}.pad.pfull .psw2{flex:1;overflow-y:auto}
