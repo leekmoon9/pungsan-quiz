@@ -360,20 +360,25 @@ function padDraw(L){const c=pC(L);if(!c||!PD)return;const x=c.getContext('2d'),W
 function padBtns(){if(!PD)return;const L=PST.mode=='over'?'o':'s',u=document.getElementById('pUn'),r=document.getElementById('pRe'),c=document.getElementById('pCl');if(u)u.disabled=!PD.d[L].length;if(r)r.disabled=!PD.redo[L].length;if(c)c.disabled=!PD.d[L].length}
 function pPos(e,L){const r=pC(L).getBoundingClientRect();return [Math.round((e.clientX-r.left)/r.width*PS),Math.round((e.clientY-r.top)/r.width*PS)]}
 // 두 손가락: 그리지 않고 화면(풀이판)을 위아래·좌우로 움직이기
-const PTS=new Map();let PAN=null;
+const PTS=new Map();let PAN=null,FP=null;
+// 펜 모드의 손가락 한 개 밀기: touch-action을 pan-y로 두면 아이패드가 펜 세로 획까지 스크롤로 가져가 끊기므로, 캔버스는 항상 none으로 두고 손가락 스크롤을 직접 처리
+function pPanBy(el,dx,dy){el.scrollBy(-dx,-dy);if(el!==document.scrollingElement&&el!==document.documentElement&&((dy>0&&el.scrollTop<=0)||(dy<0&&el.scrollTop+el.clientHeight>=el.scrollHeight-1)))scrollBy(0,-dy)}
+function pFling(el,vx,vy){let a=vx*16,b=vy*16,n=0;const f=()=>{if(FP||Math.abs(a)+Math.abs(b)<.5||++n>90)return;pPanBy(el,a,b);a*=.94;b*=.94;requestAnimationFrame(f)};requestAnimationFrame(f)}
 function pScr(el){for(let e=el;e&&e!==document.body;e=e.parentElement){const cs=getComputedStyle(e);if(/(auto|scroll)/.test(cs.overflowY+cs.overflowX)&&(e.scrollHeight>e.clientHeight+1||e.scrollWidth>e.clientWidth+1))return e}return document.scrollingElement||document.documentElement}
 function pMid(){let x=0,y=0;PTS.forEach(v=>{x+=v.x;y+=v.y});return {x:x/PTS.size,y:y/PTS.size}}
 function padDown(e,L){if(e.pointerType=='touch'&&!PST.pen){PTS.set(e.pointerId,{x:e.clientX,y:e.clientY});if(PTS.size>=2){e.preventDefault();if(PACT&&!PACT.er&&PACT.st){const a=PD.d[PACT.L],i=a.lastIndexOf(PACT.st);if(i>=0)a.splice(i,1);padDraw(PACT.L)}PACT=null;try{pC(L).setPointerCapture(e.pointerId)}catch(_){}PAN={m:pMid(),el:pScr(pC(L))};return}}
- if(!PD||(L=='o'&&PST.mode!='over'))return;if(e.pointerType=='touch'&&PST.pen)return;
+ if(!PD||(L=='o'&&PST.mode!='over'))return;if(e.pointerType=='touch'&&PST.pen){if(!FP){FP={id:e.pointerId,L,x:e.clientX,y:e.clientY,sx:e.clientX,sy:e.clientY,t:Date.now(),lt:Date.now(),vx:0,vy:0,el:pScr(pC(L))};try{pC(L).setPointerCapture(e.pointerId)}catch(_){}}return}
  if(e.pointerType=='pen'&&!PST.pen){PST.pen=true;padPenApply();soonMsg('펜이 감지됐어요. 손가락으로는 화면을 넘길 수 있어요.')}
  e.preventDefault();try{pC(L).setPointerCapture(e.pointerId)}catch(_){}const p=pPos(e,L);
  if(PST.tool=='e'){PACT={L,er:1};padErase(L,p);return}
  PACT={L,st:{k:PST.tool,c:PST.col,w:PST.wid,p:p.slice()},t:Date.now(),x:e.clientX,y:e.clientY,mv:0};PD.d[L].push(PACT.st);PD.redo[L]=[];padDraw(L)}
-function padMove(e){if(e.pointerType=='touch'&&!PST.pen&&PTS.has(e.pointerId)){PTS.set(e.pointerId,{x:e.clientX,y:e.clientY});if(PAN&&PTS.size>=2){e.preventDefault();const m=pMid(),dx=m.x-PAN.m.x,dy=m.y-PAN.m.y;PAN.m=m;PAN.el.scrollBy(-dx,-dy);if(PAN.el!==document.scrollingElement&&PAN.el!==document.documentElement&&((dy>0&&PAN.el.scrollTop<=0)||(dy<0&&PAN.el.scrollTop+PAN.el.clientHeight>=PAN.el.scrollHeight-1)))scrollBy(0,-dy);return}}
+function padMove(e){if(FP&&e.pointerId==FP.id){const now=Date.now(),dx=e.clientX-FP.x,dy=e.clientY-FP.y,dt=Math.max(1,now-FP.lt);FP.vx=dx/dt;FP.vy=dy/dt;FP.x=e.clientX;FP.y=e.clientY;FP.lt=now;pPanBy(FP.el,dx,dy);return}
+ if(e.pointerType=='touch'&&!PST.pen&&PTS.has(e.pointerId)){PTS.set(e.pointerId,{x:e.clientX,y:e.clientY});if(PAN&&PTS.size>=2){e.preventDefault();const m=pMid(),dx=m.x-PAN.m.x,dy=m.y-PAN.m.y;PAN.m=m;PAN.el.scrollBy(-dx,-dy);if(PAN.el!==document.scrollingElement&&PAN.el!==document.documentElement&&((dy>0&&PAN.el.scrollTop<=0)||(dy<0&&PAN.el.scrollTop+PAN.el.clientHeight>=PAN.el.scrollHeight-1)))scrollBy(0,-dy);return}}
  if(!PACT)return;const L=PACT.L,p=pPos(e,L);if(PACT.er)return padErase(L,p);PACT.mv=Math.max(PACT.mv,Math.hypot(e.clientX-PACT.x,e.clientY-PACT.y));
- (e.getCoalescedEvents?e.getCoalescedEvents():[e]).forEach(v=>{const q=pPos(v,L),a=PACT.st.p,n=a.length;if(Math.abs(a[n-2]-q[0])+Math.abs(a[n-1]-q[1])>=6)a.push(q[0],q[1])});
+ (()=>{const l=e.getCoalescedEvents?e.getCoalescedEvents():[];return l&&l.length?l:[e]})().forEach(v=>{const q=pPos(v,L),a=PACT.st.p,n=a.length;if(Math.abs(a[n-2]-q[0])+Math.abs(a[n-1]-q[1])>=6)a.push(q[0],q[1])});
  if(L=='s'){const y=p[1]/PS*pC('s').getBoundingClientRect().width;if(y>(PD.ph||PD.d.h)-60){PD.d.h=(PD.ph||PD.d.h)+240;padSize()}}padDraw(L)}
-function padUp(e){if(e&&e.pointerType=='touch'){PTS.delete(e.pointerId);if(PAN){if(PTS.size<2)PAN=null;return}}
+function padUp(e){if(FP&&e&&e.pointerId==FP.id){const f=FP;FP=null;if(Math.hypot(f.x-f.sx,f.y-f.sy)<6&&Date.now()-f.t<300){if(f.L=='o'){const o=pC('o');o.style.pointerEvents='none';const el=document.elementFromPoint(e.clientX,e.clientY);o.style.pointerEvents='';const t=el&&el.closest('button,input,textarea,a,label');if(t){if(/INPUT|TEXTAREA/.test(t.tagName))t.focus();else t.click()}}}else if(Math.abs(f.vy)>.3||Math.abs(f.vx)>.3)pFling(f.el,f.vx,f.vy);return}
+ if(e&&e.pointerType=='touch'){PTS.delete(e.pointerId);if(PAN){if(PTS.size<2)PAN=null;return}}
  if(!PACT)return;const a=PACT;PACT=null;
  if(a.L=='o'&&!a.er&&a.mv<6&&Date.now()-a.t<300&&e&&e.clientX!=null){const o=pC('o');o.style.pointerEvents='none';const el=document.elementFromPoint(e.clientX,e.clientY);o.style.pointerEvents='';const t=el&&el.closest('button,input,textarea,a,label');if(t){PD.d.o.pop();padDraw('o');if(/INPUT|TEXTAREA/.test(t.tagName))t.focus();else t.click();return}}
  pPut(PD.id);padBtns()}
@@ -1408,7 +1413,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v179';
+const APPV='v180';
 function nagTog(){if(R._nagoff)delete R._nagoff;else R._nagoff=1;save();show(pfHTML(),kKey('pf'));soonMsg(R._nagoff?'공부 알림을 껐어요.':'공부를 안 한 날 저녁에 알림이 와요.')}
 // 내 정보 맨 위 카드: 아바타·닉네임·연속 학습·이번 주 공부·푼 문제
 function pfTop(){const t=R._t||{},td=dkey(),wd=(new Date().getDay()+6)%7;let wk=0;for(let i=0;i<=wd;i++)wk+=t[dAdd(td,-i)]||0;

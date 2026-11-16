@@ -666,7 +666,6 @@ body.hasbk #app>.pvh{margin-left:48px}@media (min-width:760px){body.hasbk #app>.
 .pdt{border-radius:50%;background:var(--tx)}
 .psw2{position:relative;background:var(--pbg)}
 #pcS{display:block;width:100%;touch-action:none;cursor:crosshair}
-.psw2.pen #pcS{touch-action:pan-y}
 .phint{position:absolute;inset:auto 0 14px;text-align:center;font-size:13px;color:var(--mut);pointer-events:none;transition:opacity .3s}
 .pgrow{display:block;width:100%;padding:9px;border:0;border-top:1.5px dashed var(--ln);background:var(--card);font:inherit;font-size:13px;font-weight:700;color:var(--mut);cursor:pointer}
 .pad.pcl .ptb,.pad.pcl .psw2,.pad.pcl .pgrow,.pad.pcl .pmini{display:none}
@@ -804,7 +803,6 @@ body.tbon #app{padding-bottom:104px}
 .pqc{position:relative}
 #pcO{position:absolute;inset:0;width:100%;height:100%;border-radius:inherit;pointer-events:none;z-index:3}
 .pqc.pwr #pcO{pointer-events:auto;touch-action:none}
-.pqc.pwr.pen #pcO{touch-action:pan-y}
 .pqc.pwr{border-color:var(--ac)!important;box-shadow:0 0 0 3px color-mix(in srgb,var(--ac) 25%,transparent)!important}
 .pth{margin-top:10px;display:flex;flex-direction:column;gap:5px}
 .pth small{font-weight:700;color:var(--mut)}
