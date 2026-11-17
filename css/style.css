@@ -1168,4 +1168,4 @@ button.mkrw.lk,button.mkrw.lk:disabled{opacity:1;border:1.5px dashed #d6ccb8;bac
 .lbmbr{margin-top:2px}
 .lbmbr .lbv{line-height:1}
 .ub2 .mb:not(.mball)>span:first-child{font-weight:800}
-.sdd{position:absolute;top:-1px;right:0;color:#e8493d;font:400 14px/1 'Jua','Pretendard Variable',sans-serif;letter-spacing:.2px}.sdd.dy{color:#e8493d;font-weight:700}
+.sdd{position:absolute;top:0;right:0;color:#e8493d;font:inherit;font-weight:700;font-size:14px;line-height:1.35;letter-spacing:0}.sdd.dy{color:#e8493d}
