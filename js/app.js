@@ -1338,17 +1338,29 @@ function qtx(t,q){q=q||{};const bl=String(t).replace(/\n(?=<보기>)/g,'\n\n').s
 function quiz(){const q=SS.qs[SS.i],N=SS.qs.length,seg=SS.segs[SS.si],r=SS.resp[q.id]||{};QID=q.id;if(!QS0)QS0=Date.now();
  const MS=SS.meta&&isPad(SS.meta.subj),tn={mc:'객관식',ox:'O/X',sh:MS?'단답형':'빈칸 채우기',es:'서술형'}[q.t];
  let h=`<div class="qz"><div class="tag">${SS.meta&&SS.meta.star?'<span class="prc">별표 문제</span> ':SS.meta&&SS.meta.mode=='wrong'?'<span class="prc" style="background:#f3c9c4;color:#7a2e26">오답노트</span> ':SS.meta&&SS.meta.practice?'<span class="prc">다시 풀기</span> ':''}${esc(ttl())} · ${esc(seg.label)}${SS.segs.length>1?` <span class="sgn">${SS.si+1}/${SS.segs.length}</span>`:''}</div><div class="qpr"><b>${SS.i+1}</b><span>/ ${N}</span><div class="bar"><i style="width:${(SS.i+1)/N*100}%"></i></div></div><div class="card qcd">${starBtn(q.id)}<div class="tag" style="margin-bottom:2px">${tn}${q.pt?` · <b class="qpt">${q.pt}점</b>`:''}</div>${SS.meta&&SS.meta.t0?`<div class="mkt" id="mkt">${mkTime()}</div>`:''}${q.hd?'<div class="hdn"><b>고난도 문제</b>노트처럼 넓은 곳에 풀어 보는 걸 추천해요.</div>':''}<div class="q${q.q.length>70||q.q.includes('\n')?' ql':''}">${qtx(q.q,q)}</div>`;
- if(q.t=='mc')pmOf(q).forEach((k,pos)=>{h+=`<button class="opt${r.v===k?' sel':''}" onclick="pk(${k})"><span class="on">${pos+1}</span>${MX(esc(q.o[k]))}</button>`});
- else if(q.t=='ox')h+=`<div class="oxr">${[true,false].map(k=>`<button class="opt ox${r.v===k?' sel':''}" onclick="pk(${k})">${k?'O':'X'}</button>`).join('')}</div>`;
- else if(q.t=='sh')h+=`<input type="text" id="in" placeholder="${MS?'답 (숫자로)':'빈칸에 들어갈 말'}" value="${esc(r.v||'')}" autocomplete="off" onkeydown="if(event.key=='Enter'){event.preventDefault();${SS.i<N-1?'nav(1)':'submitSeg()'}}">`;
+ const CK=MS&&SS.ck&&(SS.ck[q.id]=='ok'||SS.ck[q.id]=='g'),WR=(MS&&SS.wr&&SS.wr[q.id])||[];
+ if(q.t=='mc')pmOf(q).forEach((k,pos)=>{h+=`<button class="opt${CK&&SS.ck[q.id]=='ok'&&k===q.a?' right':''}${WR.includes(k)?' wrong':''}${r.v===k?' sel':''}" onclick="${CK?'':'pk('+k+')'}"><span class="on">${pos+1}</span>${MX(esc(q.o[k]))}</button>`});
+ else if(q.t=='ox')h+=`<div class="oxr">${[true,false].map(k=>`<button class="opt ox${CK&&SS.ck[q.id]=='ok'&&k===q.a?' right':''}${WR.includes(k)?' wrong':''}${r.v===k?' sel':''}" onclick="${CK?'':'pk('+k+')'}">${k?'O':'X'}</button>`).join('')}</div>`;
+ else if(q.t=='sh')h+=`<input type="text" id="in" placeholder="${MS?'답 (숫자로)':'빈칸에 들어갈 말'}" value="${esc(r.v||'')}" ${CK?'readonly':''} autocomplete="off" onkeydown="if(event.key=='Enter'){event.preventDefault();${SS.i<N-1?'nav(1)':'submitSeg()'}}">`;
  else h+=`<textarea id="in" placeholder="답안을 직접 써 보세요">${esc(r.v||'')}</textarea>`;
+ if(MS&&q.t!='es'){const st=SS.ck&&SS.ck[q.id],hn=SS.exo&&SS.exo[q.id];
+ if(st=='ok')h+=`<div class="ckr ok"><div class="ckh"><b>정답이에요!</b></div></div>`;
+ else if(st=='g')h+=`<div class="ckr no"><div class="ckh"><b>오답노트로 넘겼어요</b></div><div class="cks">제출하면 오답노트에 담기고, 그때 정답과 해설을 볼 수 있어요.</div></div>`;
+ else if(st=='x')h+=`<div class="ckr no"><div class="ckh"><b>틀렸어요</b></div><div class="cks">다른 답을 골라 다시 풀어 보세요.</div>${hn?`<div class="fb ok">💡 ${hintT(q)}</div>`:''}<div class="ckbt"><button class="lk" onclick="togEx()">${hn?'힌트 닫기':'힌트 보기'}</button><button class="lk gv" onclick="giveUp()">모르겠어요</button></div></div>`;
+ else h+=`<button class="b ckb" ${hasAns(q)?'':'disabled'} onclick="chkAns()">정답 확인</button>`;
+ h+=`<div class="ckn">정답 확인은 참고용이에요. 끝까지 풀고 <b>제출</b>해야 진행 상황과 오답노트에 반영돼요.</div>`}
  h+=`<div class="row"><button class="b g" ${SS.i?'':'disabled'} onclick="nav(-1)">이전</button>${SS.i<N-1?'<button class="b" onclick="nav(1)">다음</button>':'<button class="b sbm" onclick="submitSeg()">제출</button>'}</div></div>`;
  
  const pd=SS.meta&&isPad(SS.meta.subj);show(h+(pd?padHTML():'')+'</div>','q'+q.id);if(pd)padMount(q);const e=document.getElementById('in');if(e&&q.t=='sh'&&!('ontouchstart' in window))e.focus()}
 const hasAns=q=>{const r=SS.resp[q.id];return r&&r.v!==undefined&&r.v!==null&&String(r.v).trim()!==''};
 function keep(){const q=SS.qs[SS.i],e=document.getElementById('in');if(e&&(q.t=='sh'||q.t=='es'))SS.resp[q.id]={v:e.value}}
 function tick(){if(QS0){const sec=Math.min((Date.now()-QS0)/1000,300);if(sec>=1){R._t=R._t||{};const k=dkey();R._t[k]=(R._t[k]||0)+sec;save()}QS0=Date.now()}}
-function pk(v){const q=SS.qs[SS.i];SS.resp[q.id]={v};quiz()}
+function hintT(q){return q.h||'구해야 하는 것과 주어진 조건을 먼저 정리하고, 어떤 개념·공식을 쓸지 떠올려 보세요.'}
+function chkAns(){keep();const q=SS.qs[SS.i];if(!hasAns(q))return;SS.ck=SS.ck||{};SS.wr=SS.wr||{};const r=SS.resp[q.id]||{},ok=q.t=='sh'?!!grade(q,r.v):r.v===q.a;
+ if(ok)SS.ck[q.id]='ok';else{SS.ck[q.id]='x';if(q.t!='sh'){SS.wr[q.id]=(SS.wr[q.id]||[]).concat(r.v)}}quiz()}
+function togEx(){const q=SS.qs[SS.i];SS.exo=SS.exo||{};SS.exo[q.id]=!SS.exo[q.id];quiz()}
+function giveUp(){const q=SS.qs[SS.i];SS.ck=SS.ck||{};SS.ck[q.id]='g';quiz()}
+function pk(v){const q=SS.qs[SS.i];SS.resp[q.id]={v};if(SS.ck&&SS.ck[q.id]=='x')delete SS.ck[q.id];quiz()}
 function nav(d){keep();tick();SS.i=Math.max(0,Math.min(SS.qs.length-1,SS.i+d));quiz()}
 async function submitSeg(){keep();tick();const left=SS.qs.filter(x=>!hasAns(x)).length;
  if(left&&!(await askBox('아직 안 푼 문제가 있어요',`${left}문제가 비어 있어요.<br>빈 문제는 틀린 것으로 처리돼요.`,'제출')))return;
@@ -1426,7 +1438,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v189';
+const APPV='v190';
 function nagTog(){if(R._nagoff)delete R._nagoff;else R._nagoff=1;save();show(pfHTML(),kKey('pf'));soonMsg(R._nagoff?'공부 알림을 껐어요.':'공부를 안 한 날 저녁에 알림이 와요.')}
 // 내 정보 맨 위 카드: 아바타·닉네임·연속 학습·이번 주 공부·푼 문제
 function pfTop(){const t=R._t||{},td=dkey(),wd=(new Date().getDay()+6)%7;let wk=0;for(let i=0;i<=wd;i++)wk+=t[dAdd(td,-i)]||0;

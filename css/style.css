@@ -1169,3 +1169,17 @@ button.mkrw.lk,button.mkrw.lk:disabled{opacity:1;border:1.5px dashed #d6ccb8;bac
 .lbmbr .lbv{line-height:1}
 .ub2 .mb:not(.mball)>span:first-child{font-weight:800}
 .sdd{position:absolute;top:0;right:0;color:#e8493d;font:inherit;font-weight:700;font-size:14px;line-height:1.35;letter-spacing:0}.sdd.dy{color:#e8493d}
+
+/* 수리 영역: 문항별 정답 확인 (시안) */
+#app .ckb{width:100%;margin-top:10px}#app .ckb:disabled{opacity:.45}
+.ckr{margin-top:12px;padding:12px 14px;border-radius:12px;border:1.5px solid var(--bd);text-align:left}
+.ckr.ok{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 10%,var(--card))}.ckr.no{border-color:var(--no);background:color-mix(in srgb,var(--no) 9%,var(--card))}
+.ckh{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}.ckh b{font-size:17px}.ckh span{font-size:14px}.ckh i{font-style:normal;font-weight:800}
+.ckr .lk{margin-top:6px}.ckr .fb{margin-top:8px}
+.ckn{margin-top:10px;font-size:12.5px;color:var(--mut,#7a7466);text-align:center;line-height:1.5}
+#app .opt.right{border-color:var(--ok);box-shadow:inset 0 0 0 2px var(--ok)}#app .opt.wrong{border-color:var(--no);box-shadow:inset 0 0 0 2px var(--no)}
+
+.cks{margin-top:6px;font-size:14px;line-height:1.5}.ckbt{display:flex;gap:14px;flex-wrap:wrap;margin-top:8px}.ckbt .lk{margin-top:0}.ckr .lk.gv{color:var(--no)}
+#app .opt.wrong{opacity:.6}
+.ckbt .lk{padding:9px 16px;border:1.5px solid var(--acc,#5b7fae);border-radius:10px;background:var(--card,#fff);font-weight:700;text-decoration:none}
+.ckr .lk.gv{border-color:var(--no);color:var(--no)}
