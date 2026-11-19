@@ -683,7 +683,7 @@ const avc=n=>AVC[[...n].reduce((a,c)=>a+c.charCodeAt(0),0)%AVC.length];
 const hbBtn=(c,ic,t,sm,on)=>`<button class="hb" style="--hc:${c}" onclick="${on}"><i class="hbi">${ic}</i><span><b>${t}</b>${sm?`<small>${sm}</small>`:''}</span><span class="chev">›</span></button>`;
 let SUBS=null;
 async function subList(){let ok=true;try{const {data,error}=await DB.rpc('admin_subs',{p_key:AK()});if(error||!Array.isArray(data))throw 0;const m={};data.forEach(x=>{if(x.nick)m[x.nick]=x.slot});SUBS=m}catch(e){ok=false}const w=document.getElementById('ppl');if(w){w.innerHTML=pplHTML();}}
-function pplHTML(){const sb=SUBS||{};return ADM.filter(r=>r.nick!==ADM_NICK).sort((a,b)=>((b.nick in sb)-(a.nick in sb))||(b.t-a.t)).map(r=>`<button onclick="adminOne(decodeURIComponent('${encodeURIComponent(r.nick)}'))"><i class="av" style="--avc:${avc(r.nick)}">${esc([...r.nick][0]||'?')}</i><span><b>${esc(r.nick)}${r.nick in sb?`<em class="rol">관리자·${sb[r.nick]}</em>`:''}</b><small>${r.t?fd(r.t):'기록 없음'}</small></span></button>`).join('')}
+function pplHTML(){const sb=SUBS||{};return ADM.filter(r=>r.nick!==ADM_NICK).sort((a,b)=>((b.nick in sb)-(a.nick in sb))||(b.t-a.t)).map(r=>`<button onclick="adminOne(decodeURIComponent('${encodeURIComponent(r.nick)}'))"><i class="av" style="--avc:${avc(r.nick)}">${esc([...r.nick][0]||'?')}</i><span><b><u class="pnm">${esc(r.nick)}</u>${r.nick in sb?`<em class="rol">관리자·${sb[r.nick]}</em>`:''}</b><small>${r.t?fd(r.t):'기록 없음'}</small></span></button>`).join('')}
 function admin(force){const i=kIdx('pf','관리자');if(i>=0)KCH.pf=i;if(force){admLoad.ok=false;admBody.ld=0;admBody.f=1}return profile()}
 function ownAdminBody(){if(!POSTS&&!ownAdminBody.pl){ownAdminBody.pl=1;postLoad()}
  const pend=FB.filter(x=>x.st!='done').length,AP=ADM.filter(r=>r.nick!==ADM_NICK),act=AP.filter(r=>Date.now()-r.t<7*864e5).length;
@@ -1438,7 +1438,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v190';
+const APPV='v191';
 function nagTog(){if(R._nagoff)delete R._nagoff;else R._nagoff=1;save();show(pfHTML(),kKey('pf'));soonMsg(R._nagoff?'공부 알림을 껐어요.':'공부를 안 한 날 저녁에 알림이 와요.')}
 // 내 정보 맨 위 카드: 아바타·닉네임·연속 학습·이번 주 공부·푼 문제
 function pfTop(){const t=R._t||{},td=dkey(),wd=(new Date().getDay()+6)%7;let wk=0;for(let i=0;i<=wd;i++)wk+=t[dAdd(td,-i)]||0;

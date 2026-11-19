@@ -631,7 +631,7 @@ body.hasbk #app>.pvh{margin-left:48px}@media (min-width:760px){body.hasbk #app>.
 .ppl button{display:flex;align-items:center;gap:10px;text-align:left;padding:10px 12px!important;border:1.5px solid var(--ln)!important;box-shadow:0 2px 0 rgba(120,100,70,.10)!important;border-radius:12px!important;min-width:0}
 .ppl .av{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:color-mix(in srgb,var(--avc) 45%,#fff);border:1.5px solid color-mix(in srgb,var(--avc) 60%,var(--ln));font-style:normal;font-family:'Jua',sans-serif;font-size:16px;font-weight:400;color:#3a3226}
 .ppl span{display:flex;flex-direction:column;min-width:0}
-.ppl span b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:15px}
+.ppl span b{display:flex;align-items:baseline;min-width:0;font-size:15px}.ppl .pnm{text-decoration:none;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .ppl span small{font-size:11.5px;color:var(--mut);font-weight:600;white-space:nowrap}
 .gdx{display:flex;flex-wrap:wrap;gap:6px;margin:4px 0 6px}
 .gdx a{padding:6px 11px;border-radius:999px;border:1.5px solid var(--ln);background:var(--card);color:var(--tx);font-size:13px;font-weight:700;text-decoration:none}
@@ -644,7 +644,7 @@ body.hasbk #app>.pvh{margin-left:48px}@media (min-width:760px){body.hasbk #app>.
 .sbg div b{font-weight:600;color:var(--mut);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .sbg div.on{border-style:solid;border-color:color-mix(in srgb,#9bd3ae 70%,var(--ln));background:color-mix(in srgb,#9bd3ae 14%,var(--card))}
 .sbg div.on b{color:var(--tx);font-weight:700}
-.ppl .rol{font-style:normal;font-size:11px;font-weight:600;color:var(--mut);margin-left:5px;white-space:nowrap}
+.ppl .rol{flex:none;font-style:normal;font-size:11px;font-weight:600;color:var(--mut);margin-left:5px;white-space:nowrap}
 :root{--pbg:#fffdf8;--pln:rgba(91,127,168,.16);--pk1:#2a2620;--pk2:#2f6fd0;--pk3:#d4382c;--phi:#f3c969}
 .pad{margin-top:12px;padding:0!important;overflow:hidden;text-align:left}
 .padh{display:flex;align-items:center;gap:6px;padding:9px 10px 9px 14px;border-bottom:1.5px solid var(--ln)}
