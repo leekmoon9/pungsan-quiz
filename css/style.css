@@ -644,7 +644,7 @@ body.hasbk #app>.pvh{margin-left:48px}@media (min-width:760px){body.hasbk #app>.
 .sbg div b{font-weight:600;color:var(--mut);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .sbg div.on{border-style:solid;border-color:color-mix(in srgb,#9bd3ae 70%,var(--ln));background:color-mix(in srgb,#9bd3ae 14%,var(--card))}
 .sbg div.on b{color:var(--tx);font-weight:700}
-.ppl .rol{flex:none;font-style:normal;font-size:11px;font-weight:600;color:var(--mut);margin-left:5px;white-space:nowrap}
+.ppl .rnx{color:var(--tx)!important}.ppl .rol{flex:none;font-style:normal;font-size:11px;font-weight:600;color:var(--mut);margin-left:5px;white-space:nowrap}
 :root{--pbg:#fffdf8;--pln:rgba(91,127,168,.16);--pk1:#2a2620;--pk2:#2f6fd0;--pk3:#d4382c;--phi:#f3c969}
 .pad{margin-top:12px;padding:0!important;overflow:hidden;text-align:left}
 .padh{display:flex;align-items:center;gap:6px;padding:9px 10px 9px 14px;border-bottom:1.5px solid var(--ln)}

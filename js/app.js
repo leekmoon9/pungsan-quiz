@@ -23,19 +23,29 @@ const okDV=d=>{if(!(d&&d._dv===DV))return {};if(!d._e2)ethMig(d);if(!d._s2){scop
 function save(){KV++;R._e2=1;try{R._lbs=streakN();R._lbsd=dkey()}catch(e){}R._dv=DV;ls('rec:'+NICK,JSON.stringify(R));clearTimeout(tm);tm=setTimeout(sync,700)}
 async function sync(){if(SUBMODE){if(DB&&NICK)try{await DB.rpc('sub_save',{p_key:SK(),p_data:R})}catch(e){}return}if(ADMINMODE){if(DB)try{await DB.rpc('admin_save',{p_key:AK(),p_data:R})}catch(e){}return}if(!DB||!NICK||!PIN)return;try{const {data,error}=await DB.rpc('player_save',{p_nick:NICK,p_pin:PIN,p_data:R});if(error||data!==true)throw 0}catch(e){}}
 const lastNick=()=>ls('last');
-const ADM_NICK='풍산동신라면',ADM_RV='r1';let ADMINMODE=false,SUBMODE=false;const SK=()=>ls('sk');const STAFF=()=>OWNER||SUBMODE;
+const ADM_NICK='풍산동신라면',ADM_RV='r1';let ADMINMODE=false,SUBMODE=false,SUBOK=false;const SK=()=>ls('sk');const STAFF=()=>OWNER||SUBMODE;
 
 // ---- 보조 관리자: 비밀 링크(#s=키)로 들어오고, 처음 한 번 닉네임만 정함 ----
 async function subLoad(){if(!DB)return 'off';try{const {data,error}=await DB.rpc('sub_me',{p_key:SK()});if(error)return 'off';
   if(!data){ls('sk',null);ls('subnick',null);ls('last',null);SUBMODE=false;NICK='';home();soonMsg('보조 관리자 링크가 맞지 않아요.');return 'bad'}
   if(data.need_nick)return 'nick';
-  NICK=data.nick;ls('subnick',NICK);ls('last',NICK);const srv=okDV(data.data||{});R=(R._dv===DV)?mrg(srv,R):srv;R._dv=DV;ls('rec:'+NICK,JSON.stringify(R));sync();return 'ok'}catch(e){return 'off'}}
-function subNickPage(){show(`<div class="fbw"><h2>보조 관리자</h2><p class="tag fbd">처음 한 번만 닉네임을 정하면<br>다음부터는 바로 들어와요.</p><div class="card" style="max-width:340px;margin:10px auto"><input type="text" id="snk" maxlength="12" placeholder="닉네임 (최대 12자)" style="text-align:center" oninput="document.getElementById('sgo').disabled=!this.value.trim()"></div><div class="row" style="max-width:340px;margin:0 auto"><button class="b" id="sgo" disabled onclick="subSetNick()">시작하기</button></div><p class="mut" id="sst" style="text-align:center;min-height:20px"></p></div>`)}
-async function subSetNick(){const v=document.getElementById('snk').value.trim(),b=document.getElementById('sgo'),st=document.getElementById('sst');if(!v)return;b.disabled=true;b.textContent='확인 중…';
+  SUBOK=true;NICK=data.nick;ls('subnick',NICK);ls('last',NICK);const srv=okDV(data.data||{});R=(R._dv===DV)?mrg(srv,R):srv;R._dv=DV;ls('rec:'+NICK,JSON.stringify(R));sync();return 'ok'}catch(e){return 'off'}}
+const subNickChk=()=>{const g=document.getElementById('sgo'),a=document.getElementById('snk'),b=document.getElementById('srn');if(g&&a&&b)g.disabled=!(a.value.trim()&&b.value.trim())};
+function subNickPage(){show(`<div class="fbw"><h2>보조 관리자</h2><p class="tag fbd">처음 한 번만 닉네임을 정하면<br>다음부터는 바로 들어와요.</p><div class="card" style="max-width:340px;margin:10px auto"><input type="text" id="snk" maxlength="12" placeholder="닉네임 (최대 12자)" style="text-align:center" oninput="subNickChk()"><input type="text" id="srn" maxlength="10" placeholder="실명" style="text-align:center;margin-top:8px" oninput="subNickChk()"><p class="mut" style="margin:8px 0 0;font-size:12.5px">실명은 관리자 화면에서만 보여요.</p></div><div class="row" style="max-width:340px;margin:0 auto"><button class="b" id="sgo" disabled onclick="subSetNick()">시작하기</button></div><p class="mut" id="sst" style="text-align:center;min-height:20px"></p></div>`)}
+async function subSetNick(){const v=document.getElementById('snk').value.trim(),rn=document.getElementById('srn').value.trim(),b=document.getElementById('sgo'),st=document.getElementById('sst');if(!v||!rn)return;b.disabled=true;b.textContent='확인 중…';
  try{const {data,error}=await DB.rpc('sub_setnick',{p_key:SK(),p_nick:v});if(error)throw 0;
-  if(data=='ok'||data=='already'){R={_dv:DV};await subLoad();REPL=true;soonMsg(`${NICK}님, 보조 관리자로 들어왔어요.`);return subjects()}
+  if(data=='ok'||data=='already'){R={_dv:DV};await subLoad();if(rn){R._rn=rn;save()}REPL=true;soonMsg(`${NICK}님, 보조 관리자로 들어왔어요.`);return subjects()}
   st.innerHTML=`<span class="no-t">${data=='taken'?'이미 있는 닉네임이에요. 다른 닉네임을 써 주세요.':data=='bad'?'닉네임은 1~12자로 써 주세요.':'링크를 다시 확인해 주세요.'}</span>`}catch(e){st.innerHTML='<span class="no-t">서버에 연결되지 않았어요. 잠시 후 다시 해 주세요.</span>'}
  b.disabled=false;b.textContent='시작하기'}
+// 보조 관리자 실명: 아직 안 적은 계정은 앱에 들어오면 한 번만 물어봄 (서버에서 불러온 뒤에도 없을 때)
+function rnAsk(){if(!SUBMODE||!NICK||R._rn||document.querySelector('.mdw'))return;
+ const w=document.createElement('div');w.id='rnm';w.className='mdw';
+ w.innerHTML=`<div class="mdc"><h3>실명을 알려 주세요</h3><p>보조 관리자는 처음 한 번만 적으면 돼요.<br>관리자 화면에서만 보여요.</p><input type="text" id="rnv" maxlength="10" placeholder="실명" style="text-align:center"><div class="row" style="margin:12px 0 0"><button class="b" data-a="ok" disabled>저장하기</button></div></div>`;
+ const i=w.querySelector('#rnv'),b=w.querySelector('[data-a=ok]');i.oninput=()=>{b.disabled=!i.value.trim()};
+ w.onclick=e=>{if(e.target.dataset.a!=='ok')return;const v=i.value.trim();if(!v)return;R._rn=v;save();w.remove();soonMsg('실명을 저장했어요.')};
+ document.body.appendChild(w)}
+function rnGate(){if(!SUBMODE||!SUBOK||!NICK||R._rn||document.hidden)return;if(document.querySelector('.mdw,.spl,#sporb,.bsw')||!TBR.includes(CURR))return;rnAsk()}
+setInterval(rnGate,2000);
 async function subBoot(FRESH){SUBMODE=true;PIN='';NICK=ls('subnick')||'';
  if(NICK){try{R=okDV(JSON.parse(ls('rec:'+NICK)))}catch(e){R={}}if(!selOK())pickSel();else if(FRESH&&!/^inbox/.test(curR()))splash();else goR(curR());subLoad().then(selRe);return}
  const r=await subLoad();if(r=='nick')return subNickPage();if(r=='ok')return selOK()?splash():pickSel();if(r=='off'){show('<div class="fbw"><h2>보조 관리자</h2><p class="tag fbd">서버에 연결되지 않았어요.<br>인터넷을 확인하고 다시 열어 주세요.</p></div>')}}
@@ -683,7 +693,7 @@ const avc=n=>AVC[[...n].reduce((a,c)=>a+c.charCodeAt(0),0)%AVC.length];
 const hbBtn=(c,ic,t,sm,on)=>`<button class="hb" style="--hc:${c}" onclick="${on}"><i class="hbi">${ic}</i><span><b>${t}</b>${sm?`<small>${sm}</small>`:''}</span><span class="chev">›</span></button>`;
 let SUBS=null;
 async function subList(){let ok=true;try{const {data,error}=await DB.rpc('admin_subs',{p_key:AK()});if(error||!Array.isArray(data))throw 0;const m={};data.forEach(x=>{if(x.nick)m[x.nick]=x.slot});SUBS=m}catch(e){ok=false}const w=document.getElementById('ppl');if(w){w.innerHTML=pplHTML();}}
-function pplHTML(){const sb=SUBS||{};return ADM.filter(r=>r.nick!==ADM_NICK).sort((a,b)=>((b.nick in sb)-(a.nick in sb))||(b.t-a.t)).map(r=>`<button onclick="adminOne(decodeURIComponent('${encodeURIComponent(r.nick)}'))"><i class="av" style="--avc:${avc(r.nick)}">${esc([...r.nick][0]||'?')}</i><span><b><u class="pnm">${esc(r.nick)}</u>${r.nick in sb?`<em class="rol">관리자·${sb[r.nick]}</em>`:''}</b><small>${r.t?fd(r.t):'기록 없음'}</small></span></button>`).join('')}
+function pplHTML(){const sb=SUBS||{};return ADM.filter(r=>r.nick!==ADM_NICK).sort((a,b)=>((b.nick in sb)-(a.nick in sb))||(b.t-a.t)).map(r=>`<button onclick="adminOne(decodeURIComponent('${encodeURIComponent(r.nick)}'))"><i class="av" style="--avc:${avc(r.nick)}">${esc([...r.nick][0]||'?')}</i><span><b><u class="pnm">${esc(r.nick)}</u>${r.nick in sb?`<em class="rol">관리자·${sb[r.nick]}</em>`:''}</b>${r.R&&r.R._rn?`<small class="rnx">실명 ${esc(r.R._rn)}</small>`:''}<small>${r.t?fd(r.t):'기록 없음'}</small></span></button>`).join('')}
 function admin(force){const i=kIdx('pf','관리자');if(i>=0)KCH.pf=i;if(force){admLoad.ok=false;admBody.ld=0;admBody.f=1}return profile()}
 function ownAdminBody(){if(!POSTS&&!ownAdminBody.pl){ownAdminBody.pl=1;postLoad()}
  const pend=FB.filter(x=>x.st!='done').length,AP=ADM.filter(r=>r.nick!==ADM_NICK),act=AP.filter(r=>Date.now()-r.t<7*864e5).length;
@@ -713,7 +723,7 @@ async function fbPeople(){if(!(await admLoad()))return admin();const g={};FB.for
 async function fbPerson(n){if(!(await admLoad()))return admin();const L=FB.filter(x=>x.nick==n);
  show(ADMX+`<h2>${esc(n)}</h2><p class="tag">의견 ${L.length}개 · 최신순</p>`+L.map(fbCard).join('')+``)}
 async function adminOne(n){if(!(await admLoad()))return admin();const r=ADM.find(x=>x.nick==n);if(!r)return admin();const X=r.R||{},TT=X._t||{},TD=Object.keys(TT).filter(k=>TT[k]>=1),tot=TD.reduce((a,k)=>a+TT[k],0);
- let h=`<h2>${esc(r.nick)}</h2><p class="tag">최근 활동 ${fd(r.t)}</p>${SUBMODE?'':`<div class="row" style="margin:0 0 12px"><button class="b" onclick="noticeForm(decodeURIComponent('${encodeURIComponent(r.nick)}'))">${esc(r.nick)} 님에게 알림 보내기</button></div>`}`;
+ let h=`<h2>${esc(r.nick)}</h2><p class="tag">${r.R&&r.R._rn?'실명 '+esc(r.R._rn)+' · ':''}최근 활동 ${fd(r.t)}</p>${SUBMODE?'':`<div class="row" style="margin:0 0 12px"><button class="b" onclick="noticeForm(decodeURIComponent('${encodeURIComponent(r.nick)}'))">${esc(r.nick)} 님에게 알림 보내기</button></div>`}`;
  h+=`<div class="pg2"><div class="card st2"><span>총 공부 시간</span><b>${fmtT(tot)}</b><small>오늘 ${fmtT(TT[dkey()]||0)}</small></div><div class="card st2"><span>공부한 날</span><b>${TD.length}일</b><small>${TD.length?'마지막 '+TD.sort().slice(-1)[0].slice(5).replace('-','/'):'기록 없음'}</small></div></div>`;
  let strip='';for(let i=13;i>=0;i--){const d=new Date(Date.now()-i*864e5),k=dkey(d),v=TT[k]||0,a=v>=1?Math.min(1,.25+v/3600):0;strip+=`<div class="sd2" title="${k}"><i style="background:${v>=1?`rgba(91,127,168,${a})`:'var(--bd)'}"></i><small>${d.getDate()}</small></div>`}
  h+=`<div class="card"><div class="mut" style="font-size:13px;margin-bottom:6px">최근 2주 공부</div><div class="strip">${strip}</div></div>`;
@@ -1438,7 +1448,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v191';
+const APPV='v192';
 function nagTog(){if(R._nagoff)delete R._nagoff;else R._nagoff=1;save();show(pfHTML(),kKey('pf'));soonMsg(R._nagoff?'공부 알림을 껐어요.':'공부를 안 한 날 저녁에 알림이 와요.')}
 // 내 정보 맨 위 카드: 아바타·닉네임·연속 학습·이번 주 공부·푼 문제
 function pfTop(){const t=R._t||{},td=dkey(),wd=(new Date().getDay()+6)%7;let wk=0;for(let i=0;i<=wd;i++)wk+=t[dAdd(td,-i)]||0;
