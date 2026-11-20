@@ -737,7 +737,7 @@ const isSoc=n=>!!CUR[n];
 // 단원 구성: 이름을 받으면 여기만 바꾸면 됨. q: 문제 배열
 const CUR={};SOCN.concat(['중국어|회화','일본어|회화','미적분','기하','세포와|물질대사','물질과|에너지','역학과|에너지','행성우주|과학']).forEach(n=>{CUR[n]=[1,2,3,4].map(u=>({n:u+'단원',m:[1,2,3].map(k=>({n:u+'-'+k+' 중단원',q:[]}))}))});
 CUR['영어']=[]; // 독서와 작문은 data/kor.js 에서 채움 (지문별 필기·문제·모의고사)
-const KIND={'영어':['지문','유형']};const KLB={'독서와|작문':['영역','지문']};const TBW=n=>KLB[n]?'지문':'교과서';const kd=n=>KIND[n]||KLB[n]||['대단원','중단원'];
+const KIND={'영어':['지문','유형']};const KLB={'독서와|작문':['교재','지문']};const TBW=n=>KLB[n]?'지문':'교과서';const kd=n=>KIND[n]||KLB[n]||['대단원','중단원'];
 const bigQ=(n,u)=>[].concat(...CUR[n][u].m.map(x=>x.q));
 const socQ=n=>[].concat(...CUR[n].map((_,u)=>bigQ(n,u)));
 const pct=qs=>qs.length?Math.round(st(qs).c/qs.length*100):0;
@@ -766,14 +766,14 @@ function socPage2(n){const col=sCol(n),nm=n.split('|').join(' '),D=lhData(n),[K1
  const bar=p=>`<div class="lbar"><i style="width:${p}%"></i></div>`;
  if(!NEWS(n))h+=`<h3 class="sec">복습</h3><div class="lrows" style="--uc:${col}"><button class="lrow lrw" onclick="wrongPage('${n}')"><span class="lic">${ICN_WR}</span><span class="lrt"><b>오답노트</b><small>${D.uq?`남은 오답 ${D.uq}문제`:'남은 오답이 없어요'}</small></span>${D.uq?`<span class="wnc">${D.uq}</span>`:''}<span class="chev">›</span></button><button class="lrow lrs" onclick="starPage('${n}')"><span class="lic">${ICN_ST}</span><span class="lrt"><b>별표 문제</b><small>${D.stn?`담아 둔 문제 ${D.stn}개`:'헷갈리는 문제에 별표를 눌러요'}</small></span>${D.stn?`<span class="wnc wst">${D.stn}</span>`:''}<span class="chev">›</span></button></div>`;
  const UNX=CUR[n].findIndex((U,u)=>bigQ(n,u).length&&bigQ(n,u).some(q=>!R[q.id]||isUnf(q)));
- h+=`<h3 class="sec">${KLB[n]?'지문별':'단원별'} 문제</h3>`;
+ h+=`<h3 class="sec">${KLB[n]?'교재별':'단원별'} 문제</h3>`;
  const RN=['Ⅰ','Ⅱ','Ⅲ','Ⅳ','Ⅴ','Ⅵ','Ⅶ','Ⅷ'];
  CUR[n].forEach((U,u)=>{const qs=bigQ(n,u),a=pct(qs),so=qs.filter(q=>R[q.id]),ac=so.length?Math.round(so.filter(q=>R[q.id].ok).length/so.length*100):null,wr=qs.filter(isUnf).length,nx=u==UNX,dn=NEWS(n)&&uDone(n,u);
   h+=`<div class="ub2${OPEN==u?' op':''}${nx?' unx':''}${dn?' udn':''}" id="ub${u}" style="--uc:${col}"><button class="lrow" onclick="tgl2(${u})"><span class="lic lnu">${(U.n.match(/^[ⅠⅡⅢⅣⅤⅥⅦⅧ]+/)||[RN[u]||u+1])[0]}</span><span class="lrt"><b>${esc(U.n.replace(/^[ⅠⅡⅢⅣⅤⅥ]+\.\s*/,''))}${nx?'<span class="unxb">이어서</span>':''}${dn?DNB:''}</b><small>${so.length}/${qs.length}문제${ac!=null?' · 정답률 '+ac+'%':''}${wr?' · 오답 '+wr:''}</small>${bar(a)}</span><span class="chev">›</span></button><div class="um"><div class="umi">`;
-  h+=`<button class="mb mball" onclick="socGo('${n}',${u})"><span><b>이 단원 전체 풀기</b></span><span class="mut">${qs.length}문제</span></button>`;
+  h+=`<button class="mb mball" onclick="socGo('${n}',${u})"><span><b>이 ${KLB[n]?'교재':'단원'} 전체 풀기</b></span><span class="mut">${qs.length}문제</span></button>`;
   U.m.forEach((M,k)=>{const b=pct(M.q),w=M.q.filter(isUnf).length;h+=`<button class="mb" onclick="${NEWS(n)?`partPick('${n}',${u},${k})`:`socGo('${n}',${u},${k})`}"><span>${esc(M.n)}${wkBadge(gInfo(M.q))}</span><span class="mut">${M.q.length?M.q.length+'문제 · '+b+'%'+(w?' · 오답 '+w:''):'준비 중'}</span></button>`});
   h+=`</div></div></div>`});
- h+=`<h3 class="sec">한 번에 풀기</h3><div class="lrows" style="--uc:${col}"><button class="lrow" onclick="socGo('${n}')"><span class="lic">${ICN_PN}</span><span class="lrt"><b>전체 풀기</b><small>${D.qs.length}문제 · 진행도 ${qp}%</small>${bar(qp)}</span><span class="chev">›</span></button></div>`;
+ if(!KLB[n])h+=`<h3 class="sec">한 번에 풀기</h3><div class="lrows" style="--uc:${col}"><button class="lrow" onclick="socGo('${n}')"><span class="lic">${ICN_PN}</span><span class="lrt"><b>전체 풀기</b><small>${D.qs.length}문제 · 진행도 ${qp}%</small>${bar(qp)}</span><span class="chev">›</span></button></div>`;
  if(UNX>=0){const U=CUR[n][UNX],so=bigQ(n,UNX).filter(q=>R[q.id]).length;h+=ctaB(col,so?'이어서 문제 풀기':'문제 풀기 시작',U.n,`socGo('${n}',${UNX})`)}
  SOCCUR=n;show(h);ctaMv()}
 function tgl2(u){document.querySelectorAll('.ub2').forEach(e=>{if(e.id=='ub'+u)e.classList.toggle('op');else e.classList.remove('op')});const e=document.getElementById('ub'+u);OPEN=e&&e.classList.contains('op')?u:-1}
@@ -880,10 +880,11 @@ function noteList0(n){if(!NEWS(n))return subj(n);const col=sCol(n),nm=n.split('|
 function noteList(n){if(!NEWS(n))return subj(n);if(PASSG(n))return noteList0(n);const col=sCol(n),nm=n.split('|').join(' '),D=lhData(n),ln=R._ln&&R._ln[n];
  let h=`<div class="shd"><h2 style="--hlc:${col}">공부하기</h2><p class="tag">${esc(nm)}</p></div>`;
  const rp=D.nn?Math.round(D.seen/D.nn*100):0;
- h+=`<div class="lh1" style="--uc:${col}"><div class="lh1r">${ring(rp,col)}<div class="lh1p"><b>${D.seen}<small>/${D.nn}</small></b><span>필기 읽음</span></div></div><div class="lh1s"><div><small>대단원</small><b>${CUR[n].length}<i>개</i></b></div><div><small>남은 필기</small><b>${D.nn-D.seen}<i>개</i></b></div><div><small>완료 단원</small><b>${CUR[n].filter((U,u)=>uDone(n,u)).length}<i>개</i></b></div></div></div>`;
+ h+=`<div class="lh1" style="--uc:${col}"><div class="lh1r">${ring(rp,col)}<div class="lh1p"><b>${D.seen}<small>/${D.nn}</small></b><span>필기 읽음</span></div></div><div class="lh1s"><div><small>${KLB[n]?'교재':'대단원'}</small><b>${CUR[n].length}<i>개</i></b></div><div><small>남은 필기</small><b>${D.nn-D.seen}<i>개</i></b></div><div><small>완료 단원</small><b>${CUR[n].filter((U,u)=>uDone(n,u)).length}<i>개</i></b></div></div></div>`;
  let i=0;
  CUR[n].forEach((U,u)=>{const ms=U.m.map((M,k)=>[M,k]),sn=ms.filter(([M,k])=>D.nv[u+'-'+k]).length,dn=uDone(n,u);
   h+=`<div class="lsec" style="--uc:${col}"><div class="lsh"><b>${esc(U.n)}</b>${dn?DNB:''}<span>${sn}/${U.m.length} 읽음</span></div></div><div class="lrows" style="--uc:${col}">`;
+  if(!ms.length)h+=`<div class="card mut" style="text-align:center;padding:18px 16px">아직 지문이 준비 중이에요.</div>`;
   ms.forEach(([M,k])=>{i++;const o=noteOf(n,u,k),ok=o||STAFF(),sn1=D.nv[u+'-'+k],cu=ln&&ln[0]==u&&ln[1]==k,qp=pct(M.q),wr=M.q.filter(isUnf).length;
    h+=`<button class="lrow lnr${sn1?' sn':''}${cu?' cu':''}${o?'':' lrl'}"${ok?` onclick="noteView('${n}',${u},${k})"`:' disabled'}><span class="lnum">${(M.n.match(/^\d+-\d+/)||[(u+1)+'-'+(k+1)])[0]}</span><span class="lrt"><b>${esc(M.n.replace(/^\d+(-\d+)?\s*/,''))}</b>${o?'':'<small>준비 중</small>'}</span>${cu?'<span class="lmnow">지금</span>':''}${ok?'<span class="chev">›</span>':''}</button>`});
   h+=`</div>`});
