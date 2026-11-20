@@ -1348,7 +1348,7 @@ function qtx(t,q){q=q||{};const bl=String(t).replace(/\n(?=<보기>)/g,'\n\n').s
   if(/^<보기>/.test(b)){o+=`<div class="qbk"><i>보기</i>${qln(b.replace(/^<보기>\s*\n?/,''))}</div>`;return}
   if(bl.length==1||isQ(b))o+=`<div class="qst">${qln(b)}</div>`;else if(i==0&&!b.includes('\n')&&!/^(\(|[ㄱ-ㅎ]\.|[•]|사례)/.test(b))o+=`<div class="qin">${qln(b)}</div>`;else o+=`<div class="qdt">${qln(b)}</div>`});
  if(q.img&&!bl.includes('[지도]'))o=`<figure class="qim"><img src="${esc(q.img)}" alt="" loading="lazy"></figure>`+o; if(q.fig&&!bl.includes('[그림]'))o=`<div class="qfg">${GR(q.fig)}</div>`+o;if(q.tb&&!bl.includes('[표]'))o=tbH(q.tb)+o;
- if(q.ps&&q.ps.length)o=`<details class="qps" open oncontextmenu="return false"><summary>지문 <small>제목을 누르면 접고 펼 수 있어요</small><button type="button" class="qpz" onclick="event.preventDefault();event.stopPropagation();const d=this.closest('.qps');d.classList.toggle('zm');this.textContent=d.classList.contains('zm')?'원래대로':'크게 보기'">크게 보기</button></summary><div class="qpw">${q.ps.map((x,i)=>`<img src="${esc(x)}" alt="지문 ${i+1}" loading="lazy" draggable="false">`).join('')}</div><p class="qpn">학습용으로만 보여 드리는 지문이에요. 캡처·복제·배포하면 저작권법에 따라 처벌받을 수 있어요.</p></details>`+o;
+ if(q.ps&&q.ps.length)o=`<div class="qps" oncontextmenu="return false"><div class="qpb"><button type="button" class="qpz" onclick="const d=this.closest('.qps');d.classList.toggle('cl');this.textContent=d.classList.contains('cl')?'펼치기':'접기'">접기</button><button type="button" class="qpz" onclick="const d=this.closest('.qps');d.classList.toggle('zm');this.textContent=d.classList.contains('zm')?'원래대로':'크게 보기'">크게 보기</button></div><div class="qpw">${q.ps.map((x,i)=>`<img src="${esc(x)}" alt="지문 ${i+1}" loading="lazy" draggable="false">`).join('')}</div><p class="qpn">학습용으로만 보여 드리는 지문이에요. 캡처·복제·배포하면 저작권법에 따라 처벌받을 수 있어요.</p></div>`+o;
  return MX(`<div class="qbox">${o}</div>`)}
 function quiz(){const q=SS.qs[SS.i],N=SS.qs.length,seg=SS.segs[SS.si],r=SS.resp[q.id]||{};QID=q.id;if(!QS0)QS0=Date.now();
  const MS=SS.meta&&isPad(SS.meta.subj),tn={mc:'객관식',ox:'O/X',sh:MS?'단답형':'빈칸 채우기',es:'서술형'}[q.t];
@@ -1453,7 +1453,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v195';
+const APPV='v196';
 function nagTog(){if(R._nagoff)delete R._nagoff;else R._nagoff=1;save();show(pfHTML(),kKey('pf'));soonMsg(R._nagoff?'공부 알림을 껐어요.':'공부를 안 한 날 저녁에 알림이 와요.')}
 // 내 정보 맨 위 카드: 아바타·닉네임·연속 학습·이번 주 공부·푼 문제
 function pfTop(){const t=R._t||{},td=dkey(),wd=(new Date().getDay()+6)%7;let wk=0;for(let i=0;i<=wd;i++)wk+=t[dAdd(td,-i)]||0;
