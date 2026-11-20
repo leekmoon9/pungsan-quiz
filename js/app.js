@@ -829,7 +829,7 @@ const ICN_NOTE='<svg class="lci" viewBox="0 0 48 48" fill="none" stroke="#1f1a15
 const ICN_PEN='<svg class="lci" viewBox="0 0 48 48" fill="none" stroke="#1f1a15" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><g transform="translate(24 24) scale(1.04) translate(-25.3 -29)"><rect x="4" y="16" width="26" height="26" rx="3.5"/><path d="M11.8 26.6l3.8 3.8 6.6-7.2" stroke-linecap="square" stroke-linejoin="miter"/><path d="M11.8 35.2h10.4"/><path d="M34.5 42l4.4-2.9 7.5-13a2.8 2.8 0 0 0-4.8-2.8l-7.5 13z"/><path d="M38.9 39.1 34.1 36.3"/></g></svg>';
 const ICN_BOOK='<svg class="tbi" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5.5C5.5 4.3 8.6 4.3 12 6c3.4-1.7 6.5-1.7 9-.5V19c-2.5-1.2-5.6-1.2-9 .5-3.4-1.7-6.5-1.7-9-.5z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M12 6v13.5" stroke="currentColor" stroke-width="1.8"/></svg>';
 const sCol=n=>SC[SUBJ.flat().find(x=>x[0]==n)[1]];
-function midSegs(n,u,k){const M=CUR[n][u].m[k],g=u+'-'+k;return [[M.q.filter(q=>q.lv!='x'&&q.lv!='v'),'기본 개념'],[M.q.filter(q=>q.lv=='x'),'실전 문제'],[M.q.filter(q=>q.lv=='v'),'어휘 문제']].filter(a=>a[0].length).map(([qs,l])=>({label:M.n+' · '+l,qs,grp:g}))}
+function midSegs(n,u,k){const M=CUR[n][u].m[k],g=u+'-'+k;return [[M.q.filter(q=>q.lv=='v'),'어휘 문제'],[M.q.filter(q=>q.lv!='x'&&q.lv!='v'),'기본 개념'],[M.q.filter(q=>q.lv=='x'),'실전 문제']].filter(a=>a[0].length).map(([qs,l])=>({label:M.n+' · '+l,qs,grp:g}))}
 function nextNote(n,u,k){let x=[u,k];while((x=nextMid(n,x[0],x[1])))if(noteOf(n,x[0],x[1])||STAFF())return x;return null}
 function nextMid(n,u,k){if(k+1<CUR[n][u].m.length)return [u,k+1];if(u+1<CUR[n].length)return [u+1,0];return null}
 function lhSum(n,col,mids,qs){const nv=(R._nv&&R._nv[n])||{},has=mids.filter(([u,k])=>noteOf(n,u,k)),ln=R._ln&&R._ln[n],go=ln&&noteOf(n,ln[0],ln[1])?ln:has[0];
@@ -1348,6 +1348,7 @@ function qtx(t,q){q=q||{};const bl=String(t).replace(/\n(?=<보기>)/g,'\n\n').s
   if(/^<보기>/.test(b)){o+=`<div class="qbk"><i>보기</i>${qln(b.replace(/^<보기>\s*\n?/,''))}</div>`;return}
   if(bl.length==1||isQ(b))o+=`<div class="qst">${qln(b)}</div>`;else if(i==0&&!b.includes('\n')&&!/^(\(|[ㄱ-ㅎ]\.|[•]|사례)/.test(b))o+=`<div class="qin">${qln(b)}</div>`;else o+=`<div class="qdt">${qln(b)}</div>`});
  if(q.img&&!bl.includes('[지도]'))o=`<figure class="qim"><img src="${esc(q.img)}" alt="" loading="lazy"></figure>`+o; if(q.fig&&!bl.includes('[그림]'))o=`<div class="qfg">${GR(q.fig)}</div>`+o;if(q.tb&&!bl.includes('[표]'))o=tbH(q.tb)+o;
+ if(q.ps&&q.ps.length)o=`<details class="qps" open oncontextmenu="return false"><summary>지문 <small>누르면 접고 펼 수 있어요</small></summary><div class="qpw">${q.ps.map((x,i)=>`<img src="${esc(x)}" alt="지문 ${i+1}" loading="lazy" draggable="false">`).join('')}</div><p class="qpn">학습용으로만 보여 드리는 지문이에요. 캡처·복제·배포하면 저작권법에 따라 처벌받을 수 있어요.</p></details>`+o;
  return MX(`<div class="qbox">${o}</div>`)}
 function quiz(){const q=SS.qs[SS.i],N=SS.qs.length,seg=SS.segs[SS.si],r=SS.resp[q.id]||{};QID=q.id;if(!QS0)QS0=Date.now();
  const MS=SS.meta&&isPad(SS.meta.subj),tn={mc:'객관식',ox:'O/X',sh:MS?'단답형':'빈칸 채우기',es:'서술형'}[q.t];
@@ -1452,7 +1453,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v193';
+const APPV='v194';
 function nagTog(){if(R._nagoff)delete R._nagoff;else R._nagoff=1;save();show(pfHTML(),kKey('pf'));soonMsg(R._nagoff?'공부 알림을 껐어요.':'공부를 안 한 날 저녁에 알림이 와요.')}
 // 내 정보 맨 위 카드: 아바타·닉네임·연속 학습·이번 주 공부·푼 문제
 function pfTop(){const t=R._t||{},td=dkey(),wd=(new Date().getDay()+6)%7;let wk=0;for(let i=0;i<=wd;i++)wk+=t[dAdd(td,-i)]||0;

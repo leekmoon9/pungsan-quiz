@@ -100,12 +100,12 @@ Object.assign(TIPS,{[A]:'STR = 짧은 연쇄 반복. 사람마다 다른 것은 
 const CMB=q=>{if(!q.o||!q.o.every(x=>/^[ㄱ-ㅎ](, [ㄱ-ㅎ])*$/.test(x)))return q;const ans=q.o[q.a];const o=[...q.o].sort((a,b)=>a.length-b.length||(a<b?-1:a>b?1:0));q.o=o;q.a=o.indexOf(ans);return q};
 Object.values(KQ).forEach(L=>L.forEach(CMB));Object.values(KMK).forEach(L=>L.forEach(CMB));
 const NO=['6','7','9','10','11','19','20','21','22','23','24'];
-CUR[KN]=UN.map((n,u)=>({n,m:MN[u].map(([nm,src],k)=>{const pre='kor'+(u+1)+String(k+1).padStart(2,'0'),W={b:0,x:1,v:2};return {n:nm,no:u==0?NO[k]:'',src,q:(KQ[u+'-'+k]||[]).map(q=>Object.assign({},q)).concat((KV[u+'-'+k]||[]).map(q=>Object.assign({lv:'v'},q))).map((q,i)=>Object.assign({lv:q.lv},q)).sort((a,b)=>W[a.lv||'b']-W[b.lv||'b']).map((q,i)=>Object.assign({id:pre+(q.lv||'b')+String(i+1).padStart(2,'0')},q))}})}));
+CUR[KN]=UN.map((n,u)=>({n,m:MN[u].map(([nm,src],k)=>{const pre='kor'+(u+1)+String(k+1).padStart(2,'0'),W={v:0,b:1,x:2};return {n:nm,no:u==0?NO[k]:'',src,q:(KQ[u+'-'+k]||[]).map(q=>Object.assign({},q)).concat((KV[u+'-'+k]||[]).map(q=>Object.assign({lv:'v'},q))).map((q,i)=>Object.assign({lv:q.lv},q)).sort((a,b)=>W[a.lv||'b']-W[b.lv||'b']).map((q,i)=>Object.assign({id:pre+(q.lv||'b')+String(i+1).padStart(2,'0')},q))}})}));
 // 모의고사: 교재마다 3회 (스프링 3회 · 올림포스 3회), 회차마다 어휘 1문제
 MOCK[KN]=[];
 UN.forEach((tn,u)=>{const R3=[[],[],[]];let j=0;const V=[];
- MN[u].forEach((_,k)=>{(KMK[u+'-'+k]||[]).forEach(q=>{R3[j%3].push({o:k,q});j++});(KMV[u+'-'+k]||[]).forEach(q=>V.push(q))});
+ MN[u].forEach((_,k)=>{(KMK[u+'-'+k]||[]).forEach(q=>{R3[j%3].push({o:k,q});j++});(KMV[u+'-'+k]||[]).forEach(q=>V.push({o:k,q}))});
  if(!j)return;
- R3.forEach((L,r)=>{const v=V.length?V[Math.floor(r*V.length/3)]:null,qs=L.sort((a,b)=>a.o-b.o).map(x=>x.q);if(v)qs.push(v);
-  MOCK[KN].push({n:(MOCK[KN].length+1)+'회',lb:tn+' '+(r+1)+'회',q:qs.map((q,i)=>Object.assign({id:'korm'+(MOCK[KN].length+1)+String(i+1).padStart(2,'0'),mk:1,t:'mc'},q))})})});
+ R3.forEach((L,r)=>{const v=V.length?V[Math.floor(r*V.length/3)]:null,qs=L.sort((a,b)=>a.o-b.o);if(v)qs.push(v);
+  MOCK[KN].push({n:(MOCK[KN].length+1)+'회',lb:tn+' '+(r+1)+'회',q:qs.map((x,i)=>Object.assign({id:'korm'+(MOCK[KN].length+1)+String(i+1).padStart(2,'0'),mk:1,t:'mc',ps:((NOTE[KN][u+'-'+x.o]||{}).pg||[]).map(p=>p.replace(/\.jpg$/,'c.jpg'))},x.q))})})});
 })();
