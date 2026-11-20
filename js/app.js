@@ -203,7 +203,7 @@ window.addEventListener('resize',()=>{if(document.querySelector('.hero'))fitSt()
 
 function ach(n,o){const qs=isSoc(n)?socQ(n):[];return qs.length?Math.round(st(qs).c/qs.length*100):0}
 const LOCKED=['독서와|작문'];
-const hasC=n=>!LOCKED.includes(n)&&!!(CUR[n]&&(socQ(n).length||Object.keys(NOTE[n]||{}).length));
+const hasC=n=>(!LOCKED.includes(n)||OWNER)&&!!(CUR[n]&&(socQ(n).length||Object.keys(NOTE[n]||{}).length));
 // 2학기 2차 정기시험(2026.12.7~11) 과목별 시험 날짜 — 2학년 시간표(가정통신문) 기준
 const SEXAM={'역학과|에너지':'2026-12-07','미적분':'2026-12-07','정치':'2026-12-07','기하':'2026-12-08','영어':'2026-12-08','현대사회와|윤리':'2026-12-08','한국지리|탐구':'2026-12-09','행성우주|과학':'2026-12-09','동아시아|역사기행':'2026-12-09','물질과|에너지':'2026-12-09','세포와|물질대사':'2026-12-10','독서와|작문':'2026-12-10','경제':'2026-12-11','일본어|회화':'2026-12-11','중국어|회화':'2026-12-11'};
 function sddHTML(n){const e=SEXAM[n];if(!e)return '';const t=dkey();if(t>e)return '';const u=k=>{const [y,m,d]=k.split('-').map(Number);return Date.UTC(y,m-1,d)/864e5},d=u(e)-u(t);return `<span class="sdd${d<=0?' dy':''}" aria-label="시험 ${d<=0?'당일':d+'일 남음'}">${d<=0?'D-DAY':'D-'+d}</span>`}
@@ -736,8 +736,8 @@ const SOCN=['정치','경제','동아시아|역사기행','현대사회와|윤�
 const isSoc=n=>!!CUR[n];
 // 단원 구성: 이름을 받으면 여기만 바꾸면 됨. q: 문제 배열
 const CUR={};SOCN.concat(['중국어|회화','일본어|회화','미적분','기하','세포와|물질대사','물질과|에너지','역학과|에너지','행성우주|과학']).forEach(n=>{CUR[n]=[1,2,3,4].map(u=>({n:u+'단원',m:[1,2,3].map(k=>({n:u+'-'+k+' 중단원',q:[]}))}))});
-CUR['독서와|작문']=PASS.map(p=>({n:p.name,m:CATS.map(([k,l])=>({n:l,q:p.Q.filter(q=>q.cat==k)}))}));CUR['영어']=[];
-const KIND={'독서와|작문':['지문','유형'],'영어':['지문','유형']};const kd=n=>KIND[n]||['대단원','중단원'];
+CUR['영어']=[]; // 독서와 작문은 data/kor.js 에서 채움 (지문별 필기·문제·모의고사)
+const KIND={'영어':['지문','유형']};const KLB={'독서와|작문':['영역','지문']};const TBW=n=>KLB[n]?'지문':'교과서';const kd=n=>KIND[n]||KLB[n]||['대단원','중단원'];
 const bigQ=(n,u)=>[].concat(...CUR[n][u].m.map(x=>x.q));
 const socQ=n=>[].concat(...CUR[n].map((_,u)=>bigQ(n,u)));
 const pct=qs=>qs.length?Math.round(st(qs).c/qs.length*100):0;
@@ -749,7 +749,7 @@ function socPage(n){if(!PASSG(n)&&CUR[n].length)return socPage2(n);const c=SUBJ.
  {const sn=starSegs(n).reduce((a,x)=>a+x.qs.length,0);h+=`<button class="wnb snb" onclick="starPage('${n}')"><span><b>별표 문제</b><small>${sn?`담아 둔 문제 ${sn}개`:'헷갈리는 문제에 별표를 눌러 모아요'}</small></span>${sn?`<span class="wnc">${sn}</span>`:''}<span class="chev">›</span></button>`}
  if(!CUR[n].length)h+=`<div class="card mut" style="text-align:center;padding:26px 16px">아직 ${K1}이 준비 중이에요.<br>곧 추가할게요!</div>`;
  if(PASSG(n)&&CUR[n].length)h+=`<p class="tag" style="margin:4px 2px 8px">풀 지문을 골라 주세요.</p>`;
- if(!PASSG(n)&&CUR[n].length)h+=`<h3 class="sec">단원별 문제</h3>`;
+ if(!PASSG(n)&&CUR[n].length)h+=`<h3 class="sec">${KLB[n]?'지문별':'단원별'} 문제</h3>`;
  const UNX=PASSG(n)?-1:CUR[n].findIndex((U,u)=>bigQ(n,u).length&&bigQ(n,u).some(q=>!R[q.id]||isUnf(q)));
  CUR[n].forEach((U,u)=>{const a=pct(bigQ(n,u));
   if(PASSG(n)){const qn=bigQ(n,u).length;h+=`<div class="ub" style="--uc:${col}"><div class="uh" onclick="socGo('${n}',${u})"><div class="ut"><b>${esc(U.n)}</b>${wkBadge(gInfo(bigQ(n,u)))}<div class="al"><span>진행도 · ${qn}문제</span><b>${a}%</b></div><div class="bar"><i data-w="${a}" style="width:0;background:${col}"></i></div></div><span class="chev">›</span></div></div>`;return}
@@ -766,7 +766,7 @@ function socPage2(n){const col=sCol(n),nm=n.split('|').join(' '),D=lhData(n),[K1
  const bar=p=>`<div class="lbar"><i style="width:${p}%"></i></div>`;
  if(!NEWS(n))h+=`<h3 class="sec">복습</h3><div class="lrows" style="--uc:${col}"><button class="lrow lrw" onclick="wrongPage('${n}')"><span class="lic">${ICN_WR}</span><span class="lrt"><b>오답노트</b><small>${D.uq?`남은 오답 ${D.uq}문제`:'남은 오답이 없어요'}</small></span>${D.uq?`<span class="wnc">${D.uq}</span>`:''}<span class="chev">›</span></button><button class="lrow lrs" onclick="starPage('${n}')"><span class="lic">${ICN_ST}</span><span class="lrt"><b>별표 문제</b><small>${D.stn?`담아 둔 문제 ${D.stn}개`:'헷갈리는 문제에 별표를 눌러요'}</small></span>${D.stn?`<span class="wnc wst">${D.stn}</span>`:''}<span class="chev">›</span></button></div>`;
  const UNX=CUR[n].findIndex((U,u)=>bigQ(n,u).length&&bigQ(n,u).some(q=>!R[q.id]||isUnf(q)));
- h+=`<h3 class="sec">단원별 문제</h3>`;
+ h+=`<h3 class="sec">${KLB[n]?'지문별':'단원별'} 문제</h3>`;
  const RN=['Ⅰ','Ⅱ','Ⅲ','Ⅳ','Ⅴ','Ⅵ','Ⅶ','Ⅷ'];
  CUR[n].forEach((U,u)=>{const qs=bigQ(n,u),a=pct(qs),so=qs.filter(q=>R[q.id]),ac=so.length?Math.round(so.filter(q=>R[q.id].ok).length/so.length*100):null,wr=qs.filter(isUnf).length,nx=u==UNX,dn=NEWS(n)&&uDone(n,u);
   h+=`<div class="ub2${OPEN==u?' op':''}${nx?' unx':''}${dn?' udn':''}" id="ub${u}" style="--uc:${col}"><button class="lrow" onclick="tgl2(${u})"><span class="lic lnu">${(U.n.match(/^[ⅠⅡⅢⅣⅤⅥⅦⅧ]+/)||[RN[u]||u+1])[0]}</span><span class="lrt"><b>${esc(U.n.replace(/^[ⅠⅡⅢⅣⅤⅥ]+\.\s*/,''))}${nx?'<span class="unxb">이어서</span>':''}${dn?DNB:''}</b><small>${so.length}/${qs.length}문제${ac!=null?' · 정답률 '+ac+'%':''}${wr?' · 오답 '+wr:''}</small>${bar(a)}</span><span class="chev">›</span></button><div class="um"><div class="umi">`;
@@ -895,7 +895,7 @@ function noteView(n,u,k){u=+u;k=+k;const U=CUR[n]&&CUR[n][u],M=U&&U.m[k];if(!M||
  const col=sCol(n),nm=n.split('|').join(' '),o=noteOf(n,u,k)||(STAFF()?NOTE_DEMO:null);if(!o)return noteList(n);const nx=nextNote(n,u,k),pg=o&&o.pg&&o.pg.length;
  let h=PASSG(n)?`<div class="nth"><h2 style="--hlc:${col}">${esc(U.n)}</h2><p class="tag">${esc(nm)} · 지문</p></div>`:`<div class="nth"><h2 style="--hlc:${col}">${esc(M.n)}</h2><p class="tag">${esc(nm)} · ${esc(U.n)}</p></div>`;
  const czN=o&&!o.demo?(o.b.map(ntBlock).join('').match(/<mark>|<b class="ntr">/g)||[]).length:0;
- h+=`<div class="ntbr">${pg?`<button class="tbb" onclick="tbOpen('${n}',${u},${k})">${ICN_BOOK}<span>교과서 원문 보기</span></button>`:''}${czN?`<button class="tbb czb${NCZ?' on':''}" id="czb" onclick="czTog()">${ICN_CZ}<span>${NCZ?'빈칸 암기 끄기':'빈칸 암기'}</span></button>`:''}</div>`;
+ h+=`<div class="ntbr">${pg?`<button class="tbb" onclick="tbOpen('${n}',${u},${k})">${ICN_BOOK}<span>${TBW(n)} 원문 보기</span></button>`:''}${czN?`<button class="tbb czb${NCZ?' on':''}" id="czb" onclick="czTog()">${ICN_CZ}<span>${NCZ?'빈칸 암기 끄기':'빈칸 암기'}</span></button>`:''}</div>`;
  if(o&&o.demo)h+=`<div class="prn">디자인 미리보기예요. 관리자에게만 보이고, 교과서를 받으면 실제 필기로 바뀌어요.</div>`;
  h+=o?`<article class="nt${NCZ&&czN?' cz':''}" style="--nc:${col}" onclick="czTap(event)">${o.b.map(ntBlock).join('')}</article>`:`<div class="card ntx">${ICN_NOTE}<p>이 단원 필기는 준비 중이에요.<br>곧 채워질 예정이에요.</p></div>`;
  h+=PASSG(n)?`<div class="ntf"><button class="b ntq" onclick="socGo('${n}',${u},undefined,{note:1})">이 지문 문제 풀기</button>${nx?`<button class="ntn" onclick="noteView('${n}',${nx[0]},${nx[1]})">다음 지문 공부하기<span>→</span></button>`:''}</div>`:`<div class="ntf"><button class="b ntq" onclick="socGo('${n}',${u},${k},{note:1})">문제 풀기</button>${k==U.m.length-1&&!o.demo?`<button class="ntn" onclick="endUnit('${n}',${u})">${uLab(U,u)} 학습 끝내기<span><i class="cki"></i></span></button>`:nx?`<button class="ntn" onclick="noteView('${n}',${nx[0]},${nx[1]})">다음 단원 학습하기<span>→</span></button>`:''}</div>`;
@@ -992,10 +992,10 @@ function mkTodo(n,wk,un){const L=[];if(!mkCnt(n))return '<p class="mut" style="m
  return L.map(([t,d,f],i)=>`<${f?`button onclick="${f}"`:'div'} class="mkti"><span class="mkn">${i+1}</span><span><b>${esc(t)}</b><small>${esc(d)}</small></span>${f?'<span class="chev">›</span>':''}</${f?'button':'div'}>`).join('')}
 function mkWrong(n){startWrong(n,[{label:'모의고사 오답',qs:mkAll(n).filter(q=>R[q.id]&&!R[q.id].ok)}],{mp:1,back:"mockPage('"+n+"')",title:n.split('|').join(' ')+' 모의고사 오답'})}
 const WARN='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 21h20L12 3z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 10v5M12 17.6v.4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>';
-function tbOpen(n,u,k){const o=noteOf(n,u,k);if(!o||!o.pg||!o.pg.length)return soonMsg('교과서 원문은 아직 준비 중이에요.');
+function tbOpen(n,u,k){const o=noteOf(n,u,k);if(!o||!o.pg||!o.pg.length)return soonMsg(TBW(n)+' 원문은 아직 준비 중이에요.');
  const w=document.createElement('div');w.className='tbv';w.oncontextmenu=e=>{e.preventDefault()};
- w.innerHTML=`<div class="tbh"><b>교과서 원문</b><span class="tbc">${o.pg.length}쪽</span><button class="tbz" onclick="const v=this.closest('.tbv');v.classList.toggle('zm');this.textContent=v.classList.contains('zm')?'원래대로':'크게 보기'">크게 보기</button><button class="tbx" aria-label="닫기" onclick="this.closest('.tbv').remove()">✕</button></div>
- <div class="tbw" role="note">${WARN}<p><b>학습용으로만 보여 드리는 교과서 원문이에요.</b> 이 화면을 캡처하거나 복제해서 무단으로 배포하면 저작권법에 따라 처벌받을 수 있어요.</p></div>
+ w.innerHTML=`<div class="tbh"><b>${TBW(n)} 원문</b><span class="tbc">${o.pg.length}쪽</span><button class="tbz" onclick="const v=this.closest('.tbv');v.classList.toggle('zm');this.textContent=v.classList.contains('zm')?'원래대로':'크게 보기'">크게 보기</button><button class="tbx" aria-label="닫기" onclick="this.closest('.tbv').remove()">✕</button></div>
+ <div class="tbw" role="note">${WARN}<p><b>학습용으로만 보여 드리는 ${TBW(n)} 원문이에요.</b> 이 화면을 캡처하거나 복제해서 무단으로 배포하면 저작권법에 따라 처벌받을 수 있어요.</p></div>
  <div class="tbs">${o.pg.map((x,i)=>`<figure><img src="${esc(x)}" alt="교과서 원문 ${i+1}쪽" loading="lazy" draggable="false"></figure>`).join('')}</div>`;document.body.appendChild(w)}
 
 // ---- 오답노트 · 취약 유형 ----
