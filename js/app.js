@@ -930,7 +930,7 @@ const ICN_EXAM='<svg class="lci" viewBox="0 0 48 48" fill="none" stroke="#1f1a15
 const mkLb=(n,r)=>(MOCK[n]&&MOCK[n][r]&&MOCK[n][r].lb)||(r+1)+'회',mkNx=n=>{const i=MOCK[n]?MOCK[n].findIndex((M,r)=>!M.hd&&!mkDone(n,r)):-1;return i<0?0:i},mkR=(n,r)=>MOCK[n][r].q,mkDone=(n,r)=>mkR(n,r).every(q=>R[q.id]),mkCnt=n=>MOCK[n]?MOCK[n].filter((M,r)=>!M.hd&&mkDone(n,r)).length:0,mkHx=n=>MOCK[n]?MOCK[n].map((M,r)=>M.hd?r:-1).filter(r=>r>=0):[];
 const mkAll=n=>MOCK[n]?[].concat(...MOCK[n].map(x=>x.q)):[],mkAns=n=>mkAll(n).filter(q=>R[q.id]);
 const qDone=n=>{const qs=socQ(n);return qs.length>0&&qs.every(q=>R[q.id])&&!qs.some(isUnf)};
-const MK_OPEN_AT=Date.parse('2026-11-23T00:00:00+09:00'),mkEvent=()=>Date.now()>=MK_OPEN_AT;
+const MK_OPEN_AT=Date.parse('2026-11-20T00:00:00+09:00'),mkEvent=()=>Date.now()>=MK_OPEN_AT;
 // 모의고사는 그 과목 문제를 MK_PCT% 이상 풀면 열림 (맞혔는지는 상관없음)
 const MK_PCT=60;
 function mkOpen(n){const l=mkLeft(n);return STAFF()||(l.tot>0&&l.need==0)||mkEvent()}
@@ -1453,7 +1453,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v201';
+const APPV='v202';
 function nagTog(){if(R._nagoff)delete R._nagoff;else R._nagoff=1;save();show(pfHTML(),kKey('pf'));soonMsg(R._nagoff?'공부 알림을 껐어요.':'공부를 안 한 날 저녁에 알림이 와요.')}
 // 내 정보 맨 위 카드: 아바타·닉네임·연속 학습·이번 주 공부·푼 문제
 function pfTop(){const t=R._t||{},td=dkey(),wd=(new Date().getDay()+6)%7;let wk=0;for(let i=0;i<=wd;i++)wk+=t[dAdd(td,-i)]||0;
