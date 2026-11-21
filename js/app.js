@@ -376,7 +376,7 @@ function pStroke(x,st,W){const p=st.p,n=p.length/2;if(!n)return;x.save();if(st.k
  x.lineCap='round';x.lineJoin='round';x.beginPath();const X=i=>p[2*i]/PS*W,Y=i=>p[2*i+1]/PS*W;x.moveTo(X(0),Y(0));
  if(n<3)x.lineTo(X(n-1)+.01,Y(n-1));else{for(let i=1;i<n-1;i++)x.quadraticCurveTo(X(i),Y(i),(X(i)+X(i+1))/2,(Y(i)+Y(i+1))/2);x.lineTo(X(n-1),Y(n-1))}x.stroke();x.restore()}
 function padDraw(L){const c=pC(L);if(!c||!PD)return;const x=c.getContext('2d'),W=c.clientWidth||1,dpr=c.width/W;x.setTransform(dpr,0,0,dpr,0,0);const H=c.height/dpr;x.clearRect(0,0,W,H);if(L=='s')pBg(x,W,H);
- PD.d[L].forEach(st=>pStroke(x,st,W));if(L=='s'){const h=document.getElementById('phint');if(h)h.style.opacity=PD.d.s.length?0:1}padBtns()}
+ PD.d[L].forEach(st=>pStroke(x,st,W));if(PACT&&PACT.er&&PACT.L==L&&PACT.cur){const k=W/PS;x.save();x.beginPath();x.arc(PACT.cur[0]*k,PACT.cur[1]*k,PER*W/((PACT.rc&&PACT.rc.width)||W),0,Math.PI*2);x.fillStyle='rgba(120,110,95,.12)';x.fill();x.lineWidth=1.5;x.strokeStyle='rgba(90,80,65,.55)';x.stroke();x.restore()}if(L=='s'){const h=document.getElementById('phint');if(h)h.style.opacity=PD.d.s.length?0:1}padBtns()}
 function padBtns(){if(!PD)return;const L=PST.mode=='over'?'o':'s',u=document.getElementById('pUn'),r=document.getElementById('pRe'),c=document.getElementById('pCl');if(u)u.disabled=!PD.d[L].length;if(r)r.disabled=!PD.redo[L].length;if(c)c.disabled=!PD.d[L].length}
 function pPos(e,L){const r=(PACT&&PACT.L==L&&PACT.rc)||pC(L).getBoundingClientRect();return [Math.round((e.clientX-r.left)/r.width*PS),Math.round((e.clientY-r.top)/r.width*PS)]}
 // 두 손가락: 그리지 않고 화면(풀이판)을 위아래·좌우로 움직이기
@@ -402,10 +402,21 @@ let PRAF=0;function pSched(L){if(PRAF)return;PRAF=requestAnimationFrame(()=>{PRA
 function padUp(e){if(FP&&e&&e.pointerId==FP.id){const f=FP;FP=null;if(Math.hypot(f.x-f.sx,f.y-f.sy)<6&&Date.now()-f.t<300){if(f.L=='o'){const o=pC('o');o.style.pointerEvents='none';const el=document.elementFromPoint(e.clientX,e.clientY);o.style.pointerEvents='';const t=el&&el.closest('button,input,textarea,a,label');if(t){if(/INPUT|TEXTAREA/.test(t.tagName))t.focus();else t.click()}}}else if(Math.abs(f.vy)>.3||Math.abs(f.vx)>.3)pFling(f.el,f.vx,f.vy);return}
  if(e&&e.pointerType=='touch'){PTS.delete(e.pointerId);if(PAN){if(PTS.size<2)PAN=null;return}}
  if(e&&e.pointerType=='pen')PENT=Date.now();
- if(!PACT)return;const a=PACT;PACT=null;if(PRAF){cancelAnimationFrame(PRAF);PRAF=0}padDraw(a.L);
+ if(!PACT)return;const a=PACT;PACT=null;if(PRAF){cancelAnimationFrame(PRAF);PRAF=0}padDraw(a.L);if(a.er&&!a.chg){padBtns();return}
  if(a.L=='o'&&!a.er&&a.mv<6&&Date.now()-a.t<300&&e&&e.clientX!=null){const o=pC('o');o.style.pointerEvents='none';const el=document.elementFromPoint(e.clientX,e.clientY);o.style.pointerEvents='';const t=el&&el.closest('button,input,textarea,a,label');if(t){PD.d.o.pop();padDraw('o');if(/INPUT|TEXTAREA/.test(t.tagName))t.focus();else t.click();return}}
  pPut(PD.id);padBtns()}
-function padErase(L,p){const r=Math.round(14/pC(L).getBoundingClientRect().width*PS),a=PD.d[L],b=a.filter(st=>{for(let i=0;i<st.p.length;i+=2)if(Math.hypot(st.p[i]-p[0],st.p[i+1]-p[1])<r)return false;return true});if(b.length!=a.length){PD.d[L]=b;PD.redo[L]=[];padDraw(L);pPut(PD.id)}}
+// 범위형 지우개: 지우개 원 안에 들어온 부분만 잘라 내고, 획의 나머지는 남김
+const PER=13;
+function padErase(L,p){const rc=(PACT&&PACT.L==L&&PACT.rc)||pC(L).getBoundingClientRect(),r=PER/rc.width*PS,r2=r*r,lp=(PACT&&PACT.lp)||p;if(PACT){PACT.lp=p;PACT.cur=p}
+ const P=[],dd=Math.hypot(p[0]-lp[0],p[1]-lp[1]),n=Math.max(1,Math.ceil(dd/(r/2)));for(let i=0;i<=n;i++)P.push([lp[0]+(p[0]-lp[0])*i/n,lp[1]+(p[1]-lp[1])*i/n]);
+ const x0=Math.min(lp[0],p[0])-r,x1=Math.max(lp[0],p[0])+r,y0=Math.min(lp[1],p[1])-r,y1=Math.max(lp[1],p[1])+r,inE=(x,y)=>{if(x<x0||x>x1||y<y0||y>y1)return false;for(const q of P){const a=x-q[0],b=y-q[1];if(a*a+b*b<r2)return true}return false};
+ let ch=false;const out=[];
+ PD.d[L].forEach(st=>{const a=st.p;let bx0=1e9,bx1=-1e9,by0=1e9,by1=-1e9;for(let i=0;i<a.length;i+=2){if(a[i]<bx0)bx0=a[i];if(a[i]>bx1)bx1=a[i];if(a[i+1]<by0)by0=a[i+1];if(a[i+1]>by1)by1=a[i+1]}
+  if(bx1<x0-r||bx0>x1+r||by1<y0-r||by0>y1+r){out.push(st);return}
+  const d=[];for(let i=0;i<a.length;i+=2){if(i){const px=a[i-2],py=a[i-1],l=Math.hypot(a[i]-px,a[i+1]-py),m=Math.ceil(l/(r/3));for(let k=1;k<m;k++)d.push(px+(a[i]-px)*k/m,py+(a[i+1]-py)*k/m)}d.push(a[i],a[i+1])}
+  const segs=[];let cur=[],hit=false;for(let i=0;i<d.length;i+=2){if(inE(d[i],d[i+1])){hit=true;if(cur.length)segs.push(cur);cur=[]}else cur.push(Math.round(d[i]),Math.round(d[i+1]))}if(cur.length)segs.push(cur);
+  if(!hit){out.push(st);return}ch=true;segs.forEach(g=>{if(g.length>=4||(a.length==2&&g.length==2))out.push(Object.assign({},st,{p:g}))})});
+ if(ch){PD.d[L]=out;PD.redo[L]=[];PACT&&(PACT.chg=1)}padDraw(L)}
 function padTool(k){PST.tool=k;document.querySelectorAll('#pad [data-t]').forEach(b=>b.classList.toggle('on',b.dataset.t==k))}
 function padCol(c){PST.col=c;if(PST.tool!='p')padTool('p');document.querySelectorAll('#pad [data-c]').forEach(b=>b.classList.toggle('on',+b.dataset.c==c))}
 function padWid(w){PST.wid=w;document.querySelectorAll('#pad [data-w]').forEach(b=>b.classList.toggle('on',+b.dataset.w==w))}
@@ -1358,7 +1369,7 @@ function quiz(){const q=SS.qs[SS.i],N=SS.qs.length,seg=SS.segs[SS.si],r=SS.resp[
  const CK=MS&&SS.ck&&(SS.ck[q.id]=='ok'||SS.ck[q.id]=='g'),WR=(MS&&SS.wr&&SS.wr[q.id])||[];
  if(q.t=='mc')pmOf(q).forEach((k,pos)=>{h+=`<button class="opt${CK&&SS.ck[q.id]=='ok'&&k===q.a?' right':''}${WR.includes(k)?' wrong':''}${r.v===k?' sel':''}" onclick="${CK?'':'pk('+k+')'}"><span class="on">${pos+1}</span>${MX(esc(q.o[k]))}</button>`});
  else if(q.t=='ox')h+=`<div class="oxr">${[true,false].map(k=>`<button class="opt ox${CK&&SS.ck[q.id]=='ok'&&k===q.a?' right':''}${WR.includes(k)?' wrong':''}${r.v===k?' sel':''}" onclick="${CK?'':'pk('+k+')'}">${k?'O':'X'}</button>`).join('')}</div>`;
- else if(q.t=='sh')h+=`<input type="text" id="in" placeholder="${MS?'답 (숫자로)':'빈칸에 들어갈 말'}" value="${esc(r.v||'')}" ${CK?'readonly':''} autocomplete="off" onkeydown="if(event.key=='Enter'){event.preventDefault();${SS.i<N-1?'nav(1)':'submitSeg()'}}">`;
+ else if(q.t=='sh')h+=`<input type="text" id="in" placeholder="${MS?'답 (숫자로)':'빈칸에 들어갈 말'}" value="${esc(r.v||'')}" ${CK?'readonly':''} autocomplete="off" oninput="shIn(this)" onkeydown="if(event.key=='Enter'){event.preventDefault();${SS.i<N-1?'nav(1)':'submitSeg()'}}">`;
  else h+=`<textarea id="in" placeholder="답안을 직접 써 보세요">${esc(r.v||'')}</textarea>`;
  if(MS&&q.t!='es'){const st=SS.ck&&SS.ck[q.id],hn=SS.exo&&SS.exo[q.id];
  if(st=='ok')h+=`<div class="ckr ok"><div class="ckh"><b>정답이에요!</b></div></div>`;
@@ -1370,6 +1381,7 @@ function quiz(){const q=SS.qs[SS.i],N=SS.qs.length,seg=SS.segs[SS.si],r=SS.resp[
  
  const pd=SS.meta&&isPad(SS.meta.subj);show(h+(pd?padHTML():'')+'</div>','q'+q.id);if(pd)padMount(q);const e=document.getElementById('in');if(e&&q.t=='sh'&&!('ontouchstart' in window))e.focus()}
 const hasAns=q=>{const r=SS.resp[q.id];return r&&r.v!==undefined&&r.v!==null&&String(r.v).trim()!==''};
+function shIn(e){const q=SS.qs[SS.i];if(!q||q.t!='sh')return;SS.resp[q.id]={v:e.value};const b=document.querySelector('#app .ckb');if(b)b.disabled=!e.value.trim();if(SS.ck&&SS.ck[q.id]=='x'){delete SS.ck[q.id];const v=e.value;quiz();const n=document.getElementById('in');if(n){n.focus();try{n.setSelectionRange(v.length,v.length)}catch(x){}}}}
 function keep(){const q=SS.qs[SS.i],e=document.getElementById('in');if(e&&(q.t=='sh'||q.t=='es'))SS.resp[q.id]={v:e.value}}
 function tick(){if(QS0){const sec=Math.min((Date.now()-QS0)/1000,300);if(sec>=1){R._t=R._t||{};const k=dkey();R._t[k]=(R._t[k]||0)+sec;save()}QS0=Date.now()}}
 function hintT(q){return q.h||'구해야 하는 것과 주어진 조건을 먼저 정리하고, 어떤 개념·공식을 쓸지 떠올려 보세요.'}
@@ -1455,7 +1467,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v204';
+const APPV='v205';
 function nagTog(){if(R._nagoff)delete R._nagoff;else R._nagoff=1;save();show(pfHTML(),kKey('pf'));soonMsg(R._nagoff?'공부 알림을 껐어요.':'공부를 안 한 날 저녁에 알림이 와요.')}
 // 내 정보 맨 위 카드: 아바타·닉네임·연속 학습·이번 주 공부·푼 문제
 function pfTop(){const t=R._t||{},td=dkey(),wd=(new Date().getDay()+6)%7;let wk=0;for(let i=0;i<=wd;i++)wk+=t[dAdd(td,-i)]||0;
