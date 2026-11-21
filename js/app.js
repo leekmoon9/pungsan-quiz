@@ -879,8 +879,8 @@ function learnHome(n){
  // 모의고사: 열리면 학습 진도 바로 아래(제목 없이), 잠겨 있으면 맨 아래
  const mkb=D.hasMk?`<button class="lmock${D.op?'':' off'}" style="--uc:${col}" onclick="${D.op?`mockPage('${n}')`:`mockGo('${n}')`}"><span class="lic">${D.op?ICN_TM:ICN_LK}</span><span class="lrt"><b>${D.op?(D.mk>=D.mN?'모의고사 완료':'모의고사'):'모의고사'}</b><small>${D.op?`${D.mk}/${D.mN}회 완료`:lhMockSub(n,D)}</small>${D.op?`<span class="lmkd">${Array.from({length:D.mN},(_,r)=>`<i class="${MOCK[n][r]&&mkDone(n,r)?'on':''}"></i>`).join('')}</span>`:''}</span>${D.op&&D.rt!=null?`<span class="lmkr"><b>${D.rt}<small>%</small></b><small>평균</small></span>`:''}<span class="chev">›</span></button>`:'';
  if(D.op)h+=mkb;
- h+=`<h3 class="sec">학습</h3><div class="lrows" style="--uc:${col}">`+row(ICN_BK,'공부하기',`필기 ${D.seen}/${D.nn} 읽음`,`noteList('${n}')`,'',D.nn?Math.round(D.seen/D.nn*100):0)
-  +(VOCAB[n]?row(ICN_VC,'단어집',VOCAB[n].sub||'',`vocabPage('${n}')`):'')+row(ICN_PN,'문제 풀기',`${D.sol}/${D.qs.length}문제${D.acc!=null?' · 정답률 '+D.acc+'%':''}`,`socPage('${n}')`,'',pct(D.qs))+`</div>`;
+ h+=`<h3 class="sec">학습</h3><div class="lrows" style="--uc:${col}">`+(VOCAB[n]?row(ICN_VC,'단어집',VOCAB[n].sub||'',`vocabPage('${n}')`):'')
+  +row(ICN_BK,'공부하기',`필기 ${D.seen}/${D.nn} 읽음`,`noteList('${n}')`,'',D.nn?Math.round(D.seen/D.nn*100):0)+row(ICN_PN,'문제 풀기',`${D.sol}/${D.qs.length}문제${D.acc!=null?' · 정답률 '+D.acc+'%':''}`,`socPage('${n}')`,'',pct(D.qs))+`</div>`;
  h+=`<h3 class="sec">복습</h3><div class="lrows lr2" style="--uc:${col}">`+row(ICN_WR,'오답노트',D.uq?`남은 오답 ${D.uq}문제`:'남은 오답이 없어요',`wrongPage('${n}')`,D.uq?`<span class="wnc">${D.uq}</span>`:'',null,' lrw')
   +row(ICN_ST,'별표 문제',D.stn?`담아 둔 문제 ${D.stn}개`:'헷갈리는 문제에 별표를 눌러요',`starPage('${n}')`,D.stn?`<span class="wnc wst">${D.stn}</span>`:'',null,' lrs')+`</div>`;
  if(!D.op&&mkb)h+=`<h3 class="sec">모의고사</h3>`+mkb;
@@ -1467,7 +1467,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v208';
+const APPV='v209';
 function nagTog(){if(R._nagoff)delete R._nagoff;else R._nagoff=1;save();show(pfHTML(),kKey('pf'));soonMsg(R._nagoff?'공부 알림을 껐어요.':'공부를 안 한 날 저녁에 알림이 와요.')}
 // 내 정보 맨 위 카드: 아바타·닉네임·연속 학습·이번 주 공부·푼 문제
 function pfTop(){const t=R._t||{},td=dkey(),wd=(new Date().getDay()+6)%7;let wk=0;for(let i=0;i<=wd;i++)wk+=t[dAdd(td,-i)]||0;
