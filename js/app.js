@@ -248,10 +248,10 @@ const GLY={'D':['M1.500 1.500V12.500h2.500a5.500 5.500 0 0 0 5.500-5.500 5.500 5
 '3':['M1.400 3A3 3 0 0 1 7 4.300C7 5.900 5.600 6.800 3.900 6.800 5.700 6.800 7.200 7.900 7.200 9.700A3.200 3.200 0 0 1 1.200 11.300',8.600],
 '4':['M5.700 12.500V1.400L1 9.200h7.400',8.600],
 '5':['M7 1.500H2.300L1.800 6a3.500 3.500 0 1 1-.2 5.300',8.600],
-'6':['M6.800 2.400A3.200 3.200 0 0 0 1.200 4.600V9.300a3.100 3.100 0 1 0 .3-4.600',8.600],
+'6':['M6.600 2.300A3.200 3.200 0 0 0 1.200 4.400V9.300a3.100 3.100 0 1 0 6.200 0 3.100 3.100 0 1 0-6.200 0',8.600],
 '7':['M1.200 1.500h6.400L3.600 12.500',8.600],
 '8':['M4.200 6.700a2.600 2.600 0 1 1 0-5.300 2.600 2.600 0 0 1 0 5.300 3.200 3.200 0 1 1 0 6.200 3.200 3.200 0 0 1 0-6.200z',8.600],
-'9':['M1.600 11.600A3.200 3.200 0 0 0 7.200 9.400V4.700a3.100 3.100 0 1 0-.3 4.600',8.600]};
+'9':['M2.000 11.300A3.200 3.200 0 0 0 7.400 9.200V4.300a3.100 3.100 0 1 0-6.200 0 3.100 3.100 0 1 0 6.200 0',8.600]};
 const GTXT=(t,sw)=>{let x=0,out='';for(const c of t){const g=GLY[c];if(!g)continue;out+=`<path transform="translate(${x} 0)" d="${g[0]}"/>`;x+=g[1]+1.2}x-=1.2;return `<svg viewBox="0 0 ${x+1} 14" height="${14*1.4}" style="display:block;overflow:visible" fill="none" stroke="currentColor" stroke-width="${sw}" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${out}</svg>`};
 
 const DD_EX='2026-12-07',DD_END='2026-12-11',DD_NAME='기말고사';
@@ -1467,7 +1467,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v207';
+const APPV='v208';
 function nagTog(){if(R._nagoff)delete R._nagoff;else R._nagoff=1;save();show(pfHTML(),kKey('pf'));soonMsg(R._nagoff?'공부 알림을 껐어요.':'공부를 안 한 날 저녁에 알림이 와요.')}
 // 내 정보 맨 위 카드: 아바타·닉네임·연속 학습·이번 주 공부·푼 문제
 function pfTop(){const t=R._t||{},td=dkey(),wd=(new Date().getDay()+6)%7;let wk=0;for(let i=0;i<=wd;i++)wk+=t[dAdd(td,-i)]||0;
