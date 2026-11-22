@@ -695,12 +695,25 @@ function subAdminBody(){return `<h3 class="sec">피드백 보기</h3><div class=
 function admBody(){if(!DB)return '<div class="card kmt">서버에 연결되지 않았어요.</div>';
  if(!admLoad.ok){if(!admBody.ld){admBody.ld=1;admLoad(admBody.f).then(ok=>{admBody.f=0;if(!ok)admBody.ld=2;if(CURR=='profile'&&!KNV&&kChips('pf')[KCH.pf]=='관리자'){show(pfHTML(),kKey('pf'));animBars()}})}
   return admBody.ld==2?'<div class="card kmt">불러오지 못했어요.</div>':skAdmin(0)}
- return ADMX+(SUBMODE?subAdminBody():ownAdminBody())}
+ return ADMX+(SUBMODE?subAdminBody():ownAdminBody())+pdfSec()}
 const ICN_GRID='<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><rect x="4" y="4" width="7" height="7" rx="1.6"/><rect x="13" y="4" width="7" height="7" rx="1.6"/><rect x="4" y="13" width="7" height="7" rx="1.6"/><rect x="13" y="13" width="7" height="7" rx="1.6"/></svg>',
  ICN_PPL='<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8.5" r="3.2"/><path d="M3.5 19c.6-3.2 2.8-5 5.5-5s4.9 1.8 5.5 5"/><circle cx="17" cy="9.5" r="2.5"/><path d="M15.8 14.3c2.4-.2 4.2 1.4 4.7 4.2"/></svg>',
  ICN_CLIP='<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"><rect x="6" y="5" width="12" height="15.5" rx="2"/><path d="M9.5 3.5h5v3h-5z"/><path d="M9 11h6M9 14.5h4"/></svg>';
 const AVC=['#8fb8ec','#9bd3ae','#f3c969','#f0a35e','#c9a7e8','#e9978f','#7fcfc6'];
 const avc=n=>AVC[[...n].reduce((a,c)=>a+c.charCodeAt(0),0)%AVC.length];
+// 필기 PDF 받기 (관리자·보조 관리자 전용): 파일은 암호화되어 있고, 열쇠는 서버가 관리자/보조 관리자 키를 확인한 뒤에만 줌
+const PDFL=[[0,'한국지리탐구',5979496],[1,'현대사회와윤리',5554253],[2,'경제',4311956],[3,'정치',3791350],[4,'미적분',1984962],[5,'동아시아역사기행',5788007],[6,'역학과에너지',6111752],[7,'물질과에너지',4716697],[8,'세포와물질대사',3928022],[9,'행성우주과학',6061609]];
+const pdfSec=()=>STAFF()?`<h3 class="sec">필기 PDF</h3><div class="hub">${hbBtn('#e58f8f',ICN_BK,'필기 PDF','과목별로 받기','pdfPage()')}</div>`:'';
+function pdfPage(){if(!STAFF())return;show(ADMX+`<h2>필기 PDF 받기</h2><p class="tag">관리자·보조 관리자만 받을 수 있어요. 받기를 누르면 파일이 내려받아져요.</p>`+PDFL.map(([i,n,z])=>`<div class="card pdr"><div><b>${esc(n)}</b><span class="mut">${(z/1048576).toFixed(1)}MB</span></div><button class="b" id="pdb${i}" onclick="pdfGet(${i})">받기</button></div>`).join(''))}
+let PDK=null;
+async function pdfGet(i){const b=document.getElementById('pdb'+i),it=PDFL.find(x=>x[0]==i);if(!b||!it||b.disabled||!STAFF())return;b.disabled=true;b.textContent='받는 중…';
+ try{if(!PDK){const {data,error}=await DB.rpc('staff_pdf_key',{p_key:SUBMODE?SK():AK()});if(error||!data)throw 1;PDK=Uint8Array.from(atob(data),c=>c.charCodeAt(0))}
+  const r=await fetch(`pdf/p${i}.bin?v=1`);if(!r.ok)throw 2;const u=new Uint8Array(await r.arrayBuffer());
+  const k=await crypto.subtle.importKey('raw',PDK,'AES-GCM',false,['decrypt']);
+  const pt=await crypto.subtle.decrypt({name:'AES-GCM',iv:u.slice(0,12)},k,u.slice(12));
+  const url=URL.createObjectURL(new Blob([pt],{type:'application/pdf'})),a=document.createElement('a');a.href=url;a.download=it[1]+'_필기.pdf';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),60000);
+  b.textContent='다시 받기'}catch(e){PDK=null;b.textContent='받기';soonMsg('받지 못했어요. 인터넷을 확인하고 다시 눌러 주세요.')}
+ b.disabled=false}
 const hbBtn=(c,ic,t,sm,on)=>`<button class="hb" style="--hc:${c}" onclick="${on}"><i class="hbi">${ic}</i><span><b>${t}</b>${sm?`<small>${sm}</small>`:''}</span><span class="chev">›</span></button>`;
 let SUBS=null;
 async function subList(){let ok=true;try{const {data,error}=await DB.rpc('admin_subs',{p_key:AK()});if(error||!Array.isArray(data))throw 0;const m={};data.forEach(x=>{if(x.nick)m[x.nick]=x.slot});SUBS=m}catch(e){ok=false}const w=document.getElementById('ppl');if(w){w.innerHTML=pplHTML();}}
@@ -1467,7 +1480,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v212';
+const APPV='v213';
 function nagTog(){if(R._nagoff)delete R._nagoff;else R._nagoff=1;save();show(pfHTML(),kKey('pf'));soonMsg(R._nagoff?'공부 알림을 껐어요.':'공부를 안 한 날 저녁에 알림이 와요.')}
 // 내 정보 맨 위 카드: 아바타·닉네임·연속 학습·이번 주 공부·푼 문제
 function pfTop(){const t=R._t||{},td=dkey(),wd=(new Date().getDay()+6)%7;let wk=0;for(let i=0;i<=wd;i++)wk+=t[dAdd(td,-i)]||0;
