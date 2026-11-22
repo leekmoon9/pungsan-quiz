@@ -259,7 +259,7 @@ function ddayHTML(t=dkey()){const u=k=>{const [y,m,d]=k.split('-').map(Number);r
  if(t>DD_END)return '';const n=u(DD_EX)-u(t),day=n<=0;
  return `<div class="dd${day?' dy':''}" role="img" aria-label="${DD_NAME} ${day?'당일':n+'일 남음'}">${GTXT(day?'D-DAY':'D-'+n,1.5)}</div>`}
 function homeHTML(){const ALL=SUBJ.flat(),SEL=Array.isArray(R._sel)?R._sel:[],mine=ALL.filter(([n])=>COMMON.includes(n)||SEL.includes(n)),c=KCH.home,grid=L=>`<div class="sg c2">${L.map(x=>sgCard(...x)).join('')}</div>`;
- let b=c==0?streakHTML():'';
+ let b=c==0?streakHTML()+pdfSec():'';
  if(c==0){b+=`<h3 class="sec">공통과목</h3>`+grid(ALL.filter(([n])=>COMMON.includes(n)));b+=`<h3 class="sec">선택과목</h3>`+(SEL.length?grid(ALL.filter(([n])=>SEL.includes(n))):`<div class="card kmt">고른 선택과목이 없어요.</div>`)}
  else{const rows=c==1?SUBJ.map(row=>row.filter(([n])=>!mine.some(m=>m[0]==n))):SUBJ;let any=0;
   rows.forEach((row,ri)=>{if(!row.length)return;any=1;b+=`<h3 class="sec">${SECN[ri]}</h3>`+grid(row)});if(!any)b+=`<div class="card kmt">다른 과목이 없어요.</div>`}
@@ -695,7 +695,7 @@ function subAdminBody(){return `<h3 class="sec">피드백 보기</h3><div class=
 function admBody(){if(!DB)return '<div class="card kmt">서버에 연결되지 않았어요.</div>';
  if(!admLoad.ok){if(!admBody.ld){admBody.ld=1;admLoad(admBody.f).then(ok=>{admBody.f=0;if(!ok)admBody.ld=2;if(CURR=='profile'&&!KNV&&kChips('pf')[KCH.pf]=='관리자'){show(pfHTML(),kKey('pf'));animBars()}})}
   return admBody.ld==2?'<div class="card kmt">불러오지 못했어요.</div>':skAdmin(0)}
- return ADMX+(SUBMODE?subAdminBody():ownAdminBody())+pdfSec()}
+ return ADMX+(SUBMODE?subAdminBody():ownAdminBody())}
 const ICN_GRID='<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round"><rect x="4" y="4" width="7" height="7" rx="1.6"/><rect x="13" y="4" width="7" height="7" rx="1.6"/><rect x="4" y="13" width="7" height="7" rx="1.6"/><rect x="13" y="13" width="7" height="7" rx="1.6"/></svg>',
  ICN_PPL='<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8.5" r="3.2"/><path d="M3.5 19c.6-3.2 2.8-5 5.5-5s4.9 1.8 5.5 5"/><circle cx="17" cy="9.5" r="2.5"/><path d="M15.8 14.3c2.4-.2 4.2 1.4 4.7 4.2"/></svg>',
  ICN_CLIP='<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"><rect x="6" y="5" width="12" height="15.5" rx="2"/><path d="M9.5 3.5h5v3h-5z"/><path d="M9 11h6M9 14.5h4"/></svg>';
@@ -703,7 +703,7 @@ const AVC=['#8fb8ec','#9bd3ae','#f3c969','#f0a35e','#c9a7e8','#e9978f','#7fcfc6'
 const avc=n=>AVC[[...n].reduce((a,c)=>a+c.charCodeAt(0),0)%AVC.length];
 // 필기 PDF 받기 (관리자·보조 관리자 전용): 파일은 암호화되어 있고, 열쇠는 서버가 관리자/보조 관리자 키를 확인한 뒤에만 줌
 const PDFL=[[0,'한국지리탐구',5979496],[1,'현대사회와윤리',5554253],[2,'경제',4311956],[3,'정치',3791350],[4,'미적분',1984962],[5,'동아시아역사기행',5788007],[6,'역학과에너지',6111752],[7,'물질과에너지',4716697],[8,'세포와물질대사',3928022],[9,'행성우주과학',6061609]];
-const pdfSec=()=>STAFF()?`<h3 class="sec">필기 PDF</h3><div class="hub">${hbBtn('#e58f8f',ICN_BK,'필기 PDF','과목별로 받기','pdfPage()')}</div>`:'';
+const pdfSec=()=>STAFF()?`<div class="hub pdh">${hbBtn('#e58f8f',ICN_BK,'필기 PDF 받기','관리자 전용 · 과목별 파일','pdfPage()')}</div>`:'';
 function pdfPage(){if(!STAFF())return;show(ADMX+`<h2>필기 PDF 받기</h2><p class="tag">관리자·보조 관리자만 받을 수 있어요. 받기를 누르면 파일이 내려받아져요.</p>`+PDFL.map(([i,n,z])=>`<div class="card pdr"><div><b>${esc(n)}</b><span class="mut">${(z/1048576).toFixed(1)}MB</span></div><button class="b" id="pdb${i}" onclick="pdfGet(${i})">받기</button></div>`).join(''))}
 let PDK=null;
 async function pdfGet(i){const b=document.getElementById('pdb'+i),it=PDFL.find(x=>x[0]==i);if(!b||!it||b.disabled||!STAFF())return;b.disabled=true;b.textContent='받는 중…';
@@ -1480,7 +1480,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v213';
+const APPV='v214';
 function nagTog(){if(R._nagoff)delete R._nagoff;else R._nagoff=1;save();show(pfHTML(),kKey('pf'));soonMsg(R._nagoff?'공부 알림을 껐어요.':'공부를 안 한 날 저녁에 알림이 와요.')}
 // 내 정보 맨 위 카드: 아바타·닉네임·연속 학습·이번 주 공부·푼 문제
 function pfTop(){const t=R._t||{},td=dkey(),wd=(new Date().getDay()+6)%7;let wk=0;for(let i=0;i<=wd;i++)wk+=t[dAdd(td,-i)]||0;
@@ -1662,7 +1662,7 @@ function parentOf(r){const [k,...rest]=r.split('/'),v=rest.join('/');
  if(!r)return null;if(k=='subjects')return null;
  if(k=='prob'||k=='notes')return 'subj/'+v;if(k=='note'){const ps=v.split('/');ps.pop();ps.pop();return 'notes/'+ps.join('/')}
  if(k=='sel')return Array.isArray(R._sel)?'subjects':null;
- if(k=='leader')return 'subjects';if(k=='inbox')return 'board';if(k=='board')return v?'board':'subjects';if(k=='guide')return 'profile';
+ if(k=='leader'||k=='pdf')return 'subjects';if(k=='inbox')return 'board';if(k=='board')return v?'board':'subjects';if(k=='guide')return 'profile';
  if(k=='pick'||k=='menu'||k=='subj'||k=='profile'&&!v)return 'subjects';if(k=='stats')return 'subjects';if(k=='admin'&&!v)return 'profile';if(k=='admin'&&/^[wnd](\/|$)/.test(v))return BKO[v[0]]||(v[0]=='w'?'board':'profile');
  if(k=='profile')return 'profile';if(k=='admin'){if(/^t\/./.test(v))return 'admin/t';if(/^p\/./.test(v))return 'admin/p';return 'admin'}if(k=='fb')return v=='1'?'profile':'';
  if(k=='mock'||k=='voc')return 'subj/'+v;
@@ -1689,6 +1689,7 @@ function go2(r){
  if(k=='note'){const ps=v.split('/'),kk=ps.pop(),uu=ps.pop(),nn=ps.join('/');if(NEWS(nn))return noteView(nn,+uu,+kk)}
  if(k=='inbox')return v?msgOpen(+v):inbox();
  if(k=='board')return v?postView(+v):board();if(k=='leader')return leader();
+ if(k=='pdf'&&STAFF())return pdfPage();
  if(k=='admin'&&/^w(\/\d+)?$/.test(v)&&OWNER)return postForm(+v.split('/')[1]||0);
  if(k=='guide')return guide();
  if(k=='admin'&&v=='n'&&OWNER)return noticeForm();
@@ -1720,7 +1721,7 @@ window.addEventListener('popstate',e=>{if(location.hash=='#admin')return;const s
 const H=(f,mk)=>function(...a){setR(mk(...a));return f.apply(this,a)};
 home=H(home,()=>'');subjects=H(subjects,()=>'subjects');
 subj=H(subj,n=>'subj/'+n);socPage=H(socPage,n=>NEWS(n)?'prob/'+n:'subj/'+n);noteList=H(noteList,n=>'notes/'+n);noteView=H(noteView,(n,u,k)=>'note/'+n+'/'+u+'/'+k);board=H(board,()=>'board');leader=H(leader,()=>'leader');postView=H(postView,id=>'board/'+id);postForm=H(postForm,id=>'admin/w'+(id?'/'+id:''));guide=H(guide,()=>'guide');pickSel=H(pickSel,()=>'sel');msgOpen=H(msgOpen,id=>'inbox/'+id);noticeForm=H(noticeForm,()=>'admin/n');delPage=H(delPage,()=>'admin/d');allStats=H(allStats,()=>'stats');fbForm=H(fbForm,f=>'fb/'+(f||0));
-adminOne=H(adminOne,n=>'admin/u/'+n);fbTypes=H(fbTypes,()=>'admin/t');fbType=H(fbType,k=>'admin/t/'+k);fbPeople=H(fbPeople,()=>'admin/p');fbPerson=H(fbPerson,n=>'admin/p/'+n);fbReply=H(fbReply,id=>'admin/r/'+id);
+adminOne=H(adminOne,n=>'admin/u/'+n);fbTypes=H(fbTypes,()=>'admin/t');fbType=H(fbType,k=>'admin/t/'+k);fbPeople=H(fbPeople,()=>'admin/p');fbPerson=H(fbPerson,n=>'admin/p/'+n);fbReply=H(fbReply,id=>'admin/r/'+id);pdfPage=H(pdfPage,()=>'pdf');
 wrongPage=H(wrongPage,n=>'wrong/'+n);starPage=H(starPage,n=>'star/'+n);mockPage=H(mockPage,n=>'mock/'+n);vocabPage=H(vocabPage,n=>'voc/'+n);profile=H(profile,()=>'profile');pfShow=H(pfShow,()=>'profile/pw');pfNick=H(pfNick,()=>'profile/nick');pfPin=H(pfPin,()=>'profile/pin');
 quiz=(f=>function(){setR('quiz');const x=f.apply(this,arguments);saveSS();return x})(quiz);
 result=(f=>function(){REPL=true;setR('result');const x=f.apply(this,arguments);saveSS();return x})(result);
