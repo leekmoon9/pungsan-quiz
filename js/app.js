@@ -731,7 +731,7 @@ function ownAdminBody(){if(!POSTS&&!ownAdminBody.pl){ownAdminBody.pl=1;postLoad(
   <div class="lgd">${FBT.filter(t=>cnt[t[0]]).map(t=>`<span><i style="background:${t[2]}"></i>${t[1]} ${cnt[t[0]]}</span>`).join('')}</div></div>`;
  const top=FB.filter(x=>x.st!='done'&&FT(x.k)[3]>=2).sort((a,b)=>FT(b.k)[3]-FT(a.k)[3]||b.t-a.t).slice(0,3);
  h+=`<div class="sbt">가장 시급한 것</div>`+(top.length?top.map(fbCard).join(''):'<div class="card mut">지금 급하게 고칠 의견은 없어요.</div>');
- h+=`<div class="hub">${hbBtn('#c9a7e8',ICN_GRID,'유형별 보기','','fbTypes()')}${hbBtn('#9bd3ae',ICN_PPL,'개인별 보기','','fbPeople()')}</div><div class="hub hub1">${hbBtn('#f0a35e',ICN_CLIP,'클로드에게 보낼 피드백 복사','','fbCopy()')}</div>`;
+ h+=`<div class="hub">${hbBtn('#c9a7e8',ICN_GRID,'유형별 보기','','fbTypes()')}${hbBtn('#9bd3ae',ICN_PPL,'개인별 보기','','fbPeople()')}</div><div class="hub hub1">${hbBtn('#f0a35e',ICN_CLIP,'클로드에게 보낼 피드백 복사','','fbCopy()')}</div><h3 class="sec">선택과목</h3><div class="hub hub1">${hbBtn('#8fb8ec',ICN_PPL,'친구들 선택과목 보기','','selView()')}</div>`;
  h+=`<h3 class="sec">개인별 관리</h3>`+(ADM.length?`<div class="ppl" id="ppl">${pplHTML()}</div>`:'<div class="card mut">아직 참여한 사람이 없어요.</div>');if(!SUBS&&!ownAdminBody.sl){ownAdminBody.sl=1;setTimeout(subList)}
  return h+wrongAna()}
 async function fbTypes(){if(!(await admLoad()))return admin();const cnt={};FBT.forEach(t=>cnt[t[0]]=0);FB.forEach(x=>cnt[x.k]++);const mx=Math.max(1,...Object.values(cnt));
@@ -744,10 +744,16 @@ async function fbPeople(){if(!(await admLoad()))return admin();const g={};FB.for
  let h=`<h2>개인별 의견</h2><p class="tag">${ns.length}명이 의견을 남겼어요.</p>`;
  h+=ns.length?ns.map(n=>`<div class="card pc" onclick="fbPerson(decodeURIComponent('${encodeURIComponent(n)}'))"><div class="al"><b>${esc(n)}</b><span class="mut">${g[n].length}개 · 최근 ${fd(g[n][0].t)}</span></div><div style="margin-top:6px;display:flex;gap:4px;flex-wrap:wrap">${[...new Set(g[n].map(x=>x.k))].map(chip).join('')}</div></div>`).join(''):'<div class="card mut">아직 의견이 없어요.</div>';
  h+=``;show(ADMX+h)}
+async function selView(){if(!OWNER)return admin();if(!(await admLoad()))return admin();const AP=ADM.filter(r=>r.nick&&r.nick!==ADM_NICK),has=AP.filter(r=>Array.isArray((r.R||{})._sel)),no=AP.filter(r=>!Array.isArray((r.R||{})._sel)),nm=n=>n.split('|').join(' ');
+ let h=`<h2>선택과목 현황</h2><p class="tag">${has.length}명이 골랐고, ${no.length}명은 아직이에요.</p>`;
+ SUBJ.flat().filter(x=>!COMMON.includes(x[0])).map(x=>({n:x[0],L:has.filter(r=>r.R._sel.includes(x[0]))})).sort((a,b)=>b.L.length-a.L.length).forEach(o=>{h+=`<div class="card"><div class="al"><b>${esc(nm(o.n))}</b><span class="mut">${o.L.length}명</span></div>${o.L.length?`<div style="margin-top:8px;display:flex;gap:4px;flex-wrap:wrap">${o.L.map(r=>`<span class="chp" style="background:#e8e1d3;color:#444">${esc(r.nick)}</span>`).join('')}</div>`:''}</div>`});
+ h+=`<h3 class="sec">사람별</h3>`+has.sort((a,b)=>a.nick.localeCompare(b.nick,'ko')).map(r=>{const L=r.R._sel.filter(n=>!COMMON.includes(n));return `<div class="card"><div class="al"><b>${esc(r.nick)}</b><span class="mut">${L.length}개</span></div><div class="mut" style="margin-top:6px;font-size:14px">${L.map(n=>esc(nm(n))).join(' · ')||'없음'}</div></div>`}).join('');
+ if(no.length)h+=`<div class="card mut">아직 안 골랐어요: ${no.map(r=>esc(r.nick)).join(', ')}</div>`;
+ show(ADMX+h)}
 async function fbPerson(n){if(!(await admLoad()))return admin();const L=FB.filter(x=>x.nick==n);
  show(ADMX+`<h2>${esc(n)}</h2><p class="tag">의견 ${L.length}개 · 최신순</p>`+L.map(fbCard).join('')+``)}
 async function adminOne(n){if(!(await admLoad()))return admin();const r=ADM.find(x=>x.nick==n);if(!r)return admin();const X=r.R||{},TT=X._t||{},TD=Object.keys(TT).filter(k=>TT[k]>=1),tot=TD.reduce((a,k)=>a+TT[k],0);
- let h=`<h2>${esc(r.nick)}</h2><p class="tag">${r.R&&r.R._rn?'실명 '+esc(r.R._rn)+' · ':''}최근 활동 ${fd(r.t)}</p>${SUBMODE?'':`<div class="row" style="margin:0 0 12px"><button class="b" onclick="noticeForm(decodeURIComponent('${encodeURIComponent(r.nick)}'))">${esc(r.nick)} 님에게 알림 보내기</button></div>`}`;
+ let h=`<h2>${esc(r.nick)}</h2><p class="tag">${r.R&&r.R._rn?'실명 '+esc(r.R._rn)+' · ':''}최근 활동 ${fd(r.t)}</p>${OWNER&&Array.isArray(X._sel)?`<div class="card mut" style="margin:0 0 12px;font-size:14px">선택과목 · ${X._sel.filter(n=>!COMMON.includes(n)).map(n=>esc(n.split('|').join(' '))).join(' · ')||'없음'}</div>`:''}${SUBMODE?'':`<div class="row" style="margin:0 0 12px"><button class="b" onclick="noticeForm(decodeURIComponent('${encodeURIComponent(r.nick)}'))">${esc(r.nick)} 님에게 알림 보내기</button></div>`}`;
  h+=`<div class="pg2"><div class="card st2"><span>총 공부 시간</span><b>${fmtT(tot)}</b><small>오늘 ${fmtT(TT[dkey()]||0)}</small></div><div class="card st2"><span>공부한 날</span><b>${TD.length}일</b><small>${TD.length?'마지막 '+TD.sort().slice(-1)[0].slice(5).replace('-','/'):'기록 없음'}</small></div></div>`;
  let strip='';for(let i=13;i>=0;i--){const d=new Date(Date.now()-i*864e5),k=dkey(d),v=TT[k]||0,a=v>=1?Math.min(1,.25+v/3600):0;strip+=`<div class="sd2" title="${k}"><i style="background:${v>=1?`rgba(91,127,168,${a})`:'var(--bd)'}"></i><small>${d.getDate()}</small></div>`}
  h+=`<div class="card"><div class="mut" style="font-size:13px;margin-bottom:6px">최근 2주 공부</div><div class="strip">${strip}</div></div>`;
@@ -1480,7 +1486,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v214';
+const APPV='v215';
 function nagTog(){if(R._nagoff)delete R._nagoff;else R._nagoff=1;save();show(pfHTML(),kKey('pf'));soonMsg(R._nagoff?'공부 알림을 껐어요.':'공부를 안 한 날 저녁에 알림이 와요.')}
 // 내 정보 맨 위 카드: 아바타·닉네임·연속 학습·이번 주 공부·푼 문제
 function pfTop(){const t=R._t||{},td=dkey(),wd=(new Date().getDay()+6)%7;let wk=0;for(let i=0;i<=wd;i++)wk+=t[dAdd(td,-i)]||0;
