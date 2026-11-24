@@ -274,7 +274,7 @@ function homeHTML(){const ALL=SUBJ.flat(),SEL=Array.isArray(R._sel)?R._sel:[],mi
  if(c==0){b+=`<h3 class="sec">공통과목</h3>`+grid(ALL.filter(([n])=>COMMON.includes(n)));b+=`<h3 class="sec">선택과목</h3>`+(SEL.length?grid(ALL.filter(([n])=>SEL.includes(n))):`<div class="card kmt">고른 선택과목이 없어요.</div>`)}
  else{const rows=c==1?SUBJ.map(row=>row.filter(([n])=>!mine.some(m=>m[0]==n))):SUBJ;let any=0;
   rows.forEach((row,ri)=>{if(!row.length)return;any=1;b+=`<h3 class="sec">${SECN[ri]}</h3>`+grid(row)});if(!any)b+=`<div class="card kmt">다른 과목이 없어요.</div>`}
- return kPage('home',kHead(`<h2 class="hwt" aria-label="풍산 학습">${HW_TITLE}</h2>${ddayHTML()}`,[['sel','선택과목 바꾸기','pickSel()']],'home'),b)}
+ return kPage('home',kHead(`<h2 class="hwt" aria-label="풍산 학습">${HW_TITLE}</h2>${ddayHTML()}`,[['txt:피드백','피드백 보내기','fbForm(0)']],'home'),b)}
 function subjects(){if(NICK&&!selOK())return pickSel();document.body.classList.remove('selg');SELF=false;show(homeHTML(),kKey('home'));animBars();mailBadge();afterHome()}
 let FBF=0;
 let FBK='';
@@ -625,8 +625,8 @@ function guide(){const S=(n,t,body,img)=>`<section class="gds" id="gd${n}"><div 
  h+=S(8,'전체 통계 · 공부 달력','<p>아래 탭바의 <b>막대</b>(전체 통계)는 칩으로 나뉘어 있어요. <b>요약</b>은 오늘의 목표·기말 진도·이번 주 공부, <b>기록</b>은 친구들과 비교·요일별 패턴·나의 기록, <b>성적</b>은 정답률·모의고사 점수·약점 유형, <b>과목별</b>은 과목마다 자세히, <b>달력</b>은 날짜별 공부 시간이에요. (앱 전용)</p><p><b>오늘의 목표</b>는 하루 첫 접속 때 정해요. 정하면 그날은 바꿀 수 없고, 안 정했으면 다시 들어올 때마다 물어봐요.</p>','g_stats');
  h+=S(9,'공지','<p>아래 탭바의 <b>종</b>(소식)에서 시험 안내는 <b>공지</b> 칩, 앱 소식은 <b>업데이트</b> 칩에 모여 있어요. 아직 안 열어 본 글이 있으면 <b class="gdr">빨간 점</b>이 생겨요. 글이 마음에 들면 날짜 옆 <b>하트</b>를 눌러 주세요.</p>','g_board');
  h+=S(10,'메시지함 · 알림','<p><b>종</b>(소식)의 <b>메시지</b> 칩이 메시지함이에요. 새 공지 알림, 피드백 답장, 관리자가 보낸 알림이 와요. 숫자는 읽지 않은 메시지 수예요. 휴지통을 누르면 골라서 지울 수 있어요.</p><p>프로필에서 <b>폰 알림</b>을 켜 두면 메시지가 올 때 폰으로도 알려 줘요.</p>','g_inbox');
- h+=S(11,'피드백 보내기','<p>정답이 이상하거나 불편한 점, 추가했으면 하는 과목이 있으면 프로필 오른쪽 위 <b>피드백</b> 글자를 눌러 유형을 골라 보내 주세요. 고쳐지면 소식의 메시지 칩으로 답장이 와요.</p>');
- h+=S(12,'프로필','<p>아래 탭바의 <b>사람</b>(프로필)에서 닉네임·비밀번호를 바꾸고 폰 알림을 켤 수 있어요. 그날 공부를 안 하면 저녁에 오는 <b>공부 알림</b>도 여기서 끄고 켤 수 있어요. 오른쪽 위 <b>피드백</b> 버튼을 누르면 피드백을 보낼 수 있어요.</p>','g_profile');
+ h+=S(11,'피드백 보내기','<p>정답이 이상하거나 불편한 점, 추가했으면 하는 과목이 있으면 홈 화면 오른쪽 위 <b>피드백</b> 글자를 눌러 유형을 골라 보내 주세요. 고쳐지면 소식의 메시지 칩으로 답장이 와요.</p>');
+ h+=S(12,'프로필','<p>아래 탭바의 <b>사람</b>(프로필)에서 닉네임·비밀번호를 바꾸고 폰 알림을 켤 수 있어요. 그날 공부를 안 하면 저녁에 오는 <b>공부 알림</b>도 여기서 끄고 켤 수 있어요.</p>','g_profile');
  h+=`<div class="row"><button class="b" onclick="subjects()">학습하러 가기</button></div>`;show(h)}
 
 // ================= 관리자 =================
@@ -1210,7 +1210,7 @@ const TOUR=[
  {t:'아래 탭으로 이동해요',v:()=>`<div class="tpill">${TBK.map((k,i)=>`<span class="${i==0?'on':''}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true">${TBI[k][i==0?1:0]}</svg></span>`).join('')}</div><div class="tsl">${[['home','학습','과목을 고르고 공부해요'],['noti','소식','공지·업데이트·메시지, 하트도 눌러요'],['lb','리더보드','친구들과 순위를 비교해요'],['st','전체 통계','내 공부 기록 (앱 전용)'],['pf','프로필','닉네임·알림·피드백']].map(([k,a,b])=>TST(TIC(k),a,b)).join('')}</div>`,p:''},
  {t:'목표와 통계, 알림',v:()=>`<div>${TCAP('앱을 켜면 오늘의 목표를 정해요')}${tourGoal()}</div><div>${TCAP('전체 통계에서 내 공부를 확인해요')}<div class="kc" role="tablist">${kChips('st').map((x,i)=>`<button class="${i==0?'on':''}">${x}</button>`).join('')}</div></div><div>${TCAP('공부를 안 한 날엔 저녁에 알림이 와요')}<div class="card" style="margin:0"><div class="pr" style="border:0"><span>공부 알림</span><b>켜짐</b><button class="lk">끄기</button></div></div></div>`,p:''},
  {t:'앱 설치와 비밀번호',v:()=>`<div>${TCAP('홈 화면에 추가해야 통계·알림을 쓸 수 있어요')}<div class="tin"><div class="card"><h4>아이폰 · 사파리</h4><ol><li><i>1</i><span>아래 <b class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V4M8 8l4-4 4 4M6 12v7a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-7"/></svg></b> 공유 버튼 누르기</span></li><li><i>2</i><span><b>홈 화면에 추가</b> 누르기</span></li></ol></div><div class="card"><h4>안드로이드 · 크롬</h4><ol><li><i>1</i><span>오른쪽 위 <b class="ic dots">⋮</b> 메뉴 누르기</span></li><li><i>2</i><span><b>앱 설치</b> 누르기</span></li></ol></div></div></div><div>${TCAP('닉네임과 비밀번호 4자리로 들어와요')}<div class="card" style="margin:0"><div class="pr" style="border:0"><span>비밀번호</span><b>••••</b><button class="lk">보기</button><button class="lk">변경하기</button></div></div><div class="tcap" style="margin-top:8px">잊으면 기록을 찾을 수 없어요. 꼭 기억해 두세요</div></div>`,p:''},
- {t:'불편하면 피드백으로',v:()=>`<div class="tfb"><div class="ki"><button class="kt kfb">${KTX['피드백'][1]}<span>피드백</span></button></div><div class="tcap" style="text-align:center;margin-top:16px">프로필 오른쪽 위에 있어요</div></div><div class="ntg fbk" role="radiogroup">${FBT.map(t=>`<button role="radio" aria-checked="false" style="--fc:${t[2]};pointer-events:none"><i></i>${t[1]}</button>`).join('')}</div>`,p:'불편한 점이나 바라는 점을 보내면<br>고쳐진 뒤 메시지함으로 답장이 와요.'}];
+ {t:'불편하면 피드백으로',v:()=>`<div class="tfb"><div class="ki"><button class="kt kfb">${KTX['피드백'][1]}<span>피드백</span></button></div><div class="tcap" style="text-align:center;margin-top:16px">홈 화면 오른쪽 위에 있어요</div></div><div class="ntg fbk" role="radiogroup">${FBT.map(t=>`<button role="radio" aria-checked="false" style="--fc:${t[2]};pointer-events:none"><i></i>${t[1]}</button>`).join('')}</div>`,p:'불편한 점이나 바라는 점을 보내면<br>고쳐진 뒤 메시지함으로 답장이 와요.'}];
 let TIX=0;
 function tourOpen(){if(document.getElementById('tour'))return;tourCss();TIX=0;const w=document.createElement('div');w.id='tour';w.className='mdw tour';
  let x0=null;w.addEventListener('touchstart',e=>{x0=e.touches.length==1?e.touches[0].clientX:null},{passive:true});
@@ -1497,7 +1497,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v217';
+const APPV='v218';
 function nagTog(){if(R._nagoff)delete R._nagoff;else R._nagoff=1;save();show(pfHTML(),kKey('pf'));soonMsg(R._nagoff?'공부 알림을 껐어요.':'공부를 안 한 날 저녁에 알림이 와요.')}
 // 내 정보 맨 위 카드: 아바타·닉네임·연속 학습·이번 주 공부·푼 문제
 function pfTop(){const t=R._t||{},td=dkey(),wd=(new Date().getDay()+6)%7;let wk=0;for(let i=0;i<=wd;i++)wk+=t[dAdd(td,-i)]||0;
@@ -1511,7 +1511,7 @@ function pfHTML(){const ch=kChips('pf');if(KCH.pf>=ch.length)KCH.pf=0;const nm=c
  <div class="card pf" id="pfsel"><div class="pr"><span>선택과목</span><b class="pfsl">${Array.isArray(R._sel)?R._sel.map(n=>`<span>${n.split('|').join(' ')}</span>`).join('')||'없음':'아직 안 골랐어요'}</b><button class="lk" onclick="pickSel()">바꾸기</button></div>${ADMINMODE||SUBMODE?'':`<div class="pr"><span>학번</span><b>${R._sid?esc(R._sid):'아직 안 적었어요'}</b><button class="lk" onclick="sidAsk(true)">${R._sid?'바꾸기':'적기'}</button></div><div class="mut" style="font-size:12px;padding:0 4px 4px">학번은 관리자만 볼 수 있어요.</div>`}</div>
  
  <p class="mut" style="text-align:center;font-size:12px;margin-top:18px">앱 버전 ${APPV}</p>`;
- return kPage('pf',kHead(`<h2>${esc(NICK)}</h2>`,[['txt:피드백','피드백 보내기','fbForm(1)']],'pf',ch.map(x=>x=='관리자'?pend:0)),b)}
+ return kPage('pf',kHead(`<h2>${esc(NICK)}</h2>`,[],'pf',ch.map(x=>x=='관리자'?pend:0)),b)}
 function profile(){if(NICK&&!selOK())return pickSel();if(ADMINMODE||SUBMODE)PFOK=true;show(pfHTML(),kKey('pf'));animBars()}
 const ICN_SH='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" stroke-linecap="round" aria-hidden="true"><path d="M12 3 4.5 6v5.5c0 4.6 3.2 8.2 7.5 9.5 4.3-1.3 7.5-4.9 7.5-9.5V6z"/><path d="m9 12 2.2 2.2L15.5 10"/></svg>';
 const RSI={chk:'<path d="M5 12.5 10 17l9-10"/>',re:'<path d="M4 12a8 8 0 1 0 2.4-5.7"/><path d="M4 4v4.5h4.5"/>',bell:'<path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15z"/><path d="M10 20.5a2.2 2.2 0 0 0 4 0"/>',msg:'<path d="M4 5.5h16v10.5H9l-5 3.5z"/>',usr:'<circle cx="10" cy="8" r="3.6"/><path d="M3.5 19.5c.8-3.4 3.4-5.3 6.5-5.3 1.6 0 3 .5 4.1 1.3"/><path d="m16 15 5 5m0-5-5 5"/>'};
