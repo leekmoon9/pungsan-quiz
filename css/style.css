@@ -1198,3 +1198,9 @@ button.mkrw.lk,button.mkrw.lk:disabled{opacity:1;border:1.5px dashed #d6ccb8;bac
 
 .pdr{display:flex;align-items:center;justify-content:space-between;gap:10px;margin:8px 0}.pdr b{display:block;font-size:15.5px}.pdr .mut{font-size:12.5px}.pdr>div{min-width:0}.pdr .b{width:96px;flex:none;margin:0}
 .hub.pdh{grid-template-columns:1fr;margin:12px 0 0}
+/* v219: 홈 상단 피드백 버튼 — 아이콘 없이 글씨만, D-day 알약과 같은 크기 */
+#app .kh .ki .kt.kfb svg{display:none}
+#app .kh .ki .kt.kfb{box-sizing:border-box;height:40px;padding:0 14px;border:2px solid #2a2620;font-size:16px;font-weight:800;gap:0}
+@media (max-width:340px){#app .kh .ki .kt.kfb{height:34px;padding:0 10px;font-size:14px}}
+.tour .tfb .kt.kfb svg{display:none}
+.tour .tfb .kt.kfb{gap:0;padding:0 14px;height:40px;border:2px solid #2a2620;font-size:16px;font-weight:800}
