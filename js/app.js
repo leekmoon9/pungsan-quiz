@@ -283,7 +283,7 @@ function fbPick(k){FBK=k;document.querySelectorAll('.fbk button').forEach(b=>{co
 function fbOK(){const b=document.getElementById('fbs'),t=document.getElementById('fbt');if(b&&t)b.disabled=!t.value.trim()||!FBK}
 function soonMsg(m){const o=document.getElementById('toast');if(o)o.remove();const t=document.createElement('div');t.id='toast';t.className='toast';t.textContent=m;document.body.appendChild(t);setTimeout(()=>t.remove(),1850)}
 async function fbSend(){const t=document.getElementById('fbt').value.trim(),b=document.getElementById('fbs');if(!t)return;if(!DB||CANW===false){const ok=()=>soonMsg('복사했어요. 카톡으로 보내 주세요.');try{navigator.clipboard.writeText(t).then(ok,()=>{document.getElementById('fbt').select();soonMsg('길게 눌러서 복사해 주세요.')})}catch(e){document.getElementById('fbt').select();soonMsg('길게 눌러서 복사해 주세요.')}return}b.disabled=true;b.textContent='보내는 중…';
- try{const {error}=await DB.from('feedback').insert({nick:(NICK||lastNick()||'익명').slice(0,12),body:(FBK?`[[k:${FBK}]]`:'')+t});if(error)throw error;soonMsg('피드백이 전달됐어요. 고마워요!');FBF?goUp():home()}catch(e){b.disabled=false;b.textContent='보내기';soonMsg('보내지 못했어요. 다시 시도해 주세요.')}}
+ try{const {error}=await DB.from('feedback').insert({nick:(NICK||lastNick()||'익명').slice(0,12),body:(FBK?`[[k:${FBK}]]`:'')+t});if(error)throw error;soonMsg('피드백이 전달됐어요. 고마워요!');FBF||NICK?goUp():home()}catch(e){b.disabled=false;b.textContent='보내기';soonMsg('보내지 못했어요. 다시 시도해 주세요.')}}
 
 // ================= 메시지함 · 폰 알림 =================
 const VAPID='BEhEZYHO8qnRmgu6SvZxzNoFhJRO0wWwewnNUIgckZ4Hry8KYsR6iovr2KvH0F9f4UKbKTaTEo8Lk-IU5RGi5rk';
@@ -1497,7 +1497,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v219';
+const APPV='v220';
 function nagTog(){if(R._nagoff)delete R._nagoff;else R._nagoff=1;save();show(pfHTML(),kKey('pf'));soonMsg(R._nagoff?'공부 알림을 껐어요.':'공부를 안 한 날 저녁에 알림이 와요.')}
 // 내 정보 맨 위 카드: 아바타·닉네임·연속 학습·이번 주 공부·푼 문제
 function pfTop(){const t=R._t||{},td=dkey(),wd=(new Date().getDay()+6)%7;let wk=0;for(let i=0;i<=wd;i++)wk+=t[dAdd(td,-i)]||0;
@@ -1681,7 +1681,7 @@ function parentOf(r){const [k,...rest]=r.split('/'),v=rest.join('/');
  if(k=='sel')return Array.isArray(R._sel)?'subjects':null;
  if(k=='leader'||k=='pdf')return 'subjects';if(k=='inbox')return 'board';if(k=='board')return v?'board':'subjects';if(k=='guide')return 'profile';
  if(k=='pick'||k=='menu'||k=='subj'||k=='profile'&&!v)return 'subjects';if(k=='stats')return 'subjects';if(k=='admin'&&!v)return 'profile';if(k=='admin'&&/^[wnd](\/|$)/.test(v))return BKO[v[0]]||(v[0]=='w'?'board':'profile');
- if(k=='profile')return 'profile';if(k=='admin'){if(/^t\/./.test(v))return 'admin/t';if(/^p\/./.test(v))return 'admin/p';return 'admin'}if(k=='fb')return v=='1'?'profile':'';
+ if(k=='profile')return 'profile';if(k=='admin'){if(/^t\/./.test(v))return 'admin/t';if(/^p\/./.test(v))return 'admin/p';return 'admin'}if(k=='fb')return v=='1'?'profile':NICK?'subjects':'';
  if(k=='mock'||k=='voc')return 'subj/'+v;
  if(k=='wrong'||k=='star')return 'subj/'+v;if(k=='quiz'||k=='result'){if(SS&&SS.meta&&SS.meta.mock&&SS.meta.subj)return 'subj/'+SS.meta.subj;if(SS&&SS.meta&&SS.meta.note)return 'note/'+SS.meta.note.join('/');if(SS&&SS.meta&&SS.meta.star)return 'star/'+SS.meta.subj;if(SS&&SS.meta&&SS.meta.wp)return 'wrong/'+SS.meta.subj;if(SS&&SS.meta&&SS.meta.subj)return (NEWS(SS.meta.subj)?'prob/':'subj/')+SS.meta.subj;if(SS&&SS.pid&&!SS.meta)return 'menu/'+SS.pid;return 'subjects'}
  return 'subjects'}
