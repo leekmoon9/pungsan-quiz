@@ -466,15 +466,15 @@ const pNew=x=>pT(x)>pBase()&&!pRd().includes(x.id);
 function pMark(id){const a=pRd();if(!a.includes(id)){a.push(id);ls('pread',JSON.stringify(a.slice(-300)))}postBadge()}
 function postBadge(){try{mailBadge()}catch(e){}}
 const nsItems=()=>{const a=[];(POSTS||[]).forEach(x=>a.push({t:pKind(x)==1?2:1,k:pKind(x),x,at:x.created_at,nw:pNew(x),title:x.title,on:`postView(${x.id})`}));
- mMsgs().forEach(m=>a.push({t:3,m,at:m.created_at,nw:!m.read,title:mTitle(m),on:MSEL?`msTog(${m.id})`:`msgOpen(${m.id})`}));return a.sort((p,q)=>(pinI(q)>=0&&OWNER)-(pinI(p)>=0&&OWNER)||new Date(q.at)-new Date(p.at))};
+ mMsgs().forEach(m=>a.push({t:3,m,at:m.created_at,nw:!m.read,title:mTitle(m),on:MSEL?`msTog(${m.id})`:`msgOpen(${m.id})`}));return a.sort((p,q)=>((pinI(q)>=0)-(pinI(p)>=0))||(pinI(p)>=0?new Date(q.x.pin_at)-new Date(p.x.pin_at):0)||new Date(q.at)-new Date(p.at))};
 const NTG=['','공지','업데이트','메시지'],NTC=['','n','u','m'];
-const pinA=()=>Array.isArray(R._pn)?R._pn:[],pinI=i=>i.x?pinA().indexOf(i.x.id):-1;
+const pinI=i=>i.x&&i.x.pin_at?1:-1;
 const nsList=c=>nsItems().filter(i=>!c||i.t==c);
 function boardHTML(){const c=KCH.noti,L=nsList(c),A=nsItems(),nn=[0,1,2,3].map(k=>A.filter(i=>(!k||i.t==k)&&i.nw).length);let b='';
  if(MSEL&&c==3)b+=`<div class="msb msx"><button class="msa${L.length&&L.every(i=>MSEL.has(i.m.id))?' on':''}" onclick="msAll()"><span class="msc"></span>전체 선택</button><button class="lk" onclick="msOff()">취소</button><button class="b msd"${MSEL.size?'':' disabled'} onclick="msDel()">삭제${MSEL.size?' '+MSEL.size:''}</button></div>`;
  if(POSTS==null&&MSGS===null)b+=skMsgs(4);
  else if(!L.length)b+=`<div class="card kmt">${['받은 소식이 없어요.','올라온 공지가 없어요.','올라온 업데이트가 없어요.','받은 메시지가 없어요.'][c]}</div>`;
- else b+=L.map(i=>{const sel=MSEL&&i.m;const pn=OWNER&&i.x&&pinI(i)>=0;return `<button class="mgc${i.nw?'':' rd'}${sel?' msk':''}${sel&&MSEL.has(i.m.id)?' sel':''}${pn?' pnd':''}" ${OWNER&&i.x?`data-pid="${i.x.id}" onpointerdown="lpDown(event,${i.x.id})" onpointerup="lpUp()" onpointerleave="lpUp()" onpointercancel="lpUp()" onpointermove="lpMv(event)" oncontextmenu="return false" `:''}onclick="if(LPF){LPF=0;return}${i.on}">${sel?'<span class="msc"></span>':'<span class="mgd"></span>'}<span class="mgb"><b>${pn?ICN_LP:''}${esc(i.title)}</b><small><i class="tg ${i.x?PKC[i.k]:NTC[i.t]}">${i.x?PKN[i.k]:NTG[i.t]}</i>${fdt(i.at)}${i.x&&+HRT.c[i.x.id]?`<i class="lkn${HRT.m.has(+i.x.id)?' on':''}">${ICN_HEART}${HRT.c[i.x.id]}</i>`:''}</small></span>${sel?'':'<span class="chev">›</span>'}</button>`}).join('');
+ else b+=L.map(i=>{const sel=MSEL&&i.m;const pn=pinI(i)>=0,bd=i.x&&i.x.bd?' bd'+i.x.bd:'';return `<button class="mgc${i.nw?'':' rd'}${sel?' msk':''}${sel&&MSEL.has(i.m.id)?' sel':''}${pn?' pnd':''}${bd}" ${OWNER&&i.x?`data-pid="${i.x.id}" onpointerdown="lpDown(event,${i.x.id})" onpointerup="lpUp()" onpointerleave="lpUp()" onpointercancel="lpUp()" onpointermove="lpMv(event)" oncontextmenu="return false" `:''}onclick="if(LPF){LPF=0;return}${i.on}">${sel?'<span class="msc"></span>':'<span class="mgd"></span>'}<span class="mgb"><b>${pn?ICN_LP:''}${esc(i.title)}</b><small><i class="tg ${i.x?PKC[i.k]:NTC[i.t]}">${i.x?PKN[i.k]:NTG[i.t]}</i>${fdt(i.at)}${i.x&&+HRT.c[i.x.id]?`<i class="lkn${HRT.m.has(+i.x.id)?' on':''}">${ICN_HEART}${HRT.c[i.x.id]}</i>`:''}</small></span>${sel?'':'<span class="chev">›</span>'}</button>`}).join('');
  const ic=[];if(c==3&&mMsgs().length)ic.push(['trash','메시지 골라서 지우기','msOn()']);if(OWNER&&DB&&c!=3)ic.push(['plus','공지 올리기','postForm()']);
  return kPage('noti',kHead('<h2>소식</h2>',ic,'noti',nn),b)}
 
@@ -484,11 +484,11 @@ const ICN_LP='<svg class="pni" viewBox="0 0 24 24" aria-hidden="true" fill="curr
 function lpDown(e,id){lpUp();LPX=e.clientX;LPY=e.clientY;LPT=setTimeout(()=>{LPT=0;LPF=1;if(navigator.vibrate)try{navigator.vibrate(18)}catch(_){}lpMenu(id)},500)}
 function lpUp(){if(LPT){clearTimeout(LPT);LPT=0}}
 function lpMv(e){if(LPT&&(Math.abs(e.clientX-LPX)>8||Math.abs(e.clientY-LPY)>8))lpUp()}
-function lpMenu(id){const x=(POSTS||[]).find(y=>y.id==id);if(!x)return;const on=pinA().includes(id),w=document.createElement('div');w.className='mdw lpw';
- w.innerHTML=`<div class="mdc lpc"><h3>${esc(x.title)}</h3><div class="lpb"><button data-v="pin">${on?'고정 해제':'고정하기'}</button><button data-v="bd">테두리 만들기</button><button class="g" data-v="x">닫기</button></div></div>`;
- w.onclick=e=>{const v=e.target.dataset&&e.target.dataset.v;if(v===undefined&&e.target!==w)return;w.remove();setTimeout(()=>{LPF=0},300);if(v=='pin')lpPin(id);else if(v=='bd')lpBd(id)};document.body.appendChild(w)}
-function lpPin(id){const a=pinA().slice(),i=a.indexOf(id);if(i>=0)a.splice(i,1);else{if(a.length>=PNMAX)return soonMsg('고정은 5개까지 할 수 있어요.');a.unshift(id)}R._pn=a;save();board()}
-function lpBd(id){soonMsg('테두리는 곧 열려요.')}
+function lpMenu(id){const x=(POSTS||[]).find(y=>y.id==id);if(!x)return;const on=!!x.pin_at,w=document.createElement('div');w.className='mdw lpw';
+ w.innerHTML=`<div class="mdc lpc"><h3>${esc(x.title)}</h3><div class="lpb"><button data-v="pin">${on?'고정 해제':'고정하기'}</button><button data-v="bd">${x.bd?'테두리 지우기':'테두리 만들기'}</button><button class="g" data-v="x">닫기</button></div></div>`;
+ w.onclick=e=>{const v=e.target.dataset&&e.target.dataset.v;if(v===undefined&&e.target!==w)return;w.remove();setTimeout(()=>{LPF=0},300);if(v=='pin')lpSet(id,!on,x.bd||0);else if(v=='bd')lpSet(id,on,x.bd?0:1)};document.body.appendChild(w)}
+async function lpSet(id,pin,bd){const x=(POSTS||[]).find(y=>y.id==id);if(!x)return;if(pin&&!x.pin_at&&POSTS.filter(y=>y.pin_at).length>=PNMAX)return soonMsg('고정은 5개까지 할 수 있어요.');
+ try{const r=await DB.rpc('admin_post_flag',{p_key:AK(),p_id:id,p_pin:pin,p_bd:bd});if(r.error||r.data!==true)throw 0;x.pin_at=pin?(x.pin_at||new Date().toISOString()):null;x.bd=bd||null;board();postLoad().then(()=>{if(nsAt())board()})}catch(e){soonMsg('저장하지 못했어요. 다시 시도해 주세요.')}}
 const nsAt=()=>/^(board|inbox)/.test(CURR||'');
 async function boardRaw(){MSEL=null;show(boardHTML(),kKey('noti'));await Promise.all([postLoad(),DB&&NICK?msgLoad():0,lkLoad()]);if(!nsAt()||KNV)return;show(boardHTML(),kKey('noti'));postBadge()}
 function board(){return boardRaw()}
@@ -1511,7 +1511,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v221';
+const APPV='v222';
 function nagTog(){if(R._nagoff)delete R._nagoff;else R._nagoff=1;save();show(pfHTML(),kKey('pf'));soonMsg(R._nagoff?'공부 알림을 껐어요.':'공부를 안 한 날 저녁에 알림이 와요.')}
 // 내 정보 맨 위 카드: 아바타·닉네임·연속 학습·이번 주 공부·푼 문제
 function pfTop(){const t=R._t||{},td=dkey(),wd=(new Date().getDay()+6)%7;let wk=0;for(let i=0;i<=wd;i++)wk+=t[dAdd(td,-i)]||0;
