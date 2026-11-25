@@ -300,7 +300,7 @@ const nl=t=>esc(t||'').replace(/\n/g,'<br>');
 // 메시지 제목: 「새」 빼고, 피드백 관련은 짧게
 const mKind=m=>m.meta&&m.meta.kind,mIsR=m=>mKind(m)=='fb_reply';
 function mTitle(m){const k=mKind(m);if(k=='fb_reply')return '답장 도착';if(k=='fb_new')return '피드백 도착';let t=(m.title||'').replace(/^새\s+/,'');
- if(k=='post'){const x=(POSTS||[]).find(y=>y.id==+m.meta.post);if(x&&pKind(x))t=t.replace(/^공지(?=\s*:)/,'업데이트')}return t}
+ if(k=='post'){const x=(POSTS||[]).find(y=>y.id==+m.meta.post);if(x&&pKind(x))t=t.replace(/^공지(?=\s*:)/,PKN[pKind(x)])}return t}
 let MSEL=null;
 const msDraw=()=>show(boardHTML(),kKey('noti'));
 function msOn(){MSEL=MSEL?null:new Set();msDraw()}
@@ -456,25 +456,39 @@ const escA=t=>esc(t||'').replace(/"/g,'&quot;');
 const pT=x=>Date.parse(x.created_at)||0,pSeen=()=>+ls('pseen')||0;
 async function postLoad(){if(!DB)return POSTS||(POSTS=[]);try{const {data,error}=await DB.rpc('post_list');if(error)throw 0;POSTS=Array.isArray(data)?data:[]}catch(e){if(!POSTS)POSTS=[]}KV++;postBadge();return POSTS}
 // 공지 종류: 내용 맨 앞 표시 [[u]] 업데이트 / [[n]] 공지 (표시가 없는 예전 글은 제목으로 판단)
-const pKind=x=>{const b=x.body||'';if(b.startsWith('[[u]]'))return 1;if(b.startsWith('[[n]]'))return 0;return /업데이트/.test(x.title||'')?1:0};
-const pBody=x=>(x.body||'').replace(/^\[\[[un]\]\]\n?/,'');
+const pKind=x=>{const b=x.body||'';if(b.startsWith('[[e]]'))return 2;if(b.startsWith('[[u]]'))return 1;if(b.startsWith('[[n]]'))return 0;return /업데이트/.test(x.title||'')?1:0};
+const pBody=x=>(x.body||'').replace(/^\[\[[une]\]\]\n?/,'');
+const PKN=['공지','업데이트','이벤트'],PKC=['n','u','e'],PKM=['[[n]]','[[u]]','[[e]]'];
 // 새 글: 이번 업데이트 전에 이미 본 글은 빼고, 글을 직접 열어 봐야 읽은 것으로
 const pBase=()=>{let b=ls('pbase');if(!b){b=String(pSeen()||Date.now());ls('pbase',b)}return +b};
 const pRd=()=>{try{return JSON.parse(ls('pread'))||[]}catch(e){return []}};
 const pNew=x=>pT(x)>pBase()&&!pRd().includes(x.id);
 function pMark(id){const a=pRd();if(!a.includes(id)){a.push(id);ls('pread',JSON.stringify(a.slice(-300)))}postBadge()}
 function postBadge(){try{mailBadge()}catch(e){}}
-const nsItems=()=>{const a=[];(POSTS||[]).forEach(x=>a.push({t:pKind(x)?2:1,x,at:x.created_at,nw:pNew(x),title:x.title,on:`postView(${x.id})`}));
- mMsgs().forEach(m=>a.push({t:3,m,at:m.created_at,nw:!m.read,title:mTitle(m),on:MSEL?`msTog(${m.id})`:`msgOpen(${m.id})`}));return a.sort((p,q)=>new Date(q.at)-new Date(p.at))};
+const nsItems=()=>{const a=[];(POSTS||[]).forEach(x=>a.push({t:pKind(x)==1?2:1,k:pKind(x),x,at:x.created_at,nw:pNew(x),title:x.title,on:`postView(${x.id})`}));
+ mMsgs().forEach(m=>a.push({t:3,m,at:m.created_at,nw:!m.read,title:mTitle(m),on:MSEL?`msTog(${m.id})`:`msgOpen(${m.id})`}));return a.sort((p,q)=>(pinI(q)>=0&&OWNER)-(pinI(p)>=0&&OWNER)||new Date(q.at)-new Date(p.at))};
 const NTG=['','공지','업데이트','메시지'],NTC=['','n','u','m'];
+const pinA=()=>Array.isArray(R._pn)?R._pn:[],pinI=i=>i.x?pinA().indexOf(i.x.id):-1;
 const nsList=c=>nsItems().filter(i=>!c||i.t==c);
 function boardHTML(){const c=KCH.noti,L=nsList(c),A=nsItems(),nn=[0,1,2,3].map(k=>A.filter(i=>(!k||i.t==k)&&i.nw).length);let b='';
  if(MSEL&&c==3)b+=`<div class="msb msx"><button class="msa${L.length&&L.every(i=>MSEL.has(i.m.id))?' on':''}" onclick="msAll()"><span class="msc"></span>전체 선택</button><button class="lk" onclick="msOff()">취소</button><button class="b msd"${MSEL.size?'':' disabled'} onclick="msDel()">삭제${MSEL.size?' '+MSEL.size:''}</button></div>`;
  if(POSTS==null&&MSGS===null)b+=skMsgs(4);
  else if(!L.length)b+=`<div class="card kmt">${['받은 소식이 없어요.','올라온 공지가 없어요.','올라온 업데이트가 없어요.','받은 메시지가 없어요.'][c]}</div>`;
- else b+=L.map(i=>{const sel=MSEL&&i.m;return `<button class="mgc${i.nw?'':' rd'}${sel?' msk':''}${sel&&MSEL.has(i.m.id)?' sel':''}" onclick="${i.on}">${sel?'<span class="msc"></span>':'<span class="mgd"></span>'}<span class="mgb"><b>${esc(i.title)}</b><small><i class="tg ${NTC[i.t]}">${NTG[i.t]}</i>${fdt(i.at)}${i.x&&+HRT.c[i.x.id]?`<i class="lkn${HRT.m.has(+i.x.id)?' on':''}">${ICN_HEART}${HRT.c[i.x.id]}</i>`:''}</small></span>${sel?'':'<span class="chev">›</span>'}</button>`}).join('');
+ else b+=L.map(i=>{const sel=MSEL&&i.m;const pn=OWNER&&i.x&&pinI(i)>=0;return `<button class="mgc${i.nw?'':' rd'}${sel?' msk':''}${sel&&MSEL.has(i.m.id)?' sel':''}${pn?' pnd':''}" ${OWNER&&i.x?`data-pid="${i.x.id}" onpointerdown="lpDown(event,${i.x.id})" onpointerup="lpUp()" onpointerleave="lpUp()" onpointercancel="lpUp()" onpointermove="lpMv(event)" oncontextmenu="return false" `:''}onclick="if(LPF){LPF=0;return}${i.on}">${sel?'<span class="msc"></span>':'<span class="mgd"></span>'}<span class="mgb"><b>${pn?ICN_LP:''}${esc(i.title)}</b><small><i class="tg ${i.x?PKC[i.k]:NTC[i.t]}">${i.x?PKN[i.k]:NTG[i.t]}</i>${fdt(i.at)}${i.x&&+HRT.c[i.x.id]?`<i class="lkn${HRT.m.has(+i.x.id)?' on':''}">${ICN_HEART}${HRT.c[i.x.id]}</i>`:''}</small></span>${sel?'':'<span class="chev">›</span>'}</button>`}).join('');
  const ic=[];if(c==3&&mMsgs().length)ic.push(['trash','메시지 골라서 지우기','msOn()']);if(OWNER&&DB&&c!=3)ic.push(['plus','공지 올리기','postForm()']);
  return kPage('noti',kHead('<h2>소식</h2>',ic,'noti',nn),b)}
+
+// ===== 공지 꾹 눌러서 고정 (관리자 본인만 보임) =====
+let LPT=0,LPF=0,LPX=0,LPY=0;const PNMAX=5;
+const ICN_LP='<svg class="pni" viewBox="0 0 24 24" aria-hidden="true" fill="currentColor"><path d="M14.5 3.5l6 6-2.2.7-3.3 3.3.4 3.6-1.4 1.4-3.2-3.2-5.3 5.3-1.2-1.2 5.3-5.3L6.4 11l1.4-1.4 3.6.4 3.3-3.3z"/></svg>';
+function lpDown(e,id){lpUp();LPX=e.clientX;LPY=e.clientY;LPT=setTimeout(()=>{LPT=0;LPF=1;if(navigator.vibrate)try{navigator.vibrate(18)}catch(_){}lpMenu(id)},500)}
+function lpUp(){if(LPT){clearTimeout(LPT);LPT=0}}
+function lpMv(e){if(LPT&&(Math.abs(e.clientX-LPX)>8||Math.abs(e.clientY-LPY)>8))lpUp()}
+function lpMenu(id){const x=(POSTS||[]).find(y=>y.id==id);if(!x)return;const on=pinA().includes(id),w=document.createElement('div');w.className='mdw lpw';
+ w.innerHTML=`<div class="mdc lpc"><h3>${esc(x.title)}</h3><div class="lpb"><button data-v="pin">${on?'고정 해제':'고정하기'}</button><button data-v="bd">테두리 만들기</button><button class="g" data-v="x">닫기</button></div></div>`;
+ w.onclick=e=>{const v=e.target.dataset&&e.target.dataset.v;if(v===undefined&&e.target!==w)return;w.remove();setTimeout(()=>{LPF=0},300);if(v=='pin')lpPin(id);else if(v=='bd')lpBd(id)};document.body.appendChild(w)}
+function lpPin(id){const a=pinA().slice(),i=a.indexOf(id);if(i>=0)a.splice(i,1);else{if(a.length>=PNMAX)return soonMsg('고정은 5개까지 할 수 있어요.');a.unshift(id)}R._pn=a;save();board()}
+function lpBd(id){soonMsg('테두리는 곧 열려요.')}
 const nsAt=()=>/^(board|inbox)/.test(CURR||'');
 async function boardRaw(){MSEL=null;show(boardHTML(),kKey('noti'));await Promise.all([postLoad(),DB&&NICK?msgLoad():0,lkLoad()]);if(!nsAt()||KNV)return;show(boardHTML(),kKey('noti'));postBadge()}
 function board(){return boardRaw()}
@@ -520,7 +534,7 @@ function pvMenu(b,id){const w=b.parentElement,o=w.querySelector('.pvdd');if(o){o
  setTimeout(()=>document.addEventListener('click',function f(e){if(!e.target.closest('.pvdd,.pvm')){const d=document.querySelector('.pvdd');if(d)d.remove()}document.removeEventListener('click',f,true)},true))}
 async function postView(id){if(!POSTS)await postLoad();const x=(POSTS||[]).find(y=>y.id==id);if(!x){soonMsg('지워진 공지예요.');return board()}
  pMark(x.id);const pb=pBody(x),im=(x.imgs||[]).map(i=>`<figure class="mgi skl" data-i="${escA(i)}" aria-label="사진 불러오는 중"></figure>`).join('');
- show(`<div class="pvh"><h2>${esc(x.title)}</h2>${OWNER&&DB?`<button class="pvm" aria-label="더보기" onclick="pvMenu(this,${x.id})">${ICN_MORE}</button>`:''}</div>${pb?`<div class="card mgv pvw"><div class="mgs"><p>${pHtml(pb)}</p></div></div>`:''}<div class="pvdr${im?' pvdi':''}"><p class="pvd">${pKind(x)?'업데이트':'공지'} · ${fdt(x.created_at)}${x.updated_at?' · 수정됨':''}</p><span class="pvlw" id="pvlw${x.id}">${HRT.ok?lkBtn(x.id):''}</span></div>${im?`<div class="card mgv pvw pvim">${im}</div>`:''}`);mgImgs();lkLoad().then(()=>{const w=document.getElementById('pvlw'+x.id);if(w)w.innerHTML=HRT.ok?lkBtn(x.id):''})}
+ show(`<div class="pvh"><h2>${esc(x.title)}</h2>${OWNER&&DB?`<button class="pvm" aria-label="더보기" onclick="pvMenu(this,${x.id})">${ICN_MORE}</button>`:''}</div>${pb?`<div class="card mgv pvw"><div class="mgs"><p>${pHtml(pb)}</p></div></div>`:''}<div class="pvdr${im?' pvdi':''}"><p class="pvd">${PKN[pKind(x)]} · ${fdt(x.created_at)}${x.updated_at?' · 수정됨':''}</p><span class="pvlw" id="pvlw${x.id}">${HRT.ok?lkBtn(x.id):''}</span></div>${im?`<div class="card mgv pvw pvim">${im}</div>`:''}`);mgImgs();lkLoad().then(()=>{const w=document.getElementById('pvlw'+x.id);if(w)w.innerHTML=HRT.ok?lkBtn(x.id):''})}
 // ===== 공지·업데이트 하트 =====
 const ICN_HEART='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.3s-7.6-4.6-9.2-9.4C1.7 7.6 3.7 4.3 7.1 4.3c2 0 3.6 1.1 4.9 2.9 1.3-1.8 2.9-2.9 4.9-2.9 3.4 0 5.4 3.3 4.3 6.6-1.6 4.8-9.2 9.4-9.2 9.4z"/></svg>';
 let HRT={c:{},m:new Set(),ok:null};
@@ -597,17 +611,17 @@ function rteGet(){const e=document.getElementById('pb');if(!e)return '';const he
   if(!inner.replace(/\n/g,''))return blk?'\n':inner;return (blk?'\n':'')+o+inner+c};
  let r=[...e.childNodes].map(walk).join('');return r.replace(/^\n+/,'').replace(/\n{3,}/g,'\n\n').replace(/\s+$/,'')}
 function pkTo(k){PKIND=k;document.querySelectorAll('.pkg button').forEach(b=>b.classList.toggle('on',+b.dataset.k==k))}
-function postForm(id){const x=id?(POSTS||[]).find(y=>y.id==id):null;PEDIT=x?x.id:null;PIMG=x?(x.imgs||[]).map(i=>({id:i})):[];PKIND=x?pKind(x):KCH.noti;
- RTS=16;show(`<h2>${x?'공지 고치기':'공지 올리기'}</h2><div class="ntg pkg" role="tablist">${[[0,'공지'],[1,'업데이트']].map(([k,l])=>`<button data-k="${k}" class="${k==PKIND?'on':''}" onclick="pkTo(${k})">${l}</button>`).join('')}</div><div class="card"><input type="text" id="pt" maxlength="80" placeholder="제목" value="${x?escA(x.title):''}">${rteHTML(x?pHtml(pBody(x)):'')}<div class="nim2" id="pimg"></div><label class="nadd" for="pti">${ICN_PIC}<span>사진 추가</span><small>최대 ${PMAX}장</small></label><input type="file" id="pti" accept="image/*" multiple hidden onchange="pImgAdd(this)"></div><label class="pnt"><input type="checkbox" id="pnf"${x?'':' checked'}><span><b>모두에게 알림 보내기</b></span></label><div class="row"><button class="b" id="pts" onclick="postSave()">${x?'고친 내용 저장':'공지 올리기'}</button></div>`);pImgDraw();rteMount()}
+function postForm(id){const x=id?(POSTS||[]).find(y=>y.id==id):null;PEDIT=x?x.id:null;PIMG=x?(x.imgs||[]).map(i=>({id:i})):[];PKIND=x?pKind(x):(KCH.noti==2?1:0);
+ RTS=16;show(`<h2>${x?'공지 고치기':'공지 올리기'}</h2><div class="ntg pkg" role="tablist">${[[0,'공지'],[1,'업데이트'],[2,'이벤트']].map(([k,l])=>`<button data-k="${k}" class="${k==PKIND?'on':''}" onclick="pkTo(${k})">${l}</button>`).join('')}</div><div class="card"><input type="text" id="pt" maxlength="80" placeholder="제목" value="${x?escA(x.title):''}">${rteHTML(x?pHtml(pBody(x)):'')}<div class="nim2" id="pimg"></div><label class="nadd" for="pti">${ICN_PIC}<span>사진 추가</span><small>최대 ${PMAX}장</small></label><input type="file" id="pti" accept="image/*" multiple hidden onchange="pImgAdd(this)"></div><label class="pnt"><input type="checkbox" id="pnf"${x?'':' checked'}><span><b>모두에게 알림 보내기</b></span></label><div class="row"><button class="b" id="pts" onclick="postSave()">${x?'고친 내용 저장':'공지 올리기'}</button></div>`);pImgDraw();rteMount()}
 async function pImgAdd(inp){const fs=[...inp.files];inp.value='';for(const f of fs){if(PIMG.length>=PMAX){soonMsg(`사진은 ${PMAX}장까지 올릴 수 있어요.`);break}try{PIMG.push({d:await nImgShrink(f)})}catch(e){soonMsg('이 사진은 열 수 없어요.')}}pImgDraw()}
 function pImgDraw(){const w=document.getElementById('pimg');if(!w)return;w.innerHTML=PIMG.map((x,i)=>`<div><img ${x.d?`src="${x.d}"`:`data-pi="${escA(x.id)}"`} alt=""><button aria-label="사진 빼기" onclick="PIMG.splice(${i},1);pImgDraw()">×</button></div>`).join('');const a=document.querySelector('label[for=pti]');if(a)a.style.display=PIMG.length>=PMAX?'none':'';
  w.querySelectorAll('img[data-pi]').forEach(async im=>{const i=im.dataset.pi;try{let d=NIMC.get(i);if(!d){const r=await DB.rpc('notice_img',{p_id:i});if(r.error||!r.data)throw 0;d=r.data;NIMC.set(i,d)}im.src=d}catch(e){}})}
 async function postSave(){const t=document.getElementById('pt').value.trim(),b=rteGet(),nf=document.getElementById('pnf').checked;if(!t)return soonMsg('제목을 써 주세요.');if(b.length>6000)return soonMsg('내용이 너무 길어요. 조금 줄여 주세요.');
- if(!(await askBox(PEDIT?'고친 내용을 저장할까요?':(PKIND?'업데이트를':'공지를')+' 올릴까요?',`<b>${esc(t)}</b>${PIMG.length?` · 사진 ${PIMG.length}장`:''}<br>${nf?'모두에게 알림도 보내요.':'알림은 보내지 않아요.'}`,PEDIT?'저장':'올리기')))return;
+ if(!(await askBox(PEDIT?'고친 내용을 저장할까요?':(PKN[PKIND]+'를').replace('이벤트를','이벤트를')+' 올릴까요?',`<b>${esc(t)}</b>${PIMG.length?` · 사진 ${PIMG.length}장`:''}<br>${nf?'모두에게 알림도 보내요.':'알림은 보내지 않아요.'}`,PEDIT?'저장':'올리기')))return;
  const sb=document.getElementById('pts'),lb=sb?sb.textContent:'',re=()=>{if(sb){sb.disabled=false;sb.textContent=lb}};if(sb){sb.disabled=true;sb.textContent=PIMG.some(x=>x.d)?'사진 올리는 중…':'올리는 중…'}
  const ids=[];try{for(const x of PIMG){if(x.id){ids.push(x.id);continue}const q=await DB.rpc('admin_notice_img',{p_key:AK(),p_data:x.d});if(q.error||!q.data)throw 0;x.id=q.data;NIMC.set(q.data,x.d);delete x.d;ids.push(q.data)}}catch(e){re();return soonMsg('사진을 올리지 못했어요. 「공지게시판.sql」을 먼저 실행해 주세요.')}
- try{const r=await DB.rpc('admin_post_save',{p_key:AK(),p_id:PEDIT,p_title:t,p_body:(PKIND?'[[u]]':'[[n]]')+b,p_imgs:ids,p_notify:nf});if(r.error||!r.data)throw 0;
-  soonMsg(PEDIT?'고친 내용을 저장했어요.':'공지를 올렸어요.');await postLoad();if(PEDIT||nf)pMark(r.data);KCH.noti=PKIND;if(PEDIT)postView(r.data);else board()}catch(e){re();soonMsg('올리지 못했어요. 「공지게시판.sql」을 먼저 실행해 주세요.')}}
+ try{const r=await DB.rpc('admin_post_save',{p_key:AK(),p_id:PEDIT,p_title:t,p_body:PKM[PKIND]+b,p_imgs:ids,p_notify:nf});if(r.error||!r.data)throw 0;
+  soonMsg(PEDIT?'고친 내용을 저장했어요.':'공지를 올렸어요.');await postLoad();if(PEDIT||nf)pMark(r.data);KCH.noti=PKIND==1?2:1;if(PEDIT)postView(r.data);else board()}catch(e){re();soonMsg('올리지 못했어요. 「공지게시판.sql」을 먼저 실행해 주세요.')}}
 async function postDel(id){if(!(await askBox('공지를 지울까요?','지운 공지는 되돌릴 수 없어요. 사진도 함께 지워져요.','삭제')))return;
  try{const r=await DB.rpc('admin_post_del',{p_key:AK(),p_id:id});if(r.error||r.data!==true)throw 0;POSTS=(POSTS||[]).filter(x=>x.id!=id);soonMsg('공지를 지웠어요.');board()}catch(e){soonMsg('지우지 못했어요. 다시 시도해 주세요.')}}
 
@@ -1497,7 +1511,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v220';
+const APPV='v221';
 function nagTog(){if(R._nagoff)delete R._nagoff;else R._nagoff=1;save();show(pfHTML(),kKey('pf'));soonMsg(R._nagoff?'공부 알림을 껐어요.':'공부를 안 한 날 저녁에 알림이 와요.')}
 // 내 정보 맨 위 카드: 아바타·닉네임·연속 학습·이번 주 공부·푼 문제
 function pfTop(){const t=R._t||{},td=dkey(),wd=(new Date().getDay()+6)%7;let wk=0;for(let i=0;i<=wd;i++)wk+=t[dAdd(td,-i)]||0;

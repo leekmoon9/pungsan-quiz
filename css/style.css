@@ -617,7 +617,7 @@ body.hasbk #app>.pvh{margin-left:48px}@media (min-width:760px){body.hasbk #app>.
 .pvdd{position:absolute;right:0;top:46px;z-index:20;min-width:132px;padding:6px;border-radius:14px;background:var(--card);border:1.5px solid var(--ln);box-shadow:0 10px 26px rgba(60,45,20,.18);display:flex;flex-direction:column}
 .pvdd button{border:0;background:none;font:inherit;font-weight:700;font-size:15px;color:var(--tx);text-align:left;padding:11px 12px;border-radius:10px;cursor:pointer}.pvdd button:active{background:rgba(42,38,32,.06)}.pvdd .dng{color:#b3392f}
 .pvd{margin:8px 4px 0;font-size:13px;color:var(--mut)}
-.pkg{grid-template-columns:1fr 1fr!important;margin-top:4px!important}
+.pkg{grid-template-columns:1fr 1fr 1fr!important;margin-top:4px!important}
 .qk .dng{color:#b3392f!important;background:color-mix(in srgb,#e05a4f 10%,var(--card))!important;border-color:color-mix(in srgb,#e05a4f 35%,var(--ln))!important}
 .ast{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:8px 0 4px}
 .ast div{display:flex;flex-direction:column;align-items:center;gap:4px;padding:12px 2px 10px;border:1.5px dashed var(--ln);border-radius:12px;background:var(--card);min-width:0}
@@ -1204,3 +1204,9 @@ button.mkrw.lk,button.mkrw.lk:disabled{opacity:1;border:1.5px dashed #d6ccb8;bac
 @media (max-width:340px){#app .kh .ki .kt.kfb{height:34px;padding:0 10px;font-size:14px}}
 .tour .tfb .kt.kfb svg{display:none}
 .tour .tfb .kt.kfb{gap:0;padding:0 14px;height:40px;border:2px solid #2a2620;font-size:16px;font-weight:800}
+
+.tg.e{background:#bfe3c9;color:#1f4a2c}
+.mgc{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+.mgc .pni{width:14px;height:14px;vertical-align:-2px;margin-right:4px;color:#c0392b;transform:rotate(-20deg)}
+.lpc{width:min(320px,100%)}.lpc h3{margin:0 0 12px;font-size:16px;line-height:1.35;word-break:keep-all}
+.lpb{display:grid;gap:8px}.lpb button{padding:13px;border:1.5px solid var(--ln);border-radius:12px;background:var(--card);color:var(--tx);font:inherit;font-size:15px;font-weight:700;cursor:pointer}.lpb button.g{border-color:transparent;background:transparent;color:var(--mut)}
