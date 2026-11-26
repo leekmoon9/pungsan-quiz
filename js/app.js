@@ -1341,7 +1341,7 @@ function tbH(t){return `<div class="qtw"><table class="qtb">${t.h?`<tr>${t.h.map
 // ---- 수학 그래프: 좌표 범위 xr·yr 안에 곡선 fs, 칠하기 fill, 점 pts, 선 ln ----
 function FG(o){const W=o.w||260,H=o.h||200,P=16,[x0,x1]=o.xr||[-3,3],[y0,y1]=o.yr||[-3,3],X=x=>P+(x-x0)/(x1-x0)*(W-2*P),Y=y=>H-P-(y-y0)/(y1-y0)*(H-2*P);
  const it=t=>esc(t).replace(/([a-zA-Z]+)/g,'<tspan font-style="italic" font-family="Times New Roman,serif">$1</tspan>');
- let g=`<defs><marker id="fa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#2a2620"/></marker></defs>`;
+ let g=`<defs><marker id="fa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#2a2620"/></marker><marker id="fv" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0L10 5L0 10z" fill="#c0392b"/></marker></defs>`;
  const path=(f,a,b,n)=>{let d='',pen=false;n=n||160;for(let i=0;i<=n;i++){const x=a+(b-a)*i/n,y=f(x);if(!isFinite(y)||y<y0-(y1-y0)*.6||y>y1+(y1-y0)*.6){pen=false;continue}d+=(pen?'L':'M')+X(x).toFixed(1)+' '+Y(Math.max(y0-(y1-y0)*.05,Math.min(y1+(y1-y0)*.05,y))).toFixed(1);pen=true}return d};
  g+=`<clipPath id="fc${FG.n=(FG.n||0)+1}"><rect x="${P-2}" y="${P-6}" width="${W-2*P+6}" height="${H-2*P+10}"/></clipPath>`;const cid='fc'+FG.n;
  (o.fill||[]).forEach(F=>{const n=120,lo=F.g||(()=>0);let d='';for(let i=0;i<=n;i++){const x=F.a+(F.b-F.a)*i/n;d+=(i?'L':'M')+X(x).toFixed(1)+' '+Y(F.f(x)).toFixed(1)}for(let i=n;i>=0;i--){const x=F.a+(F.b-F.a)*i/n;d+='L'+X(x).toFixed(1)+' '+Y(lo(x)).toFixed(1)}g+=`<path d="${d}Z" fill="${F.c||'#f3c969'}" fill-opacity="${F.op||.45}" stroke="none" clip-path="url(#${cid})"/>`;if(F.t)g+=`<text x="${X(F.tx??(F.a+F.b)/2)}" y="${Y(F.ty??(F.f((F.a+F.b)/2)+lo((F.a+F.b)/2))/2)+4}" text-anchor="middle" font-weight="700">${it(F.t)}</text>`});
@@ -1349,6 +1349,7 @@ function FG(o){const W=o.w||260,H=o.h||200,P=16,[x0,x1]=o.xr||[-3,3],[y0,y1]=o.y
   g+=`<text x="${W-6}" y="${ay+14}" text-anchor="end">${it(o.xl||'x')}</text><text x="${ax+7}" y="12">${it(o.yl||'y')}</text>`;if(x0<=0&&x1>=0&&y0<=0&&y1>=0&&o.o!==0)g+=`<text x="${ax-4}" y="${ay+13}" text-anchor="end">O</text>`}
  (o.ln||[]).forEach(l=>{const [a,b,c,d]=l.p;g+=`<path d="M${X(a)} ${Y(b)}L${X(c)} ${Y(d)}" stroke="${l.c||'#8a8170'}" stroke-width="${l.w||1.4}" ${l.d!==0?'stroke-dasharray="4 3"':''} fill="none" clip-path="url(#${cid})"/>`;if(l.t)g+=`<text x="${X(l.tx??c)+(l.dx||4)}" y="${Y(l.ty??d)+(l.dy||-4)}" font-weight="700" fill="${l.c||'#5a5246'}">${it(l.t)}</text>`});
  (o.fs||[]).forEach(F=>{g+=`<path d="${path(F.f,F.a??x0,F.b??x1)}" stroke="${F.c||'#5b7fa8'}" stroke-width="${F.w||2.3}" ${F.d?'stroke-dasharray="6 4"':''} fill="none" clip-path="url(#${cid})"/>`;if(F.t){const tx=F.tx??(F.b??x1);g+=`<text x="${X(tx)+(F.dx||4)}" y="${Y(F.ty??F.f(tx))+(F.dy||-6)}" font-weight="700" fill="${F.c||'#46668c'}" text-anchor="${F.an||'start'}">${it(F.t)}</text>`}});
+ (o.ar||[]).forEach(l=>{const [a,b,c,d]=l.p;g+=`<path d="M${X(a)} ${Y(b)}L${X(c)} ${Y(d)}" stroke="${l.c||'#c0392b'}" stroke-width="${l.w||2}" fill="none" marker-end="url(#fv)"/>`;if(l.t)g+=`<text x="${X(l.tx??(a+c)/2)+(l.dx||4)}" y="${Y(l.ty??(b+d)/2)+(l.dy||-5)}" font-weight="700" fill="${l.c||'#c0392b'}">${it(l.t)}</text>`});
  (o.pts||[]).forEach(q=>{if(q.g){g+=`<path d="M${X(q.x)} ${Y(q.y)}V${Y(0)}M${X(q.x)} ${Y(q.y)}H${X(0)}" stroke="#9a8f7c" stroke-width="1" stroke-dasharray="3 3" fill="none"/>`}g+=q.o?`<circle cx="${X(q.x)}" cy="${Y(q.y)}" r="3.4" fill="#fff" stroke="#2a2620" stroke-width="1.5"/>`:q.n?'':`<circle cx="${X(q.x)}" cy="${Y(q.y)}" r="3.4" fill="#2a2620"/>`;if(q.t)g+=`<text x="${X(q.x)+(q.dx??6)}" y="${Y(q.y)+(q.dy??-6)}" font-weight="700">${it(q.t)}</text>`});
  const ay=y0<=0&&y1>=0?Y(0):Y(y0),ax=x0<=0&&x1>=0?X(0):X(x0);
  (o.xt||[]).forEach(([x,t])=>{g+=`<text x="${X(x)}" y="${ay+14}" text-anchor="middle">${it(t)}</text>`});
@@ -1369,7 +1370,7 @@ function GR(o){if(o&&o.m)return FG(o);const W=250,H=196,X0=34,Y0=168,sx=x=>X0+x*
  (o.tx||[]).forEach(([x,y,t])=>{g+=`<text x="${sx(x)}" y="${sy(y)}" text-anchor="middle">${esc(t)}</text>`});
  return `<svg class="qgr" viewBox="0 0 ${W} ${H}" font-size="12.5" fill="#2a2620" font-family="inherit">${g}</svg>`}
 // ---- 수식 표기: 문장 속 $...$ 를 간단한 TeX 문법으로 그려 줌 (수리 과목) ----
-const MSYM={to:'→',infty:'∞',le:'≤',ge:'≥',leq:'≤',geq:'≥',ne:'≠',neq:'≠',pi:'π',cdot:'·',times:'×',div:'÷',pm:'±',prime:'′',alpha:'α',beta:'β',gamma:'γ',theta:'θ',lt:'&lt;',gt:'&gt;',dots:'…',ldots:'…',cdots:'⋯',therefore:'∴',because:'∵',Rightarrow:'⇒',Leftrightarrow:'⇔',quad:' ',in:'∈',mid:'|'};
+const MSYM={to:'→',infty:'∞',le:'≤',ge:'≥',leq:'≤',geq:'≥',ne:'≠',neq:'≠',pi:'π',cdot:'·',times:'×',div:'÷',pm:'±',prime:'′',alpha:'α',beta:'β',gamma:'γ',theta:'θ',lt:'&lt;',gt:'&gt;',dots:'…',ldots:'…',cdots:'⋯',therefore:'∴',because:'∵',Rightarrow:'⇒',Leftrightarrow:'⇔',quad:' ',in:'∈',mid:'|',lambda:'λ',mu:'μ',phi:'φ',varphi:'φ',sigma:'σ',delta:'δ',Delta:'Δ',omega:'ω',angle:'∠',perp:'⊥',parallel:'∥',triangle:'△',circ:'°',approx:'≈',sum:'Σ',cap:'∩',cup:'∪',subset:'⊂',bot:'⊥',ast:'∗',overrightarrow:'',vec:''};
 function mxp(s){let i=0,o='';
  const ent=()=>{const m=/^&[a-z#0-9]+;/.exec(s.slice(i));if(m){i+=m[0].length;return m[0]}return null};
  const grp=()=>{while(s[i]==' ')i++;if(s[i]=='{'){let d=1,j=i+1;while(j<s.length&&d){if(s[j]=='{')d++;else if(s[j]=='}')d--;j++}const t=s.slice(i+1,j-1);i=j;return mxp(t)}
@@ -1381,6 +1382,9 @@ function mxp(s){let i=0,o='';
    else if(k=='sqrt'){o+=`<span class="msq">√<span>${grp()}</span></span>`}
    else if(k=='int'){let lo='',hi='',has=0;for(let t=0;t<2;t++){if(s[i]=='_'){i++;lo=grp();has=1}else if(s[i]=='^'){i++;hi=grp();has=1}}o+=has?`<span class="mint">∫<span class="mlm2"><span>${hi}</span><span>${lo}</span></span></span>`:'<span class="mint">∫</span>'}
    else if(k=='lim'){let sb='';if(s[i]=='_'){i++;sb=grp()}o+=`<span class="mlim">lim<span>${sb}</span></span>`}
+   else if(k=='vec'||k=='overrightarrow'){o+=`<span class="mvc">${grp()}</span>`}
+   else if(k=='overline'||k=='bar'){o+=`<span class="mov">${grp()}</span>`}
+   else if(k=='mathrm'||k=='mathbf'||k=='operatorname'){o+=grp().replace(/<\/?i>/g,'')}
    else if(k=='Big'||k=='big'||k=='left'||k=='right'){}
    else if(k==','){o+=' '}else if(k==' '){o+=' '}else if(k=='{'||k=='}'||k=='|'){o+=k}
    else if(k=='text'){o+=grp().replace(/<\/?i>/g,'')}
