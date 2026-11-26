@@ -213,7 +213,7 @@ function fitSt(){document.querySelectorAll('.sa').forEach(a=>{const h=a.getBound
 window.addEventListener('resize',()=>{if(document.querySelector('.hero'))fitSt()});
 
 function ach(n,o){const qs=isSoc(n)?socQ(n):[];return qs.length?Math.round(st(qs).c/qs.length*100):0}
-const LOCKED=[];
+const LOCKED=['일본어|회화'];
 const hasC=n=>(!LOCKED.includes(n)||OWNER)&&!!(CUR[n]&&(socQ(n).length||Object.keys(NOTE[n]||{}).length));
 // 2학기 2차 정기시험(2026.12.7~11) 과목별 시험 날짜 — 2학년 시간표(가정통신문) 기준
 const SEXAM={'역학과|에너지':'2026-12-07','미적분':'2026-12-07','정치':'2026-12-07','기하':'2026-12-08','영어':'2026-12-08','현대사회와|윤리':'2026-12-08','한국지리|탐구':'2026-12-09','행성우주|과학':'2026-12-09','동아시아|역사기행':'2026-12-09','물질과|에너지':'2026-12-09','세포와|물질대사':'2026-12-10','독서와|작문':'2026-12-10','경제':'2026-12-11','일본어|회화':'2026-12-11','중국어|회화':'2026-12-11'};
@@ -1511,7 +1511,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v223';
+const APPV='v224';
 function nagTog(){if(R._nagoff)delete R._nagoff;else R._nagoff=1;save();show(pfHTML(),kKey('pf'));soonMsg(R._nagoff?'공부 알림을 껐어요.':'공부를 안 한 날 저녁에 알림이 와요.')}
 // 내 정보 맨 위 카드: 아바타·닉네임·연속 학습·이번 주 공부·푼 문제
 function pfTop(){const t=R._t||{},td=dkey(),wd=(new Date().getDay()+6)%7;let wk=0;for(let i=0;i<=wd;i++)wk+=t[dAdd(td,-i)]||0;
