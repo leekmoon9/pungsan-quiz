@@ -997,7 +997,7 @@ const mkN=n=>MOCK[n]&&MOCK[n].length?MOCK[n].filter(M=>!M.hd).length:5;
 const sDone=n=>!!MOCK[n]&&MOCK[n].length>0&&mkCnt(n)>=mkN(n);
 // ---- 모의고사 형식: 문제 스타일은 고2 전국연합학력평가(자료 분석형), 분량은 학교 시험 기준 ----
 // 모든 과목 회차당 25문항 내외·50분·100점(3/4/5점 배점)
-function mkSpec(n){return {qn:25,min:50,pts:100}}
+function mkSpec(n){return {qn:(MOCK[n]&&MOCK[n].qn)||25,min:50,pts:100}}
 const MKHS={qn:20,min:80,pts:100};
 // 자료(표·그래프·사례·보기)가 복잡한 문항일수록 높은 배점
 function mkSc(q){const t=q.q||'',bl=t.split(/\n\s*\n/);let v=q.hd?20:0;if(q.tb)v+=3;if(q.fig)v+=3;
@@ -1511,7 +1511,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v224';
+const APPV='v225';
 function nagTog(){if(R._nagoff)delete R._nagoff;else R._nagoff=1;save();show(pfHTML(),kKey('pf'));soonMsg(R._nagoff?'공부 알림을 껐어요.':'공부를 안 한 날 저녁에 알림이 와요.')}
 // 내 정보 맨 위 카드: 아바타·닉네임·연속 학습·이번 주 공부·푼 문제
 function pfTop(){const t=R._t||{},td=dkey(),wd=(new Date().getDay()+6)%7;let wk=0;for(let i=0;i<=wd;i++)wk+=t[dAdd(td,-i)]||0;

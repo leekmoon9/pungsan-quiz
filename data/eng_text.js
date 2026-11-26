@@ -1,0 +1,270 @@
+// 영어 지문 원문 (문장 단위) — 올림포스 o · 10월 학평 m · 교과서 4과 t
+ENG.T={
+"t1": [
+"On her way to a study group meeting, Liz accidentally dropped her laptop on the street, seriously damaging it.",
+"Although it still turns on, the screen is cracked, and some keys are not working.",
+"She can have it repaired, but she is hesitating to do so.",
+"Sometimes repairs are expensive, and they often take a long time.",
+"Besides, the laptop is about five years old.",
+"In this case, getting rid of the old one and purchasing a new one might seem like a more reasonable option.",
+"In reality, however, it may not be the best thing to do.",
+"If Liz throws her laptop in the trash, she will be contributing to a serious problem: e-waste."
+],
+"t2": [
+"What exactly is e-waste?",
+"The term refers to discarded electronic devices and electrical appliances.",
+"Due to toxic materials contained in these products, such as lead, e-waste is a serious health and environmental hazard.",
+"To make matters worse, the amount of e-waste produced each year is increasing at an alarming rate.",
+"In 2021, a total of 57.4 million metric tons of e-waste was generated worldwide, which was a 37% increase from 2014, the year when data about e-waste was first collected.",
+"Experts predict that by 2030, the amount of e-waste generated annually will have doubled in just 16 years.",
+"For this reason, efforts are being made to address this problem, most of which are focused on making products easier to repair.",
+"Let’s take a look at some practical approaches from around the world."
+],
+"t3": [
+"One reason many people dispose of their damaged devices is that they are too difficult to repair.",
+"For example, a device may be difficult to disassemble, or its manufacturer may require that it be brought to an official service center to be fixed.",
+"Many companies do not allow their customers to take their damaged items to third-party repair shops.",
+"What is more, some products are intentionally designed to be difficult to repair.",
+"It is common for consumers to be unable to acquire the instructions for how to fix their items or the parts needed to complete repairs.",
+"The right-to-repair movement is trying to solve these problems by promoting legislation that states the following: If you own a product, you have the right to fix it yourself or bring it to a technician of your choice.",
+"To protect the rights of consumers, the right-to-repair movement demands four things.",
+"First, companies must make information about their products available to everyone.",
+"Second, third parties, including individuals, should be able to obtain the parts and tools required to make repairs.",
+"Third, the practice of preventing consumers from installing custom software on their own devices should be prohibited by law.",
+"Finally, it demands that manufacturers design devices in a way that makes repairs as easy as possible.",
+"Advocates of the movement say that if all these goals are accomplished, far less e-waste will be generated.",
+"Thanks to their efforts, more than 40 states in the U.S. have begun working on right-to-repair legislation.",
+"This movement is gaining a growing influence in Europe as well, with more and more countries joining the cause."
+],
+"t4": [
+"In January 2021, the French government passed a bill that requires that every manufacturer include a “repairability index” on five categories of electronic devices and electrical appliances: smartphones, laptops, washing machines, televisions, and lawn mowers.",
+"Using a score ranging from 0 to 10, as well as a color-coded system, the index lets consumers see how easily the product can be repaired before they purchase it.",
+"The index takes into account several elements, including the availability of repair information, the ease of disassembly, and the price of spare parts.",
+"A low number on a bright red label means that repairing the product will be difficult, whereas a high number on a green label indicates that the product is easy to repair.",
+"The index was designed to have two positive effects.",
+"Firstly, it allows consumers to make informed decisions when purchasing new devices and appliances.",
+"Secondly, it encourages manufacturers to make their products easier to repair.",
+"As a result, with fewer electronic and electrical items ending up in its landfills, France can expect to make a transition to a more sustainable society in the near future.",
+"The impact of the index, however, is likely to spread far beyond France.",
+"We live in a global economy, and any company that wants to sell its appliances on the French market will need to label its products according to the repairability index.",
+"If the index is successful, we can anticipate seeing more countries around the world following France’s innovative lead."
+],
+"t5": [
+"When consumers are given the right tools and materials, along with some helpful advice, they can repair much of the damage that occurs to electronic products by themselves.",
+"That is why Repair Cafés were started.",
+"They are free meeting places where people can gather together and fix their broken devices.",
+"The cafés are staffed by volunteer experts who can give technical advice and teach people how to fix things.",
+"The first Repair Café was opened in the Netherlands in the city of Amsterdam in 2009.",
+"It was such a success that the idea soon spread to neighboring countries.",
+"Before long, there were Repair Cafés in over 30 countries around the world.",
+"Along with preventing damaged items from becoming e-waste, these cafés also encourage people to share their invaluable skills and knowledge about the repair and maintenance of electronics.",
+"They continue to grow in popularity, with more and more people signing up to volunteer.",
+"By providing spaces where people can learn, Repair Cafés enable individuals to maintain their devices and extend their life spans.",
+"Furthermore, they foster a sustainable perspective that can have a huge positive impact on our future."
+],
+"t6": [
+"Do you remember Liz, the girl who dropped her laptop?",
+"Imagine she lived in a world where repairing damaged devices and appliances was simply part of everyday life.",
+"If that were the case, her options wouldn’t be limited to paying for expensive repairs or throwing away her laptop and buying a new one.",
+"She would be able to order the necessary parts online and replace them herself.",
+"Alternatively, she could bring her damaged device to the nearest Repair Café to get advice on how to fix it.",
+"Repairing it probably wouldn’t be very hard, as she likely would have purchased a laptop with a high repairability score.",
+"In fact, this sustainable world is a future we can all enjoy if we work toward it together.",
+"Even more importantly, it is a future in which people will generate far less e-waste, making our planet a cleaner, healthier place for everyone."
+],
+"o12-8": [
+"The “jolt” of caffeine does wear off.",
+"Caffeine is removed from your system by an enzyme within your liver, which gradually degrades it over time.",
+"Based in large part on genetics, some people have a more efficient version of the enzyme that degrades caffeine, allowing the liver to rapidly clear it from the bloodstream.",
+"These rare individuals can drink an espresso with dinner and fall fast asleep at midnight without a problem.",
+"Others, however, have a slower-acting version of the enzyme.",
+"It takes far longer for their system to eliminate the same amount of caffeine.",
+"As a result, they are very sensitive to caffeine’s effects.",
+"One cup of tea or coffee in the morning will last much of the day, and should they have a second cup, even early in the afternoon, they will find it difficult to fall asleep in the evening.",
+"Aging also alters the speed of caffeine clearance: the older we are, the longer it takes our brain and body to remove caffeine, and thus the more sensitive we become in later life to caffeine’s sleep-disrupting influence."
+],
+"o12-9": [
+"Over the past several decades, there have been some agreements to reduce the debt of poor nations, but other economic challenges (like trade barriers) remain.",
+"Nontariff trade measures, such as quotas, subsidies, and restrictions on exports, are increasingly prevalent and may be enacted for policy reasons having nothing to do with trade.",
+"However, they have a discriminatory effect on exports from countries that lack the resources to comply with requirements of nontariff measures imposed by rich nations.",
+"For example, the huge subsidies that rich nations give to their farmers make it very difficult for farmers in the rest of the world to compete with them.",
+"Another example would be domestic health or safety regulations, which, though not specifically targeting imports, could impose significant costs on foreign manufacturers seeking to conform to the importer’s market.",
+"Industries in developing markets may have more difficulty absorbing these additional costs."
+],
+"o13-5": [
+"All translators feel some pressure from the community of readers for whom they are doing their work.",
+"And all translators arrive at their interpretations in dialogue with other people.",
+"The English poet Alexander Pope had pretty good Greek, but when he set about translating Homer’s Iliad in the early 18th century he was not on his own.",
+"He had Greek commentaries to refer to, and translations that had already been done in English, Latin, and French — and of course he had dictionaries.",
+"Translators always draw on more than one source text.",
+"Even when the scene of translation consists of just one person with a pen, paper, and the book that is being translated, or even when it is just one person translating orally for another, that person’s linguistic knowledge arises from lots of other texts and other conversations.",
+"And then his or her idea of the translation’s purpose will be influenced by the expectations of the person or people it is for.",
+"In both these senses every translation is a crowd translation."
+],
+"o13-12": [
+"In the course of his research on business strategy and the environment, Michael Porter noticed a peculiar pattern: Businesses seemed to be profiting from regulation.",
+"He also discovered that the stricter regulations were prompting more innovation than the weaker ones.",
+"The Dutch flower industry provides an illustration.",
+"For many years, the companies producing Holland’s world-renowned tulips and other cut flowers were also contaminating the country’s water and soil with fertilizers and pesticides.",
+"In 1991, the Dutch government adopted a policy designed to cut pesticide use in half by 2000 — a goal they ultimately achieved.",
+"Facing increasingly strict regulation, greenhouse growers realized they had to develop new methods if they were going to maintain product quality with fewer pesticides.",
+"In response, they shifted to a cultivation method that circulates water in closed-loop systems and grows flowers in a rock wool substrate.",
+"The new system not only reduced the pollution released into the environment; it also increased profits by giving companies greater control over growing conditions."
+],
+"o14-14": [
+"Observational studies of humans cannot be properly controlled.",
+"Humans live different lifestyles and in different environments.",
+"Thus, they are insufficiently homogeneous to be suitable experimental subjects.",
+"These confounding factors undermine our ability to draw sound causal conclusions from human epidemiological surveys.",
+"Confounding factors are variables (known or unknown) that make it difficult for epidemiologists to isolate the effects of the specific variable being studied.",
+"For example, Taubes argued that since many people who drink also smoke, researchers have difficulty determining the link between alcohol consumption and cancer.",
+"Similarly, researchers in the famous Framingham study identified a significant correlation between coffee drinking and coronary heart disease.",
+"However, most of this correlation disappeared once researchers corrected for the fact that many coffee drinkers also smoke.",
+"If the confounding factors are known, it is often possible to correct for them.",
+"However, if they are unknown, they will undermine the reliability of the causal conclusions we draw from epidemiological surveys."
+],
+"o14-16": [
+"What is unusual about journalism as a profession is its lack of independence.",
+"In theory, practitioners in the classic professions, like medicine or the clergy, contain the means of production in their heads and hands, and therefore do not have to work for a company or an employer.",
+"They can draw their income directly from their clients or patients.",
+"Because the professionals hold knowledge, moreover, their clients are dependent on them.",
+"Journalists hold knowledge, but it is not theoretical in nature; one might argue that the public depends on journalists in the same way that patients depend on doctors, but in practice a journalist can serve the public usually only by working for a news organization, which can fire her or him at will.",
+"Journalists’ income depends not on the public, but on the employing news organization, which often derives the large majority of its revenue from advertisers."
+],
+"o16-6": [
+"It would seem obvious that the more competent someone is, the more we will like that person.",
+"By “competence,” I mean a cluster of qualities: smartness, the ability to get things done, wise decisions, etc.",
+"We stand a better chance of doing well at our life tasks if we surround ourselves with people who know what they’re doing and have a lot to teach us.",
+"But the research evidence is paradoxical: In problem-solving groups, the participants who are considered the most competent and have the best ideas tend not to be the ones who are best liked.",
+"Why?",
+"One possibility is that, although we like to be around competent people, those who are too competent make us uncomfortable.",
+"They may seem unapproachable, distant, superhuman—and make us look bad (and feel worse) by comparison.",
+"If this were true, we might like people more if they reveal some evidence of fallibility.",
+"For example, if your friend is a brilliant mathematician, superb athlete, and gourmet cook, you might like him or her better if, every once in a while, they screwed up."
+],
+"o16-8": [
+"Buying a television is current consumption.",
+"It makes us happy today but does nothing to make us richer tomorrow.",
+"Yes, money spent on a television keeps workers employed at the television factory.",
+"But if the same money were invested, it would create jobs somewhere else, say for scientists in a laboratory or workers on a construction site, while also making us richer in the long run.",
+"Think about college as an example.",
+"Sending students to college creates jobs for professors.",
+"Using the same money to buy fancy sports cars for high school graduates would create jobs for auto workers.",
+"The crucial difference between these scenarios is that a college education makes a young person more productive for the rest of his or her life; a sports car does not.",
+"Thus, college tuition is an investment; buying a sports car is consumption."
+],
+"o16-12": [
+"When evaluating a policy, people tend to concentrate on how the policy will fix some particular problem while ignoring or downplaying other effects it may have.",
+"Economists often refer to this situation as The Law of Unintended Consequences.",
+"For instance, suppose that you impose a tariff on imported steel in order to protect the jobs of domestic steelworkers.",
+"If you impose a high enough tariff, their jobs will indeed be protected from competition by foreign steel companies.",
+"But an unintended consequence is that the jobs of some autoworkers will be lost to foreign competition.",
+"Why?",
+"The tariff that protects steelworkers raises the price of the steel that domestic automobile makers need to build their cars.",
+"As a result, domestic automobile manufacturers have to raise the prices of their cars, making them relatively less attractive than foreign cars.",
+"Raising prices tends to reduce domestic car sales, so some domestic autoworkers lose their jobs."
+],
+"o17-9": [
+"Introverted leaders do have to overcome the strong cultural presumption that extroverts are more effective leaders.",
+"Although the population splits into almost equal parts between introverts and extroverts, more than 96 percent of managers and executives are extroverted.",
+"In a study done in 2006, 65 percent of senior corporate executives viewed introversion as a barrier to leadership.",
+"We must reexamine this stereotype, however, as it doesn’t always hold true.",
+"Regent University found that a desire to be of service to others and to empower them to grow, which is more common among introverts than extroverts, is a key factor in becoming a leader and retaining leadership.",
+"So-called servant leadership, dating back to ancient philosophical literature, adheres to the belief that a company’s goals are best achieved by helping workers or customers achieve their goals.",
+"Such leaders do not seek attention but rather want to shine a light on others’ wins and achievements; servant leadership requires humility, but that humility ultimately pays off."
+],
+"o17-11": [
+"The fundamental nature of the experimental method is manipulation and control.",
+"Scientists manipulate a variable of interest, and see if there’s a difference.",
+"At the same time, they attempt to control for the potential effects of all other variables.",
+"The importance of controlled experiments in identifying the underlying causes of events cannot be overstated.",
+"In the real—uncontrolled—world, variables are often correlated.",
+"For example, people who take vitamin supplements may have different eating and exercise habits than people who don’t take vitamins.",
+"As a result, if we want to study the health effects of vitamins, we can’t merely observe the real world, since any of these factors (the vitamins, diet, or exercise) may affect health.",
+"Rather, we have to create a situation that doesn’t actually occur in the real world.",
+"That’s just what scientific experiments do.",
+"They try to separate the naturally occurring relationship in the world by manipulating one specific variable at a time, while holding everything else constant."
+],
+"o17-12": [
+"Why do people in the Mediterranean live longer and have a lower incidence of disease?",
+"Some people say it’s because of what they eat.",
+"Their diet is full of fresh fruits, fish, vegetables, whole grains, and nuts.",
+"Individuals in these cultures drink red wine and use great amounts of olive oil.",
+"Why is that food pattern healthy?",
+"One reason is that they are eating a palette of colors.",
+"More and more research is surfacing that shows us the benefits of the thousands of colorful “phytochemicals” (phyto=plant) that exist in foods.",
+"These healthful, non-nutritive compounds in plants provide color and function to the plant and add to the health of the human body.",
+"Each color connects to a particular compound that serves a specific function in the body.",
+"For example, if you don’t eat purple foods, you are probably missing out on anthocyanins, important brain protection compounds.",
+"Similarly, if you avoid green-colored foods, you may be lacking chlorophyll, a plant antioxidant that guards your cells from damage."
+],
+"o18-5": [
+"Many things spark envy: ownership, status, health, youth, talent, popularity, beauty.",
+"It is often confused with jealousy because the physical reactions are identical.",
+"The difference: the subject of envy is a thing (status, money, health etc.).",
+"The subject of jealousy is the behaviour of a third person.",
+"Envy needs two people.",
+"Jealousy, on the other hand, requires three: Peter is jealous of Sam because the beautiful girl next door rings him instead.",
+"Paradoxically, with envy we direct resentments toward those who are most similar to us in age, career and residence.",
+"We don’t envy businesspeople from the century before last.",
+"We don’t envy millionaires on the other side of the globe.",
+"As a writer, I don’t envy musicians, managers or dentists, but other writers.",
+"As a CEO you envy other, bigger CEOs.",
+"As a supermodel you envy more successful supermodels.",
+"Aristotle knew this: ‘Potters envy potters.’"
+],
+"o18-12": [
+"Greenwashing involves misleading a consumer into thinking a good or service is more environmentally friendly than it really is.",
+"Greenwashing ranges from making environmental claims required by law, and therefore irrelevant (CFC-free for example), to puffery (exaggerating environmental claims) to fraud.",
+"Researchers have shown that claims on products are often too vague or misleading.",
+"Some products are labeled “chemical-free,” when the fact is everything contains chemicals, including plants and animals.",
+"Products with the highest number of misleading or unverifiable claims were laundry detergents, household cleaners, and paints.",
+"Environmental advocates agree there is still a long way to go to ensure shoppers are adequately informed about the environmental impact of the products they buy.",
+"The most common reason for greenwashing is to attract environmentally conscious consumers.",
+"Many consumers do not find out about the false claims until after the purchase.",
+"Therefore, greenwashing may increase sales in the short term.",
+"However, this strategy can seriously backfire when consumers find out they are being deceived."
+],
+"m24": [
+"Consistent though he may be, some of Aristotle’s ideas meet us today as strange.",
+"He had no difficulty justifying slavery, for example, and in his era, philosophers enjoyed positions of high privilege and influence.",
+"Because of their practice of contemplation for the highest human good, philosophers were considered worthy to have all the best things in life.",
+"Somehow that assertion seems oddly self-serving.",
+"It serves us to remember that every great thinker is of her own time and speaks to a particular audience, and certainly Aristotle is no exception.",
+"Human flourishing as he understood it probably would not be nearly as inclusive as we would want it to be today.",
+"How he understood right and good is best taken to be an indicator of how the privileged elite of ancient Greek society tended to understand right and good.",
+"As a result, for all it does well, it is also deeply flawed."
+],
+"m29": [
+"You might think of survival as a race in which a hurdle has to be jumped every year.",
+"The early hurdles were once very high, and many people fell before clearing the first few.",
+"Demographically, humankind was living close to a state of nature, and nature is extremely wasteful of life.",
+"From only a very small number of figs will even one of many seeds become a fig tree.",
+"Almost a quarter of baboons born in the wild die before they are a year old, which is fairly typical for primates.",
+"Infant mortality rates for humans in pre-modern agricultural societies were similar to, and sometimes higher, than those of apes.",
+"Things were little better for our hunter-gatherer ancestors, a quarter of whom failed to reach their first birthday, while another quarter didn’t live long enough to reproduce just about everywhere until the nineteenth century.",
+"Had it been otherwise, the huge recent growth in human population would have occurred much earlier."
+],
+"m34": [
+"Social media has altered business, politics, and friendships, making going viral a household term.",
+"The global financial industry links every bank and countless households in every country, making us vulnerable to human error taking place on the other side of the world.",
+"As Columbia University strategy professor Rita McGrath explains, years ago most of our institutions were separate and thereby buffered from the effects of errors outside their walls.",
+"That is no longer the case.",
+"The digitization of massive amounts of information has continued to grow enormously as the cost of computing power has decreased.",
+"The development of smart systems that communicate autonomously gave rise to an infinite variety of potential breakdowns.",
+"This interdependence is a breeding ground for complex failure.",
+"As Rita puts it, when “things that used to be kept separate bump up against each other, it becomes far more difficult to predict what’s going to happen next.",
+"Information technology creates new vulnerabilities because interconnectedness instantly spreads the impact of small failures."
+],
+"m39": [
+"Like all historians, social historians draw from a variety of primary sources.",
+"Social history often emphasizes ordinary people rather than elites.",
+"Yet, in most places and times, non-elites lacked access to education and, thus, did not produce substantial amounts of documentation.",
+"Even when they did produce documentation, these materials rarely ended up in archives where they could be preserved and made available to researchers.",
+"Because of such biases in the historical record, social historians have to be very creative in their work.",
+"Like other historians, social historians analyze textual sources produced by government officials, employers, and other elites.",
+"Yet rather than simply take such sources at face value, they read them “against the grain”.",
+"So, for example, a social historian will read legal documents not only for the “facts” provided by slaveowners; she will also examine the silences, interruptions, rumors, and other details that offer hints about the enslaved peoples’ attitudes and actions."
+]
+};
+ENG.TS={"o18-5": "Jealousy involves three parties, focusing on the actions of a third person, whereas envy involves two individuals whose personal circumstances are most alike, with one person resenting the other.", "o18-12": "While greenwashing might bring a company profits temporarily by deceiving environmentally conscious consumers, the company will face serious trouble when the consumers figure out they were misinformed."};
