@@ -19,8 +19,14 @@ function scopeMig(d){const G='한국지리|탐구',M={'2-0':'0-0','2-1':'0-1','2
  if(d._ln)delete d._ln[G];if(d._nd)Object.keys(d._nd).forEach(k=>{if(k.indexOf(G+'|')==0)delete d._nd[k]});
  const bad=k=>/^(geom|etnm)\d+$/.test(k)||/^geo[125]\d[bx]\d+$/.test(k);
  Object.keys(d).forEach(k=>{if(bad(k))delete d[k]});if(d._fx)Object.keys(d._fx).forEach(k=>{if(bad(k))delete d._fx[k]});d._s2=1}
-const okDV=d=>{if(!(d&&d._dv===DV))return {};if(!d._e2)ethMig(d);if(!d._s2){scopeMig(d);setTimeout(()=>{try{if(NICK&&R&&R._dv===DV)save()}catch(e){}},1500)}if(!d._k1){korClr(d);setTimeout(()=>{try{if(NICK&&R&&R._dv===DV)save()}catch(e){}},1500)}return d};
-function save(){KV++;R._e2=1;try{R._lbs=streakN();R._lbsd=dkey()}catch(e){}R._dv=DV;ls('rec:'+NICK,JSON.stringify(R));clearTimeout(tm);tm=setTimeout(sync,700)}
+// 한국지리 탐구 Ⅱ단원 추가(단원 번호 0 신설): 기존 Ⅲ·Ⅳ의 필기 열람·단원 완료·마지막 위치 키를 한 칸씩 뒤로 (1회)
+function geoMig(d){const G='한국지리|탐구';
+ if(d._nv&&d._nv[G]){const o=d._nv[G],nn={};for(const k in o){const p=k.split('-');nn[(+p[0]+1)+'-'+p[1]]=o[k]}d._nv[G]=nn}
+ if(d._ln&&d._ln[G]&&d._ln[G].length)d._ln[G]=[d._ln[G][0]+1,d._ln[G][1]];
+ if(d._nd){const add={};Object.keys(d._nd).forEach(k=>{if(k.indexOf(G+'|')==0){const u=+k.slice(G.length+1);if(u>=0){add[G+'|'+(u+1)]=d._nd[k];delete d._nd[k]}}});Object.assign(d._nd,add)}
+ d._g2=1}
+const okDV=d=>{if(!(d&&d._dv===DV))return {};if(!d._e2)ethMig(d);if(!d._s2){scopeMig(d);setTimeout(()=>{try{if(NICK&&R&&R._dv===DV)save()}catch(e){}},1500)}if(!d._g2){geoMig(d);setTimeout(()=>{try{if(NICK&&R&&R._dv===DV)save()}catch(e){}},1500)}if(!d._k1){korClr(d);setTimeout(()=>{try{if(NICK&&R&&R._dv===DV)save()}catch(e){}},1500)}return d};
+function save(){KV++;R._e2=1;R._g2=1;R._s2=1;try{R._lbs=streakN();R._lbsd=dkey()}catch(e){}R._dv=DV;ls('rec:'+NICK,JSON.stringify(R));clearTimeout(tm);tm=setTimeout(sync,700)}
 async function sync(){if(SUBMODE){if(DB&&NICK)try{await DB.rpc('sub_save',{p_key:SK(),p_data:R})}catch(e){}return}if(ADMINMODE){if(DB)try{await DB.rpc('admin_save',{p_key:AK(),p_data:R})}catch(e){}return}if(!DB||!NICK||!PIN)return;try{const {data,error}=await DB.rpc('player_save',{p_nick:NICK,p_pin:PIN,p_data:R});if(error||data!==true)throw 0}catch(e){}}
 const lastNick=()=>ls('last');
 const ADM_NICK='풍산동신라면',ADM_RV='r1';let ADMINMODE=false,SUBMODE=false,SUBOK=false;const SK=()=>ls('sk');const STAFF=()=>OWNER||SUBMODE;
@@ -1515,7 +1521,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v228';
+const APPV='v229';
 function nagTog(){if(R._nagoff)delete R._nagoff;else R._nagoff=1;save();show(pfHTML(),kKey('pf'));soonMsg(R._nagoff?'공부 알림을 껐어요.':'공부를 안 한 날 저녁에 알림이 와요.')}
 // 내 정보 맨 위 카드: 아바타·닉네임·연속 학습·이번 주 공부·푼 문제
 function pfTop(){const t=R._t||{},td=dkey(),wd=(new Date().getDay()+6)%7;let wk=0;for(let i=0;i<=wd;i++)wk+=t[dAdd(td,-i)]||0;
