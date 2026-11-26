@@ -13,7 +13,13 @@ await p.evaluate(subj=>{const n=subj,col=sCol(n),nm=n.split('|').join(' ');let h
  for(const ss of document.styleSheets){try{for(let i=ss.cssRules.length-1;i>=0;i--){const r=ss.cssRules[i];if(r.media&&/print/.test(r.media.mediaText))ss.deleteRule(i)}}catch(e){}}
  document.querySelectorAll('#bk,#rf,#toast,.mdw,#inst').forEach(e=>e.remove());
  document.body.className='';document.body.innerHTML=`<main class="pdoc">${h}</main>`;
- const st=document.createElement('style');st.textContent=`@page{size:A4;margin:14mm 13mm 16mm}
+  {const SUB={'₀':'0','₁':'1','₂':'2','₃':'3','₄':'4','₅':'5','₆':'6','₇':'7','₈':'8','₉':'9','ₐ':'a','ₓ':'x','ₛ':'s','ₙ':'n','ᵧ':'y','₊':'+','₋':'-'},SUP={'⁰':'0','¹':'1','²':'2','³':'3','⁴':'4','⁵':'5','⁶':'6','⁷':'7','⁸':'8','⁹':'9','⁺':'+','⁻':'−','ⁿ':'n','ᵐ':'m','ᴺ':'N'};
+ let H=document.body.innerHTML;
+ H=H.replace(/(.)⃗/gu,'<span class="vec">$1</span>');
+ H=H.replace(/[₀-₉ₐₓₛₙᵧ₊₋]+/gu,m=>'<sub>'+[...m].map(c=>SUB[c]).join('')+'</sub>');
+ H=H.replace(/[⁰¹²³⁴-⁹⁺⁻ⁿᵐᴺ]+/gu,m=>'<sup>'+[...m].map(c=>SUP[c]).join('')+'</sup>');
+ H=H.replace(/ⅰ/g,'i').replace(/ⅱ/g,'ii').replace(/ⅲ/g,'iii').replace(/ⅳ/g,'iv').replace(/ⅴ/g,'v').replace(/ⅵ/g,'vi').replace(/ⅶ/g,'vii').replace(/ⅷ/g,'viii').replace(/ⅸ/g,'ix').replace(/ⅹ/g,'x');
+ document.body.innerHTML=H} const st=document.createElement('style');st.textContent=`.vec{position:relative;display:inline-block}.vec::after{content:'→';position:absolute;left:0;right:0;top:-.72em;font-size:.62em;line-height:1;text-align:center}sub,sup{font-size:.72em;line-height:0}@page{size:A4;margin:14mm 13mm 16mm}
  html,body{background:#fff!important;padding:0!important;margin:0!important}body::before,body::after{display:none!important}
  .pdoc{max-width:none!important;width:auto;padding:0!important;margin:0!important;font-size:13.2px}
  .pcv{height:250mm;display:flex;align-items:center;justify-content:center;break-after:page}
