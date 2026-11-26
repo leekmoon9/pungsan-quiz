@@ -1211,3 +1211,4 @@ button.mkrw.lk,button.mkrw.lk:disabled{opacity:1;border:1.5px dashed #d6ccb8;bac
 .lpc{width:min(320px,100%)}.lpc h3{margin:0 0 12px;font-size:16px;line-height:1.35;word-break:keep-all}
 .lpb{display:grid;gap:8px}.lpb button{padding:13px;border:1.5px solid var(--ln);border-radius:12px;background:var(--card);color:var(--tx);font:inherit;font-size:15px;font-weight:700;cursor:pointer}.lpb button.g{border-color:transparent;background:transparent;color:var(--mut)}
 .mgc.bd1{border:2px solid #8b6fd6!important;box-shadow:0 0 0 4px rgba(139,111,214,.18)!important}
+.qbox u,.q u{text-decoration-thickness:2px;text-underline-offset:3px}
