@@ -1215,3 +1215,5 @@ button.mkrw.lk,button.mkrw.lk:disabled{opacity:1;border:1.5px dashed #d6ccb8;bac
 
 /* 벡터 표기 */
 .mth .mvc{display:inline-block;position:relative;line-height:1;padding-top:.32em}.mth .mvc::before{content:'';position:absolute;left:.02em;right:.04em;top:.12em;height:1.2px;background:currentColor}.mth .mvc::after{content:'';position:absolute;right:-.02em;top:.12em;margin-top:-2.2px;border-left:4px solid currentColor;border-top:2.6px solid transparent;border-bottom:2.6px solid transparent}.mth .mov{display:inline-block;line-height:1.05;border-top:1.2px solid currentColor}
+
+.ptb.ter .pdt{background:transparent;box-shadow:inset 0 0 0 1.6px var(--tx)}.ptb.ter .pib.on .pdt{background:color-mix(in srgb,var(--tx) 18%,transparent)}
