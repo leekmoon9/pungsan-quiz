@@ -1311,7 +1311,7 @@ function calBind(){const el=document.getElementById('cg');if(!el)return;
  const out=d=>{busy=true;el.style.transition='transform .2s cubic-bezier(.4,0,.8,.6)';el.style.transform=`translateX(${d>0?-100:100}%)`;setTimeout(()=>calGo(d),190)};
  window.calSlide=out;
  el.addEventListener('touchstart',e=>{if(busy)return;sx=e.touches[0].clientX;sy=e.touches[0].clientY;dx=0;hz=null;el.style.transition='none'},{passive:true});
- el.addEventListener('touchmove',e=>{if(sx==null)return;dx=e.touches[0].clientX-sx;const dy=e.touches[0].clientY-sy;if(hz===null&&(Math.abs(dx)>8||Math.abs(dy)>8))hz=Math.abs(dx)>Math.abs(dy);if(hz){e.preventDefault();el.style.transform=`translateX(${dx}px)`}},{passive:false});
+ el.addEventListener('touchmove',e=>{if(sx==null)return;dx=e.touches[0].clientX-sx;const dy=e.touches[0].clientY-sy;if(hz===null&&(Math.abs(dx)>8||Math.abs(dy)>8))hz=Math.abs(dx)>Math.abs(dy)*1.6;if(hz){e.preventDefault();el.style.transform=`translateX(${dx}px)`}},{passive:false});
  el.addEventListener('touchend',()=>{if(sx==null)return;sx=null;if(!hz)return;if(Math.abs(dx)>Math.min(70,W()*.22))out(dx<0?1:-1);else{el.style.transition='transform .25s cubic-bezier(.22,.8,.3,1)';el.style.transform=''}});
  el.addEventListener('touchcancel',()=>{sx=null;el.style.transition='transform .25s';el.style.transform=''})}
 function svWeak(n){const tg={},lab={};CUR[n].forEach(U=>U.m.forEach(M=>M.q.forEach(q=>{const x=R[q.id];if(!x)return;const k=q.g||((CUR[n].length>1?U.n+' · ':'')+M.n);const t=tg[k]=tg[k]||{n:0,c:0};t.n++;if(x.ok)t.c++})));
@@ -1521,7 +1521,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v229';
+const APPV='v230';
 function nagTog(){if(R._nagoff)delete R._nagoff;else R._nagoff=1;save();show(pfHTML(),kKey('pf'));soonMsg(R._nagoff?'공부 알림을 껐어요.':'공부를 안 한 날 저녁에 알림이 와요.')}
 // 내 정보 맨 위 카드: 아바타·닉네임·연속 학습·이번 주 공부·푼 문제
 function pfTop(){const t=R._t||{},td=dkey(),wd=(new Date().getDay()+6)%7;let wk=0;for(let i=0;i<=wd;i++)wk+=t[dAdd(td,-i)]||0;
@@ -1588,13 +1588,14 @@ let TBDIR=0,TBDRAG=null,TBNOCLK=0;
 // 탭 누르기: 그 탭의 첫 칩으로
 function tbGo(k){if(KNV)return;const cur=tbKey();if(k==cur&&TBR.includes(CURR)){scrollTo({top:0,behavior:RDM()?'auto':'smooth'});return}kNav(k,0)}
 // 탭 첫 화면에서 화면을 옆으로 밀면: 칩 순서대로, 마지막 칩 다음은 옆 탭 (과목·글 안에서는 안 됨). 끝에서는 더 안 밀림
+let LSCR=0;addEventListener('scroll',()=>{LSCR=Date.now()},{passive:true,capture:true});
 {let S=null;const hsc=el=>{for(;el&&el!==document.body;el=el.parentElement){if(el.matches&&el.matches('input,textarea,select,canvas,.mdw,#tbr,.tbsl,.cgw,.bsh'))return true;const cs=getComputedStyle(el);if(/(auto|scroll)/.test(cs.overflowX)&&el.scrollWidth>el.clientWidth+2)return true}return false};
  const mvEl=()=>{const A=document.getElementById('app');return S&&S.intra?(A.querySelector('.kb')||A):A};
  const drop=()=>{if(S&&S.o){S.o.remove();S.o=null}};
  document.addEventListener('touchstart',e=>{if(S&&S.o&&!KNV)S.o.remove();S=null;if(!KNV)kClean();if(KNV||e.touches.length!==1||!NICK||!TBR.includes(CURR)||!document.body.classList.contains('tbon')||document.querySelector('.mdw,.bsw,.msx'))return;
-  const t=e.touches[0];if(t.clientX<14||t.clientX>innerWidth-14||hsc(e.target))return;S={x:t.clientX,y:t.clientY,t:Date.now(),ax:0,dx:0,dir:0,o:null}},{passive:true});
+  const t=e.touches[0];if(t.clientX<14||t.clientX>innerWidth-14||hsc(e.target)||Date.now()-LSCR<150)return;S={x:t.clientX,y:t.clientY,t:Date.now(),ax:0,dx:0,dir:0,o:null}},{passive:true});
  document.addEventListener('touchmove',e=>{if(!S)return;const t=e.touches[0],dx=t.clientX-S.x,dy=t.clientY-S.y;
-  if(!S.ax){if(Math.abs(dx)<10&&Math.abs(dy)<10)return;if(Math.abs(dx)>Math.abs(dy)*1.2)S.ax=1;else{S=null;return}}
+  if(!S.ax){if(Math.abs(dx)<10&&Math.abs(dy)<10)return;if(Math.abs(dx)>Math.abs(dy)*2&&Math.abs(dx)>=14)S.ax=1;else{S=null;return}}
   e.preventDefault();if(!S.seq){S.seq=kSeq();S.cur=tbKey();S.i=S.seq.indexOf(S.cur+':'+KCH[S.cur])}const seq=S.seq,cur=S.cur,i=S.i,dir=dx<0?1:-1,nb=i<0?null:seq[i+dir];
   if(!nb){if(S.o)drop();S.dir=0;S.dx=0;mvEl().style.transform='';return}
   if(S.dir!==dir){drop();const [tt,cc]=nb.split(':');const A=document.getElementById('app'),kb=A.querySelector('.kb');S.t=tt;S.c=+cc;S.intra=tt==cur;
