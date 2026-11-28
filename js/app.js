@@ -842,9 +842,48 @@ function socPage2(n){const col=sCol(n),nm=n.split('|').join(' '),D=lhData(n),[K1
   h+=`<button class="mb mball" onclick="socGo('${n}',${u})"><span><b>이 ${KLB[n]?'교재':'단원'} 전체 풀기</b></span><span class="mut">${qs.length}문제</span></button>`;
   U.m.forEach((M,k)=>{const b=pct(M.q),w=M.q.filter(isUnf).length;h+=`<button class="mb" onclick="${NEWS(n)?`partPick('${n}',${u},${k})`:`socGo('${n}',${u},${k})`}"><span>${M.no?M.no+'. ':''}${esc(M.n)}${wkBadge(gInfo(M.q))}</span><span class="mut">${M.q.length?M.q.length+'문제 · '+b+'%'+(w?' · 오답 '+w:''):'준비 중'}</span></button>`});
   h+=`</div></div></div>`});
+ if(n=='영어')h+=tongSecs(col);
  if(!KLB[n])h+=`<h3 class="sec">한 번에 풀기</h3><div class="lrows" style="--uc:${col}"><button class="lrow" onclick="socGo('${n}')"><span class="lic">${ICN_PN}</span><span class="lrt"><b>전체 풀기</b><small>${D.qs.length}문제 · 진행도 ${qp}%</small>${bar(qp)}</span><span class="chev">›</span></button></div>`;
  if(UNX>=0){const U=CUR[n][UNX],so=bigQ(n,UNX).filter(q=>R[q.id]).length;h+=ctaB(col,so?'이어서 문제 풀기':'문제 풀기 시작',U.n,`socGo('${n}',${UNX})`)}
  SOCCUR=n;show(h);ctaMv()}
+// ===== 영어 · 통 영작하기 / 통 해석하기 (지문 통째로 쓰고 → 모범 답안과 비교) =====
+const TGK={w:{n:'통 영작하기',ic:'A',d:'우리말 지문을 보고 영어로 통째로 써 봐요',pl:'우리말 지문을 보고, 영어로 통째로 써 보세요.',lb:'우리말 지문',al:'모범 영어 답안',me:'내가 쓴 영어'},r:{n:'통 해석하기',ic:'가',d:'영어 지문을 보고 우리말로 통째로 풀어 써 봐요',pl:'영어 지문을 읽고, 우리말로 통째로 해석해 보세요.',lb:'영어 지문',al:'모범 해석',me:'내가 쓴 해석'}};
+const TGD={};
+const tgList=()=>ENG.L.filter(p=>p.KO&&p.S&&p.KO.length==p.S.length);
+const tgN=k=>Object.keys(R._tg||{}).filter(x=>x.startsWith(k+':')&&R._tg[x]).length;
+function tongSecs(col){let h='';const L=tgList();
+ ['w','r'].forEach((k,i)=>{const d=tgN(k),N=L.length,pc=N?Math.round(d/N*100):0;
+  h+=`<div class="ub2" id="ubt${k}" style="--uc:${col}"><button class="lrow" onclick="tglT('${k}')"><span class="lic lnu tgic">${TGK[k].ic}</span><span class="lrt"><b>${TGK[k].n}</b><small>${d}/${N}지문 완료 · ${TGK[k].d}</small><div class="lbar"><i style="width:${pc}%"></i></div></span><span class="chev">›</span></button><div class="um"><div class="umi">`;
+  ENG.UN.forEach((un,u)=>{const A=L.filter(p=>p.u==u);if(!A.length)return;h+=`<p class="tgh">${esc(un)}</p>`;
+   A.forEach(p=>{const on=true,dn=(R._tg||{})[k+':'+p.id];h+=`<button class="mb" ${on?`onclick="tongPage('${k}','${p.id}')"`:'disabled'}><span>${esc(p.no)}. ${esc(p.n)}${dn?'<em class="tgdn">완료</em>':''}</span><span class="mut">${on?(dn?['','다시 풀기','거의 맞음','완벽'][dn]||'완료':'시작하기'):'준비 중'}</span></button>`})});
+  h+=`</div></div></div>`});return h}
+function tglT(k){document.querySelectorAll('.ub2').forEach(e=>{if(e.id=='ubt'+k)e.classList.toggle('op');else e.classList.remove('op')});OPEN=-1}
+const tgSents=(A,hl)=>A.map((t,i)=>`<span class="tgs"><b class="tgn">${i+1}</b>${hl?hl(t,i):esc(t)}</span>`).join(' ');
+function tongPage(k,id){const p=ENG.L.find(x=>x.id==id);if(!p||!p.KO||p.KO.length!=p.S.length)return socPage('영어');
+ const col=sCol('영어'),T=TGK[k],w=k=='w',src=w?p.KO:p.S,key=k+':'+id,D=TGD[key]||[];
+ let h=`<div class="shd"><h2 style="--hlc:${col}">${T.n}</h2><p class="tag">${esc(ENG.UN[p.u])} · ${esc(p.no)} ${esc(p.n)}</p></div>`;
+ h+=`<p class="tag tgguide">${w?'문장을 하나씩 보고 영어로 써 보세요.':'문장을 하나씩 읽고 우리말로 써 보세요.'}</p>`;
+ h+=`<div class="card tgc tgq" style="--uc:${col}"><button class="tgh2" onclick="tgHint(this)">핵심 단어 힌트 보기</button><div class="tghint" hidden>${p.W.map(x=>`<span><b>${esc(x[0])}</b> ${esc(x[1])}</span>`).join('')}</div></div>`;
+ h+=src.map((t,i)=>`<div class="card tgc tgq" style="--uc:${col}"><p class="tgt"><b class="tgn">${i+1}</b>${esc(t)}</p><textarea class="tgi" rows="2" data-i="${i}" placeholder="${w?'영어로 써 보세요':'우리말로 써 보세요'}" ${w?'lang="en" autocapitalize="sentences" spellcheck="false"':''} oninput="tgIn('${key}',${i},this)">${esc(D[i]||'')}</textarea></div>`).join('');
+ h+=`<div id="tgres"></div><div class="ctab" style="--uc:${col}"><button onclick="tongShow('${k}','${id}')"><span><small>다 썼으면</small><b>모범 답안 확인하기</b></span><span class="chev">›</span></button></div><div class="ctasp"></div>`;
+ SOCCUR='영어';show(h);document.querySelectorAll('.tgi').forEach(tgFit)}
+function tgFit(t){t.style.height='auto';t.style.height=Math.max(64,t.scrollHeight+2)+'px'}
+function tgIn(key,i,t){(TGD[key]=TGD[key]||[])[i]=t.value;tgFit(t)}
+function tgHint(b){const e=b.nextElementSibling;e.hidden=!e.hidden;b.textContent=e.hidden?'핵심 단어 힌트 보기':'힌트 접기'}
+function tongShow(k,id){const p=ENG.L.find(x=>x.id==id),T=TGK[k],w=k=='w',key=k+':'+id,box=document.getElementById('tgres'),col=sCol('영어');
+ const V=[...document.querySelectorAll('.tgi')].map(t=>t.value.trim());TGD[key]=V.slice();
+ if(!V.some(Boolean)){soonMsg(w?'먼저 영어로 한 문장이라도 써 보세요.':'먼저 한 문장이라도 써 보세요.');return}
+ const A=w?p.S:p.KO,Z=w?p.KO:p.S,rx=f=>esc(f).replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+ const forms=i=>p.W.filter(x=>x[3]==i+1).map(x=>String(x[4]||x[0]));
+ let tot=0,got=0,hh='';
+ A.forEach((t,i)=>{const v=V[i],low=v.toLowerCase(),F=forms(i);let chips='',mk=esc(t);
+  if(w){F.forEach(f=>{mk=mk.replace(new RegExp('(^|[^A-Za-z’\\-])('+rx(f)+')(?![A-Za-z’\\-])','i'),'$1<mark>$2</mark>')});
+   if(F.length){const hit=F.map(f=>({f,ok:!!v&&low.includes(f.toLowerCase())}));tot+=hit.length;got+=hit.filter(x=>x.ok).length;chips=`<div class="tgk">${hit.map(x=>`<span class="${x.ok?'ok':'no'}">${x.ok?'✓':'✗'} ${esc(x.f)}</span>`).join('')}</div>`}}
+  hh+=`<div class="card tgc tgr" style="--uc:${col}"><p class="tgt"><b class="tgn">${i+1}</b>${esc(Z[i])}</p><p class="tgl">${T.me}</p><p class="tgme${v?'':' tgem'}">${v?esc(v).replace(/\n/g,'<br>'):'안 썼어요'}</p><p class="tgl">${T.al}</p><p class="tga">${mk}</p>${chips}</div>`});
+ let h=w?`<div class="card tgc tgsum"><b>핵심 표현 ${got}/${tot}</b><span>문장별로 비교해 보세요</span></div>`:`<div class="card tgc tgsum"><b>문장별로 비교해 보세요</b></div>`;
+ h+=hh+`<div class="card tgc"><p class="tgl">내 답은 어땠나요?</p><div class="tgg">${[[3,'거의 맞았어요'],[2,'반쯤 맞았어요'],[1,'다시 풀래요']].map(([n,l])=>`<button class="${(R._tg||{})[key]==n?'on':''}" onclick="tgGrade('${key}',${n},this)">${l}</button>`).join('')}</div></div>`;
+ box.innerHTML=h;box.scrollIntoView({behavior:RDM()?'auto':'smooth',block:'start'})}
+function tgGrade(key,n,b){R._tg=R._tg||{};R._tg[key]=n;save();b.parentElement.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x==b))}
 function tgl2(u){document.querySelectorAll('.ub2').forEach(e=>{if(e.id=='ub'+u)e.classList.toggle('op');else e.classList.remove('op')});const e=document.getElementById('ub'+u);OPEN=e&&e.classList.contains('op')?u:-1}
 let SOCCUR='';
 function tgl(u){document.querySelectorAll('.ub').forEach((e,i)=>{if(i==u)e.classList.toggle('op');else e.classList.remove('op')});const e=document.getElementById('ub'+u);OPEN=e&&e.classList.contains('op')?u:-1}
@@ -1512,7 +1551,7 @@ const fd=t=>new Date(t).toLocaleString('ko-KR',{month:'numeric',day:'numeric',ho
 // ---------- 공부 시간 ----------
 const dkey=(d=new Date())=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
 function mrg(srv,loc){if(srv&&srv._force){const o=Object.assign({},srv);delete o._force;setTimeout(()=>{try{sync()}catch(e){}},800);return o}return mergeR(srv,loc)}
-function mergeR(a,b){const o=Object.assign({},a,b);o._fx=Object.assign({},a._fx||{},b._fx||{});const t={},A=a._t||{},B=b._t||{};for(const k in A)t[k]=A[k];for(const k in B)t[k]=Math.max(t[k]||0,B[k]);o._t=t;{const q={},QA=a._lbq||{},QB=b._lbq||{};for(const k in QA)q[k]=QA[k];for(const k in QB)q[k]=Math.max(q[k]||0,QB[k]);o._lbq=q}o._goals=Object.assign({},b._goals||{},a._goals||{});return o}
+function mergeR(a,b){const o=Object.assign({},a,b);o._fx=Object.assign({},a._fx||{},b._fx||{});const t={},A=a._t||{},B=b._t||{};for(const k in A)t[k]=A[k];for(const k in B)t[k]=Math.max(t[k]||0,B[k]);o._t=t;{const q={},QA=a._lbq||{},QB=b._lbq||{};for(const k in QA)q[k]=QA[k];for(const k in QB)q[k]=Math.max(q[k]||0,QB[k]);o._lbq=q}o._goals=Object.assign({},b._goals||{},a._goals||{});{const g={},GA=a._tg||{},GB=b._tg||{};for(const k in GA)g[k]=GA[k];for(const k in GB)g[k]=GB[k];if(Object.keys(g).length)o._tg=g}return o}
 function fmtT(sec,short){sec=Math.round(sec||0);if(sec<60)return sec>0?'1분 미만':'0분';const h=Math.floor(sec/3600),m=Math.round(sec%3600/60);return h?(short?h+'시간'+(m?'<br>'+m+'분':''):h+'시간'+(m?' '+m+'분':'')):m+'분'}
 let QID=null,QS0=0;
 // 필기를 보는 시간도 공부 시간에 반영: 필기 화면이 열려 있고 최근 90초 안에 만지거나 스크롤했을 때만 5초씩 더함
@@ -1536,7 +1575,7 @@ function askBox(title,msg,ok){return new Promise(res=>{const w=document.createEl
 let PFOK=false,PFSHOW=false,CALM=null;
 function pfGate(next){show(`<div class="fbw"><h2>비밀번호 확인</h2><p class="tag">${next=='nick'?'닉네임을 바꾸려면':next=='pin'?'비밀번호를 바꾸려면':'비밀번호를 보려면'} 지금 비밀번호 4자리를 입력해 주세요.</p><div class="card" style="max-width:320px;margin:10px auto"><input type="text" class="pw" autocomplete="off" id="gp" inputmode="numeric" pattern="[0-9]*" maxlength="4" placeholder="비밀번호" style="text-align:center;letter-spacing:6px" oninput="this.value=this.value.replace(/\D/g,'');if(this.value.length==4)pfChk('${next||''}')"></div></div>`);setTimeout(()=>{const e=document.getElementById('gp');if(e)e.focus()},50)}
 function pfChk(next){const e=document.getElementById('gp');if(e.value===PIN){PFOK=true;if(next=='cal')return cal();if(next=='nick')return pfNick();if(next=='pin')return pfPin();if(next=='show'){PFSHOW=true;return goUp()}return profile()}e.value='';soonMsg('비밀번호가 틀렸어요.')}
-const APPV='v231';
+const APPV='v232';
 function nagTog(){if(R._nagoff)delete R._nagoff;else R._nagoff=1;save();show(pfHTML(),kKey('pf'));soonMsg(R._nagoff?'공부 알림을 껐어요.':'공부를 안 한 날 저녁에 알림이 와요.')}
 // 내 정보 맨 위 카드: 아바타·닉네임·연속 학습·이번 주 공부·푼 문제
 function pfTop(){const t=R._t||{},td=dkey(),wd=(new Date().getDay()+6)%7;let wk=0;for(let i=0;i<=wd;i++)wk+=t[dAdd(td,-i)]||0;
@@ -1717,7 +1756,7 @@ function setR(r){const prev=CURR;if(prev!==r){SCRS[pgKey(prev)]=scrollY;const m=
   svH()}catch(e){}}
 function parentOf(r){const [k,...rest]=r.split('/'),v=rest.join('/');
  if(!r)return null;if(k=='subjects')return null;
- if(k=='prob'||k=='notes')return 'subj/'+v;if(k=='note'){const ps=v.split('/');ps.pop();ps.pop();return 'notes/'+ps.join('/')}
+ if(k=='tong')return 'prob/영어';if(k=='prob'||k=='notes')return 'subj/'+v;if(k=='note'){const ps=v.split('/');ps.pop();ps.pop();return 'notes/'+ps.join('/')}
  if(k=='sel')return Array.isArray(R._sel)?'subjects':null;
  if(k=='leader'||k=='pdf')return 'subjects';if(k=='inbox')return 'board';if(k=='board')return v?'board':'subjects';if(k=='guide')return 'profile';
  if(k=='pick'||k=='menu'||k=='subj'||k=='profile'&&!v)return 'subjects';if(k=='stats')return 'subjects';if(k=='admin'&&!v)return 'profile';if(k=='admin'&&/^[wnd](\/|$)/.test(v))return BKO[v[0]]||(v[0]=='w'?'board':'profile');
@@ -1741,6 +1780,7 @@ function go2(r){
  if(k=='sel')return pickSel();
  if(k=='subj'&&v&&SUBJ.flat().some(x=>x[0]==v))return subj(v);
  if((k=='prob'||k=='notes'||k=='note')&&v&&!STAFF()){const nn=k=='note'?v.split('/').slice(0,-2).join('/'):v;if(CUR[nn]&&!hasC(nn))return subjects()}
+ if(k=='tong'){const [a,b]=v.split('/');if(TGK[a]&&b)return tongPage(a,b)}
  if(k=='prob'&&v&&CUR[v])return socPage(v);
  if(k=='notes'&&v&&NEWS(v))return noteList(v);
  if(k=='note'){const ps=v.split('/'),kk=ps.pop(),uu=ps.pop(),nn=ps.join('/');if(NEWS(nn))return noteView(nn,+uu,+kk)}
@@ -1777,7 +1817,7 @@ window.addEventListener('popstate',e=>{if(location.hash=='#admin')return;const s
  HI=s.i;if(s.r==='__x'){askExit();return}if(!NICK){history.back();return}goR(s.r)});
 const H=(f,mk)=>function(...a){setR(mk(...a));return f.apply(this,a)};
 home=H(home,()=>'');subjects=H(subjects,()=>'subjects');
-subj=H(subj,n=>'subj/'+n);socPage=H(socPage,n=>NEWS(n)?'prob/'+n:'subj/'+n);noteList=H(noteList,n=>'notes/'+n);noteView=H(noteView,(n,u,k)=>'note/'+n+'/'+u+'/'+k);board=H(board,()=>'board');leader=H(leader,()=>'leader');postView=H(postView,id=>'board/'+id);postForm=H(postForm,id=>'admin/w'+(id?'/'+id:''));guide=H(guide,()=>'guide');pickSel=H(pickSel,()=>'sel');msgOpen=H(msgOpen,id=>'inbox/'+id);noticeForm=H(noticeForm,()=>'admin/n');delPage=H(delPage,()=>'admin/d');allStats=H(allStats,()=>'stats');fbForm=H(fbForm,f=>'fb/'+(f||0));
+tongPage=H(tongPage,(k,id)=>'tong/'+k+'/'+id);subj=H(subj,n=>'subj/'+n);socPage=H(socPage,n=>NEWS(n)?'prob/'+n:'subj/'+n);noteList=H(noteList,n=>'notes/'+n);noteView=H(noteView,(n,u,k)=>'note/'+n+'/'+u+'/'+k);board=H(board,()=>'board');leader=H(leader,()=>'leader');postView=H(postView,id=>'board/'+id);postForm=H(postForm,id=>'admin/w'+(id?'/'+id:''));guide=H(guide,()=>'guide');pickSel=H(pickSel,()=>'sel');msgOpen=H(msgOpen,id=>'inbox/'+id);noticeForm=H(noticeForm,()=>'admin/n');delPage=H(delPage,()=>'admin/d');allStats=H(allStats,()=>'stats');fbForm=H(fbForm,f=>'fb/'+(f||0));
 adminOne=H(adminOne,n=>'admin/u/'+n);fbTypes=H(fbTypes,()=>'admin/t');fbType=H(fbType,k=>'admin/t/'+k);fbPeople=H(fbPeople,()=>'admin/p');fbPerson=H(fbPerson,n=>'admin/p/'+n);fbReply=H(fbReply,id=>'admin/r/'+id);pdfPage=H(pdfPage,()=>'pdf');
 wrongPage=H(wrongPage,n=>'wrong/'+n);starPage=H(starPage,n=>'star/'+n);mockPage=H(mockPage,n=>'mock/'+n);vocabPage=H(vocabPage,(n,i)=>'voc/'+n+(i==null?'':'/'+i));profile=H(profile,()=>'profile');pfShow=H(pfShow,()=>'profile/pw');pfNick=H(pfNick,()=>'profile/nick');pfPin=H(pfPin,()=>'profile/pin');
 quiz=(f=>function(){setR('quiz');const x=f.apply(this,arguments);saveSS();return x})(quiz);
