@@ -1001,5 +1001,12 @@ OLM.forEach((o,k)=>{if(!o||!TX[k])return;const f=mkq(o.g),t=TX[k];
  CM.m.forEach((_,k)=>{(KMK[k]||[]).forEach(q=>{R3[j%3].push({o:k,q});j++});(KMV[k]||[]).forEach(q=>V.push({o:k,q}))});
  if(j)R3.forEach((L,r)=>{const v=V.length?V[Math.floor(r*V.length/3)]:null,qs=L.sort((a,b)=>a.o-b.o);if(v)qs.push(v);const n=MOCK[KN].length+1;
   MOCK[KN].push({n:n+'회',lb:'올림포스 '+(r+1)+'회',q:qs.map((x,i)=>Object.assign({id:'korm'+n+String(i+1).padStart(2,'0'),mk:1,t:'mc',olp:(TX[x.o]||{}).s,ptc:i>0&&qs[i-1].o==x.o?1:0},x.q))})})}
+
+// 고난도 모의고사 (올림포스): 단원별 가장 어려운 실전 문항(보기형·3점) 선별
+{const H=[];OLM.forEach((o,k)=>{if(!o||!TX[k])return;const f=mkq(o.g);const sc=q=>(/<보기>/.test(q.q)?2:0)+(/\[3점\]/.test(q.q)?1:0)+(q.o?0:-5);
+ const c=(o.x||[]).map(q=>f(q)).filter(q=>q.o).sort((a,b)=>sc(b)-sc(a));c.slice(0,2).forEach((q,i)=>H.push({o:k,q,i}))});
+ const one=H.filter(x=>x.i==0),two=H.filter(x=>x.i==1);const sel=one.concat(two.slice(0,Math.max(0,25-one.length))).sort((a,b)=>a.o-b.o);
+ const n=MOCK[KN].length+1;
+ MOCK[KN].push({n:n+'회',lb:'올림포스 고난도',q:sel.map((x,i,A)=>Object.assign({id:'korm'+n+String(i+1).padStart(2,'0'),mk:1,t:'mc',olp:(TX[x.o]||{}).s,ptc:i>0&&A[i-1].o==x.o?1:0},x.q))});}
 window.OLXK=XK;
 })();
