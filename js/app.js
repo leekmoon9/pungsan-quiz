@@ -458,9 +458,9 @@ function padMode(m){PST.mode=m;const s=document.getElementById('pmS'),o=document
 function padFold(){const p=document.getElementById('pad'),cl=p.classList.toggle('pcl');ls('padopen',cl?'0':'1');if(cl&&PST.mode=='over')padMode('sheet');requestAnimationFrame(()=>{padSize();padDraw('s');padDraw('o')})}
 function padSwap(){const qz=document.querySelector('#app .qz'),on=qz.classList.toggle('plh');ls('padlh',on?'1':'0');soonMsg(on?'풀이판을 왼쪽에 둘게요.':'풀이판을 오른쪽에 둘게요.');requestAnimationFrame(()=>{padSize();padDraw('s');padDraw('o')})}
 addEventListener('resize',()=>{if(PD&&document.getElementById('pcS')){padSize();padDraw('s');padDraw('o')}});
-function padThumb(id){const d=pGet(id);if(!d.s.length&&!d.o.length)return '';if(!d.s.length)return '<div class="pth"><small>내 풀이</small><span class="mut">문제 위에 쓴 필기만 있어요.</span></div>';
+function padThumb(id){const d=pGet(id);if(!d.s.length&&!d.o.length)return '';if(!d.s.length)return '<div class="olh"><small>내 풀이</small><span class="mut">문제 위에 쓴 필기만 있어요.</span></div>';
  const W=360;let my=0;d.s.forEach(st=>{for(let i=1;i<st.p.length;i+=2)my=Math.max(my,st.p[i])});const H=Math.min(d.h,my/PS*W+30),c=document.createElement('canvas');c.width=W*2;c.height=H*2;const x=c.getContext('2d');x.scale(2,2);const b=PST.bg;PST.bg=0;pBg(x,W,H);PST.bg=b;d.s.forEach(st=>pStroke(x,st,W));
- return `<div class="pth"><small>내 풀이</small><img src="${c.toDataURL('image/png')}" alt="내 풀이"></div>`}
+ return `<div class="olh"><small>내 풀이</small><img src="${c.toDataURL('image/png')}" alt="내 풀이"></div>`}
 
 // ================= 공지 게시판 =================
 let POSTS=null,PIMG=[],PEDIT=null;const PMAX=6;
@@ -964,7 +964,7 @@ function noteList(n){if(!NEWS(n))return subj(n);if(PASSG(n))return noteList0(n);
  show(h);ctaMv()}
 function noteView(n,u,k){u=+u;k=+k;const U=CUR[n]&&CUR[n][u],M=U&&U.m[k];if(!M||!NEWS(n))return subjects();
  if(noteOf(n,u,k)){R._ln=R._ln||{};R._ln[n]=[u,k];save()}
- const col=sCol(n),nm=n.split('|').join(' '),o=noteOf(n,u,k)||(STAFF()?NOTE_DEMO:null);if(!o)return noteList(n);const nx=nextNote(n,u,k),pg=o&&o.pg&&o.pg.length;
+ const col=sCol(n),nm=n.split('|').join(' '),o=noteOf(n,u,k)||(STAFF()?NOTE_DEMO:null);if(!o)return noteList(n);const nx=nextNote(n,u,k),pg=o&&((o.pg&&o.pg.length)||(o.pt&&o.pt.length));
  let h=PASSG(n)?`<div class="nth"><h2 style="--hlc:${col}">${esc(U.n)}</h2><p class="tag">${esc(nm)} · 지문</p></div>`:`<div class="nth"><h2 style="--hlc:${col}">${esc(M.n)}</h2><p class="tag">${esc(nm)} · ${esc(U.n)}</p></div>`;
  const czN=o&&!o.demo?(o.b.map(ntBlock).join('').match(/<mark>|<b class="ntr">/g)||[]).length:0;
  const hasV=!!(o&&o.v&&o.v.length);
@@ -1067,7 +1067,13 @@ function mkTodo(n,wk,un){const L=[];if(!mkCnt(n))return '<p class="mut" style="m
  return L.map(([t,d,f],i)=>`<${f?`button onclick="${f}"`:'div'} class="mkti"><span class="mkn">${i+1}</span><span><b>${esc(t)}</b><small>${esc(d)}</small></span>${f?'<span class="chev">›</span>':''}</${f?'button':'div'}>`).join('')}
 function mkWrong(n){startWrong(n,[{label:'모의고사 오답',qs:mkAll(n).filter(q=>R[q.id]&&!R[q.id].ok)}],{mp:1,back:"mockPage('"+n+"')",title:n.split('|').join(' ')+' 모의고사 오답'})}
 const WARN='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 21h20L12 3z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M12 10v5M12 17.6v.4" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>';
-function tbOpen(n,u,k){const o=noteOf(n,u,k);if(!o||!o.pg||!o.pg.length)return soonMsg(TBW(n)+' 원문은 아직 준비 중이에요.');
+// 텍스트 지문(올림포스): pt=[{h,b:[{t:'p',x}|{t:'tb',h,r}|{t:'po',x:[..]}]}]
+const ptX=x=>esc(x).replace(/\[A\]/g,'<b class="olab">[A]</b>').replace(/\[\/A\]/g,'').replace(/\*\*(.+?)\*\*/g,'<b>$1</b>');
+const ptB=b=>b.t=='tb'?`<div class="olt"><table><thead><tr>${b.h.map(c=>`<th>${esc(c)}</th>`).join('')}</tr></thead><tbody>${b.r.map(r=>`<tr>${r.map((c,i)=>i?`<td>${esc(c)}</td>`:`<th>${esc(c)}</th>`).join('')}</tr>`).join('')}</tbody></table></div>`:b.t=='po'?`<div class="olp">${b.x.map((x,i)=>`<p${i?'':' class="olpt"'}>${esc(x)}</p>`).join('')}</div>`:`<p>${ptX(b.x)}</p>`;
+const ptH=pt=>(pt||[]).map(s=>`${s.h?`<h4 class="olh">${esc(s.h)}</h4>`:''}${s.b.map(ptB).join('')}`).join('');
+const PTN='<p class="qpn">학습용으로만 보여 드리는 지문이에요. 캡처·복제·배포하면 저작권법에 따라 처벌받을 수 있어요.</p>';
+function ptOpen(n,o){const w=document.createElement('div');w.className='tbv olv';w.oncontextmenu=e=>{e.preventDefault()};w.innerHTML=`<div class="tbh"><b>${TBW(n)} 원문</b><span class="tbc">지문</span><button class="tbz" onclick="const v=this.closest('.tbv');v.classList.toggle('zm');this.textContent=v.classList.contains('zm')?'원래대로':'크게 보기'">크게 보기</button><button class="tbx" aria-label="닫기" onclick="this.closest('.tbv').remove()">✕</button></div><div class="tbw" role="note">${WARN}<p><b>학습용으로만 보여 드리는 ${TBW(n)} 원문이에요.</b> 이 화면을 캡처하거나 복제해서 무단으로 배포하면 저작권법에 따라 처벌받을 수 있어요.</p></div><div class="tbs olb"><div class="olx">${ptH(o.pt)}</div></div>`;document.body.appendChild(w)}
+function tbOpen(n,u,k){const o=noteOf(n,u,k);if(o&&o.pt&&o.pt.length)return ptOpen(n,o);if(!o||!o.pg||!o.pg.length)return soonMsg(TBW(n)+' 원문은 아직 준비 중이에요.');
  const w=document.createElement('div');w.className='tbv';w.oncontextmenu=e=>{e.preventDefault()};
  w.innerHTML=`<div class="tbh"><b>${TBW(n)} 원문</b><span class="tbc">${o.pg.length}쪽</span><button class="tbz" onclick="const v=this.closest('.tbv');v.classList.toggle('zm');this.textContent=v.classList.contains('zm')?'원래대로':'크게 보기'">크게 보기</button><button class="tbx" aria-label="닫기" onclick="this.closest('.tbv').remove()">✕</button></div>
  <div class="tbw" role="note">${WARN}<p><b>학습용으로만 보여 드리는 ${TBW(n)} 원문이에요.</b> 이 화면을 캡처하거나 복제해서 무단으로 배포하면 저작권법에 따라 처벌받을 수 있어요.</p></div>
@@ -1423,6 +1429,7 @@ function qtx(t,q){q=q||{};const bl=String(t).replace(/\n(?=<보기>)/g,'\n\n').s
   if(/^<보기>/.test(b)){o+=`<div class="qbk"><i>보기</i>${qln(b.replace(/^<보기>\s*\n?/,''))}</div>`;return}
   if(bl.length==1||isQ(b))o+=`<div class="qst">${qln(b)}</div>`;else if(i==0&&!b.includes('\n')&&!/^(\(|[ㄱ-ㅎ]\.|[•]|사례)/.test(b))o+=`<div class="qin">${qln(b)}</div>`;else o+=`<div class="qdt">${qln(b)}</div>`});
  if(q.img&&!bl.includes('[지도]'))o=`<figure class="qim"><img src="${esc(q.img)}" alt="" loading="lazy"></figure>`+o; if(q.fig&&!bl.includes('[그림]'))o=`<div class="qfg">${GR(q.fig)}</div>`+o;if(q.tb&&!bl.includes('[표]'))o=tbH(q.tb)+o;
+ const OPT=Array.isArray(q.pt)?q.pt:q.olp;if(OPT&&OPT.length)o=`<div class="qps qolt${q.ptc?' cl':''}" oncontextmenu="return false"><div class="qpb"><button type="button" class="qpz" onclick="const d=this.closest('.qps');d.classList.toggle('cl');this.textContent=d.classList.contains('cl')?'펼치기':'접기'">${q.ptc?'펼치기':'접기'}</button></div><div class="olx qpw">${ptH(OPT)}</div>${PTN}</div>`+o;
  if(q.ps&&q.ps.length)o=`<div class="qps" oncontextmenu="return false"><div class="qpb"><button type="button" class="qpz" onclick="const d=this.closest('.qps');d.classList.toggle('cl');this.textContent=d.classList.contains('cl')?'펼치기':'접기'">접기</button><button type="button" class="qpz" onclick="const d=this.closest('.qps');d.classList.toggle('zm');this.textContent=d.classList.contains('zm')?'원래대로':'크게 보기'">크게 보기</button></div><div class="qpw">${q.ps.map((x,i)=>`<img src="${esc(x)}" alt="지문 ${i+1}" loading="lazy" draggable="false">`).join('')}</div><p class="qpn">학습용으로만 보여 드리는 지문이에요. 캡처·복제·배포하면 저작권법에 따라 처벌받을 수 있어요.</p></div>`+o;
  return MX(`<div class="qbox">${o}</div>`)}
 function quiz(){const q=SS.qs[SS.i],N=SS.qs.length,seg=SS.segs[SS.si],r=SS.resp[q.id]||{};QID=q.id;if(!QS0)QS0=Date.now();

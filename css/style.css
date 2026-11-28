@@ -1217,3 +1217,15 @@ button.mkrw.lk,button.mkrw.lk:disabled{opacity:1;border:1.5px dashed #d6ccb8;bac
 .mth .mvc{display:inline-block;position:relative;line-height:1;padding-top:.32em}.mth .mvc::before{content:'';position:absolute;left:.02em;right:.04em;top:.12em;height:1.2px;background:currentColor}.mth .mvc::after{content:'';position:absolute;right:-.02em;top:.12em;margin-top:-2.2px;border-left:4px solid currentColor;border-top:2.6px solid transparent;border-bottom:2.6px solid transparent}.mth .mov{display:inline-block;line-height:1.05;border-top:1.2px solid currentColor}
 
 .ptb.ter .pdt{background:transparent;box-shadow:inset 0 0 0 1.6px var(--tx)}.ptb.ter .pib.on .pdt{background:color-mix(in srgb,var(--tx) 18%,transparent)}
+
+/* 올림포스 텍스트 지문 */
+.olx{padding:4px 14px 12px;font-size:15.5px;line-height:1.95;color:#2a2620;word-break:keep-all;overflow-wrap:anywhere}
+.olx p{margin:0 0 .75em;text-indent:1em;text-align:justify}
+.olx .olh{margin:.9em 0 .4em;font-size:14.5px;font-weight:800;color:#6b5a34;border-bottom:1.5px solid #d5c9b2;padding-bottom:3px;text-indent:0}
+.olx .olh:first-child{margin-top:.2em}
+.olx .olab{color:#b4452f;margin-right:.2em}
+.olt{margin:.4em 0 1em;overflow-x:auto;-webkit-overflow-scrolling:touch}.olt table{border-collapse:collapse;width:100%;font-size:14px;line-height:1.5;text-align:center}.olt th,.olt td{border:1.3px solid #bfb299;padding:6px 8px}.olt thead th{background:#efe7d3}.olt tbody th{background:#f6f0e1;font-weight:700}
+.olp{margin:.4em 0 1em;padding:10px 12px;border:1.5px dashed #bfb299;border-radius:10px;background:#fbf6ea}.olp p{margin:0 0 .35em;text-indent:0;font-size:14.5px;line-height:1.7}.olp .olpt{font-weight:800}
+.qolt .olx{max-height:none}.qolt.cl .olx,.qolt.cl .qpn{display:none}
+.olv .olb{flex:1;overflow:auto;padding:2px 14px calc(20px + env(safe-area-inset-bottom,0px));-webkit-overflow-scrolling:touch}.olv .olx{max-width:760px;margin:0 auto;background:#fffdf7;border-radius:12px;padding:12px 16px 8px}.olv.zm .olx{font-size:19px;max-width:1100px}
+@media (prefers-color-scheme:dark){}
