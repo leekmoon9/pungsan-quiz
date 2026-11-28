@@ -983,7 +983,7 @@ mk:[
 mv:[
  {g:4,q:'다음 중 ‘틀어지거나 잘못된 것을 바로잡음’의 뜻을 가진 단어가 쓰인 문장은?',o:['치과에서 치아 교정을 받았다.','분기별 추이를 살폈다.','분비를 촉진했다.','사회의 복리를 증진했다.','과당을 섭취했다.'],a:0,e:'교정(矯正).'}
 ]};
-const TX=window.OLTX||[],SRC='올림포스 독서와 작문';
+const PG=[86,89,93,96,102,105,109,112,118,121,125,128,148,152,154,184,188],TX=window.OLTX||[],SRC='올림포스 독서와 작문';
 const SHF=q=>{if(q.t!='mc'||!q.o)return q;let h=0;for(const c of q.q)h=(h*31+c.charCodeAt(0))|0;const r=()=>{h=(h*1103515245+12345)&0x7fffffff;return h/0x7fffffff};const ix=q.o.map((_,i)=>i);for(let i=ix.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[ix[i],ix[j]]=[ix[j],ix[i]]}q.o=ix.map(i=>q.o[i]);q.a=ix.indexOf(q.a);return q};
 const CMB=q=>{if(!q.o||!q.o.every(x=>/^[ㄱ-ㅎ](, [ㄱ-ㅎ])*$/.test(x)))return q;const ans=q.o[q.a];const o=[...q.o].sort((a,b)=>a.length-b.length||(a<b?-1:a>b?1:0));q.o=o;q.a=o.indexOf(ans);return q};
 const mkq=G=>q=>{q=Object.assign({},q);if(typeof q.g=='number')q.g=G[q.g];if(!q.t)q.t=q.o?'mc':typeof q.a=='boolean'?'ox':'sh';if(q.t=='sh'&&!q.m)q.m=q.a[0];return CMB(SHF(q))};
@@ -994,7 +994,7 @@ OLM.forEach((o,k)=>{if(!o||!TX[k])return;const f=mkq(o.g),t=TX[k];
  o.g.forEach((g,i)=>{if(o.tips&&o.tips[i])TIPS[g]=o.tips[i]});
  const pre='kor2'+String(k+1).padStart(2,'0'),W={v:0,b:1,x:2};
  const L=(o.q||[]).map(f).concat((o.x||[]).map(q=>Object.assign(f(q),{lv:'x'}))).concat((o.voc||[]).map(q=>Object.assign(f(q),{lv:'v'})));
- CM.m.push({n:t.t,no:'',src:SRC,q:L.sort((a,b)=>W[a.lv||'b']-W[b.lv||'b']).map((q,i)=>Object.assign({id:pre+(q.lv||'b')+String(i+1).padStart(2,'0'),pt:t.s,ptc:1},q))});
+ CM.m.push({n:t.t,no:(PG[k]||'')+'p',src:SRC,q:L.sort((a,b)=>W[a.lv||'b']-W[b.lv||'b']).map((q,i)=>Object.assign({id:pre+(q.lv||'b')+String(i+1).padStart(2,'0'),pt:t.s,ptc:1},q))});
  KMK[k]=(o.mk||[]).map(f);XK[k]=KMK[k].slice(4);KMK[k]=KMK[k].slice(0,4);KMV[k]=(o.mv||[]).map(f)});
 // 모의고사 3회 (올림포스)
 {const R3=[[],[],[]];let j=0;const V=[];
