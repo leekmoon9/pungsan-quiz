@@ -1008,5 +1008,12 @@ OLM.forEach((o,k)=>{if(!o||!TX[k])return;const f=mkq(o.g),t=TX[k];
  const one=H.filter(x=>x.i==0),two=H.filter(x=>x.i==1);const sel=one.concat(two.slice(0,Math.max(0,25-one.length))).sort((a,b)=>a.o-b.o);
  const n=MOCK[KN].length+1;
  MOCK[KN].push({n:n+'회',lb:'올림포스 고난도',q:sel.map((x,i,A)=>Object.assign({id:'korm'+n+String(i+1).padStart(2,'0'),mk:1,t:'mc',olp:(TX[x.o]||{}).s,ptc:i>0&&A[i-1].o==x.o?1:0},x.q))});}
+
+// 고난도 모의고사 (스프링): 지문별 가장 어려운 실전 문항 선별
+{const sc=q=>(/<보기>/.test(q.q)?2:0)+(/\[3점\]/.test(q.q)?1:0)+(q.tb||q.fig?1:0)+(q.t=='mc'?0:-5),P=[];
+ CUR[KN][0].m.forEach((M,k)=>{M.q.filter(q=>q.lv=='x'&&q.t=='mc').sort((a,b)=>sc(b)-sc(a)).slice(0,3).forEach((q,i)=>P.push({k,q,i,s:sc(q)}))});
+ const need=25,base=P.filter(x=>x.i==0),rest=P.filter(x=>x.i>0).sort((a,b)=>b.s-a.s).slice(0,Math.max(0,need-base.length));
+ const sel=base.concat(rest).sort((a,b)=>a.k-b.k||a.i-b.i).slice(0,need),n=MOCK[KN].length+1;
+ MOCK[KN].push({n:n+'회',lb:'스프링 고난도',q:sel.map((x,i,A)=>{const q=Object.assign({},x.q);delete q.lv;return Object.assign(q,{id:'korm'+n+String(i+1).padStart(2,'0'),mk:1,t:'mc',ps:(NOTE[KN]['0-'+x.k]||{}).ps})})});}
 window.OLXK=XK;
 })();
